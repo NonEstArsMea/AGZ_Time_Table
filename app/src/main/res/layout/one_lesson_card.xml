@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/one_lesson_card_background"
+    android:elevation="20dp">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/top_constraint"
+        android:layout_margin="@dimen/margine_all"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:background="@color/main_gray"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/time_constraint"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_margin="@dimen/margine_all"
+
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/start_lesson_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00.00"
+                android:textSize="@dimen/card_time_text_size"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+            <TextView
+                android:id="@+id/end_lesson_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00.00"
+                android:textSize="@dimen/card_time_text_size_2"
+                android:textStyle="bold"
+                android:textColor="@android:color/darker_gray"
+
+                app:layout_constraintTop_toBottomOf="@id/start_lesson_time"
+                app:layout_constraintStart_toStartOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <View
+            android:id="@+id/view_separator"
+            android:layout_width="2dp"
+            android:layout_height="0dp"
+            android:background="@color/yellow_fo_lessons_card"
+            android:layout_margin="@dimen/margine_all"
+
+            app:layout_constraintLeft_toRightOf="@id/time_constraint"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/lesson_info_constraint"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/margine_all"
+            android:paddingLeft="@dimen/margine_all"
+            android:layout_margin="@dimen/margine_all"
+
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/view_separator">
+
+            <TextView
+                android:id="@+id/subject"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Subject"
+                android:maxLines="2"
+                android:textStyle="bold"
+                android:textSize="17dp"
+                android:textColor="@color/white"
+
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                android:id="@+id/teacher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="teacher \nteacher"
+                android:maxLines="6"
+                android:textStyle="normal"
+                android:textSize="15dp"
+                android:textColor="@android:color/darker_gray"
+                android:layout_marginTop="@dimen/margine_all"
+                android:paddingTop="20dp"
+                android:gravity="bottom"
+
+                app:layout_constraintLeft_toLeftOf="@id/subject"
+                app:layout_constraintTop_toBottomOf="@id/subject"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+            <TextView
+                android:id="@+id/separator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="|"
+                android:maxLines="2"
+                android:textStyle="normal"
+                android:textSize="15dp"
+                android:textColor="@android:color/darker_gray"
+                android:layout_marginTop="@dimen/margine_all"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+
+                app:layout_constraintLeft_toRightOf="@id/teacher"
+                app:layout_constraintBottom_toBottomOf="@id/teacher"/>
+            <TextView
+                android:id="@+id/classroom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="classroom "
+                android:maxLines="6"
+                android:textStyle="normal"
+                android:textSize="15dp"
+                android:textColor="@android:color/darker_gray"
+                android:layout_marginTop="@dimen/margine_all"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:gravity="bottom"
+
+                app:layout_constraintLeft_toRightOf="@id/separator"
+                app:layout_constraintBottom_toBottomOf="@id/teacher"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="2dp"
+        android:paddingBottom="7dp"
+        android:paddingLeft="@dimen/margine_all"
+        app:layout_constraintTop_toBottomOf="@id/top_constraint"
+        android:background="@drawable/bottom_card_text_view_background">
+        <TextView
+            android:id="@+id/subject_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:layout_margin="@dimen/margine_all"
+            android:textColor="@color/white"
+            android:text="subjectType"
+            android:textStyle="bold"
+            android:background="@color/gray_fo_card"
+
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

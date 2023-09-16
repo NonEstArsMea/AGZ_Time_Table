@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Расписание АГЗ</string>
+
+
+    <dimen name="card_time_text_size">20dp</dimen>
+    <dimen name="card_time_text_size_2">17dp</dimen>
+    //отступы для View в one_lesson_card
+    <dimen name="margine_all">5dp</dimen>
+    //радиус скругления
+    <dimen name="radius_card">8dp</dimen>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

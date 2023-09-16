@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/gray"
+    android:layout_marginTop="18dp"
+    android:layout_marginLeft="@dimen/margine_all"
+    android:layout_marginRight="@dimen/margine_all"
+    android:layout_marginBottom="18dp">
+    <TextView
+        android:id="@+id/text_break_cell"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/gray_light"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="14dp"
+        android:text="Перемена"
+        android:gravity="center"
+        android:padding="10dp" />
+
+</androidx.cardview.widget.CardView>

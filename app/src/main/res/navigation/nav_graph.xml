@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/timeTableFragment">
+    <fragment
+        android:id="@+id/timeTableFragment"
+        android:name="com.NonEstArsMea.agz_time_table.present.fragments.TimeTableFragment"
+        android:label="TimeTableFragment" >
+        <action
+            android:id="@+id/action_timeTableFragment_to_settingFragment"
+            app:destination="@id/settingFragment" />
+        <action
+            android:id="@+id/action_timeTableFragment_to_favoriteParamFragment"
+            app:destination="@id/favoriteParamFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.NonEstArsMea.agz_time_table.present.fragments.SearchFragment"
+        android:label="SearchFragment" >
+        <action
+            android:id="@+id/action_searchFragment_to_timeTableFragment"
+            app:destination="@id/timeTableFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.NonEstArsMea.agz_time_table.present.fragments.SettingFragment"
+        android:label="SettingFragment" >
+        <action
+            android:id="@+id/action_settingFragment_to_timeTableFragment2"
+            app:destination="@id/timeTableFragment" />
+        <action
+            android:id="@+id/action_settingFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/favoriteParamFragment"
+        android:name="com.NonEstArsMea.agz_time_table.present.fragments.FavoriteParamFragment"
+        android:label="FavoriteParamFragment" >
+        <action
+            android:id="@+id/action_favoriteParamFragment_to_timeTableFragment"
+            app:destination="@id/timeTableFragment" />
+    </fragment>
+</navigation>

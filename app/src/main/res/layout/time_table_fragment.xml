@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/time_table_fragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/top_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="4dp"
+        android:background="@color/white"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/user_info"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/main_gray"
+            android:elevation="5dp"
+
+            app:layout_constraintTop_toTopOf="parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textColor="@color/white"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:gravity="left|bottom"
+                android:text="213"
+                android:textStyle="bold"
+                android:textSize="16dp"
+                android:paddingLeft="15dp"
+                android:id="@+id/main_param"/>
+
+            <TextView
+                android:id="@+id/month_date"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:paddingLeft="15dp"
+                android:text="Month, Year"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/main_param" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/user_info"
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:layout_height="60dp"
+            >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:id="@+id/panel"
+                android:orientation="horizontal"
+                android:weightSum="8"
+                android:background="@color/gray_fo_card"
+
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_buttom_left"
+                    android:layout_width="30dp"
+                    android:layout_height="match_parent"
+
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="spread"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/constraintLayout7"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/buttom_left"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:padding="3dp"
+                        android:text=""
+                        android:background="@drawable/left_button"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                         />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout7"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="spread"
+                    app:layout_constraintLeft_toRightOf="@id/cl_buttom_left"
+                    app:layout_constraintRight_toLeftOf="@id/constraintLayout6"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/mon_text"
+                        android:layout_width="30dp"
+                        android:layout_height="20dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="пн"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="12sp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/day_1"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:padding="3dp"
+                        android:text="1"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/mon_text" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout6"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+
+                    app:layout_constraintRight_toLeftOf="@id/constraintLayout5"
+                    app:layout_constraintLeft_toRightOf="@id/constraintLayout7"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent">
+                    <TextView
+                        android:id="@+id/tue_text"
+                        android:layout_width="30dp"
+                        android:layout_height="20dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="вт"
+                        android:textSize="12sp"
+                        android:textColor="@android:color/darker_gray"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                    <TextView
+                        android:id="@+id/day_2"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:padding="3dp"
+                        android:text="2"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tue_text" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout5"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/constraintLayout6"
+                    app:layout_constraintRight_toLeftOf="@id/constraintLayout4"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/wed_text"
+                        android:layout_width="30dp"
+                        android:layout_height="20dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="ср"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="12sp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/day_3"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:padding="3dp"
+                        android:text="3"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/wed_text" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout4"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+
+                    app:layout_constraintRight_toLeftOf="@id/constraintLayout3"
+                    app:layout_constraintLeft_toRightOf="@id/constraintLayout5"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent">
+                    <TextView
+                        android:id="@+id/thu_text"
+                        android:layout_width="30dp"
+                        android:layout_height="20dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="чт"
+                        android:textSize="12sp"
+                        android:textColor="@android:color/darker_gray"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                    <TextView
+                        android:id="@+id/day_4"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:padding="3dp"
+                        android:text="4"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/thu_text" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout3"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+
+                    app:layout_constraintRight_toLeftOf="@id/constraintLayout2"
+                    app:layout_constraintLeft_toRightOf="@id/constraintLayout4"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent">
+                    <TextView
+                        android:id="@+id/fri_text"
+                        android:layout_width="30dp"
+                        android:layout_height="20dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="пт"
+                        android:textSize="12sp"
+                        android:textColor="@android:color/darker_gray"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                    <TextView
+                        android:id="@+id/day_5"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:padding="3dp"
+                        android:text="5"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/fri_text" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout2"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/constraintLayout3"
+                    app:layout_constraintRight_toLeftOf="@id/cl_buttom_right"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/sat_text"
+                        android:layout_width="30dp"
+                        android:layout_height="20dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="сб"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="12sp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/day_6"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:padding="3dp"
+                        android:text="6"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/sat_text" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_buttom_right"
+                    android:layout_width="30dp"
+                    android:layout_height="match_parent"
+
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="spread"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/constraintLayout2"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/buttom_right"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:padding="3dp"
+                        android:text=""
+                        android:background="@drawable/right_button"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager_time_table_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/gray"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/top_info"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/top_info"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintVertical_bias="0.45"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
