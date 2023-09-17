@@ -1,8 +1,27 @@
 package com.NonEstArsMea.agz_time_table.domain.dataClass
 
+import androidx.compose.ui.unit.dp
 import com.NonEstArsMea.agz_time_table.R
 
 data class CellApi(
+    var subject: String? = null,
+    var teacher: String?= null,
+    var classroom: String?= null,
+    var studyGroup: String?= null,
+    var date: String?= null,
+    var subjectType: String?= null,
+    var startTime: String?= null,
+    var endTime: String?= null,
+    var subjectNumber: Int?= null,
+    var noEmpty: Boolean,
+    var text: String?= null,
+    var color: Int?= null,
+    val viewType: Int?= null,
+    val viewSize: Int?= null,
+)
+
+sealed class Cell
+data class LessonTimeTable(
     var subject: String?,
     var teacher: String?,
     var classroom: String?,
@@ -12,23 +31,6 @@ data class CellApi(
     var startTime: String?,
     var endTime: String?,
     var subjectNumber: Int?,
-    var noEmpty: Boolean,
-    var text: String?,
-    var color: Int?,
-    val viewType: Int?,
-)
-
-sealed class Cell
-data class LessonTimeTable(
-    var subject: String? = "123",
-    var teacher: String? = "",
-    var classroom: String? = "123",
-    var studyGroup: String? = "123",
-    var date: String? = "123",
-    var subjectType: String? = "123",
-    var startTime: String? = "123",
-    var endTime: String? = "123",
-    var subjectNumber: Int? = -1,
     var noEmpty: Boolean = true,
     var color: Int = R.color.yellow_fo_lessons_card,
     val viewType: Int = 0,
@@ -37,4 +39,5 @@ data class BreakCell(
     var text: String?,
     var noEmpty: Boolean = true,
     val viewType: Int = 1,
+    val viewSize: Int = 20,
 ):Cell()

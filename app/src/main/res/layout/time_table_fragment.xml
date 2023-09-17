@@ -25,23 +25,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="35dp"
                 app:layout_constraintTop_toTopOf="parent"
-                android:textColor="@color/white"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:gravity="left|bottom"
+                style="@style/TextAppearance.AppCompat.MainTextViewStyle.Header1"
                 android:text="213"
-                android:textStyle="bold"
-                android:textSize="16dp"
                 android:paddingLeft="15dp"
                 android:id="@+id/main_param"/>
 
             <TextView
                 android:id="@+id/month_date"
                 android:layout_width="wrap_content"
-                android:layout_height="25dp"
+                android:layout_height="wrap_content"
                 android:paddingLeft="15dp"
+                android:paddingBottom="@dimen/margine_all"
                 android:text="Month, Year"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="12sp"
+                android:textSize="14sp"
+                style="@style/TextAppearance.AppCompat.MainTextViewStyle"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/main_param" />
@@ -71,11 +70,11 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cl_buttom_left"
-                    android:layout_width="30dp"
+                    android:layout_width="50dp"
                     android:layout_height="match_parent"
 
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintHorizontal_chainStyle="spread"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toLeftOf="@id/constraintLayout7"
                     app:layout_constraintTop_toTopOf="parent">
@@ -115,26 +114,16 @@
 
                     <TextView
                         android:id="@+id/mon_text"
-                        android:layout_width="30dp"
-                        android:layout_height="20dp"
-                        android:layout_weight="1"
-                        android:gravity="center"
+                        style="@style/TextAppearance.AppCompat.MainTextViewStyle.WeekTitle"
                         android:text="пн"
-                        android:textColor="@android:color/darker_gray"
-                        android:textSize="12sp"
+
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/day_1"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:padding="3dp"
+                        style="@style/TextAppearance.AppCompat.MainTextViewStyle.WeekNumber"
                         android:text="1"
-                        android:textColor="@color/white"
-                        android:textStyle="bold"
 
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/mon_text" />
@@ -153,26 +142,15 @@
                     app:layout_constraintBottom_toBottomOf="parent">
                     <TextView
                         android:id="@+id/tue_text"
-                        android:layout_width="30dp"
-                        android:layout_height="20dp"
-                        android:layout_weight="1"
-                        android:gravity="center"
+                        style="@style/TextAppearance.AppCompat.MainTextViewStyle.WeekTitle"
                         android:text="вт"
-                        android:textSize="12sp"
-                        android:textColor="@android:color/darker_gray"
+
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
                     <TextView
                         android:id="@+id/day_2"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:padding="3dp"
+                        style="@style/TextAppearance.AppCompat.MainTextViewStyle.WeekNumber"
                         android:text="2"
-                        android:textColor="@color/white"
-                        android:textStyle="bold"
 
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tue_text" />
@@ -190,26 +168,16 @@
 
                     <TextView
                         android:id="@+id/wed_text"
-                        android:layout_width="30dp"
-                        android:layout_height="20dp"
-                        android:layout_weight="1"
-                        android:gravity="center"
+                        style="@style/TextAppearance.AppCompat.MainTextViewStyle.WeekTitle"
                         android:text="ср"
-                        android:textColor="@android:color/darker_gray"
-                        android:textSize="12sp"
+
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/day_3"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:padding="3dp"
+                        style="@style/TextAppearance.AppCompat.MainTextViewStyle.WeekNumber"
                         android:text="3"
-                        android:textColor="@color/white"
-                        android:textStyle="bold"
 
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -228,25 +196,15 @@
                     app:layout_constraintBottom_toBottomOf="parent">
                     <TextView
                         android:id="@+id/thu_text"
-                        android:layout_width="30dp"
-                        android:layout_height="20dp"
-                        android:layout_weight="1"
-                        android:gravity="center"
+                        style="@style/TextAppearance.AppCompat.MainTextViewStyle.WeekTitle"
                         android:text="чт"
-                        android:textSize="12sp"
-                        android:textColor="@android:color/darker_gray"
+
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
                     <TextView
                         android:id="@+id/day_4"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:padding="3dp"
+                        style="@style/TextAppearance.AppCompat.MainTextViewStyle.WeekNumber"
                         android:text="4"
-                        android:textColor="@color/white"
-                        android:textStyle="bold"
 
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/thu_text" />
@@ -263,25 +221,15 @@
                     app:layout_constraintBottom_toBottomOf="parent">
                     <TextView
                         android:id="@+id/fri_text"
-                        android:layout_width="30dp"
-                        android:layout_height="20dp"
-                        android:layout_weight="1"
-                        android:gravity="center"
+                        style="@style/TextAppearance.AppCompat.MainTextViewStyle.WeekTitle"
                         android:text="пт"
-                        android:textSize="12sp"
-                        android:textColor="@android:color/darker_gray"
+
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
                     <TextView
                         android:id="@+id/day_5"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:padding="3dp"
+                        style="@style/TextAppearance.AppCompat.MainTextViewStyle.WeekNumber"
                         android:text="5"
-                        android:textColor="@color/white"
-                        android:textStyle="bold"
 
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/fri_text" />
@@ -299,26 +247,16 @@
 
                     <TextView
                         android:id="@+id/sat_text"
-                        android:layout_width="30dp"
-                        android:layout_height="20dp"
-                        android:layout_weight="1"
-                        android:gravity="center"
+                        style="@style/TextAppearance.AppCompat.MainTextViewStyle.WeekTitle"
                         android:text="сб"
-                        android:textColor="@android:color/darker_gray"
-                        android:textSize="12sp"
+
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/day_6"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:padding="3dp"
+                        style="@style/TextAppearance.AppCompat.MainTextViewStyle.WeekNumber"
                         android:text="6"
-                        android:textColor="@color/white"
-                        android:textStyle="bold"
 
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/sat_text" />
@@ -326,7 +264,7 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cl_buttom_right"
-                    android:layout_width="30dp"
+                    android:layout_width="50dp"
                     android:layout_height="match_parent"
 
                     app:layout_constraintBottom_toBottomOf="parent"

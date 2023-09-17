@@ -3,7 +3,10 @@
     android:id="@+id/main_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
+    android:layout_marginTop="9dp"
+    android:layout_marginBottom="9dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/one_lesson_card_background"
     android:elevation="20dp">
@@ -31,9 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="00.00"
-                android:textSize="@dimen/card_time_text_size"
-                android:textStyle="bold"
-                android:textColor="@android:color/white"
+                style="@style/TextAppearance.AppCompat.MainTextViewStyle.Header2"
 
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
@@ -42,9 +43,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="00.00"
-                android:textSize="@dimen/card_time_text_size_2"
+                style="@style/TextAppearance.AppCompat.MainTextViewStyle"
                 android:textStyle="bold"
-                android:textColor="@android:color/darker_gray"
 
                 app:layout_constraintTop_toBottomOf="@id/start_lesson_time"
                 app:layout_constraintStart_toStartOf="parent"/>
@@ -77,9 +77,7 @@
                 android:layout_height="wrap_content"
                 android:text="Subject"
                 android:maxLines="2"
-                android:textStyle="bold"
-                android:textSize="17dp"
-                android:textColor="@color/white"
+                style="@style/TextAppearance.AppCompat.MainTextViewStyle.Header1"
 
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
@@ -90,9 +88,7 @@
                 android:layout_height="wrap_content"
                 android:text="teacher \nteacher"
                 android:maxLines="6"
-                android:textStyle="normal"
-                android:textSize="15dp"
-                android:textColor="@android:color/darker_gray"
+                style="@style/TextAppearance.AppCompat.MainTextViewStyle"
                 android:layout_marginTop="@dimen/margine_all"
                 android:paddingTop="20dp"
                 android:gravity="bottom"
@@ -121,9 +117,7 @@
                 android:layout_height="wrap_content"
                 android:text="classroom "
                 android:maxLines="6"
-                android:textStyle="normal"
-                android:textSize="15dp"
-                android:textColor="@android:color/darker_gray"
+                style="@style/TextAppearance.AppCompat.MainTextViewStyle"
                 android:layout_marginTop="@dimen/margine_all"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
@@ -139,8 +133,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="2dp"
-        android:paddingBottom="7dp"
+        android:paddingTop="1dp"
+        android:paddingBottom="6dp"
         android:paddingLeft="@dimen/margine_all"
         app:layout_constraintTop_toBottomOf="@id/top_constraint"
         android:background="@drawable/bottom_card_text_view_background">
@@ -148,11 +142,10 @@
             android:id="@+id/subject_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="14dp"
             android:layout_margin="@dimen/margine_all"
-            android:textColor="@color/white"
             android:text="subjectType"
-            android:textStyle="bold"
+            android:textSize="14dp"
+            style="@style/TextAppearance.AppCompat.MainTextViewStyle.Header1"
             android:background="@color/gray_fo_card"
 
             app:layout_constraintLeft_toLeftOf="parent"
