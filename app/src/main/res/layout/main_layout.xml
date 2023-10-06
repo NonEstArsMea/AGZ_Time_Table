@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".present.MainActivity">
+    tools:context=".present.MainActivity"
+    android:background="@color/white">
 
 
     <androidx.fragment.app.FragmentContainerView
@@ -20,16 +21,21 @@
         app:layout_constraintTop_toTopOf="parent"
 
         app:defaultNavHost="true"
-        app:navGraph="@navigation/nav_graph"/>
+        app:navGraph="@navigation/nav_graph"
+        />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         app:layout_constraintTop_toBottomOf="@id/fragmentContainerView"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:menu="@menu/menu"
+
+
+        android:elevation="10dp"
 
         android:id="@+id/bottom_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/gray_fo_card"
-        app:menu="@menu/menu"
+
         app:labelVisibilityMode="unlabeled"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,22 +3,18 @@
     <item
         android:id="@+id/menu_tt"
         android:icon="@drawable/baseline_calendar_today_24"
-        android:iconTint="@color/white"
         android:title="Сегодня" />
     <item
         android:id="@+id/menu_favorite"
         android:title="Избранное"
-        android:icon="@drawable/baseline_star_24"
-        android:iconTint="@color/white"/>
+        android:icon="@drawable/baseline_star_24" />
     <item
         android:id="@+id/menu_set_date"
         android:title="Выбрать дату"
-        android:icon="@drawable/set_date_icon"
-        android:iconTint="@color/white"/>
+        android:icon="@drawable/set_date_icon" />
     <item
         android:id="@+id/menu_setting"
         android:title="Настройки"
-        android:icon="@drawable/setting_icon"
-        android:iconTint="@color/white"/>
+        android:icon="@drawable/setting_icon" />
 
 </menu>

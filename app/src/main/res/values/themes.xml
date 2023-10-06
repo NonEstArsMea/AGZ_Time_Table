@@ -1,5 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.AGZ_Time_Table" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.AGZ_Time_Table" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimaryVariant">@color/red_themes</item>
+        <item name="colorSecondary">@color/red_themes</item>
+        <item name="colorSecondaryVariant">@color/white</item>
+        // Главный цвет приложения
+        <item name="colorPrimary">@color/red_themes</item>
+        <item name="colorSurfaceContainer">@color/white</item>
+        <item name="titleTextColor">@color/black</item>
+        <item name="subtitleTextColor">@color/white</item>
+        <item name="backgroundColor">@color/white</item>
+
+        <!--<item name=""colorOnSurfaceVariant-->
+
+
+        <item name="colorSurface">@color/white</item>
+
+        //кнопки bottomView
+        <item name="colorButtonNormal">@color/black</item>
+
+        <item name="colorOnSurfaceVariant">@color/gray_400</item>
+        <item name="colorOnSecondaryContainer">@color/red_themes</item>
+        <item name="colorSecondaryContainer">@color/red_themes_500</item>
+
+        <item name="bottomNavigationStyle">@style/Widget.Material3.BottomNavigationView.MyTheme</item>
+
+
+        <item name="textAppearanceHeadline1">@style/MainTextViewStyle.WeekTitle</item>
+        <item name="textAppearanceHeadline2">@style/MainTextViewStyle.Header1</item>
+        <item name="textAppearanceBody1">@style/MainTextViewStyle</item>
+        <item name="textAppearanceHeadline3">@style/MainTextViewStyle.WeekNumber</item>
+    </style>
 </resources>

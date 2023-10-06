@@ -1,12 +1,15 @@
 package com.NonEstArsMea.agz_time_table.present.fragments
 
 import android.annotation.SuppressLint
+import android.content.res.Resources
+import android.content.res.Resources.Theme
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.widget.ThemeUtils
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -62,9 +65,13 @@ class TimeTableFragment() : Fragment() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 days.toList().forEach{
-                    it.background = resources.getColor(R.color.gray_fo_card).toDrawable()
+                    it.setTextAppearance(R.style.MainTextViewStyle_WeekNumber)
+                    it.background = resources.getDrawable(R.drawable.main_surface, context!!.theme)
                 }
-                days[position].background = resources.getDrawable(R.drawable.button_draw, null)
+                with(days[position]){
+                    this.setTextAppearance(R.style.MainTextViewStyle_DayNowWeekNumber)
+                    this.background = resources.getDrawable(R.drawable.break_cell_background, context!!.theme)
+                }
             }
         })
 

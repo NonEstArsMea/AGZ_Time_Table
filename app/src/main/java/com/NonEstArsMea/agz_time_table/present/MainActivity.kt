@@ -13,11 +13,13 @@ import com.NonEstArsMea.agz_time_table.domain.CheckNetConnection
 import com.NonEstArsMea.agz_time_table.databinding.MainLayoutBinding
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
 import com.NonEstArsMea.agz_time_table.domain.isInternetConnected
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
 import java.util.Calendar
+import java.util.Date
 
 
 class MainActivity : AppCompatActivity() {
@@ -58,6 +60,26 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        val datePicker =
+            MaterialDatePicker.Builder.datePicker()
+                .setTitleText("Выберите дату")
+                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                .build()
+
+        datePicker.addOnPositiveButtonClickListener {
+            val calender = Calendar.getInstance()
+            calender.timeInMillis = it
+
+            vm.setNewCalendar(calender.get(Calendar.YEAR),
+                              calender.get(Calendar.MONTH),
+                                calender.get(Calendar.DAY_OF_MONTH))
+            findNavController(R.id.fragmentContainerView)
+                    .navigate(R.id.timeTableFragment)
+            Log.e("1234", calender.toString())
+        }
+
+
+
 
         binding.bottomInfo.setOnItemSelectedListener {
             when (it.itemId) {
@@ -74,19 +96,8 @@ class MainActivity : AppCompatActivity() {
                         .navigate(R.id.favoriteParamFragment)
                 }
 
-
                 R.id.menu_set_date -> {
-                    val day = calendar.get(Calendar.DAY_OF_MONTH)
-                    val month = calendar.get(Calendar.MONTH)
-                    val year = calendar.get(Calendar.YEAR)
-                    val dialog = DatePickerDialog(this,
-                        {
-                                _, year, month, dayOfMonth ->
-                            vm.setNewCalendar(year, month, dayOfMonth)
-                            findNavController(R.id.fragmentContainerView)
-                                .navigate(R.id.timeTableFragment)
-                        }, year, month, day)
-                    dialog.show()
+                    datePicker.show(supportFragmentManager, "DatePicker")
                 }
 
                 R.id.menu_setting ->{

@@ -15,6 +15,7 @@ data class CellApi(
     var subjectNumber: Int?= null,
     var noEmpty: Boolean,
     var text: String?= null,
+    var lessonTheme: String? = null,
     var color: Int?= null,
     val viewType: Int?= null,
     val viewSize: Int?= null,
@@ -32,6 +33,7 @@ data class LessonTimeTable(
     var endTime: String?,
     var subjectNumber: Int?,
     var noEmpty: Boolean = true,
+    var lessonTheme: String? = null,
     var color: Int = R.color.yellow_fo_lessons_card,
     val viewType: Int = 0,
 ):Cell()

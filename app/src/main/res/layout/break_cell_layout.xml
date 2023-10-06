@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/break_cell_background"
         android:textColor="@color/white"
-        style="@style/TextAppearance.AppCompat.MainTextViewStyle"
+        style="@style/MainTextViewStyle"
         android:text="Перемена"
         android:gravity="center"
         android:padding="7dp"

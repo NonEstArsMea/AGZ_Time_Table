@@ -72,6 +72,7 @@ class MainViewModel: ViewModel() {
             try {
                 val data = getDataFromUrl()
                 _dataLiveData.value = data
+                Log.e("my-tag", data[1].toString())
             } catch (e: Exception) {
                 Log.e("my-tag", e.toString())
             }

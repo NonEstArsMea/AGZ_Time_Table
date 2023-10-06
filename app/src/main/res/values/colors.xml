@@ -5,15 +5,19 @@
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
+    <color name="black">#252525</color>
     <color name="white">#FFFFFFFF</color>
     <color name="yellow_fo_lessons_card">#f9a824</color>
     <color name="green_fo_lessons_card">#4CAF50</color>
     <color name="red_fo_lessons_card">#c16368</color>
+    <color name="red_themes">#F8A34B</color>
+    <color name="red_themes_500">#FADDC0</color>
+    <color name="gray_400">#878787</color>
 
     <color name="gray_fo_card">#565882</color>
     <color name="gray_light">#595C9E</color>
     <color name="main_gray">#333463</color>
-    <color name="gray">#191750</color>
+    <color name="gray">#474747</color>
     <color name="red">#F44336</color>
+
 </resources>

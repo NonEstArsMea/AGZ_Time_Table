@@ -48,6 +48,7 @@ object TimeTableRepositoryImpl: TimeTableRepository {
                 val Subject = line.get(8)
                 val Subj_type = line.get(9)
                 val Date = line.get(10)
+                var Themas = line.get(12)
                 if ((Date == dayOfWeek) and ((mainParam == Group) or (mainParam == Aud) or (mainParam == Name))) {
                     if (listTT[Les].teacher == null) {
                         listTT[Les].teacher = Name
@@ -55,7 +56,7 @@ object TimeTableRepositoryImpl: TimeTableRepository {
                         listTT[Les].classroom = Aud
                         listTT[Les].subject = Subject
                         listTT[Les].subjectNumber = Les + 1
-                        listTT[Les].subjectType = Methods().replaceText(Subj_type)
+                        listTT[Les].subjectType = "$Themas ${Methods().replaceText(Subj_type)}"
                         listTT[Les].color = Methods().setColor(Subj_type)
                         listTT[Les].noEmpty = true
                         listTT[Les].date = Date
@@ -90,6 +91,7 @@ object TimeTableRepositoryImpl: TimeTableRepository {
                 listTT.add(
                     0,
                     CellApi(
+                        // 9.00 - 10.30     2 пары
                         text = "9:00 - ${getStartTime(listTT[0].subjectNumber!!)}     ${listTT[0].subjectNumber!!-1} ${wordEnding(listTT[0].subjectNumber!!-1)}",
                         noEmpty = true,
                         viewSize = 50
@@ -98,20 +100,20 @@ object TimeTableRepositoryImpl: TimeTableRepository {
                 // Нужно для вставки по индексу
                 lessonOffset += 1
             }
-            Log.e("TTRI", "${listTT.size.toString()} ${listOfLes.toString()}")
             if(listOfLes.size > 1) {
                 for (a in 0 until listOfLes.size-1) {
+                    // Разность пар
                     val diff = (listOfLes[a + 1] - listOfLes[a])
                     if (diff > 1){
                         listTT.add(
                             index = a + lessonOffset,
                             element = CellApi(
-                                text = "${getEndTime(listTT[a].subjectNumber!!)}  - ${getStartTime(listTT[a + lessonOffset].subjectNumber!!)}     ${diff-1} ${wordEnding(diff-1)}",
+                                text = "${getEndTime(listTT[a].subjectNumber!!+1)} - ${getStartTime(listTT[a + lessonOffset].subjectNumber!!)}     ${diff-1} ${wordEnding(diff-1)}",
                                 noEmpty = true,
                                 viewSize = 60
                             )
                         )
-                        lessonOffset += 1
+                        lessonOffset += diff
                     }else if(listOfLes[a+1] == 4){
                         listTT.add(
                             index = a + lessonOffset,
@@ -135,7 +137,7 @@ object TimeTableRepositoryImpl: TimeTableRepository {
                     }
                 }
             }
-            Log.e("TTRI", "${listTT.size.toString()} ")
+            Log.e("pr_2", "${listTT.size.toString()} ")
         }else{
             listTT.add(CellApi(text = "В этот день занятий нет.", noEmpty = true, viewSize = 20))
             return@withContext listTT
@@ -143,6 +145,9 @@ object TimeTableRepositoryImpl: TimeTableRepository {
         return@withContext listTT
     }
 
+    fun checkCell(){
+
+    }
 
 
     override fun getLessonTimeTable(numberLesson: Int, dayOfWeek: Int): CellApi {
@@ -170,13 +175,13 @@ object TimeTableRepositoryImpl: TimeTableRepository {
                 for (a in 1..6) {
                     arrDeferred.add(async { preparationData(newData, dayOfWeek[a - 1], mainParam) })
                 }
-
+                Log.e("tag_1", arrDeferred.toString())
                 for (a in 1..6) {
                     weekTimeTable[a - 1] = arrDeferred[a - 1].await()
                 }
             }
         }catch(e: Exception) {
-            Log.e("my-tag", e.toString())
+            Log.e("my-tag", e.toString() + " problem")
         }
 
         return weekTimeTable

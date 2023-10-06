@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.AGZ_Time_Table" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="colorPrimaryVariant">@color/black</item>
+        <item name="colorSecondary">@color/white</item>
+        <item name="colorSecondaryVariant">#FFFFFF</item>
+        <item name="colorOnSurface">@color/black</item>
+        <item name="colorPrimary">#333333</item>
+        <item name="colorSurfaceContainer">@color/black</item>
+        <item name="titleTextColor">@color/white</item>
+        <item name="backgroundColor">@color/black</item>
+
+        //кнопки bottomView
+        <item name="colorButtonNormal">@color/white</item>
+
+
+
+        <item name="textAppearanceHeadline1">@style/MainTextViewStyle.WeekTitle</item>
+        <item name="textAppearanceHeadline2">@style/MainTextViewStyle.Header1</item>
+        <item name="textAppearanceBody1">@style/MainTextViewStyle</item>
+        <item name="textAppearanceHeadline3">@style/MainTextViewStyle.WeekNumber</item>
+    </style>
+</resources>
