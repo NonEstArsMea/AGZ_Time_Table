@@ -86,12 +86,12 @@ class TimeTableFragment() : Fragment() {
         }
 
         // Слушатель на left_buttom
-        binding.clButtomLeft.setOnClickListener {
+        binding.buttomLeft.setOnClickListener {
             currentItem = 0
             updateData(PREVIOUS_WEEK)
         }
 
-        binding.clButtomRight.setOnClickListener {
+        binding.buttomRight.setOnClickListener {
             currentItem = 0
             updateData(NEXT_WEEK)
         }
@@ -125,7 +125,7 @@ class TimeTableFragment() : Fragment() {
             vm.getTimeTable(data, days, vm.getMainParam())
         }
 
-        // Слушатель на расписание недели
+        // Слушатель на расписание недели (при перелистывании недели)
         vm.weekTimeTable.observe(viewLifecycleOwner){
             if(!it.isEmpty()){
                 viewPagerAdapter.setData(it)

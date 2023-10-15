@@ -31,5 +31,6 @@
         <item name="textAppearanceHeadline2">@style/MainTextViewStyle.Header1</item>
         <item name="textAppearanceBody1">@style/MainTextViewStyle</item>
         <item name="textAppearanceHeadline3">@style/MainTextViewStyle.WeekNumber</item>
+
     </style>
 </resources>

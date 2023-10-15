@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="9dp"
+    android:layout_marginBottom="9dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    style="@style/Widget.Material3.CardView.Outlined"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+<androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/main_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -8,8 +16,6 @@
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/one_lesson_card_background"
-    android:elevation="20dp"
     android:theme="@style/Theme.AGZ_Time_Table">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/top_constraint"
@@ -137,8 +143,7 @@
         android:paddingTop="1dp"
         android:paddingBottom="6dp"
         android:paddingLeft="@dimen/margine_all"
-        app:layout_constraintTop_toBottomOf="@id/top_constraint"
-        android:background="@drawable/bottom_card_text_view_background">
+        app:layout_constraintTop_toBottomOf="@id/top_constraint">
         <TextView
             android:id="@+id/subject_type"
             android:layout_width="match_parent"
@@ -156,3 +161,4 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

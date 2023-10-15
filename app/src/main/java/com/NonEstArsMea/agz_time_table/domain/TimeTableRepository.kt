@@ -17,5 +17,5 @@ interface TimeTableRepository {
     suspend fun preparationData(data: String,
                                 dayOfWeek: String = "10-02-2023",
                                 mainParam: String = "314"): ArrayList<CellApi>
-    fun getListOfMainParam(data: String, arrOfMainParams: ArrayList<MainParam>?): List<MainParam>
+    fun getListOfMainParam(data: String): List<MainParam>
 }

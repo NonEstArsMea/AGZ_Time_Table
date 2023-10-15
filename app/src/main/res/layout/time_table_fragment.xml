@@ -5,17 +5,28 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:theme="@style/Theme.AGZ_Time_Table">
+    android:theme="@style/Theme.AGZ_Time_Table"
+    android:background="?attr/colorSurfaceContainer">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/top_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
+        android:padding="1dp"
 
         >
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="@dimen/margine_all"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:padding="@dimen/margine_all"
+            style="@style/Widget.Material3.CardView.Filled"
+            android:id="@+id/top_card">
+            <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/user_info"
             android:layout_width="match_parent"
             android:layout_height="60dp"
@@ -31,8 +42,8 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:gravity="left|bottom"
 
-                style="?attr/textAppearanceHeadline2"
-                android:text="213"
+                style="@style/MainTextViewStyle.HeaderText"
+                android:text="Группа не выбрана"
                 android:paddingLeft="15dp"
                 android:id="@+id/main_param"/>
 
@@ -44,30 +55,33 @@
                 android:paddingBottom="@dimen/margine_all"
                 android:text="Month, Year"
                 android:textSize="14sp"
-                style="?attr/textAppearanceHeadline1"
+                style="@style/MainTextViewStyle.HeaderText"
 
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/main_param" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-        <androidx.constraintlayout.widget.ConstraintLayout
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/user_info"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:layout_marginBottom="@dimen/margine_all"
-            >
+        </com.google.android.material.card.MaterialCardView>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="@dimen/margine_all"
+                app:layout_constraintTop_toBottomOf="@id/top_card"
+                android:padding="@dimen/margine_all"
+                android:layout_marginBottom="@dimen/margine_all"
+                style="@style/Widget.Material3.CardView.Elevated">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:id="@+id/panel"
-                android:elevation="5dp"
                 android:orientation="horizontal"
                 android:weightSum="8"
-                android:background="?attr/colorSurface"
+                style="@style/Widget.Material3.CardView.Filled"
                 android:layout_marginBottom="@dimen/margine_all"
 
                 app:layout_constraintHorizontal_chainStyle="spread"
@@ -86,18 +100,12 @@
                     app:layout_constraintRight_toLeftOf="@id/constraintLayout7"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <TextView
+                    <Button
                         android:id="@+id/buttom_left"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:padding="3dp"
-                        android:text=""
-                        android:background="@drawable/left_button"
-                        android:backgroundTint="?attr/titleTextColor"
-                        android:textColor="@color/white"
-                        android:textStyle="bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:icon="@drawable/left_button"
+                        style="@style/Widget.Material3.Button.IconButton.Outlined"
 
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -285,18 +293,12 @@
                     app:layout_constraintLeft_toRightOf="@id/constraintLayout2"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <TextView
+                    <Button
                         android:id="@+id/buttom_right"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:padding="3dp"
-                        android:text=""
-                        android:background="@drawable/right_button"
-                        android:backgroundTint="?attr/titleTextColor"
-                        android:textColor="@color/white"
-                        android:textStyle="bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:icon="@drawable/right_button"
+                        style="@style/Widget.Material3.Button.IconButton.Outlined"
 
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -308,8 +310,7 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager_time_table_fragment"

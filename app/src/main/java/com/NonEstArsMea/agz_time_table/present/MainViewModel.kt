@@ -50,8 +50,8 @@ class MainViewModel: ViewModel() {
         get() = _mainParam
 
     // Хранит Избранные контакты
-    private val _arrFavoriteMainParam = MutableLiveData<ArrayList<MainParam>>()
-    val arrFavoriteMainParam: LiveData<ArrayList<MainParam>>
+    private val _arrFavoriteMainParam = MutableLiveData<ArrayList<String>>()
+    val arrFavoriteMainParam: LiveData<ArrayList<String>>
         get() = _arrFavoriteMainParam
 
     private var jobVM = SupervisorJob()
@@ -112,9 +112,8 @@ class MainViewModel: ViewModel() {
 
     // получение списка с параметром поиска
     fun getListOfMainParam(data: String){
-            val arr: ArrayList<MainParam>? = arrFavoriteMainParam.value
-            Log.e("any", arr.toString())
-            _listOfMainParam.value = getListOfMainParamUseCase.execute(data, arr)
+            val arr: ArrayList<String>? = arrFavoriteMainParam.value
+            _listOfMainParam.value = getListOfMainParamUseCase.execute(data)
     }
 
     // установка параметра выбора
@@ -131,39 +130,84 @@ class MainViewModel: ViewModel() {
         }
 
     }
-
+    // Установка нового календаря для смены даты по параметрам
     fun setNewCalendar(year: Int, month: Int, dayOfMonth: Int){
         _calendarLiveData.value?.set(year, month, dayOfMonth)
     }
 
+    // Получение календаря
     fun getCalendar():Calendar{
         return _calendarLiveData.value!!
     }
-
+    // Установка календаря без параметров
     fun setCalendar(calendar: Calendar){
         _calendarLiveData.value = calendar
     }
+    // Остановка корутины после завершения работы
     override fun onCleared() {
         super.onCleared()
         job.cancel()
     }
 
-    fun updateListOfMainParam(position: Int) {
-        Log.e("AAA",_listOfMainParam.value.toString())
-        _listOfMainParam.value?.get(position)?.visible = !(_listOfMainParam.value?.get(position)?.visible)!!
-        _arrFavoriteMainParam.value = getListOfFavoriteMainParam() as ArrayList<MainParam>
+
+    // Получение списка ГЛАВНЫХ ПАРМЕТРОВ
+    fun getListOfFavoriteMainParam(): ArrayList<String> {
+            return _arrFavoriteMainParam.value!!
+    }
+    // Изменение списка с избранными параметрами
+    // Необходимо доделать момент, когда выбранная группа уже есть
+    fun updateListOfFavoriteMainParam(param: String){
+        with(_arrFavoriteMainParam) {
+            // Если не инициализирован список
+            if (this.value == null) {
+                this.value = arrayListOf()
+            }
+
+            if (param !in this.value!!) {
+                this.value!!.add(0, param)
+            }else{
+                val index = this.value!!.indexOf(param)
+                val item = this.value!![index]
+                this.value!![index] = this.value!![0]
+                this.value!![0] = item
+            }
+            // Если количество максимально
+            if (this.value!!.size == 6) {
+                this.value!!.removeLast()
+            }
+        }
     }
 
-    fun getListOfFavoriteMainParam(): List<MainParam> {
-
-        return _listOfMainParam.value?.filter { it.visible == true } ?: arrayListOf()
+    fun moveItemInFavoriteMainParam(param: String){
+        val list = _arrFavoriteMainParam.value!!.toList() as ArrayList
+        with(list) {
+            if (this.size != 1) {
+                val itemIndex = this.indexOf(param)
+                for (item in itemIndex downTo 1) {
+                    this[item] = this[item-1]
+                }
+                this[0] = param
+            }
+            _arrFavoriteMainParam.value = list
+        }
     }
 
-    fun setArrayMainParam(listArrayOfMainParam:List<MainParam>){
+
+    fun delParamFromFavoriteMainParam(index: String){
+        Log.e("index", index.toString())
+        val items = _arrFavoriteMainParam.value!!
+        items.removeAt(_arrFavoriteMainParam.value!!.indexOf(index))
+        _arrFavoriteMainParam.value = items
+    }
+
+    // Установка списка параметров после загрузки
+
+    fun setArrayMainParam(listArrayOfMainParam:List<String>){
         _arrFavoriteMainParam.value = arrayListOf()
         _arrFavoriteMainParam.value!!.addAll(listArrayOfMainParam)
     }
 
+    // Установка состояние загрузки
     fun setConditionLoading(condition: Boolean){
         _loading.value = condition
     }

@@ -1,6 +1,7 @@
 package com.NonEstArsMea.agz_time_table.present.adapters
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
@@ -11,12 +12,11 @@ import com.NonEstArsMea.agz_time_table.present.viewholders.RVOnSearchFragmentVie
 import com.NonEstArsMea.agz_time_table.present.diffcallbacks.SearchDiffCallback
 
 class RecycleViewOnSearchFragmentAdapter(
-): ListAdapter<ArrayList<String>, RVOnSearchFragmentViewHolder>(SearchDiffCallback()) {
+): ListAdapter<String, RVOnSearchFragmentViewHolder>(SearchDiffCallback()) {
 
-    private val _listOfMainParam : ArrayList<MainParam> = ArrayList()
+    private var _listOfMainParam : ArrayList<MainParam> = ArrayList()
 
     var onMainParamClickListener:((String)->(Unit))? = null
-    var onMainParamLongClickListener:((Int)->(Unit))? = null
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -41,12 +41,10 @@ class RecycleViewOnSearchFragmentAdapter(
         val mainParam = _listOfMainParam[position]
         holder.name.text = mainParam.name
         holder.circle.isVisible = mainParam.visible
+
+        // Нажатие на объект
         holder.view.setOnClickListener {
             onMainParamClickListener?.invoke(mainParam.name)
-        }
-        holder.view.setOnLongClickListener {
-            onMainParamLongClickListener?.invoke(mainParam.position)
-            true
         }
     }
 

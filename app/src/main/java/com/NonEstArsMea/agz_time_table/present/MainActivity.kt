@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -43,29 +44,29 @@ class MainActivity : AppCompatActivity() {
 
         analytics = Firebase.analytics
 
-        val day_n = calendar.get(Calendar.DAY_OF_MONTH)
-        val month_n = calendar.get(Calendar.MONTH)
-        val year_n = calendar.get(Calendar.YEAR)
 
         val vm = ViewModelProvider(this)[MainViewModel::class.java]
         vm.setCalendar(calendar = calendar)
 
         val pref = getPreferences(Context.MODE_PRIVATE)
         val gson = Gson()
+        // Загрузка сохраненных данные
         if (pref != null) {
+            // Группа
             vm.setMainParam(pref.getString("mainParam", "213").toString())
+            // Список избранных
             val jsonString = pref.getString("listOfMainParam", null)
             if(jsonString != null){
-                vm.setArrayMainParam(gson.fromJson(jsonString, Array<MainParam>::class.java).toList())
+                vm.setArrayMainParam(gson.fromJson(jsonString, Array<String>::class.java).toList())
             }
         }
-
+        // Установка пикера
         val datePicker =
             MaterialDatePicker.Builder.datePicker()
                 .setTitleText("Выберите дату")
                 .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
                 .build()
-
+        //Нажатие на пикер
         datePicker.addOnPositiveButtonClickListener {
             val calender = Calendar.getInstance()
             calender.timeInMillis = it
@@ -75,9 +76,7 @@ class MainActivity : AppCompatActivity() {
                                 calender.get(Calendar.DAY_OF_MONTH))
             findNavController(R.id.fragmentContainerView)
                     .navigate(R.id.timeTableFragment)
-            Log.e("1234", calender.toString())
         }
-
 
 
 
@@ -85,27 +84,24 @@ class MainActivity : AppCompatActivity() {
             when (it.itemId) {
 
                 R.id.menu_tt -> {
-                    vm.setNewCalendar(year_n, month_n, day_n)
                     popBackStack()
                     findNavController(R.id.fragmentContainerView)
                         .navigate(R.id.timeTableFragment)
+                    //vm.setNewCalendar(year_n, month_n, day_n)
                 }
 
-                R.id.menu_favorite -> {
-                    findNavController(R.id.fragmentContainerView)
-                        .navigate(R.id.favoriteParamFragment)
-                }
 
                 R.id.menu_set_date -> {
                     datePicker.show(supportFragmentManager, "DatePicker")
                 }
 
                 R.id.menu_setting ->{
-                    popBackStack()
+
                     findNavController(R.id.fragmentContainerView)
                         .navigate(R.id.settingFragment)
 
                 }
+
 
             }
             return@setOnItemSelectedListener true
@@ -117,10 +113,6 @@ class MainActivity : AppCompatActivity() {
             vm.loadDataFromURL()
         }
 
-        vm.mainParam.observe(this){
-            findNavController(R.id.fragmentContainerView)
-                .navigate(R.id.timeTableFragment)
-        }
 
 
     }
@@ -145,7 +137,9 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun popBackStack() {
-        findNavController(R.id.fragmentContainerView).popBackStack()
+        findNavController(R.id.fragmentContainerView).popBackStack(R.id.timeTableFragment,
+            inclusive = true
+        )
     }
 
     override fun onPause() {

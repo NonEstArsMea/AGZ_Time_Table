@@ -1,18 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Theme.AGZ_Time_Table" parent="Theme.Material3.Dark.NoActionBar">
-        <item name="colorPrimaryVariant">@color/black</item>
-        <item name="colorSecondary">@color/white</item>
-        <item name="colorSecondaryVariant">#FFFFFF</item>
-        <item name="colorOnSurface">@color/black</item>
-        <item name="colorPrimary">#333333</item>
+        <item name="colorPrimaryVariant">@color/red_themes</item>
+        <item name="colorSecondary">@color/red_themes</item>
+        <item name="colorSecondaryVariant">@color/black</item>
+        // Главный цвет приложения
+        <item name="colorPrimary">@color/red_themes</item>
         <item name="colorSurfaceContainer">@color/black</item>
         <item name="titleTextColor">@color/white</item>
+        <item name="subtitleTextColor">@color/black</item>
         <item name="backgroundColor">@color/black</item>
 
-        //кнопки bottomView
-        <item name="colorButtonNormal">@color/white</item>
+        <!--<item name=""colorOnSurfaceVariant-->
 
+
+        <item name="colorSurface">@color/black</item>
+
+        //кнопки bottomView
+        <item name="colorButtonNormal">@color/black</item>
+
+        <item name="colorOnSurfaceVariant">@color/gray_400</item>
+        <item name="colorOnSecondaryContainer">@color/red_themes</item>
+        <item name="colorSecondaryContainer">@color/red_themes_100</item>
+
+        <item name="bottomNavigationStyle">@style/Widget.Material3.BottomNavigationView.MyTheme</item>
 
 
         <item name="textAppearanceHeadline1">@style/MainTextViewStyle.WeekTitle</item>

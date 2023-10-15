@@ -74,7 +74,7 @@ class GetDateRepositoryImpl(calendar: Calendar): GetDateRepository {
 
         for(a in 0..5){
             dayNow = calendar.get(Calendar.DAY_OF_MONTH).toString()
-            monthNow  = if(calendar.get(Calendar.MONTH) < 10)
+            monthNow  = if(calendar.get(Calendar.MONTH)+1 < 10)
                 "0${calendar.get(Calendar.MONTH) + 1}"
             else
                 (calendar.get(Calendar.MONTH) + 1).toString()

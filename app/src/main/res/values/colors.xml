@@ -11,7 +11,8 @@
     <color name="green_fo_lessons_card">#4CAF50</color>
     <color name="red_fo_lessons_card">#c16368</color>
     <color name="red_themes">#F8A34B</color>
-    <color name="red_themes_500">#FADDC0</color>
+    <color name="red_themes_500">#FADDC1</color>
+    <color name="red_themes_100">#655A4E</color>
     <color name="gray_400">#878787</color>
 
     <color name="gray_fo_card">#565882</color>
