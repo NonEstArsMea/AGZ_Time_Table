@@ -28,6 +28,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mainViewModel: MainViewModel
     var calendar: Calendar = Calendar.getInstance()
 
+    val constCalendar: Calendar = Calendar.getInstance()
+
     private var _binding: MainLayoutBinding? = null
     private val binding get() = _binding!!
     private lateinit var checkNetConnection: CheckNetConnection
@@ -56,8 +58,12 @@ class MainActivity : AppCompatActivity() {
             vm.setMainParam(pref.getString("mainParam", "213").toString())
             // Список избранных
             val jsonString = pref.getString("listOfMainParam", null)
-            if(jsonString != null){
-                vm.setArrayMainParam(gson.fromJson(jsonString, Array<String>::class.java).toList())
+            try {
+                if(jsonString != null){
+                    vm.setArrayMainParam(gson.fromJson(jsonString, Array<String>::class.java).toList())
+                }
+            }catch (e: Exception){
+                Log.e("json problem", "jsonProblem")
             }
         }
         // Установка пикера
@@ -84,6 +90,7 @@ class MainActivity : AppCompatActivity() {
             when (it.itemId) {
 
                 R.id.menu_tt -> {
+                    vm.setCalendar(constCalendar)
                     popBackStack()
                     findNavController(R.id.fragmentContainerView)
                         .navigate(R.id.timeTableFragment)

@@ -47,11 +47,11 @@ class SettingFragment: Fragment() {
             findNavController().navigate(R.id.searchFragment)
         }
         binding.myTelegramButton.setOnClickListener {
-            actionViewStart("https://t.me/delonevogne")
+            actionViewStart("https://t.me/timeagzbot")
         }
 
         binding.telegramIcon.setOnClickListener {
-            actionViewStart("https://t.me/delonevogne")
+            actionViewStart("https://t.me/timeagzbot")
         }
 
         binding.agzButton.setOnClickListener {
@@ -63,11 +63,11 @@ class SettingFragment: Fragment() {
         }
 
         binding.botButton.setOnClickListener {
-            actionViewStart("https://t.me/timeagzbot")
+            actionViewStart("https://t.me/delonevogne")
         }
 
         binding.myTgIcon.setOnClickListener {
-            actionViewStart("https://t.me/timeagzbot")
+            actionViewStart("https://t.me/delonevogne")
         }
 
         // recycleView

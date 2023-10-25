@@ -126,7 +126,7 @@ class MainViewModel: ViewModel() {
         return if(_mainParam.value != null) {
             _mainParam.value.toString()
         }else{
-            "213"
+            "Группа не выбрана"
         }
 
     }
