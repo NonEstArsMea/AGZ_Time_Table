@@ -11,10 +11,13 @@ import com.NonEstArsMea.agz_time_table.domain.dataClass.Cell
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
 import com.NonEstArsMea.agz_time_table.domain.dataClass.LessonTimeTable
 import com.NonEstArsMea.agz_time_table.present.diffcallbacks.TimeTableDiffCallback
+import com.NonEstArsMea.agz_time_table.present.diffcallbacks.TimeTableItemDiffCallback
 import com.NonEstArsMea.agz_time_table.present.viewholders.BreakCellViewHolder
 import com.NonEstArsMea.agz_time_table.present.viewholders.TimeTableLessonViewHolder
 
-class RecycleViewAdapter: ListAdapter<ArrayList<CellApi>, RecyclerView.ViewHolder>(TimeTableDiffCallback()) {
+class RecycleViewAdapter: ListAdapter<CellApi, RecyclerView.ViewHolder>(
+    TimeTableItemDiffCallback()
+) {
 
     var timeTableDayList : ArrayList<Cell> = ArrayList()
 

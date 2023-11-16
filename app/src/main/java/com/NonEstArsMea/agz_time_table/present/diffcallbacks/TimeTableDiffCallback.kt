@@ -1,20 +1,26 @@
 package com.NonEstArsMea.agz_time_table.present.diffcallbacks
 
 import androidx.recyclerview.widget.DiffUtil
+import com.NonEstArsMea.agz_time_table.domain.dataClass.Cell
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
 
-class TimeTableDiffCallback: DiffUtil.ItemCallback<ArrayList<CellApi>>() {
-    override fun areItemsTheSame(
-        oldItem: ArrayList<CellApi>,
-        newItem: ArrayList<CellApi>
-    ): Boolean {
-        return oldItem.size == newItem.size
+class TimeTableDiffCallback(
+    val oldList: ArrayList<Cell>,
+    val newList: List<Cell>
+): DiffUtil.Callback() {
+    override fun getOldListSize(): Int {
+        return oldList.size
     }
 
-    override fun areContentsTheSame(
-        oldItem: ArrayList<CellApi>,
-        newItem: ArrayList<CellApi>
-    ): Boolean {
-        return oldItem == newItem
+    override fun getNewListSize(): Int {
+        return newList.size
+    }
+
+    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        return false
+    }
+
+    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        return oldList[oldItemPosition] == newList[newItemPosition]
     }
 }

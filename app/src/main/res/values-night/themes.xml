@@ -5,7 +5,7 @@
         <item name="colorSecondary">@color/red_themes</item>
         <item name="colorSecondaryVariant">@color/black</item>
         // Главный цвет приложения
-        <item name="colorPrimary">@color/red_themes</item>
+        <item name="colorPrimary">#594938</item>
         <item name="colorSurfaceContainer">@color/black</item>
         <item name="titleTextColor">@color/white</item>
         <item name="subtitleTextColor">@color/black</item>
