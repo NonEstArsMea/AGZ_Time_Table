@@ -7,8 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.NonEstArsMea.agz_time_table.R
+import com.NonEstArsMea.agz_time_table.data.DataRepositoryImpl
 import com.NonEstArsMea.agz_time_table.databinding.MainLayoutBinding
-import com.NonEstArsMea.agz_time_table.domain.isInternetConnected
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
@@ -107,9 +107,7 @@ class MainActivity : AppCompatActivity() {
             return@setOnItemSelectedListener true
         }
 
-
-        Log.e("my-tag", "connecting - " + isInternetConnected(this).toString())
-        if (isInternetConnected(this)) {
+        if (DataRepositoryImpl.isInternetConnected(this)) {
             vm.loadDataFromURL()
         }
 

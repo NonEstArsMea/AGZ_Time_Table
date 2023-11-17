@@ -59,8 +59,8 @@ object TimeTableRepositoryImpl: TimeTableRepository {
                         listTT[Les].classroom = Aud
                         listTT[Les].subject = Subject
                         listTT[Les].subjectNumber = Les + 1
-                        listTT[Les].subjectType = "$Themas ${Methods().replaceText(Subj_type)}"
-                        listTT[Les].color = Methods().setColor(Subj_type)
+                        listTT[Les].subjectType = "$Themas ${Methods.replaceText(Subj_type)}"
+                        listTT[Les].color = Methods.setColor(Subj_type)
                         listTT[Les].noEmpty = true
                         listTT[Les].date = Date
                         listTT[Les].startTime = getStartTime(number = Les + 1)

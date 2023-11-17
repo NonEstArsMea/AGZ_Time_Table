@@ -4,15 +4,18 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.NonEstArsMea.agz_time_table.data.DataRepositoryImpl
 import com.NonEstArsMea.agz_time_table.data.TimeTableRepositoryImpl
+import com.NonEstArsMea.agz_time_table.domain.MainUseCase.LoadDataUseCase
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
-import com.NonEstArsMea.agz_time_table.domain.useCasesTimeTable.GetListOfMainParamUseCase
-import com.NonEstArsMea.agz_time_table.domain.useCasesTimeTable.GetWeekTimeTableListUseCase
+import com.NonEstArsMea.agz_time_table.domain.TimeTableUseCase.GetListOfMainParamUseCase
+import com.NonEstArsMea.agz_time_table.domain.TimeTableUseCase.GetWeekTimeTableListUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.net.URL
@@ -60,6 +63,8 @@ class MainViewModel: ViewModel() {
     private var job: Job = uiScope.launch {  }
 
     private val repository = TimeTableRepositoryImpl
+    private val dataReposytory = DataRepositoryImpl
+    private val loadDataUseCase = LoadDataUseCase(dataReposytory)
 
     private val getWeekTimeTableUseCase = GetWeekTimeTableListUseCase(repository)
 
@@ -70,22 +75,15 @@ class MainViewModel: ViewModel() {
     fun loadDataFromURL(){
         uiScope.launch {
             try {
-                val data = getDataFromUrl()
-                _dataLiveData.value = data
-                Log.e("my-tag", data[1].toString())
+                val data = async(Dispatchers.IO) {
+                    loadDataUseCase.execute()
+                }
+                Log.e("my-tag", data.await().toString())
+                _dataLiveData.value = data.await().value
             } catch (e: Exception) {
                 Log.e("my-tag", e.toString())
             }
         }
-    }
-
-
-    // содание соединения
-    private suspend fun getDataFromUrl():  String = withContext(Dispatchers.IO) {
-        val connection = URL("http://a0755299.xsph.ru/wp-content/uploads/3-1-1.txt").openConnection()
-        connection.connect()
-        val content = connection.getInputStream().bufferedReader().use { it.readText() }
-        return@withContext content
     }
 
 

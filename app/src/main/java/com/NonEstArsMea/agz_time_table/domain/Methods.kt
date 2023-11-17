@@ -2,7 +2,7 @@ package com.NonEstArsMea.agz_time_table.domain
 
 import com.NonEstArsMea.agz_time_table.R
 
-class Methods {
+object Methods {
     fun replaceText(text: String): String {
     return when(text){
         "ПЗ" -> "Практическое занятие"
