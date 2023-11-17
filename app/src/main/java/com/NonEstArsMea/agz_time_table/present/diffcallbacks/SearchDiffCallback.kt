@@ -1,15 +1,16 @@
 package com.NonEstArsMea.agz_time_table.present.diffcallbacks
 
 import androidx.recyclerview.widget.DiffUtil
+import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
 
-class SearchDiffCallback: DiffUtil.ItemCallback<String>() {
-    override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
-        return oldItem == newItem
+class SearchDiffCallback: DiffUtil.ItemCallback<MainParam>() {
+    override fun areItemsTheSame(oldItem: MainParam, newItem: MainParam): Boolean {
+        return oldItem.name == newItem.name
     }
 
     override fun areContentsTheSame(
-        oldItem: String,
-        newItem: String
+        oldItem: MainParam,
+        newItem: MainParam
     ): Boolean {
         return oldItem == newItem
     }

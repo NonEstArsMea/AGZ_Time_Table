@@ -88,9 +88,9 @@ class SettingFragment: Fragment() {
 
         }
 
-        rvSettingViewAdapter.onClickListener = { name ->
-            vm.setMainParam(name)
-            vm.moveItemInFavoriteMainParam(name)
+        rvSettingViewAdapter.onClickListener = { mainParam ->
+            vm.setMainParam(mainParam.name)
+            vm.moveItemInFavoriteMainParam(mainParam)
         }
         rvSettingViewAdapter.onDelClickListener = {
             vm.delParamFromFavoriteMainParam(it)

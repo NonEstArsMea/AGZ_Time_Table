@@ -40,12 +40,12 @@ class SearchFragment: Fragment() {
 
         val listOfMainParam = vm.listOfMainParam.value!!.toMutableList()
 
-        mainParamAdapter.updateData(listOfMainParam)
+        mainParamAdapter.submitList(listOfMainParam)
         // Нажатие на объекты
         mainParamAdapter.onMainParamClickListener = { mainParam ->
             Log.e("main", mainParamAdapter.onMainParamClickListener.toString())
             vm.updateListOfFavoriteMainParam(mainParam)
-            vm.setMainParam(mainParam)
+            vm.setMainParam(mainParam.name)
             findNavController().navigate(R.id.settingFragment)
         }
 
@@ -60,10 +60,10 @@ class SearchFragment: Fragment() {
                 aCopy.retainAll {
                     text.toString() in it.name.lowercase()
                 }
-                mainParamAdapter.updateData(aCopy)
+                mainParamAdapter.submitList(aCopy)
                 mainParamAdapter.onMainParamClickListener = { mainParam ->
                     vm.updateListOfFavoriteMainParam(mainParam)
-                    vm.setMainParam(mainParam)
+                    vm.setMainParam(mainParam.name)
                     findNavController().navigate(R.id.settingFragment)
                 }
                 return false

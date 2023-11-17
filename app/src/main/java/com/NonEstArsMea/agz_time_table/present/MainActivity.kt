@@ -1,18 +1,13 @@
 package com.NonEstArsMea.agz_time_table.present
 
-import android.app.DatePickerDialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.NonEstArsMea.agz_time_table.R
-import com.NonEstArsMea.agz_time_table.domain.CheckNetConnection
 import com.NonEstArsMea.agz_time_table.databinding.MainLayoutBinding
-import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
 import com.NonEstArsMea.agz_time_table.domain.isInternetConnected
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -20,7 +15,6 @@ import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
 import java.util.Calendar
-import java.util.Date
 
 
 class MainActivity : AppCompatActivity() {
@@ -32,7 +26,6 @@ class MainActivity : AppCompatActivity() {
 
     private var _binding: MainLayoutBinding? = null
     private val binding get() = _binding!!
-    private lateinit var checkNetConnection: CheckNetConnection
     private var data: String? = null
 
     private lateinit var analytics: FirebaseAnalytics
@@ -124,23 +117,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun callNetConnection() {
-
-        checkNetConnection = CheckNetConnection(application)
-        checkNetConnection.observe(this) { isConnected ->
-            if (isConnected and (data == null)) {
-
-            } else {
-                Toast.makeText(
-                    this,
-                    "Не удалось проверить обновления",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-
-        }
-
-    }
 
 
     private fun popBackStack() {

@@ -15,19 +15,12 @@ import com.NonEstArsMea.agz_time_table.present.viewholders.FavoriteParamViewHold
 import com.NonEstArsMea.agz_time_table.present.viewholders.RVOnSearchFragmentViewHolder
 import java.util.ArrayList
 
-class SettingViewAdapter: ListAdapter<String, FavoriteParamViewHolder>(SearchDiffCallback()) {
-
-    private var _listOfFavMainParam  = listOf<String>()
-        set(value) {
-            val callback = SearchListDiffCallback(_listOfFavMainParam, value)
-            val diffResult = DiffUtil.calculateDiff(callback)
-            diffResult.dispatchUpdatesTo(this)
-            field = value
-        }
+class SettingViewAdapter: ListAdapter<MainParam, FavoriteParamViewHolder>(SearchDiffCallback()) {
 
 
-    var onClickListener:((String)->(Unit))? = null
-    var onDelClickListener:((String)->(Unit))? = null
+
+    var onClickListener:((MainParam)->(Unit))? = null
+    var onDelClickListener:((MainParam)->(Unit))? = null
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteParamViewHolder {
@@ -49,8 +42,8 @@ class SettingViewAdapter: ListAdapter<String, FavoriteParamViewHolder>(SearchDif
     }
 
     override fun onBindViewHolder(holder: FavoriteParamViewHolder, position: Int) {
-        val mainParam = currentList[position].toString()
-        holder.name.text = mainParam
+        val mainParam = getItem(position)
+        holder.name.text = mainParam.name
 
         // Нажатие на объект
         holder.delButton.setOnClickListener {
@@ -69,9 +62,6 @@ class SettingViewAdapter: ListAdapter<String, FavoriteParamViewHolder>(SearchDif
         return if(position == 0) 1 else 0
     }
 
-    override fun getItemCount(): Int {
-        return currentList.size
-    }
 
     companion object{
         const val ENEBLED_TYPE = 1

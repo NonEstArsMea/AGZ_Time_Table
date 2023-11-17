@@ -11,6 +11,7 @@ class Methods {
         "Контр.р" -> "Контрольная работа"
         "Ку" -> "Курсовая работа"
         "Курс" -> "Курсовая работа"
+        "Курс.р" -> "Курсовая работа"
         "л" -> "Лекция"
         "ЛР" -> "Лабораторная работа"
         "с" -> "Семинар"
@@ -36,6 +37,7 @@ class Methods {
             "ПЗ" -> R.drawable.yellow_color
             "П" -> R.drawable.yellow_color
             "СРПП" -> R.drawable.yellow_color
+            "Курс.р" -> R.drawable.yellow_color
             "ГЗ" -> R.drawable.yellow_color
             "с" -> R.drawable.yellow_color
             "см" -> R.drawable.yellow_color

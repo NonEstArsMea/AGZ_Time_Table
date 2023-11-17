@@ -38,13 +38,7 @@ class RecycleViewFragment: Fragment() {
             val timeTableDay = Gson().fromJson<ArrayList<CellApi>>(args?.getString("ttw"), type)
             rvTimeTable.layoutManager = LinearLayoutManager(context)
             if (timeTableDay.isNotEmpty()) {
-                val cell = timeTableDay.map {
-                    CellMapper().cellApiToUI(api = it)
-                }.toList()
-                val callback = TimeTableDiffCallback(adapter.timeTableDayList, cell)
-                val diffResult = DiffUtil.calculateDiff(callback)
-                adapter.setData(cell)
-                diffResult.dispatchUpdatesTo(adapter)
+                adapter.submitList(timeTableDay)
             }
         }
 

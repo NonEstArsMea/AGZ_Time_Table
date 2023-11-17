@@ -12,11 +12,10 @@ import com.NonEstArsMea.agz_time_table.present.viewholders.RVOnSearchFragmentVie
 import com.NonEstArsMea.agz_time_table.present.diffcallbacks.SearchDiffCallback
 
 class RecycleViewOnSearchFragmentAdapter(
-): ListAdapter<String, RVOnSearchFragmentViewHolder>(SearchDiffCallback()) {
+): ListAdapter<MainParam, RVOnSearchFragmentViewHolder>(SearchDiffCallback()) {
 
-    private var _listOfMainParam : ArrayList<MainParam> = ArrayList()
 
-    var onMainParamClickListener:((String)->(Unit))? = null
+    var onMainParamClickListener:((MainParam)->(Unit))? = null
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -29,26 +28,16 @@ class RecycleViewOnSearchFragmentAdapter(
         return RVOnSearchFragmentViewHolder(view)
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun updateData(listOfValues: MutableList<MainParam>){
-        _listOfMainParam.clear()
-        _listOfMainParam.addAll(listOfValues)
-
-        notifyDataSetChanged()
-    }
 
     override fun onBindViewHolder(holder: RVOnSearchFragmentViewHolder, position: Int) {
-        val mainParam = _listOfMainParam[position]
+        val mainParam = getItem(position)
         holder.name.text = mainParam.name
         holder.circle.isVisible = mainParam.visible
 
         // Нажатие на объект
         holder.view.setOnClickListener {
-            onMainParamClickListener?.invoke(mainParam.name)
+            onMainParamClickListener?.invoke(mainParam)
         }
     }
 
-    override fun getItemCount(): Int {
-        return _listOfMainParam.size
-    }
 }

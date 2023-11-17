@@ -7,8 +7,8 @@ import androidx.lifecycle.ViewModel
 import com.NonEstArsMea.agz_time_table.data.TimeTableRepositoryImpl
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
-import com.NonEstArsMea.agz_time_table.domain.useCases.GetListOfMainParamUseCase
-import com.NonEstArsMea.agz_time_table.domain.useCases.GetWeekTimeTableListUseCase
+import com.NonEstArsMea.agz_time_table.domain.useCasesTimeTable.GetListOfMainParamUseCase
+import com.NonEstArsMea.agz_time_table.domain.useCasesTimeTable.GetWeekTimeTableListUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -50,8 +50,8 @@ class MainViewModel: ViewModel() {
         get() = _mainParam
 
     // Хранит Избранные контакты
-    private val _arrFavoriteMainParam = MutableLiveData<ArrayList<String>>()
-    val arrFavoriteMainParam: LiveData<ArrayList<String>>
+    private val _arrFavoriteMainParam = MutableLiveData<ArrayList<MainParam>>()
+    val arrFavoriteMainParam: LiveData<ArrayList<MainParam>>
         get() = _arrFavoriteMainParam
 
     private var jobVM = SupervisorJob()
@@ -112,7 +112,6 @@ class MainViewModel: ViewModel() {
 
     // получение списка с параметром поиска
     fun getListOfMainParam(data: String){
-            val arr: ArrayList<String>? = arrFavoriteMainParam.value
             _listOfMainParam.value = getListOfMainParamUseCase.execute(data)
     }
 
@@ -152,11 +151,15 @@ class MainViewModel: ViewModel() {
 
     // Получение списка ГЛАВНЫХ ПАРМЕТРОВ
     fun getListOfFavoriteMainParam(): ArrayList<String> {
-            return _arrFavoriteMainParam.value!!
+            val arr: ArrayList<String> = arrayListOf()
+            for(a in _arrFavoriteMainParam.value!!){
+                arr.add(a.name)
+            }
+            return arr
     }
     // Изменение списка с избранными параметрами
     // Необходимо доделать момент, когда выбранная группа уже есть
-    fun updateListOfFavoriteMainParam(param: String){
+    fun updateListOfFavoriteMainParam(param: MainParam){
         with(_arrFavoriteMainParam) {
             // Если не инициализирован список
             if (this.value == null) {
@@ -178,7 +181,7 @@ class MainViewModel: ViewModel() {
         }
     }
 
-    fun moveItemInFavoriteMainParam(param: String){
+    fun moveItemInFavoriteMainParam(param: MainParam){
         val list = _arrFavoriteMainParam.value!!.toList() as ArrayList
         with(list) {
             if (this.size != 1) {
@@ -193,7 +196,7 @@ class MainViewModel: ViewModel() {
     }
 
 
-    fun delParamFromFavoriteMainParam(index: String){
+    fun delParamFromFavoriteMainParam(index: MainParam){
         Log.e("index", index.toString())
         val items = _arrFavoriteMainParam.value!!
         items.removeAt(_arrFavoriteMainParam.value!!.indexOf(index))
@@ -204,7 +207,10 @@ class MainViewModel: ViewModel() {
 
     fun setArrayMainParam(listArrayOfMainParam:List<String>){
         _arrFavoriteMainParam.value = arrayListOf()
-        _arrFavoriteMainParam.value!!.addAll(listArrayOfMainParam)
+        for((c, a) in listArrayOfMainParam.withIndex()){
+            _arrFavoriteMainParam.value!!.add(MainParam(a, false, c))
+        }
+        _arrFavoriteMainParam.value!![0].visible = true
     }
 
     // Установка состояние загрузки
