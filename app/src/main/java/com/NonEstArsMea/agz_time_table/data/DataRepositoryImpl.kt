@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.NonEstArsMea.agz_time_table.domain.MainUseCase.DataRepository
@@ -41,5 +42,9 @@ object DataRepositoryImpl: DataRepository {
             val activeNetworkInfo = connectivityManager.activeNetworkInfo
             return activeNetworkInfo != null && activeNetworkInfo.isConnected
         }
+    }
+
+    fun printLog(){
+        Log.e("repository check", content.toString())
     }
 }

@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.viewpager2.widget.ViewPager2
 import com.NonEstArsMea.agz_time_table.R
+import com.NonEstArsMea.agz_time_table.data.DataRepositoryImpl
 import com.NonEstArsMea.agz_time_table.databinding.TimeTableFragmentBinding
 import com.NonEstArsMea.agz_time_table.domain.GetDateRepositoryImpl
 import com.NonEstArsMea.agz_time_table.present.MainViewModel
@@ -58,6 +59,16 @@ class TimeTableFragment : Fragment() {
             binding.day5,
             binding.day6,).toMutableList()
 
+        currentItem = GetDateRepositoryImpl(calendar).getDayOfWeek()
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        Log.e("my--tag", "onViewCreated")
+
+
         // Создание пэйджера
         val viewPager = binding.viewPagerTimeTableFragment
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
@@ -80,7 +91,7 @@ class TimeTableFragment : Fragment() {
         // Слушатель на дни
         days.toList().forEachIndexed { index, textView ->
             textView.setOnClickListener {
-                Log.e("curr 4", index.toString())
+                DataRepositoryImpl.printLog()
                 viewPager.setCurrentItem(index, true)
             }
         }
@@ -98,15 +109,6 @@ class TimeTableFragment : Fragment() {
 
         //обновление mainParam
         binding.mainParam.text = vm.getMainParam()
-
-        currentItem = GetDateRepositoryImpl(calendar).getDayOfWeek()
-
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        Log.e("my--tag", "onViewCreated")
 
         val viewPagerAdapter = ViewPagerAdapter(this)
         // Слушатель на состояние загрузки

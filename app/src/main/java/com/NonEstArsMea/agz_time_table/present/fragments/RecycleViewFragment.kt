@@ -16,7 +16,7 @@ import java.lang.reflect.Type
 
 class RecycleViewFragment: Fragment() {
 
-    val adapter = RecycleViewAdapter()
+    private val adapter = RecycleViewAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,11 +25,10 @@ class RecycleViewFragment: Fragment() {
     ): View? {
         val view =  inflater.inflate(R.layout.recycle_view_view_pager, container)
         val rvTimeTable = view.findViewById<RecyclerView>(R.id.view_pager_recycler)
-        val args = this.arguments
         rvTimeTable.adapter = adapter
-        args.let {
+        arguments?.let {
             val type: Type = object : TypeToken<ArrayList<CellApi>>() {}.type
-            val timeTableDay = Gson().fromJson<ArrayList<CellApi>>(args?.getString(ARGUMENTS), type)
+            val timeTableDay = Gson().fromJson<ArrayList<CellApi>>(it.getString(ARGUMENTS), type)
             rvTimeTable.layoutManager = LinearLayoutManager(context)
             if (timeTableDay.isNotEmpty()) {
                 adapter.submitList(timeTableDay)
