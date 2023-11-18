@@ -23,7 +23,7 @@ import com.NonEstArsMea.agz_time_table.present.adapters.ViewPagerAdapter
 import java.util.Calendar
 
 
-class TimeTableFragment() : Fragment() {
+class TimeTableFragment : Fragment() {
     // сохраниение даты в этой переменной
     lateinit var calendar: Calendar
 

@@ -43,7 +43,8 @@ class SettingViewAdapter: ListAdapter<MainParam, FavoriteParamViewHolder>(Search
 
     override fun onBindViewHolder(holder: FavoriteParamViewHolder, position: Int) {
         val mainParam = getItem(position)
-        holder.name.text = mainParam.name
+
+        holder.bind(mainParam)
 
         // Нажатие на объект
         holder.delButton.setOnClickListener {
@@ -59,7 +60,7 @@ class SettingViewAdapter: ListAdapter<MainParam, FavoriteParamViewHolder>(Search
 
     override fun getItemViewType(position: Int): Int {
 
-        return if(position == 0) 1 else 0
+        return if(position == 0) ENEBLED_TYPE else DESABLET_TYPE
     }
 
 

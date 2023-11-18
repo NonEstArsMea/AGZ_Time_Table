@@ -5,24 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
-import com.NonEstArsMea.agz_time_table.domain.dataClass.CellMapper
 import com.NonEstArsMea.agz_time_table.present.adapters.RecycleViewAdapter
-import com.NonEstArsMea.agz_time_table.present.diffcallbacks.TimeTableDiffCallback
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
 
 class RecycleViewFragment: Fragment() {
 
-    var _timeTableDay: ArrayList<CellApi> = arrayListOf()
     val adapter = RecycleViewAdapter()
-
-    private lateinit var lm: LinearLayoutManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,7 +29,7 @@ class RecycleViewFragment: Fragment() {
         rvTimeTable.adapter = adapter
         args.let {
             val type: Type = object : TypeToken<ArrayList<CellApi>>() {}.type
-            val timeTableDay = Gson().fromJson<ArrayList<CellApi>>(args?.getString("ttw"), type)
+            val timeTableDay = Gson().fromJson<ArrayList<CellApi>>(args?.getString(ARGUMENTS), type)
             rvTimeTable.layoutManager = LinearLayoutManager(context)
             if (timeTableDay.isNotEmpty()) {
                 adapter.submitList(timeTableDay)
@@ -47,10 +41,13 @@ class RecycleViewFragment: Fragment() {
 
 
     companion object{
+
+        const val ARGUMENTS = "ttw"
+
         fun newInstance(ttw: ArrayList<CellApi>):RecycleViewFragment{
             return RecycleViewFragment().apply {
                 arguments = Bundle().apply {
-                    putString("ttw", Gson().toJson(ttw))
+                    putString(ARGUMENTS, Gson().toJson(ttw))
                 }
             }
         }

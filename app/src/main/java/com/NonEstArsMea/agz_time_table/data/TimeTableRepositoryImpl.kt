@@ -123,10 +123,10 @@ object TimeTableRepositoryImpl: TimeTableRepository {
                                 viewSize = 60
                             )
                         )
-                        Log.e("pr_1", "${listTT.size.toString()} ")
+                        Log.e("pr_1", "${listTT.size} ")
                         lessonOffset += 1
                     }else if(listOfLes[a+1] == 4){
-                        Log.e("pr_2", "${listTT.size.toString()} ")
+                        Log.e("pr_2", "${listTT.size} ")
                         listTT.add(
                             index = a + lessonOffset + 1,
                             element = CellApi(
@@ -135,10 +135,10 @@ object TimeTableRepositoryImpl: TimeTableRepository {
                                 viewSize = 50
                             )
                         )
-                        Log.e("pr_2", "${listTT.size.toString()} ")
+                        Log.e("pr_2", "${listTT.size} ")
                         lessonOffset += 1
                     }else{
-                        Log.e("pr_3", "${listTT.size.toString()} ")
+                        Log.e("pr_3", "${listTT.size} ")
                         listTT.add(
                             index = a + lessonOffset + 1,
                             element = CellApi(
@@ -147,12 +147,12 @@ object TimeTableRepositoryImpl: TimeTableRepository {
                                 viewSize = 20
                             )
                         )
-                        Log.e("pr_3", "${listTT.size.toString()} ")
+                        Log.e("pr_3", "${listTT.size} ")
                         lessonOffset += 1
                     }
                 }
             }
-            Log.e("pr_2", "${listTT.size.toString()} ")
+            Log.e("pr_2", "${listTT.size} ")
         }else{
             listTT.add(CellApi(text = "В этот день занятий нет.", noEmpty = true, viewSize = 20))
             return@withContext listTT

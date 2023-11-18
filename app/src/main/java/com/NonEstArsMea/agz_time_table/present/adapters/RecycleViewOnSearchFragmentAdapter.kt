@@ -11,8 +11,7 @@ import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
 import com.NonEstArsMea.agz_time_table.present.viewholders.RVOnSearchFragmentViewHolder
 import com.NonEstArsMea.agz_time_table.present.diffcallbacks.SearchDiffCallback
 
-class RecycleViewOnSearchFragmentAdapter(
-): ListAdapter<MainParam, RVOnSearchFragmentViewHolder>(SearchDiffCallback()) {
+class RecycleViewOnSearchFragmentAdapter : ListAdapter<MainParam, RVOnSearchFragmentViewHolder>(SearchDiffCallback()) {
 
 
     var onMainParamClickListener:((MainParam)->(Unit))? = null
@@ -31,9 +30,7 @@ class RecycleViewOnSearchFragmentAdapter(
 
     override fun onBindViewHolder(holder: RVOnSearchFragmentViewHolder, position: Int) {
         val mainParam = getItem(position)
-        holder.name.text = mainParam.name
-        holder.circle.isVisible = mainParam.visible
-
+        holder.bind(getItem(position))
         // Нажатие на объект
         holder.view.setOnClickListener {
             onMainParamClickListener?.invoke(mainParam)

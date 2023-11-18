@@ -7,7 +7,7 @@ class CellMapper {
             api.text != null -> BreakCell(
                 text = api.text,
                 viewType = 1,
-                noEmpty = api.noEmpty!!,
+                noEmpty = api.noEmpty,
                 viewSize = api.viewSize!!)
             else -> LessonTimeTable(subject = api.subject,
                 teacher = api.teacher,

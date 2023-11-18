@@ -44,7 +44,7 @@ class RecycleViewAdapter: ListAdapter<CellApi, RecyclerView.ViewHolder>(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if(getItem(position).text != null) {
+        return if(getItem(position).text == null) {
             LESSON_TIME_TABLE_TYPE
         }else{
             BREAK_CELL_TYPE

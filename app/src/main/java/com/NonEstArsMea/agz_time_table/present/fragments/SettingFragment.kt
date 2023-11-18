@@ -9,19 +9,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.databinding.SettingLayoutBinding
 import com.NonEstArsMea.agz_time_table.present.MainViewModel
-import com.NonEstArsMea.agz_time_table.present.adapters.RecycleViewOnSearchFragmentAdapter
 import com.NonEstArsMea.agz_time_table.present.adapters.SettingViewAdapter
-import com.google.android.material.search.SearchView
 
 class SettingFragment: Fragment() {
     private var _binding: SettingLayoutBinding? = null
@@ -40,6 +35,8 @@ class SettingFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+
         _binding = SettingLayoutBinding.inflate(inflater, container, false)
         val view = binding.root
 
@@ -106,7 +103,6 @@ class SettingFragment: Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
-        //Log.e("my_tag","Search destroy")
     }
 
     private fun actionViewStart(uri : String){
