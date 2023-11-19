@@ -9,14 +9,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
-import com.NonEstArsMea.agz_time_table.present.adapters.RecycleViewAdapter
+import com.NonEstArsMea.agz_time_table.present.adapters.TimeTableRecycleViewAdapter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
 
 class RecycleViewFragment: Fragment() {
 
-    private val adapter = RecycleViewAdapter()
+    private val adapter = TimeTableRecycleViewAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -26,7 +26,6 @@ class MainActivity : AppCompatActivity() {
 
     private var _binding: MainLayoutBinding? = null
     private val binding get() = _binding!!
-    private var data: String? = null
 
     private lateinit var analytics: FirebaseAnalytics
 
@@ -39,26 +38,11 @@ class MainActivity : AppCompatActivity() {
 
         analytics = Firebase.analytics
 
+        val viewModelFactory = MainViewModelFactory(this)
+        mainViewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
+        mainViewModel.setCalendar(calendar = calendar)
 
-        val vm = ViewModelProvider(this)[MainViewModel::class.java]
-        vm.setCalendar(calendar = calendar)
-
-        val pref = getPreferences(Context.MODE_PRIVATE)
-        val gson = Gson()
-        // Загрузка сохраненных данные
-        if (pref != null) {
-            // Группа
-            vm.setMainParam(pref.getString("mainParam", "213").toString())
-            // Список избранных
-            val jsonString = pref.getString("listOfMainParam", null)
-            try {
-                if(jsonString != null){
-                    vm.setArrayMainParam(gson.fromJson(jsonString, Array<String>::class.java).toList())
-                }
-            }catch (e: Exception){
-                Log.e("json problem", "jsonProblem")
-            }
-        }
+        mainViewModel.getDataFromStorage()
         // Установка пикера
         val datePicker =
             MaterialDatePicker.Builder.datePicker()
@@ -70,7 +54,7 @@ class MainActivity : AppCompatActivity() {
             val calender = Calendar.getInstance()
             calender.timeInMillis = it
 
-            vm.setNewCalendar(calender.get(Calendar.YEAR),
+            mainViewModel.setNewCalendar(calender.get(Calendar.YEAR),
                               calender.get(Calendar.MONTH),
                                 calender.get(Calendar.DAY_OF_MONTH))
             findNavController(R.id.fragmentContainerView)
@@ -83,7 +67,7 @@ class MainActivity : AppCompatActivity() {
             when (it.itemId) {
 
                 R.id.menu_tt -> {
-                    vm.setCalendar(constCalendar)
+                    mainViewModel.setCalendar(constCalendar)
                     popBackStack()
                     findNavController(R.id.fragmentContainerView)
                         .navigate(R.id.timeTableFragment)
@@ -108,7 +92,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         if (DataRepositoryImpl.isInternetConnected(this)) {
-            vm.loadDataFromURL()
+            mainViewModel.loadDataFromURL()
         }
 
 
@@ -126,16 +110,7 @@ class MainActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
 
-        val vm = ViewModelProvider(this).get(MainViewModel::class.java)
-        Log.e("AAA",vm.getMainParam())
-        val SP = getPreferences(Context.MODE_PRIVATE)
-        val editor = SP.edit()
-
-        editor.putString("mainParam", vm.getMainParam() )
-        val gson = Gson()
-        val array = gson.toJson(vm.getListOfFavoriteMainParam())
-        editor.putString("listOfMainParam", array )
-        editor.apply()
+        mainViewModel.setDataInStorage()
     }
     override fun onDestroy() {
         super.onDestroy()

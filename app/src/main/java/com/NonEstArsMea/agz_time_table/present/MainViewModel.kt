@@ -6,7 +6,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.NonEstArsMea.agz_time_table.data.DataRepositoryImpl
 import com.NonEstArsMea.agz_time_table.data.TimeTableRepositoryImpl
-import com.NonEstArsMea.agz_time_table.domain.MainUseCase.LoadDataUseCase
+import com.NonEstArsMea.agz_time_table.domain.MainUseCase.LoadData.LoadDataUseCase
+import com.NonEstArsMea.agz_time_table.domain.MainUseCase.Storage.GetFavoriteMainParamsFromStorageUseCase
+import com.NonEstArsMea.agz_time_table.domain.MainUseCase.Storage.GetLastWeekFromeStorageUseCase
+import com.NonEstArsMea.agz_time_table.domain.MainUseCase.Storage.GetMainParamFromStorageUseCase
+import com.NonEstArsMea.agz_time_table.domain.MainUseCase.Storage.SetDataInStorageUseCase
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
 import com.NonEstArsMea.agz_time_table.domain.TimeTableUseCase.GetListOfMainParamUseCase
@@ -17,11 +21,15 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.net.URL
 import java.util.Calendar
 
-class MainViewModel: ViewModel() {
+class MainViewModel(
+    private val getMainParamFromStorage : GetMainParamFromStorageUseCase,
+    private val getFavoriteMainParamsFromStorage: GetFavoriteMainParamsFromStorageUseCase,
+    private val getLastWeekTimeTableFromStorage: GetLastWeekFromeStorageUseCase,
+    private val setDataInStorage: SetDataInStorageUseCase,
+    private val loadData: LoadDataUseCase
+): ViewModel() {
     // хранит список с расписанием
     private val _dataLiveData = MutableLiveData<String>()
     val dataLiveData: LiveData<String>
@@ -63,8 +71,6 @@ class MainViewModel: ViewModel() {
     private var job: Job = uiScope.launch {  }
 
     private val repository = TimeTableRepositoryImpl
-    private val dataReposytory = DataRepositoryImpl
-    private val loadDataUseCase = LoadDataUseCase(dataReposytory)
 
     private val getWeekTimeTableUseCase = GetWeekTimeTableListUseCase(repository)
 
@@ -76,7 +82,7 @@ class MainViewModel: ViewModel() {
         uiScope.launch {
             try {
                 val data = async(Dispatchers.IO) {
-                    loadDataUseCase.execute()
+                    loadData.execute()
                 }
                 Log.e("my-tag", data.await().toString())
                 _dataLiveData.value = data.await().value
@@ -96,11 +102,10 @@ class MainViewModel: ViewModel() {
         job = uiScope.launch {
             try {
                 setConditionLoading(true)
-                Log.e("scope", _weekTimeTable.value.toString())
                 _weekTimeTable.value = getWeekTimeTableUseCase.execute(newData, dayOfWeek, mainParam)
                 setConditionLoading(false)
             } catch (e: Exception) {
-                Log.e("my--tag", e.toString())
+                Log.e("Flow exception", e.toString())
             }
         }
         uiScope.launch {
@@ -200,9 +205,9 @@ class MainViewModel: ViewModel() {
         items.removeAt(_arrFavoriteMainParam.value!!.indexOf(index))
         _arrFavoriteMainParam.value = items
     }
-
-    // Установка списка параметров после загрузки
-
+/**
+       Установка списка параметров после загрузки
+*/
     fun setArrayMainParam(listArrayOfMainParam:List<String>){
         _arrFavoriteMainParam.value = arrayListOf()
         for((c, a) in listArrayOfMainParam.withIndex()){
@@ -210,9 +215,24 @@ class MainViewModel: ViewModel() {
         }
         _arrFavoriteMainParam.value!![0].visible = true
     }
-
-    // Установка состояние загрузки
+    /**
+        Установка состояние загрузки
+    */
     fun setConditionLoading(condition: Boolean){
         _loading.value = condition
+    }
+
+    fun getDataFromStorage() {
+        _mainParam.value = getMainParamFromStorage.execute()
+        _arrFavoriteMainParam.value = getFavoriteMainParamsFromStorage.execute()
+        _weekTimeTable.value = getLastWeekTimeTableFromStorage.execute()
+    }
+
+    fun setDataInStorage(){
+        setDataInStorage.execute(
+            _mainParam.value,
+            _arrFavoriteMainParam.value,
+            _weekTimeTable.value
+        )
     }
 }

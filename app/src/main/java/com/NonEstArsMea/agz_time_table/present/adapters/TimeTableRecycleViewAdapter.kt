@@ -1,24 +1,17 @@
 package com.NonEstArsMea.agz_time_table.present.adapters
 
-import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.NonEstArsMea.agz_time_table.R
-import com.NonEstArsMea.agz_time_table.domain.dataClass.BreakCell
-import com.NonEstArsMea.agz_time_table.domain.dataClass.Cell
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellMapper
-import com.NonEstArsMea.agz_time_table.domain.dataClass.LessonTimeTable
-import com.NonEstArsMea.agz_time_table.present.diffcallbacks.TimeTableDiffCallback
 import com.NonEstArsMea.agz_time_table.present.diffcallbacks.TimeTableItemDiffCallback
 import com.NonEstArsMea.agz_time_table.present.viewholders.BreakCellViewHolder
 import com.NonEstArsMea.agz_time_table.present.viewholders.TimeTableLessonViewHolder
-import java.lang.RuntimeException
 
-class RecycleViewAdapter: ListAdapter<CellApi, RecyclerView.ViewHolder>(
+class TimeTableRecycleViewAdapter: ListAdapter<CellApi, RecyclerView.ViewHolder>(
     TimeTableItemDiffCallback()
 ) {
 

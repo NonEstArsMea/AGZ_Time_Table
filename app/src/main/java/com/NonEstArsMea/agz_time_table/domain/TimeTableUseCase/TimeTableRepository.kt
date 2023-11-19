@@ -1,4 +1,4 @@
-package com.NonEstArsMea.agz_time_table.domain
+package com.NonEstArsMea.agz_time_table.domain.TimeTableUseCase
 
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam

@@ -91,7 +91,6 @@ class TimeTableFragment : Fragment() {
         // Слушатель на дни
         days.toList().forEachIndexed { index, textView ->
             textView.setOnClickListener {
-                DataRepositoryImpl.printLog()
                 viewPager.setCurrentItem(index, true)
             }
         }

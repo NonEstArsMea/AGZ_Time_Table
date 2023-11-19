@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.databinding.SettingLayoutBinding
 import com.NonEstArsMea.agz_time_table.present.MainViewModel
-import com.NonEstArsMea.agz_time_table.present.adapters.SettingViewAdapter
+import com.NonEstArsMea.agz_time_table.present.adapters.SettingRecycleViewAdapter
 
 class SettingFragment: Fragment() {
     private var _binding: SettingLayoutBinding? = null
@@ -24,7 +24,7 @@ class SettingFragment: Fragment() {
 
     private val vm: MainViewModel by activityViewModels()
 
-    private val rvSettingViewAdapter = SettingViewAdapter()
+    private val rvSettingViewAdapter = SettingRecycleViewAdapter()
 
 
 

@@ -2,7 +2,7 @@ package com.NonEstArsMea.agz_time_table.data
 
 import android.util.Log
 import com.NonEstArsMea.agz_time_table.domain.Methods
-import com.NonEstArsMea.agz_time_table.domain.TimeTableRepository
+import com.NonEstArsMea.agz_time_table.domain.TimeTableUseCase.TimeTableRepository
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
 import kotlinx.coroutines.Deferred

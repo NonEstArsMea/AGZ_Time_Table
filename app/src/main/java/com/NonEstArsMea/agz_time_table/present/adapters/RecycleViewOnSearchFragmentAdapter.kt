@@ -1,17 +1,14 @@
 package com.NonEstArsMea.agz_time_table.present.adapters
 
-import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ListAdapter
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
 import com.NonEstArsMea.agz_time_table.present.viewholders.RVOnSearchFragmentViewHolder
-import com.NonEstArsMea.agz_time_table.present.diffcallbacks.SearchDiffCallback
+import com.NonEstArsMea.agz_time_table.present.diffcallbacks.SearchItemDiffCallback
 
-class RecycleViewOnSearchFragmentAdapter : ListAdapter<MainParam, RVOnSearchFragmentViewHolder>(SearchDiffCallback()) {
+class RecycleViewOnSearchFragmentAdapter : ListAdapter<MainParam, RVOnSearchFragmentViewHolder>(SearchItemDiffCallback()) {
 
 
     var onMainParamClickListener:((MainParam)->(Unit))? = null
