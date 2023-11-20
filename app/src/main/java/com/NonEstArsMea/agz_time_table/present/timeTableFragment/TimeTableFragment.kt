@@ -126,6 +126,11 @@ class TimeTableFragment : Fragment() {
             binding.mainParam.text = it.name
         }
 
+        vm.calendarLiveData.observe(viewLifecycleOwner) {
+            if(it != null)
+                updateData()
+        }
+
         updateData()
 
     }

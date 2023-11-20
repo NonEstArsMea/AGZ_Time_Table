@@ -13,8 +13,10 @@ object DateRepositoryImpl: DateRepository {
     val calendarLiveData = MutableLiveData<Calendar>()
 
     fun setDayNow(){
-        calendar = constCalendar
-        updateCalendar()
+        if (calendar != constCalendar){
+            calendar = constCalendar
+            updateCalendar()
+        }
     }
 
     override fun monthToString(number: Int): String {
@@ -57,6 +59,10 @@ object DateRepositoryImpl: DateRepository {
     }
     fun updateCalendar(){
         calendarLiveData.value = calendar
+    }
+
+    fun getCalendarLD(): MutableLiveData<Calendar>{
+        return calendarLiveData
     }
 
     override fun engToRusDayOfWeekNumbers(time: Int): Int {

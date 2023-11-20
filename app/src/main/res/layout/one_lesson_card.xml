@@ -79,6 +79,7 @@
                 android:layout_height="wrap_content"
                 android:text="Subject"
                 android:maxLines="2"
+                android:layout_marginEnd="@dimen/margine_all"
                 style="@style/MainTextViewStyle.Header1"
 
                 app:layout_constraintLeft_toLeftOf="parent"

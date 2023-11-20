@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 import java.util.Calendar
 
 class TimeTableViewModel(
-    private val getWeekTimeTableUseCase:GetWeekTimeTableListUseCase,
+    private val getWeekTimeTableUseCase: GetWeekTimeTableListUseCase,
 ): ViewModel() {
 
     private var jobVM = SupervisorJob()
@@ -43,7 +43,7 @@ class TimeTableViewModel(
         get() = _loading
 
     // хранит Calendar
-    private val _calendarLiveData = MutableLiveData<Calendar>()
+    private val _calendarLiveData = DateRepositoryImpl.getCalendarLD()
     val calendarLiveData: LiveData<Calendar>
         get() = _calendarLiveData
 
