@@ -1,24 +1,24 @@
-package com.NonEstArsMea.agz_time_table.present.adapters
+package com.NonEstArsMea.agz_time_table.present.settingFragment.recycleView
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
-import com.NonEstArsMea.agz_time_table.present.diffcallbacks.SearchItemDiffCallback
-import com.NonEstArsMea.agz_time_table.present.viewholders.FavoriteParamViewHolder
+import com.NonEstArsMea.agz_time_table.present.searchFragment.recycleView.SearchItemDiffCallback
 
-class SettingRecycleViewAdapter: ListAdapter<MainParam, FavoriteParamViewHolder>(SearchItemDiffCallback()) {
+class SettingRecycleViewAdapter : ListAdapter<MainParam, FavoriteParamViewHolder>(
+    SearchItemDiffCallback()
+) {
 
 
-
-    var onClickListener:((MainParam)->(Unit))? = null
-    var onDelClickListener:((MainParam)->(Unit))? = null
+    var onClickListener: ((MainParam) -> (Unit))? = null
+    var onDelClickListener: ((MainParam) -> (Unit))? = null
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteParamViewHolder {
 
-        val layout = when(viewType){
+        val layout = when (viewType) {
             DESABLET_TYPE -> R.layout.favorite_param_card_disabled
             ENEBLED_TYPE -> R.layout.favorite_param_card
 
@@ -45,7 +45,7 @@ class SettingRecycleViewAdapter: ListAdapter<MainParam, FavoriteParamViewHolder>
         }
 
         holder.view.setOnClickListener {
-            if (!holder.radBut.isChecked){
+            if (!holder.radBut.isChecked) {
                 onClickListener?.invoke(mainParam)
             }
         }
@@ -53,11 +53,11 @@ class SettingRecycleViewAdapter: ListAdapter<MainParam, FavoriteParamViewHolder>
 
     override fun getItemViewType(position: Int): Int {
 
-        return if(position == 0) ENEBLED_TYPE else DESABLET_TYPE
+        return if (position == 0) ENEBLED_TYPE else DESABLET_TYPE
     }
 
 
-    companion object{
+    companion object {
         const val ENEBLED_TYPE = 1
         const val DESABLET_TYPE = 0
     }

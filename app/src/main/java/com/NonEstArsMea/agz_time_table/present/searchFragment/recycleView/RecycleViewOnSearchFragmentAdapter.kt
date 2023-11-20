@@ -1,17 +1,17 @@
-package com.NonEstArsMea.agz_time_table.present.adapters
+package com.NonEstArsMea.agz_time_table.present.searchFragment.recycleView
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
-import com.NonEstArsMea.agz_time_table.present.viewholders.RVOnSearchFragmentViewHolder
-import com.NonEstArsMea.agz_time_table.present.diffcallbacks.SearchItemDiffCallback
 
-class RecycleViewOnSearchFragmentAdapter : ListAdapter<MainParam, RVOnSearchFragmentViewHolder>(SearchItemDiffCallback()) {
+class RecycleViewOnSearchFragmentAdapter : ListAdapter<MainParam, RVOnSearchFragmentViewHolder>(
+    SearchItemDiffCallback()
+) {
 
 
-    var onMainParamClickListener:((MainParam)->(Unit))? = null
+    var onMainParamClickListener: ((MainParam) -> (Unit))? = null
 
     override fun onCreateViewHolder(
         parent: ViewGroup,

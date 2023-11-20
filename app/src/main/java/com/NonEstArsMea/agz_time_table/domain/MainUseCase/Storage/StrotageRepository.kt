@@ -6,12 +6,12 @@ import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
 
 interface StrotageRepository {
 
-    fun getMainParamFromStorage() :String
+    fun getMainParamFromStorage() :MainParam
 
     fun getFavoriteMainParamsFromStorage():ArrayList<MainParam>
 
     fun getLastWeekFromStorage():ArrayList<ArrayList<CellApi>>
-    fun setDataInStorage(mainParam: String?,
+    fun setDataInStorage(mainParam: MainParam?,
                          favMainParamList: ArrayList<MainParam>?,
                          lastWeekTimeTable: ArrayList<ArrayList<CellApi>>?)
 }

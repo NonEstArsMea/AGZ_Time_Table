@@ -1,0 +1,75 @@
+package com.NonEstArsMea.agz_time_table.present.searchFragment
+
+import android.content.Context
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.NonEstArsMea.agz_time_table.R
+import com.NonEstArsMea.agz_time_table.databinding.SearchLayoutBinding
+import com.NonEstArsMea.agz_time_table.present.searchFragment.recycleView.RecycleViewOnSearchFragmentAdapter
+
+class SearchFragment : Fragment() {
+    private var _binding: SearchLayoutBinding? = null
+    private val binding get() = _binding!!
+    private lateinit var vm: SearchViewModel
+    private val mainParamAdapter = RecycleViewOnSearchFragmentAdapter()
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        vm = ViewModelProvider(this)[SearchViewModel::class.java]
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = SearchLayoutBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val rvSearchView = binding.recycleViewOnSearchFragment
+        rvSearchView.adapter = mainParamAdapter
+        rvSearchView.layoutManager = LinearLayoutManager(context)
+
+        val searchView = binding.searchView
+        searchView.isIconifiedByDefault = false
+
+        vm.listOfMainParam.observe(viewLifecycleOwner) {
+            mainParamAdapter.submitList(it)
+            searchView.setOnQueryTextListener(object :
+                android.widget.SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(p0: String?) = false
+
+                override fun onQueryTextChange(text: String): Boolean {
+                    val aCopy = it.toMutableList()
+                    aCopy.retainAll { newText ->
+                        text in newText.name.lowercase()
+                    }
+                    mainParamAdapter.submitList(aCopy)
+                    return false
+                }
+            })
+        }
+
+        // Нажатие на объекты
+        mainParamAdapter.onMainParamClickListener = { mainParam ->
+            vm.setNewMainParam(mainParam)
+            findNavController().popBackStack(R.id.timeTableFragment, false)
+        }
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+}

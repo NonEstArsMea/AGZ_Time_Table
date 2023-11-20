@@ -12,7 +12,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="9dp"
-    android:layout_marginBottom="9dp"
+    android:layout_marginBottom="3dp"
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -26,7 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:id="@+id/time_constraint"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -42,20 +42,15 @@
                 android:layout_height="wrap_content"
                 android:text="00.00"
                 style="@style/MainTextViewStyle.Header2"
-
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                />
             <TextView
                 android:id="@+id/end_lesson_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="00.00"
                 style="@style/MainTextViewStyle"
-                android:textStyle="bold"
-
-                app:layout_constraintTop_toBottomOf="@id/start_lesson_time"
-                app:layout_constraintStart_toStartOf="parent"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:textStyle="bold" />
+        </LinearLayout>
         <View
             android:id="@+id/view_separator"
             android:layout_width="2dp"
@@ -80,13 +75,14 @@
 
             <TextView
                 android:id="@+id/subject"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Subject"
                 android:maxLines="2"
                 style="@style/MainTextViewStyle.Header1"
 
                 app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/lesson_number"
                 app:layout_constraintTop_toTopOf="parent"/>
 
             <TextView
@@ -132,31 +128,40 @@
 
                 app:layout_constraintLeft_toRightOf="@id/separator"
                 app:layout_constraintBottom_toBottomOf="@id/teacher"/>
+
+            <Button
+                android:id="@+id/lesson_number"
+                android:layout_width="31dp"
+                android:layout_height="31dp"
+                android:gravity="center"
+
+                app:icon="@drawable/second_icon"
+
+                android:paddingLeft="1dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="1dp"
-        android:paddingBottom="6dp"
         android:paddingLeft="@dimen/margine_all"
-        app:layout_constraintTop_toBottomOf="@id/top_constraint">
-        <TextView
-            android:id="@+id/subject_type"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margine_all"
-            android:text="subjectType"
-            android:textSize="14dp"
-            style="@style/MainTextViewStyle.Header1"
+        android:id="@+id/subject_type"
+        android:layout_margin="@dimen/margine_all"
+        android:text="subjectType"
+        android:textSize="14dp"
+        style="@style/MainTextViewStyle.Header1"
 
-
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/top_constraint"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
 
 

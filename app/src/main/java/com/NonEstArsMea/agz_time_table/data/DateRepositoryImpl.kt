@@ -1,10 +1,21 @@
-package com.NonEstArsMea.agz_time_table.domain
+package com.NonEstArsMea.agz_time_table.data
 
+import androidx.lifecycle.MutableLiveData
+import com.NonEstArsMea.agz_time_table.domain.DateRepository
 import java.util.Calendar
 
-class GetDateRepositoryImpl(calendar: Calendar): GetDateRepository {
+object DateRepositoryImpl: DateRepository {
 
-    var calendar = calendar
+    var calendar:Calendar = Calendar.getInstance()
+
+    private val constCalendar:Calendar = Calendar.getInstance()
+
+    val calendarLiveData = MutableLiveData<Calendar>()
+
+    fun setDayNow(){
+        calendar = constCalendar
+        updateCalendar()
+    }
 
     override fun monthToString(number: Int): String {
         val month = arrayOf(
@@ -12,14 +23,6 @@ class GetDateRepositoryImpl(calendar: Calendar): GetDateRepository {
             "Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря"
         )
         return month[number]
-    }
-
-    override fun monthNumber(number: Int): String {
-        TODO("Not yet implemented")
-    }
-
-    override fun convertDateToText(date: Calendar): String {
-        TODO("Not yet implemented")
     }
 
     override fun dayNumberOnButton(): List<String> {
@@ -48,10 +51,12 @@ class GetDateRepositoryImpl(calendar: Calendar): GetDateRepository {
         return "$dayNow $monthStrNow - $yearNow"
     }
 
-    override fun updateCalendar(newTime: Int): Calendar {
+    override fun setNewCalendar(newTime: Int){
         calendar.add(Calendar.DAY_OF_MONTH, newTime)
-        //Log.e("my_tag", calendar.time.toString())
-        return calendar
+        updateCalendar()
+    }
+    fun updateCalendar(){
+        calendarLiveData.value = calendar
     }
 
     override fun engToRusDayOfWeekNumbers(time: Int): Int {
@@ -63,10 +68,10 @@ class GetDateRepositoryImpl(calendar: Calendar): GetDateRepository {
     }
 
     override fun getArrayOfWeekDate(): ArrayList<String> {
-        var days = ArrayList<String>()
+        val days = ArrayList<String>()
 
-        var razn = engToRusDayOfWeekNumbers(calendar.get(Calendar.DAY_OF_WEEK)) - 1
-        calendar.add(Calendar.DAY_OF_MONTH,- razn)
+        val razn = engToRusDayOfWeekNumbers(calendar.get(Calendar.DAY_OF_WEEK)) - 1
+        calendar.add(Calendar.DAY_OF_MONTH,-razn)
 
         var dayNow = ""
         var monthNow = ""
@@ -91,9 +96,10 @@ class GetDateRepositoryImpl(calendar: Calendar): GetDateRepository {
 
     override fun getDayOfWeek(): Int {
         if(calendar.get(Calendar.DAY_OF_WEEK) == 1){
-            return 1
+            return return calendar.get(Calendar.DAY_OF_WEEK) - 3
         }else{
             return calendar.get(Calendar.DAY_OF_WEEK) - 2
         }
     }
+
 }

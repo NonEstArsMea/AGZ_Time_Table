@@ -16,7 +16,7 @@ data class CellApi(
     var noEmpty: Boolean,
     var text: String?= null,
     var lessonTheme: String? = null,
-    var color: Int?= null,
+    var color: Int= R.color.yellow_fo_lessons_card,
     val viewType: Int?= null,
     val viewSize: Int?= null,
 )

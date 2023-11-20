@@ -1,10 +1,10 @@
-package com.NonEstArsMea.agz_time_table.present.adapters
+package com.NonEstArsMea.agz_time_table.present.timeTableFragment
 
 import android.annotation.SuppressLint
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
-import com.NonEstArsMea.agz_time_table.present.fragments.RecycleViewFragment
+import com.NonEstArsMea.agz_time_table.present.timeTableFragment.recycleView.RecycleViewFragment
 
 class ViewPagerAdapter(
     fm: Fragment,
@@ -18,11 +18,6 @@ class ViewPagerAdapter(
     fun setData(newTTW: ArrayList<ArrayList<CellApi>>){
         ttw.clear()
         ttw.addAll(newTTW)
-        notifyDataSetChanged()
-    }
-
-    fun clearData(){
-        ttw.clear()
         notifyDataSetChanged()
     }
 

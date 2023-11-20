@@ -11,7 +11,7 @@ import java.net.URL
 
 object DataRepositoryImpl: DataRepository {
 
-    private var dataLiveData = MutableLiveData<String>()
+    var dataLiveData = MutableLiveData<String>()
 
     private var content = ""
     override suspend fun loadData(): MutableLiveData<String> {
@@ -19,6 +19,11 @@ object DataRepositoryImpl: DataRepository {
         connection.connect()
         content = connection.getInputStream().bufferedReader().use { it.readText() }
         dataLiveData.postValue(content)
+        Log.e("Load Data", "Data was loaded")
+        return dataLiveData
+    }
+
+    fun getData(): MutableLiveData<String>{
         return dataLiveData
     }
 
@@ -43,7 +48,4 @@ object DataRepositoryImpl: DataRepository {
         }
     }
 
-    fun printLog(){
-        Log.e("repository check", content.toString())
-    }
 }

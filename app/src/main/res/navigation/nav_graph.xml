@@ -6,7 +6,7 @@
     app:startDestination="@id/timeTableFragment">
     <fragment
         android:id="@+id/timeTableFragment"
-        android:name="com.NonEstArsMea.agz_time_table.present.fragments.TimeTableFragment"
+        android:name="com.NonEstArsMea.agz_time_table.present.timeTableFragment.TimeTableFragment"
         android:label="TimeTableFragment" >
         <action
             android:id="@+id/action_timeTableFragment_to_settingFragment"
@@ -14,7 +14,7 @@
     </fragment>
     <fragment
         android:id="@+id/settingFragment"
-        android:name="com.NonEstArsMea.agz_time_table.present.fragments.SettingFragment"
+        android:name="com.NonEstArsMea.agz_time_table.present.settingFragment.SettingFragment"
         android:label="SettingFragment" >
         <action
             android:id="@+id/action_settingFragment_to_timeTableFragment"
@@ -27,7 +27,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.NonEstArsMea.agz_time_table.present.fragments.SearchFragment"
+        android:name="com.NonEstArsMea.agz_time_table.present.searchFragment.SearchFragment"
         android:label="SearchFragment" >
         <action
             android:id="@+id/action_searchFragment_to_settingFragment"

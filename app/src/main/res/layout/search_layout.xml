@@ -5,7 +5,7 @@
     android:background="?attr/colorSurfaceContainer"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".present.MainActivity">
+    tools:context=".present.mainActivity.MainActivity">
     <SearchView
         style="@style/Widget.Material3.SearchBar"
         android:id="@+id/search_view"

@@ -1,14 +1,8 @@
 package com.NonEstArsMea.agz_time_table.domain
 
-import java.util.Calendar
-
-interface GetDateRepository {
+interface DateRepository {
 
     fun monthToString(number: Int): String
-
-    fun monthNumber(number: Int): String
-
-    fun convertDateToText(date: Calendar): String
 
     fun monthAndDayNow(): String
 
@@ -16,7 +10,7 @@ interface GetDateRepository {
 
     fun dayNumberOnButton(): List<String>
 
-    fun updateCalendar(newTime:Int = 0): Calendar
+    fun setNewCalendar(newTime:Int = 0)
 
     fun getArrayOfWeekDate(): List<String>
 
