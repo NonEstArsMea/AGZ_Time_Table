@@ -135,7 +135,7 @@
                 android:layout_height="31dp"
                 android:gravity="center"
 
-                app:icon="@drawable/second_icon"
+                app:icon="@drawable/_icon"
 
                 android:paddingLeft="1dp"
                 android:paddingTop="4dp"
