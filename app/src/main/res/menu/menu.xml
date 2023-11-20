@@ -5,10 +5,6 @@
         android:icon="@drawable/baseline_calendar_today_24"
         android:title="Расписание" />
     <item
-        android:id="@+id/menu_set_date"
-        android:title="Выбор даты"
-        android:icon="@drawable/set_date_icon" />
-    <item
         android:id="@+id/menu_setting"
         android:title="Параметры"
         android:icon="@drawable/setting_icon" />

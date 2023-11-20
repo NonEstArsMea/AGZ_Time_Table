@@ -27,6 +27,10 @@ object DataRepositoryImpl: DataRepository {
         return dataLiveData
     }
 
+    fun getContent():String{
+        return content
+    }
+
     fun isInternetConnected(context: Context): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

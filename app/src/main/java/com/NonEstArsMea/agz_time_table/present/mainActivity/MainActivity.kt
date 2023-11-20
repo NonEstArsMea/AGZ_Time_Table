@@ -19,9 +19,6 @@ import java.util.Calendar
 class MainActivity : AppCompatActivity() {
 
     private lateinit var mainViewModel: MainViewModel
-    var calendar: Calendar = Calendar.getInstance()
-
-    val constCalendar: Calendar = Calendar.getInstance()
 
     private var _binding: MainLayoutBinding? = null
     private val binding get() = _binding!!
@@ -41,23 +38,6 @@ class MainActivity : AppCompatActivity() {
         mainViewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
         mainViewModel.getDataFromStorage()
 
-        // Установка пикера
-        val datePicker =
-            MaterialDatePicker.Builder.datePicker()
-                .setTitleText("Выберите дату")
-                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-                .build()
-        //Нажатие на пикер
-        datePicker.addOnPositiveButtonClickListener {
-            val calender = Calendar.getInstance()
-            calender.timeInMillis = it
-
-//            mainViewModel.setNewCalendar(calender.get(Calendar.YEAR),
-//                              calender.get(Calendar.MONTH),
-//                                calender.get(Calendar.DAY_OF_MONTH))
-            findNavController(R.id.fragmentContainerView)
-                .navigate(R.id.timeTableFragment)
-        }
 
 
 
@@ -71,10 +51,6 @@ class MainActivity : AppCompatActivity() {
                     )
                 }
 
-
-                R.id.menu_set_date -> {
-                    datePicker.show(supportFragmentManager, "DatePicker")
-                }
 
                 R.id.menu_setting -> {
 

@@ -11,10 +11,17 @@ import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.data.DateRepositoryImpl
+import com.NonEstArsMea.agz_time_table.data.TimeTableRepositoryImpl
 import com.NonEstArsMea.agz_time_table.databinding.TimeTableFragmentBinding
+import com.NonEstArsMea.agz_time_table.present.customDateView.CastomDateFragment
+import com.google.android.material.datepicker.MaterialDatePicker
+import java.util.Calendar
 
 
 class TimeTableFragment : Fragment() {
@@ -25,6 +32,14 @@ class TimeTableFragment : Fragment() {
     private val binding get() = _binding!!
 
     var days = mutableListOf<TextView>()
+
+    // Установка пикера
+    private val datePicker =
+        MaterialDatePicker.Builder.datePicker()
+            .setTitleText("Выберите дату")
+            .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+            .build()
+
 
 
     override fun onAttach(context: Context) {
@@ -53,7 +68,6 @@ class TimeTableFragment : Fragment() {
             binding.day5,
             binding.day6,
         ).toMutableList()
-
 
 
         vm.dataLiveData.observe(viewLifecycleOwner) {
@@ -106,8 +120,6 @@ class TimeTableFragment : Fragment() {
         }
 
 
-        //обновление данных
-
 
         // Слушатель на расписание недели (при перелистывании недели)
         vm.timeTableChanged.observe(viewLifecycleOwner) {
@@ -129,6 +141,24 @@ class TimeTableFragment : Fragment() {
         vm.calendarLiveData.observe(viewLifecycleOwner) {
             if(it != null)
                 updateData()
+        }
+
+        binding.setDateButton.setOnClickListener {
+            datePicker.show(requireActivity().supportFragmentManager, datePicker.toString())
+        }
+
+        //Нажатие на пикер
+        datePicker.addOnPositiveButtonClickListener {
+            val calender = Calendar.getInstance()
+            calender.timeInMillis = it
+            val args = Bundle().apply {
+                putInt(CastomDateFragment.DAY, calender.get(Calendar.DAY_OF_MONTH))
+                putInt(CastomDateFragment.MONTH, calender.get(Calendar.MONTH))
+                putInt(CastomDateFragment.YEAR, calender.get(Calendar.YEAR))
+                putString(CastomDateFragment.MAIN_PARAM, TimeTableRepositoryImpl.getMainParam().value?.name)
+            }
+            findNavController().navigate(R.id.castomDateFragment, args)
+
         }
 
         updateData()
