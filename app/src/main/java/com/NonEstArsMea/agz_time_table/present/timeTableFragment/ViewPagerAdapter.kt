@@ -21,6 +21,12 @@ class ViewPagerAdapter(
         notifyDataSetChanged()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    fun clearData(){
+        ttw.clear()
+        notifyDataSetChanged()
+    }
+
     override fun getItemCount() = 6
 
     override fun createFragment(dayOfWeek: Int): Fragment {

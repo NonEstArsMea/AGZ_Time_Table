@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.NonEstArsMea.agz_time_table.R
@@ -23,35 +24,34 @@ class CastomDateFragment : Fragment() {
     private var year: Int = 0
     private var mainParam: String = ""
 
+    private val args by navArgs<CastomDateFragmentArgs>()
+
     private lateinit var onStartAndFinishListener: OnStartAndFinishListener
 
     private val adapter = TimeTableRecycleViewAdapter()
     private var _binding: FragmentCastomDateBinding? = null
 
-    private lateinit var vm: CastomDateFragmentViewModel
+    private val vm: CastomDateFragmentViewModel by lazy {
+        ViewModelProvider(this)[CastomDateFragmentViewModel::class.java]
+    }
     private val binding get() = _binding!!
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        vm = ViewModelProvider(this)[CastomDateFragmentViewModel::class.java]
         if(context is OnStartAndFinishListener){
             onStartAndFinishListener = context
-            onStartAndFinishListener.startFragment()
         }else throw RuntimeException( "$context is empty")
 
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.e("create", "create")
-        arguments?.let {
-            day = it.getInt(DAY)
-            month = it.getInt(MONTH)
-            year = it.getInt(YEAR)
-            mainParam = it.getString(MAIN_PARAM).toString()
+
+        args.let {
+            day = it.day
+            month = it.month
+            year = it.year
+            mainParam = it.mainParam
         }
         vm.getTimeTable(day, month, year, mainParam)
-        Log.e("create", "create1")
-
-        Log.e("create", "create2")
     }
 
     override fun onCreateView(
@@ -64,6 +64,7 @@ class CastomDateFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        onStartAndFinishListener.startFragment()
         val recycleView = binding.recyclerViewOnCastomDateFragment
         recycleView.adapter = adapter
         recycleView.layoutManager = LinearLayoutManager(context)
@@ -73,7 +74,7 @@ class CastomDateFragment : Fragment() {
         }
 
         binding.exitButtom.setOnClickListener {
-            onStartAndFinishListener?.closeFragment()
+            onStartAndFinishListener.closeFragment()
             findNavController().popBackStack()
         }
 
@@ -89,12 +90,5 @@ class CastomDateFragment : Fragment() {
         super.onDestroy()
         _binding = null
     }
-    companion object {
-        const val DAY = "param1"
-        const val MONTH = "param2"
-        const val YEAR = "param3"
-        const val MAIN_PARAM = "param4"
-    }
-
 
 }

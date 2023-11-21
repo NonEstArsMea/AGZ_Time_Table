@@ -17,6 +17,7 @@ lifecycle-viewmodel-ktx = "2.6.1"
 firebase-analytics-ktx = "21.3.0"
 car-ui-lib = "2.5.1"
 appcompat = "1.6.1"
+firebase-analytics = "21.5.0"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -42,6 +43,7 @@ lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-view
 firebase-analytics-ktx = { group = "com.google.firebase", name = "firebase-analytics-ktx", version.ref = "firebase-analytics-ktx" }
 car-ui-lib = { group = "com.android.car.ui", name = "car-ui-lib", version.ref = "car-ui-lib" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics", version.ref = "firebase-analytics" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

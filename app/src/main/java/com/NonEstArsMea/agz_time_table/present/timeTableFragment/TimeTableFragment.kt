@@ -32,6 +32,7 @@ class TimeTableFragment : Fragment() {
     private val binding get() = _binding!!
 
     var days = mutableListOf<TextView>()
+    private lateinit var viewPagerAdapter: ViewPagerAdapter
 
     // Установка пикера
     private val datePicker =
@@ -85,7 +86,7 @@ class TimeTableFragment : Fragment() {
 
         // Создание пэйджера
         val viewPager = binding.viewPagerTimeTableFragment
-        val viewPagerAdapter = ViewPagerAdapter(this)
+        viewPagerAdapter = ViewPagerAdapter(this)
         viewPager.adapter = viewPagerAdapter
 
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -151,17 +152,19 @@ class TimeTableFragment : Fragment() {
          *  по несколько штук
          */
         datePicker.addOnPositiveButtonClickListener {
-            Log.e("picker", "picker")
             val calender = Calendar.getInstance()
             calender.timeInMillis = it
-            val args = Bundle().apply {
-                putInt(CastomDateFragment.DAY, calender.get(Calendar.DAY_OF_MONTH))
-                putInt(CastomDateFragment.MONTH, calender.get(Calendar.MONTH))
-                putInt(CastomDateFragment.YEAR, calender.get(Calendar.YEAR))
-                putString(CastomDateFragment.MAIN_PARAM, vm.mainParam.value!!.name)
-            }
+            val day = calender.get(Calendar.DAY_OF_MONTH)
+            val month = calender.get(Calendar.MONTH)
+            val year = calender.get(Calendar.YEAR)
+            val mainParam = vm.mainParam.value!!.name
             datePicker.clearOnPositiveButtonClickListeners()
-            findNavController().navigate(R.id.castomDateFragment, args)
+            findNavController().navigate(TimeTableFragmentDirections
+                .actionTimeTableFragmentToCastomDateFragment(
+                    day = day,
+                    month = month,
+                    year = year,
+                    mainParam = mainParam))
 
         }
 
@@ -183,9 +186,14 @@ class TimeTableFragment : Fragment() {
 
     // Обновление данных
     private fun updateData(newTime: Int? = null) {
+        if(newTime != null){
+            viewPagerAdapter.clearData()
+            binding.viewPagerTimeTableFragment.currentItem = 1
+        }else{
+            binding.viewPagerTimeTableFragment.currentItem = DateRepositoryImpl.getDayOfWeek()
+        }
         vm.getTimeTable(newTime)
         binding.monthDate.text = DateRepositoryImpl.monthAndDayNow()
-        binding.viewPagerTimeTableFragment.currentItem = DateRepositoryImpl.getDayOfWeek()
         setButtonNumbers()
     }
 

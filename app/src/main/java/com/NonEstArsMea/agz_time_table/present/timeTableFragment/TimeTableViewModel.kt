@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.NonEstArsMea.agz_time_table.data.DataRepositoryImpl
 import com.NonEstArsMea.agz_time_table.data.DateRepositoryImpl
+import com.NonEstArsMea.agz_time_table.data.StorageRepositoryImpl
 import com.NonEstArsMea.agz_time_table.data.TimeTableRepositoryImpl
 import com.NonEstArsMea.agz_time_table.data.TimeTableRepositoryImpl.getListOfMainParam
 import com.NonEstArsMea.agz_time_table.domain.MainUseCase.Storage.GetLastWeekFromeStorageUseCase
@@ -54,7 +55,9 @@ class TimeTableViewModel(
     val mainParam: LiveData<MainParam>
         get() = _mainParam
 
-
+    init {
+        _timeTableChanged = TimeTableRepositoryImpl.getArrayOfWeekTimeTable()
+    }
 
 
     // создание массивов с расписанием

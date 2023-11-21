@@ -44,5 +44,17 @@
         <action
             android:id="@+id/action_castomDateFragment_to_timeTableFragment"
             app:destination="@id/timeTableFragment" />
+        <argument
+            android:name="day"
+            app:argType="integer" />
+        <argument
+            android:name="month"
+            app:argType="integer" />
+        <argument
+            android:name="year"
+            app:argType="integer" />
+        <argument
+            android:name="mainParam"
+            app:argType="string" />
     </fragment>
 </navigation>
