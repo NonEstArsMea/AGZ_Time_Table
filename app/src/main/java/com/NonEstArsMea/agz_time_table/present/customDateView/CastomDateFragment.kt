@@ -23,6 +23,8 @@ class CastomDateFragment : Fragment() {
     private var year: Int = 0
     private var mainParam: String = ""
 
+    private lateinit var onStartAndFinishListener: OnStartAndFinishListener
+
     private val adapter = TimeTableRecycleViewAdapter()
     private var _binding: FragmentCastomDateBinding? = null
 
@@ -31,6 +33,11 @@ class CastomDateFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         vm = ViewModelProvider(this)[CastomDateFragmentViewModel::class.java]
+        if(context is OnStartAndFinishListener){
+            onStartAndFinishListener = context
+            onStartAndFinishListener.startFragment()
+        }else throw RuntimeException( "$context is empty")
+
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,13 +49,15 @@ class CastomDateFragment : Fragment() {
             mainParam = it.getString(MAIN_PARAM).toString()
         }
         vm.getTimeTable(day, month, year, mainParam)
+        Log.e("create", "create1")
 
+        Log.e("create", "create2")
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentCastomDateBinding.inflate(layoutInflater)
         return binding.root
     }
@@ -64,9 +73,16 @@ class CastomDateFragment : Fragment() {
         }
 
         binding.exitButtom.setOnClickListener {
-            findNavController().popBackStack(R.id.timeTableFragment, false)
+            onStartAndFinishListener?.closeFragment()
+            findNavController().popBackStack()
         }
 
+    }
+
+
+    interface OnStartAndFinishListener{
+        fun startFragment()
+        fun closeFragment()
     }
 
     override fun onDestroy() {

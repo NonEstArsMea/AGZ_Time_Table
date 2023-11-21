@@ -24,6 +24,7 @@ class TimeTableViewModel(
     private val getWeekTimeTableUseCase: GetWeekTimeTableListUseCase,
 ): ViewModel() {
 
+
     private var jobVM = SupervisorJob()
     private val uiScope = CoroutineScope(Dispatchers.Main + jobVM)
 
@@ -52,7 +53,6 @@ class TimeTableViewModel(
     private val _mainParam = TimeTableRepositoryImpl.getMainParam()
     val mainParam: LiveData<MainParam>
         get() = _mainParam
-
 
 
 

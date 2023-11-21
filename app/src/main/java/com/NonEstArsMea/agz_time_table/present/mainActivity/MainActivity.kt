@@ -3,12 +3,15 @@ package com.NonEstArsMea.agz_time_table.present.mainActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.data.DataRepositoryImpl
 import com.NonEstArsMea.agz_time_table.data.DateRepositoryImpl
 import com.NonEstArsMea.agz_time_table.databinding.MainLayoutBinding
+import com.NonEstArsMea.agz_time_table.present.customDateView.CastomDateFragment
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
@@ -16,7 +19,7 @@ import com.google.firebase.ktx.Firebase
 import java.util.Calendar
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), CastomDateFragment.OnStartAndFinishListener{
 
     private lateinit var mainViewModel: MainViewModel
 
@@ -75,6 +78,13 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    override fun startFragment() {
+        binding.bottomInfo.isGone = true
+    }
+
+    override fun closeFragment() {
+        binding.bottomInfo.isGone = false
+    }
 
     override fun onPause() {
         super.onPause()

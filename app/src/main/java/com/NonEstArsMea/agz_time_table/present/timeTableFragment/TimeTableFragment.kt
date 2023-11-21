@@ -80,6 +80,8 @@ class TimeTableFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Log.e("fragment", "create")
+
 
         // Создание пэйджера
         val viewPager = binding.viewPagerTimeTableFragment
@@ -138,31 +140,33 @@ class TimeTableFragment : Fragment() {
             binding.mainParam.text = it.name
         }
 
-        vm.calendarLiveData.observe(viewLifecycleOwner) {
-            if(it != null)
-                updateData()
-        }
 
         binding.setDateButton.setOnClickListener {
             datePicker.show(requireActivity().supportFragmentManager, datePicker.toString())
         }
-
-        //Нажатие на пикер
+        /**
+         *  Нажатие на пикер
+         *  datePicker.clearOnPositiveButtonClickListeners() - исправляет интерестный баг
+         *  Слушатель с предыдущего раза не выключается, и фрагменты начинают создаваться
+         *  по несколько штук
+         */
         datePicker.addOnPositiveButtonClickListener {
+            Log.e("picker", "picker")
             val calender = Calendar.getInstance()
             calender.timeInMillis = it
             val args = Bundle().apply {
                 putInt(CastomDateFragment.DAY, calender.get(Calendar.DAY_OF_MONTH))
                 putInt(CastomDateFragment.MONTH, calender.get(Calendar.MONTH))
                 putInt(CastomDateFragment.YEAR, calender.get(Calendar.YEAR))
-                putString(CastomDateFragment.MAIN_PARAM, TimeTableRepositoryImpl.getMainParam().value?.name)
+                putString(CastomDateFragment.MAIN_PARAM, vm.mainParam.value!!.name)
             }
+            datePicker.clearOnPositiveButtonClickListeners()
             findNavController().navigate(R.id.castomDateFragment, args)
 
         }
 
-        updateData()
 
+        updateData()
     }
 
     override fun onDestroyView() {
@@ -183,7 +187,6 @@ class TimeTableFragment : Fragment() {
         binding.monthDate.text = DateRepositoryImpl.monthAndDayNow()
         binding.viewPagerTimeTableFragment.currentItem = DateRepositoryImpl.getDayOfWeek()
         setButtonNumbers()
-
     }
 
     companion object {
