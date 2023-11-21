@@ -1,11 +1,8 @@
-import org.jetbrains.kotlin.storage.CacheResetOnProcessCanceled.enabled
-
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
-    id("com.google.gms.google-services")
-
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 
@@ -46,9 +43,10 @@ android {
     }
     buildFeatures {
         compose = true
+        viewBinding = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
+        kotlinCompilerExtensionVersion = "1.5.0"
     }
     packaging {
         resources {
@@ -96,7 +94,8 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
     implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
     implementation("androidx.navigation:navigation-dynamic-features-fragment:$nav_version")
-    implementation ("androidx.fragment:fragment-ktx:1.6.0")
+    implementation("androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version")
+    implementation ("androidx.fragment:fragment-ktx:1.6.2")
     // Jetpack Compose Integration
     implementation("androidx.navigation:navigation-compose:$nav_version")
 
