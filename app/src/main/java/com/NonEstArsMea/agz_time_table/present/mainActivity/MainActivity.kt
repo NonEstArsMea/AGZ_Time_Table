@@ -3,6 +3,7 @@ package com.NonEstArsMea.agz_time_table.present.mainActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
@@ -12,6 +13,7 @@ import com.NonEstArsMea.agz_time_table.data.DataRepositoryImpl
 import com.NonEstArsMea.agz_time_table.data.DateRepositoryImpl
 import com.NonEstArsMea.agz_time_table.databinding.MainLayoutBinding
 import com.NonEstArsMea.agz_time_table.present.customDateView.CastomDateFragment
+import com.NonEstArsMea.agz_time_table.present.settingFragment.SettingFragment
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
@@ -19,7 +21,7 @@ import com.google.firebase.ktx.Firebase
 import java.util.Calendar
 
 
-class MainActivity : AppCompatActivity(), CastomDateFragment.OnStartAndFinishListener{
+class MainActivity : AppCompatActivity(), CastomDateFragment.OnStartAndFinishListener, SettingFragment.setThemeInterface{
 
     private lateinit var mainViewModel: MainViewModel
 
@@ -41,9 +43,15 @@ class MainActivity : AppCompatActivity(), CastomDateFragment.OnStartAndFinishLis
         mainViewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
         mainViewModel.getDataFromStorage()
 
+        mainViewModel.theme.observe(this){
+            setCustomTheme(it)
+        }
 
 
+    }
 
+    override fun onStart() {
+        super.onStart()
         binding.bottomInfo.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.menu_tt -> {
@@ -66,16 +74,12 @@ class MainActivity : AppCompatActivity(), CastomDateFragment.OnStartAndFinishLis
             }
             return@setOnItemSelectedListener true
         }
-        Log.e("Is Connected", "internet is connected")
         mainViewModel.loadDataFromURL()
         mainViewModel.isStartLoad.observe(this) {
             if (DataRepositoryImpl.isInternetConnected(this)) {
-                Log.e("Is Connected", "internet is connected")
                 mainViewModel.loadDataFromURL()
             }
         }
-
-
     }
 
     override fun startFragment() {
@@ -88,7 +92,6 @@ class MainActivity : AppCompatActivity(), CastomDateFragment.OnStartAndFinishLis
 
     override fun onPause() {
         super.onPause()
-
         mainViewModel.setDataInStorage()
     }
 
@@ -96,6 +99,33 @@ class MainActivity : AppCompatActivity(), CastomDateFragment.OnStartAndFinishLis
         super.onDestroy()
 
         _binding = null
+    }
+
+    override fun setLightTheme() {
+        setCustomTheme(LIGHT_THEME)
+    }
+
+    override fun setDarkTheme() {
+        setCustomTheme(NIGHT_THEME)
+    }
+
+    override fun setSystemTheme() {
+        setCustomTheme(SYSTEM_THEME)
+    }
+
+    fun setCustomTheme(themeNumber: Int){
+        when(themeNumber){
+            1 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+            2 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            3 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            else -> throw RuntimeException("Unknown number of theme")
+        }
+    }
+
+    companion object{
+        private const val SYSTEM_THEME = 1
+        private const val NIGHT_THEME = 2
+        private const val LIGHT_THEME = 3
     }
 }
 

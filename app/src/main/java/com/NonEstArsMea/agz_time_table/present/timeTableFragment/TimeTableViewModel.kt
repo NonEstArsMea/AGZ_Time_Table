@@ -32,7 +32,7 @@ class TimeTableViewModel(
     private var job: Job = uiScope.launch {  }
 
 
-    private var _timeTableChanged = MutableLiveData<ArrayList<ArrayList<CellApi>>>()
+    private var _timeTableChanged = TimeTableRepositoryImpl.getArrayOfWeekTimeTable()
     val timeTableChanged: LiveData<ArrayList<ArrayList<CellApi>>>
         get() = _timeTableChanged
 
@@ -49,24 +49,33 @@ class TimeTableViewModel(
     val calendarLiveData: LiveData<Calendar>
         get() = _calendarLiveData
 
+    var loadCount: Boolean = false
+
 
     // Хранит параметр поиска
     private val _mainParam = TimeTableRepositoryImpl.getMainParam()
     val mainParam: LiveData<MainParam>
         get() = _mainParam
 
-    init {
-        _timeTableChanged = TimeTableRepositoryImpl.getArrayOfWeekTimeTable()
+
+    fun getMainParam():String{
+        return mainParam.value!!.name
     }
-
-
     // создание массивов с расписанием
     fun getTimeTable(newTime: Int? = null){
+            if (loadCount != true) {
+                getNewTimeTable()
+                uiScope.launch {
+                    getListOfMainParam(dataLiveData.value!!)
+                }
+                loadCount = true
+            }
+    }
 
+    fun getNewTimeTable(newTime: Int? = null){
         if(newTime != null){
             DateRepositoryImpl.setNewCalendar(newTime)
         }
-
         if(dataLiveData.value != null) {
             // для прерывания предыдущих корутин
             if (job.isActive) {
@@ -81,17 +90,13 @@ class TimeTableViewModel(
                     Log.e("Flow exception", e.toString())
                 }
             }
-            uiScope.launch {
-                getListOfMainParam(dataLiveData.value!!)
-            }
         }
-
     }
 
 
     /**
      * Остановка корутины после завершения работы
-     * */
+     */
     override fun onCleared() {
         super.onCleared()
         job.cancel()

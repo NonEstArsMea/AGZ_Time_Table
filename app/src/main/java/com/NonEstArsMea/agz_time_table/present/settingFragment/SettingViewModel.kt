@@ -2,6 +2,7 @@ package com.NonEstArsMea.agz_time_table.present.settingFragment
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.data.TimeTableRepositoryImpl
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
 
@@ -26,6 +27,16 @@ class SettingViewModel : ViewModel() {
         }
     }
 
+    fun getTheme(): Int {
+        return when (TimeTableRepositoryImpl.getTheme().value) {
+            1 -> R.id.button1
+            2 -> R.id.button2
+            3 -> R.id.button3
+            else -> {
+                R.id.button1
+            }
+        }
+    }
 
     fun delParamFromFavoriteMainParam(index: MainParam) {
         val items = _listOfFavoriteMainParam.value!!

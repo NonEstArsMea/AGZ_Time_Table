@@ -10,11 +10,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.NonEstArsMea.agz_time_table.R
+import com.NonEstArsMea.agz_time_table.data.TimeTableRepositoryImpl
 import com.NonEstArsMea.agz_time_table.databinding.SettingLayoutBinding
 import com.NonEstArsMea.agz_time_table.present.settingFragment.recycleView.SettingRecycleViewAdapter
 
@@ -24,11 +26,16 @@ class SettingFragment : Fragment() {
 
     private lateinit var vm: SettingViewModel
 
+    private lateinit var setSystemTheme: setThemeInterface
+
     private val rvSettingViewAdapter = SettingRecycleViewAdapter()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         vm = ViewModelProvider(this)[SettingViewModel::class.java]
+        if(context is setThemeInterface){
+            setSystemTheme = context
+        }
     }
 
 
@@ -38,11 +45,12 @@ class SettingFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-
         _binding = SettingLayoutBinding.inflate(inflater, container, false)
-        val view = binding.root
+        return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.searchBar.setOnClickListener {
             findNavController().navigate(R.id.searchFragment)
         }
@@ -70,23 +78,30 @@ class SettingFragment : Fragment() {
             actionViewStart("https://t.me/delonevogne")
         }
 
-        // recycleView
         val rvSettingView = binding.rvSettingView
         rvSettingView.adapter = rvSettingViewAdapter
 
 
         val layoutManager = LinearLayoutManager(context)
         rvSettingView.layoutManager = layoutManager
-        // Проверка на null
-        if (vm.listOfFavoriteMainParam.value != null) {
-            rvSettingViewAdapter.submitList(vm.listOfFavoriteMainParam.value!!.toList())
-        }
-        // Обзервер
+
         vm.listOfFavoriteMainParam.observe(viewLifecycleOwner) {
-            Log.e("observe", true.toString())
             rvSettingViewAdapter.submitList(it.toList())
 
         }
+
+        binding.toggleButton.isSingleSelection = true
+        binding.toggleButton.check(vm.getTheme())
+        binding.toggleButton.addOnButtonCheckedListener { toggleGroup, checkedId, isChecked ->
+            if (isChecked) {
+                when (checkedId) {
+                    R.id.button1 -> TimeTableRepositoryImpl.setTheme(1)
+                    R.id.button2 -> TimeTableRepositoryImpl.setTheme(2)
+                    R.id.button3 -> TimeTableRepositoryImpl.setTheme(3)
+                }
+            }
+        }
+
 
         rvSettingViewAdapter.onClickListener = { mainParam ->
             vm.setMainParam(mainParam)
@@ -97,9 +112,14 @@ class SettingFragment : Fragment() {
         }
         rvSettingView.adapter = rvSettingViewAdapter
 
-        return view
     }
 
+
+    interface setThemeInterface{
+        fun setLightTheme()
+        fun setDarkTheme()
+        fun setSystemTheme()
+    }
 
     override fun onDestroy() {
         super.onDestroy()

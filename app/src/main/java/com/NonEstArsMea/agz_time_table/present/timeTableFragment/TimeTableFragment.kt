@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -40,6 +41,8 @@ class TimeTableFragment : Fragment() {
             .setTitleText("Выберите дату")
             .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
             .build()
+
+    private lateinit var viewPager: ViewPager2
 
 
 
@@ -85,7 +88,7 @@ class TimeTableFragment : Fragment() {
 
 
         // Создание пэйджера
-        val viewPager = binding.viewPagerTimeTableFragment
+        viewPager = binding.viewPagerTimeTableFragment
         viewPagerAdapter = ViewPagerAdapter(this)
         viewPager.adapter = viewPagerAdapter
 
@@ -104,6 +107,8 @@ class TimeTableFragment : Fragment() {
                 }
             }
         })
+
+
 
 
         // Слушатель на дни
@@ -127,10 +132,11 @@ class TimeTableFragment : Fragment() {
         // Слушатель на расписание недели (при перелистывании недели)
         vm.timeTableChanged.observe(viewLifecycleOwner) {
             if (it.isNotEmpty()) {
-                viewPagerAdapter.setData(it)
                 viewPager.adapter = viewPagerAdapter
+                viewPagerAdapter.setData(it)
                 binding.viewPagerTimeTableFragment.currentItem = DateRepositoryImpl.getDayOfWeek()
             }
+
         }
 
         vm.loading.observe(viewLifecycleOwner) {
@@ -138,7 +144,10 @@ class TimeTableFragment : Fragment() {
         }
 
         vm.mainParam.observe(viewLifecycleOwner) {
-            binding.mainParam.text = it.name
+            if(binding.mainParam.text != it.name){
+                binding.mainParam.text = it.name
+            }
+            binding.viewPagerTimeTableFragment.setCurrentItem(DateRepositoryImpl.getDayOfWeek(),true)
         }
 
 
@@ -157,19 +166,29 @@ class TimeTableFragment : Fragment() {
             val day = calender.get(Calendar.DAY_OF_MONTH)
             val month = calender.get(Calendar.MONTH)
             val year = calender.get(Calendar.YEAR)
-            val mainParam = vm.mainParam.value!!.name
-            datePicker.clearOnPositiveButtonClickListeners()
-            findNavController().navigate(TimeTableFragmentDirections
-                .actionTimeTableFragmentToCastomDateFragment(
-                    day = day,
-                    month = month,
-                    year = year,
-                    mainParam = mainParam))
+            val mainParam = vm.getMainParam()
+            Log.e("picker", "$day $month $year $mainParam ")
+            try {
+                findNavController().navigate(TimeTableFragmentDirections
+                    .actionTimeTableFragmentToCastomDateFragment(
+                        day = day,
+                        month = month,
+                        year = year,
+                        mainParam = mainParam))
+                datePicker.clearOnPositiveButtonClickListeners()
+            }catch (_: Exception){
+
+            }
+
+
 
         }
+        binding.monthDate.text = DateRepositoryImpl.monthAndDayNow()
+    }
 
-
-        updateData()
+    override fun onResume() {
+        super.onResume()
+        viewPager.setCurrentItem(0)
     }
 
     override fun onDestroyView() {
@@ -186,13 +205,8 @@ class TimeTableFragment : Fragment() {
 
     // Обновление данных
     private fun updateData(newTime: Int? = null) {
-        if(newTime != null){
-            viewPagerAdapter.clearData()
-            binding.viewPagerTimeTableFragment.currentItem = 1
-        }else{
-            binding.viewPagerTimeTableFragment.currentItem = DateRepositoryImpl.getDayOfWeek()
-        }
-        vm.getTimeTable(newTime)
+        binding.viewPagerTimeTableFragment.currentItem = DateRepositoryImpl.getDayOfWeek()
+        vm.getNewTimeTable(newTime)
         binding.monthDate.text = DateRepositoryImpl.monthAndDayNow()
         setButtonNumbers()
     }

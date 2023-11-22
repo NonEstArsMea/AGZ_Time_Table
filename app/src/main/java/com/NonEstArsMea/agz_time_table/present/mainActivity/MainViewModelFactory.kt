@@ -23,6 +23,7 @@ class MainViewModelFactory(context: Context) : ViewModelProvider.Factory {
         GetFavoriteMainParamsFromStorageUseCase(storageRepository)
     private val getLastWeekTimeTable = GetLastWeekFromeStorageUseCase(storageRepository)
     private val getMainParamFromStorage = GetMainParamFromStorageUseCase(storageRepository)
+    private val getTheme = storageRepository.getThemeFromStorage()
 
     /**
     Work with Network
@@ -36,6 +37,7 @@ class MainViewModelFactory(context: Context) : ViewModelProvider.Factory {
             getMainParamFromStorage = getMainParamFromStorage,
             getFavoriteMainParamsFromStorageUseCase = getFavoriteMainParamsFromStorageUseCase,
             getLastWeekTimeTableFromStorage = getLastWeekTimeTable,
+            getThemeFromStorage = getTheme
         ) as T
     }
 }

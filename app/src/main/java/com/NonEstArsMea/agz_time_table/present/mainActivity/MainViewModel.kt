@@ -22,6 +22,7 @@ class MainViewModel(
     private val getMainParamFromStorage: GetMainParamFromStorageUseCase,
     private val getFavoriteMainParamsFromStorageUseCase: GetFavoriteMainParamsFromStorageUseCase,
     private val getLastWeekTimeTableFromStorage: GetLastWeekFromeStorageUseCase,
+    private val getThemeFromStorage: Int
 ) : ViewModel() {
 
 
@@ -31,6 +32,10 @@ class MainViewModel(
     private var _isStartLoad = MutableLiveData<Unit>()
     val isStartLoad: LiveData<Unit>
         get() = _isStartLoad
+
+    private var _theme = TimeTableRepositoryImpl.getTheme()
+    val theme: LiveData<Int>
+        get() = _theme
 
     private val _menuItem = MutableLiveData<Int>()
 
@@ -59,13 +64,16 @@ class MainViewModel(
         TimeTableRepositoryImpl.setMainParam(getMainParamFromStorage.execute())
         TimeTableRepositoryImpl.setWeekTimeTable(getLastWeekTimeTableFromStorage.execute())
         TimeTableRepositoryImpl.setListOfFavoriteMainParam(getFavoriteMainParamsFromStorageUseCase.execute())
+        TimeTableRepositoryImpl.setTheme(getThemeFromStorage)
+
     }
 
     fun setDataInStorage() {
         setDataInStorage.execute(
             TimeTableRepositoryImpl.getMainParam().value,
             TimeTableRepositoryImpl.getArrayOfFavoriteMainParam().value,
-            TimeTableRepositoryImpl.getArrayOfWeekTimeTable().value
+            TimeTableRepositoryImpl.getArrayOfWeekTimeTable().value,
+            _theme.value
         )
     }
 }

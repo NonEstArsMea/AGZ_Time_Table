@@ -19,6 +19,7 @@ object TimeTableRepositoryImpl : TimeTableRepository {
     private var mainParam = MutableLiveData<MainParam>()
     private var listOfMainParam = MutableLiveData<ArrayList<MainParam>>()
     private var listOfFavoriteMainParam = MutableLiveData<ArrayList<MainParam>>()
+    private var theme = MutableLiveData<Int>()
 
     override suspend fun preparationData(
         data: String,
@@ -174,6 +175,10 @@ object TimeTableRepositoryImpl : TimeTableRepository {
         return weekTimeTable
     }
 
+    fun getTheme(): MutableLiveData<Int> {
+        return theme
+    }
+
     fun setMainParam(newMainParam: MainParam) {
         if (mainParam.value != newMainParam) {
             mainParam.value = newMainParam
@@ -186,6 +191,11 @@ object TimeTableRepositoryImpl : TimeTableRepository {
 
     fun setWeekTimeTable(list: ArrayList<ArrayList<CellApi>>) {
         weekTimeTable.value = list
+    }
+
+    fun setTheme(newTheme: Int) {
+
+        theme.value = newTheme
     }
 
 

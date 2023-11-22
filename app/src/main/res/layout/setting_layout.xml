@@ -7,25 +7,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".present.mainActivity.MainActivity"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/setting_layout_header"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margine_all"
-                style="@style/Widget.Material3.CardView.Elevated"
+                android:layout_margin="15dp"
+                android:paddingBottom="@dimen/margine_all"
+                android:id="@+id/setting_layout_header"
+                android:text="Настройки"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="15dp"
-                    android:paddingBottom="@dimen/margine_all"
-                    android:text="Настройки"
-                    style="?attr/textAppearanceHeadline2"
-                    android:textSize="23sp"
-                    app:layout_scrollFlags="noScroll"
-                    android:layout_marginTop="10dp" />
-            </com.google.android.material.card.MaterialCardView>
+                app:layout_constraintTop_toTopOf="parent"
+                style="?attr/textAppearanceHeadline2"
+                android:textSize="23sp"
+                app:layout_scrollFlags="noScroll"
+                android:layout_marginTop="10dp" />
             <ScrollView
                 android:layout_marginStart="@dimen/margine_all"
                 android:layout_marginEnd="@dimen/margine_all"
@@ -34,7 +28,6 @@
                 android:scrollbars="none"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginTop="-15dp"
 
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/setting_layout_header"
@@ -81,6 +74,51 @@
                             style="@style/Widget.Material3.Button.IconButton.Outlined"
                             app:layout_constraintTop_toBottomOf="@id/rv_setting_view"
                             app:layout_constraintLeft_toLeftOf="parent"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Выбор темы"
+                        android:paddingStart="@dimen/margine_all"
+                        android:layout_marginTop="15dp"
+                        android:id="@+id/theme_change"
+                        style="@style/MainTextViewStyle.Header1"
+                        app:layout_constraintTop_toBottomOf="@id/search_bar"
+                        app:layout_constraintLeft_toLeftOf="parent"/>
+                    <com.google.android.material.button.MaterialButtonToggleGroup
+                        android:id="@+id/toggleButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/theme_change"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:gravity="center_horizontal"
+
+                        style="?attr/materialButtonToggleGroupStyle">
+                        <Button
+                            style="?attr/materialButtonOutlinedStyle"
+                            android:id="@+id/button1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Система"
+
+                            android:layout_weight="1"
+                            />
+                        <Button
+                            style="?attr/materialButtonOutlinedStyle"
+                            android:id="@+id/button2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Темная"
+                            android:layout_weight="1"
+                            />
+                        <Button
+                            style="?attr/materialButtonOutlinedStyle"
+                            android:id="@+id/button3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Светлая"
+                            android:layout_weight="1"
+                            />
+                    </com.google.android.material.button.MaterialButtonToggleGroup>
 
                         <TextView
                             android:layout_width="match_parent"
@@ -90,7 +128,7 @@
                             android:layout_marginTop="15dp"
                             android:id="@+id/contacts"
                             style="@style/MainTextViewStyle.Header1"
-                            app:layout_constraintTop_toBottomOf="@id/search_bar"
+                            app:layout_constraintTop_toBottomOf="@id/toggleButton"
                             app:layout_constraintLeft_toLeftOf="parent"/>
                         <com.google.android.material.card.MaterialCardView
                             android:layout_width="match_parent"

@@ -1,6 +1,7 @@
 package com.NonEstArsMea.agz_time_table.present.timeTableFragment.recycleView
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,6 +30,7 @@ class RecycleViewFragment : Fragment() {
             val type: Type = object : TypeToken<ArrayList<CellApi>>() {}.type
             val timeTableDay = Gson().fromJson<ArrayList<CellApi>>(it.getString(ARGUMENTS), type)
             rvTimeTable.layoutManager = LinearLayoutManager(context)
+            Log.e("bundle", "bundle")
             adapter.submitList(timeTableDay)
         }
 
