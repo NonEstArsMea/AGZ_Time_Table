@@ -51,6 +51,9 @@ class MainViewModel(
         }
     }
 
+    fun getMainParam():String{
+        return TimeTableRepositoryImpl.getMainParam().value.toString()
+    }
     fun isNewItem(item: Int): Boolean {
         return if (_menuItem.value != item) {
             _menuItem.value = R.id.menu_tt

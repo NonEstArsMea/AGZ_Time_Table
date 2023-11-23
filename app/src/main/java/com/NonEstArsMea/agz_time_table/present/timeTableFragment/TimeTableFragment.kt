@@ -30,7 +30,6 @@ class TimeTableFragment : Fragment() {
     var days = mutableListOf<TextView>()
     private lateinit var viewPagerAdapter: ViewPagerAdapter
 
-    // Установка пикера
     private val datePicker =
         MaterialDatePicker.Builder.datePicker()
             .setTitleText("Выберите дату")
@@ -54,11 +53,9 @@ class TimeTableFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // биндинг фрагмента
         _binding = TimeTableFragmentBinding.inflate(inflater, container, false)
 
 
-        // массив с вьюшками дней
         days = listOf(
             binding.day1,
             binding.day2,
@@ -79,10 +76,7 @@ class TimeTableFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Log.e("fragment", "create")
 
-
-        // Создание пэйджера
         viewPager = binding.viewPagerTimeTableFragment
         viewPagerAdapter = ViewPagerAdapter(this)
         viewPager.isSaveEnabled = false
@@ -185,14 +179,12 @@ class TimeTableFragment : Fragment() {
         _binding = null
     }
 
-    // Установка дат дней недели
     private fun setButtonNumbers() {
         DateRepositoryImpl.dayNumberOnButton().forEachIndexed { index, s ->
             days[index].text = s
         }
     }
 
-    // Обновление данных
     private fun updateData(newTime: Int? = null) {
         binding.viewPagerTimeTableFragment.currentItem = DateRepositoryImpl.getDayOfWeek()
         vm.getNewTimeTable(newTime)

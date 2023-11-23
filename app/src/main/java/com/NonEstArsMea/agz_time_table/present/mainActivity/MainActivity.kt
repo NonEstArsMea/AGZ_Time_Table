@@ -1,11 +1,13 @@
 package com.NonEstArsMea.agz_time_table.present.mainActivity
 
 import android.os.Bundle
+import android.text.Layout.Directions
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isGone
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import com.NonEstArsMea.agz_time_table.NavGraphDirections
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.data.DataRepositoryImpl
 import com.NonEstArsMea.agz_time_table.data.DateRepositoryImpl
@@ -53,6 +55,7 @@ class MainActivity : AppCompatActivity(),
 
     override fun onStart() {
         super.onStart()
+        binding.bottomInfo.selectedItemId = R.id.menu_exams
         binding.bottomInfo.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.menu_tt -> {
@@ -65,9 +68,8 @@ class MainActivity : AppCompatActivity(),
 
                 R.id.menu_exams -> {
                     findNavController(R.id.fragmentContainerView)
-                        .navigate(TimeTableFragmentDirections
-                            .actionTimeTableFragmentToExamsFragment(
-                                "213"
+                        .navigate(NavGraphDirections.actionGlobalExamsFragment(
+                                mainViewModel.getMainParam()
                             )
                         )
                 }
