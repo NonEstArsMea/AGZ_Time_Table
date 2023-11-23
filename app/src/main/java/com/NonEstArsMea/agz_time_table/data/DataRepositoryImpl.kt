@@ -11,10 +11,11 @@ import java.net.URL
 
 object DataRepositoryImpl: DataRepository {
 
-    var dataLiveData = MutableLiveData<String>()
+    private var dataLiveData = MutableLiveData<String>()
 
     private var content = ""
     override suspend fun loadData(): MutableLiveData<String> {
+        Log.e("Load Data", "Start load")
         if(dataLiveData.value == null){
             val connection = URL("http://a0755299.xsph.ru/wp-content/uploads/3-1-1.txt").openConnection()
             connection.connect()

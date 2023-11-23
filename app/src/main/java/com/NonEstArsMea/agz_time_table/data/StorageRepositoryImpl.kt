@@ -17,7 +17,7 @@ class StorageRepositoryImpl(context: Context) : StrotageRepository {
 
     override fun getMainParamFromStorage(): MainParam {
         val token = object : TypeToken<MainParam>() {}.type
-        val string = Gson().fromJson(
+        val string = GsonInstance.gson.fromJson(
             sharedPreferences.getString(
             MAIN_PARAM_KEY,
             null),
@@ -27,7 +27,7 @@ class StorageRepositoryImpl(context: Context) : StrotageRepository {
 
     override fun getFavoriteMainParamsFromStorage(): ArrayList<MainParam> {
         val token = object : TypeToken<ArrayList<MainParam>>() {}.type
-        val string = Gson().fromJson(
+        val string = GsonInstance.gson.fromJson(
             sharedPreferences.getString(
             LIST_OF_FAVORITE_MAIN_PARAMS,
             null),
@@ -37,7 +37,7 @@ class StorageRepositoryImpl(context: Context) : StrotageRepository {
 
     override fun getLastWeekFromStorage(): ArrayList<ArrayList<CellApi>> {
         val token = object : TypeToken<ArrayList<ArrayList<CellApi>>>() {}.type
-        val string = Gson().fromJson(
+        val string = GsonInstance.gson.fromJson(
             sharedPreferences.getString(
             LAST_WEEK_TIME_TABLE_LIST,
             null),
@@ -53,16 +53,16 @@ class StorageRepositoryImpl(context: Context) : StrotageRepository {
     override fun setDataInStorage(
         mainParam: MainParam?,
         favMainParamList: ArrayList<MainParam>?,
-        lastWeekTimeTable: ArrayList<ArrayList<CellApi>>?,
+        lastWeekTimeTable: List<List<CellApi>>?,
         theme: Int?
     ) {
         sharedPreferences.edit().apply {
             if (favMainParamList != null)
-                putString(LIST_OF_FAVORITE_MAIN_PARAMS, Gson().toJson(favMainParamList))
+                putString(LIST_OF_FAVORITE_MAIN_PARAMS, GsonInstance.gson.toJson(favMainParamList))
             if (mainParam != null)
-                putString(MAIN_PARAM_KEY, Gson().toJson(mainParam))
+                putString(MAIN_PARAM_KEY, GsonInstance.gson.toJson(mainParam))
             if (lastWeekTimeTable != null)
-                putString(LAST_WEEK_TIME_TABLE_LIST, Gson().toJson(lastWeekTimeTable))
+                putString(LAST_WEEK_TIME_TABLE_LIST, GsonInstance.gson.toJson(lastWeekTimeTable))
             if (theme != null)
                 putInt(THEME, theme)
 
@@ -78,4 +78,8 @@ class StorageRepositoryImpl(context: Context) : StrotageRepository {
         const val THEME = "T"
         private const val SYSTEM_THEME = 1
     }
+}
+
+object GsonInstance {
+    val gson: Gson = Gson()
 }

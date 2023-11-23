@@ -6,11 +6,13 @@ import java.util.Calendar
 
 object DateRepositoryImpl: DateRepository {
 
-    var calendar:Calendar = Calendar.getInstance()
+    private var calendar:Calendar = Calendar.getInstance().apply {
+        firstDayOfWeek = Calendar.MONDAY
+    }
 
     private val constCalendar:Calendar = Calendar.getInstance()
 
-    val calendarLiveData = MutableLiveData<Calendar>()
+    private val calendarLiveData = MutableLiveData<Calendar>()
 
     fun setDayNow(){
         if (calendar != constCalendar){
@@ -30,7 +32,7 @@ object DateRepositoryImpl: DateRepository {
     override fun dayNumberOnButton(): List<String> {
         var days = mutableListOf<String>()
 
-        var razn = engToRusDayOfWeekNumbers(calendar.get(Calendar.DAY_OF_WEEK)) - 1
+        var razn = calendar.get(Calendar.DAY_OF_WEEK)
         calendar.add(Calendar.DAY_OF_MONTH,- razn)
 
         for(a in 0..5){
@@ -69,14 +71,14 @@ object DateRepositoryImpl: DateRepository {
         if(time == 1){
             return 7
         }else{
-            return (time - 1)
+            return (time - 2)
         }
     }
 
     override fun getArrayOfWeekDate(): ArrayList<String> {
         val days = ArrayList<String>()
 
-        val razn = engToRusDayOfWeekNumbers(calendar.get(Calendar.DAY_OF_WEEK)) - 1
+        val razn = calendar.get(Calendar.DAY_OF_WEEK)
         calendar.add(Calendar.DAY_OF_MONTH,-razn)
 
         var dayNow = ""
@@ -101,11 +103,12 @@ object DateRepositoryImpl: DateRepository {
     }
 
     override fun getDayOfWeek(): Int {
-        if(calendar.get(Calendar.DAY_OF_WEEK) == 1){
-            return return calendar.get(Calendar.DAY_OF_WEEK) - 3
+        return if(calendar.get(Calendar.DAY_OF_WEEK) == 7){
+            calendar.get(Calendar.DAY_OF_WEEK) - 1
         }else{
-            return calendar.get(Calendar.DAY_OF_WEEK) - 2
+            calendar.get(Calendar.DAY_OF_WEEK)
         }
     }
+
 
 }

@@ -7,6 +7,8 @@ import com.NonEstArsMea.agz_time_table.domain.TimeTableUseCase.TimeTableReposito
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import org.apache.commons.csv.CSVFormat
@@ -15,7 +17,7 @@ import org.apache.commons.csv.CSVParser
 
 object TimeTableRepositoryImpl : TimeTableRepository {
 
-    private var weekTimeTable = MutableLiveData<ArrayList<ArrayList<CellApi>>>()
+    private var weekTimeTable = MutableLiveData<List<List<CellApi>>>()
     private var mainParam = MutableLiveData<MainParam>()
     private var listOfMainParam = MutableLiveData<ArrayList<MainParam>>()
     private var listOfFavoriteMainParam = MutableLiveData<ArrayList<MainParam>>()
@@ -35,7 +37,6 @@ object TimeTableRepositoryImpl : TimeTableRepository {
                 .withTrim()
                 .withDelimiter(';')
         )
-        var lessonOffset = 0
         var listOfLes = mutableListOf<Int>()
         var listTT = ArrayList<CellApi>()
         for (a in 1..5) {
@@ -92,7 +93,7 @@ object TimeTableRepositoryImpl : TimeTableRepository {
         } as ArrayList<CellApi>
 
         listOfLes = listOfLes.sorted().toMutableList()
-
+        var lessonOffset = 0
         // Список может быть пустым
         if (!listTT.isEmpty()) {
             // ПРоверка первого элемента
@@ -163,6 +164,13 @@ object TimeTableRepositoryImpl : TimeTableRepository {
         return@withContext listTT
     }
 
+    private fun initializeEmptySchedule(listTT: ArrayList<CellApi>): ArrayList<CellApi>  {
+        for (a in 1..5) {
+            listTT.add(CellApi(noEmpty = false))
+        }
+        return listTT
+    }
+
     fun getMainParam(): MutableLiveData<MainParam> {
         return mainParam
     }
@@ -171,7 +179,7 @@ object TimeTableRepositoryImpl : TimeTableRepository {
         return listOfFavoriteMainParam
     }
 
-    fun getArrayOfWeekTimeTable(): MutableLiveData<ArrayList<ArrayList<CellApi>>> {
+    fun getArrayOfWeekTimeTable(): MutableLiveData<List<List<CellApi>>> {
         return weekTimeTable
     }
 
@@ -181,7 +189,7 @@ object TimeTableRepositoryImpl : TimeTableRepository {
 
     fun setMainParam(newMainParam: MainParam) {
         if (mainParam.value != newMainParam) {
-            mainParam.value = newMainParam
+            mainParam.postValue(newMainParam)
         }
     }
 
@@ -198,30 +206,87 @@ object TimeTableRepositoryImpl : TimeTableRepository {
         theme.value = newTheme
     }
 
+    suspend fun getExams(data: String, mainParam: String): ArrayList<CellApi> =
+        withContext(Dispatchers.Default) {
+            val csvParser = CSVParser(
+                data.reader(), CSVFormat.DEFAULT
+                    .withFirstRecordAsHeader()
+                    .withIgnoreHeaderCase()
+                    .withTrim()
+                    .withDelimiter(';')
+            )
 
-    override suspend fun getWeekTimeTable(
-        newData: String,
-    ): ArrayList<ArrayList<CellApi>> {
-        weekTimeTable.value = arrayListOf()
-        val dayOfWeek = DateRepositoryImpl.getArrayOfWeekDate()
-        if (mainParam.value != null) {
+            var listTT = ArrayList<CellApi>()
+            var currentExam = CellApi(noEmpty = false)
+            var lastDate = ""
+            var lastSubject = ""
+
             try {
-                coroutineScope {
-                    for (a in 0..5) {
-                        weekTimeTable.value!!.add(arrayListOf())
-                        weekTimeTable.value!![a] =
-                            preparationData(newData, dayOfWeek[a], mainParam.value!!.name)
+                for (line in csvParser) {
+                    val group = line.get(0)
+                    val aud = line.get(3)
+                    val name = line.get(6)
+                    val subject = line.get(8)
+                    val subj_type = line.get(9)
+                    val date = line.get(10).replace('.', '-')
+                    val themas = line.get(12)
+
+                    if ((mainParam == group) and (Methods.validExams(subj_type))) {
+                        if ((lastDate != date) or (lastSubject != subject)) {
+                            listTT.add(currentExam)
+                            currentExam = CellApi(noEmpty = true)
+                            lastDate = date
+                            lastSubject = subject
+                        }
+                        currentExam.apply {
+                            if (teacher == null) {
+                                teacher = name
+                                studyGroup = group
+                                classroom = aud
+                                this.subject = subject
+                                subjectNumber = listTT.size
+                                subjectType = "$themas ${Methods.replaceText(subj_type)}"
+                                color = Methods.setColor(subj_type)
+                                noEmpty = true
+                                this.date = date
+                                startTime = getStartTime(number = line.get(2).toInt())
+                                endTime = getEndTime(number = line.get(2).toInt())
+                            } else {
+                                if (name !in teacher!!) {
+                                    teacher += "\n${name}"
+                                }
+                                if (aud !in classroom!!) {
+                                    classroom += "\n${aud}"
+                                }
+                            }
+                        }
+
                     }
+
                 }
             } catch (e: Exception) {
-                Log.e(
-                    "my-tag",
-                    e.toString() + " problem with getWeekTimeTable in TimeTableRepositoryImpl"
-                )
+                Log.e("TTRI", e.toString() + " $listTT.size")
             }
+            return@withContext listTT
         }
 
-        return weekTimeTable.value!!
+
+    override suspend fun getWeekTimeTable(newData: String): List<List<CellApi>> {
+        val dayOfWeek = DateRepositoryImpl.getArrayOfWeekDate()
+        return mainParam.value?.let { mainParamValue ->
+            try {
+                coroutineScope {
+                    dayOfWeek.map { day ->
+                        async {
+                            preparationData(newData, day, mainParamValue.name)
+                        }
+                    }.awaitAll()
+                }
+            } catch (e: Exception) {
+                Log.e("my-tag", e.toString() + " problem with getWeekTimeTable in TimeTableRepositoryImpl")
+                emptyList()
+            }
+        } ?: emptyList()
     }
 
 
@@ -234,7 +299,6 @@ object TimeTableRepositoryImpl : TimeTableRepository {
                 .withDelimiter(';')
         )
 
-        var i = 0
         val listGroup = ArrayList<MainParam>()
         val listAud = ArrayList<MainParam>()
         val listName = ArrayList<MainParam>()
@@ -256,12 +320,19 @@ object TimeTableRepositoryImpl : TimeTableRepository {
 
         }
         listGroup.sortBy { it.name }
-        listGroup.forEach { it.position = i++ }
+        listGroup.forEachIndexed { index, mainParam -> mainParam.position = index }
+
         listAud.sortBy { it.name }
-        listAud.forEach { it.position = i++ }
+        listAud.forEachIndexed { index, mainParam -> mainParam.position = index }
+
         listName.sortBy { it.name }
-        listName.forEach { it.position = i++ }
-        listOfMainParam.value = (listGroup + listAud + listName) as ArrayList<MainParam>
+        listName.forEachIndexed { index, mainParam -> mainParam.position = index }
+
+        listOfMainParam.value = ArrayList<MainParam>().apply {
+            addAll(listGroup)
+            addAll(listAud)
+            addAll(listName)
+        }
     }
 
     fun getNewListOfMainParam(): MutableLiveData<ArrayList<MainParam>> {
@@ -305,12 +376,9 @@ object TimeTableRepositoryImpl : TimeTableRepository {
     }
 
     fun updateFavoriteParamList(newMainParam: MainParam) {
-        var list = listOfFavoriteMainParam.value
-        if (list == null) {
-            list = arrayListOf()
-        }
+        val list = (listOfFavoriteMainParam.value?.toMutableList() ?: mutableListOf()) as ArrayList<MainParam>
+
         with(list) {
-            Log.e("added new item", newMainParam.toString())
 
             if (newMainParam !in this) {
                 this.add(0, newMainParam)
@@ -325,7 +393,7 @@ object TimeTableRepositoryImpl : TimeTableRepository {
                 this.removeLast()
             }
         }
-        listOfFavoriteMainParam.value = list!!
+        listOfFavoriteMainParam.value = list
     }
 
 

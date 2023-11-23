@@ -3,6 +3,11 @@ package com.NonEstArsMea.agz_time_table.domain
 import com.NonEstArsMea.agz_time_table.R
 
 object Methods {
+
+    fun validExams(type: String): Boolean{
+        val exams = listOf("Курс.р", "Ку", "Контр.р", "ЗаО", "э", "эк", "экз", "экз.")
+        return type in exams
+    }
     fun replaceText(text: String): String {
     return when(text){
         "ПЗ" -> "Практическое занятие"

@@ -14,6 +14,9 @@
         <action
             android:id="@+id/action_timeTableFragment_to_castomDateFragment"
             app:destination="@id/castomDateFragment" />
+        <action
+            android:id="@+id/action_timeTableFragment_to_examsFragment"
+            app:destination="@id/examsFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingFragment"
@@ -38,7 +41,7 @@
     </fragment>
     <fragment
         android:id="@+id/castomDateFragment"
-        android:name="com.NonEstArsMea.agz_time_table.present.customDateView.CastomDateFragment"
+        android:name="com.NonEstArsMea.agz_time_table.present.customDateFragment.CastomDateFragment"
         android:label="fragment_castom_date"
         tools:layout="@layout/fragment_castom_date" >
         <action
@@ -55,6 +58,16 @@
             app:argType="integer" />
         <argument
             android:name="mainParam"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/examsFragment"
+        android:name="com.NonEstArsMea.agz_time_table.present.examsFragment.ExamsFragment"
+        android:label="ExamsFragment" >
+        <action
+            android:id="@+id/action_examsFragment_to_timeTableFragment"
+            app:destination="@id/timeTableFragment" />
+        <argument android:name="nameParam"
             app:argType="string" />
     </fragment>
 </navigation>

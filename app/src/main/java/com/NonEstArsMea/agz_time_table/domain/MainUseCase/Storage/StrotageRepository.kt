@@ -16,6 +16,6 @@ interface StrotageRepository {
     fun getThemeFromStorage():Int
     fun setDataInStorage(mainParam: MainParam?,
                          favMainParamList: ArrayList<MainParam>?,
-                         lastWeekTimeTable: ArrayList<ArrayList<CellApi>>?,
+                         lastWeekTimeTable: List<List<CellApi>>?,
                          theme: Int?)
 }

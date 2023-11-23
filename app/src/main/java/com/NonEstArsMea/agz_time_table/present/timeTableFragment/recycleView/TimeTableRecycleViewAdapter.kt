@@ -12,7 +12,7 @@ class TimeTableRecycleViewAdapter : ListAdapter<CellApi, RecyclerView.ViewHolder
     TimeTableItemDiffCallback()
 ) {
 
-    val mapper = CellMapper()
+    var onHolderClickListener: ((Int) -> (Unit))? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -33,7 +33,13 @@ class TimeTableRecycleViewAdapter : ListAdapter<CellApi, RecyclerView.ViewHolder
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is TimeTableLessonViewHolder -> holder.bind(getItem(position))
+            is TimeTableLessonViewHolder -> {
+                holder.bind(getItem(position))
+                holder.view.setOnLongClickListener{
+                    onHolderClickListener?.invoke(position)
+                    true
+                }
+            }
             is BreakCellViewHolder -> holder.bind(getItem(position))
         }
 

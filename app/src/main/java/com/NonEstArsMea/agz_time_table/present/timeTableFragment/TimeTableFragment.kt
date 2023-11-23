@@ -8,19 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation.findNavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.data.DateRepositoryImpl
-import com.NonEstArsMea.agz_time_table.data.TimeTableRepositoryImpl
 import com.NonEstArsMea.agz_time_table.databinding.TimeTableFragmentBinding
-import com.NonEstArsMea.agz_time_table.present.customDateView.CastomDateFragment
 import com.google.android.material.datepicker.MaterialDatePicker
 import java.util.Calendar
 
@@ -90,21 +85,24 @@ class TimeTableFragment : Fragment() {
         // Создание пэйджера
         viewPager = binding.viewPagerTimeTableFragment
         viewPagerAdapter = ViewPagerAdapter(this)
+        viewPager.isSaveEnabled = false
         viewPager.adapter = viewPagerAdapter
-
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             @SuppressLint("UseCompatLoadingForDrawables")
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                days.toList().forEach {
-                    it.setTextAppearance(R.style.MainTextViewStyle_WeekNumber)
-                    it.background = resources.getDrawable(R.drawable.main_surface, context!!.theme)
+                context?.let{ context ->
+                    days.toList().forEach {
+                        it.setTextAppearance(R.style.MainTextViewStyle_WeekNumber)
+                        it.background = resources.getDrawable(R.drawable.main_surface, context.theme)
+                    }
+                    with(days[position]) {
+                        this.setTextAppearance(R.style.MainTextViewStyle_DayNowWeekNumber)
+                        this.background =
+                            resources.getDrawable(R.drawable.break_cell_background, context.theme)
+                    }
                 }
-                with(days[position]) {
-                    this.setTextAppearance(R.style.MainTextViewStyle_DayNowWeekNumber)
-                    this.background =
-                        resources.getDrawable(R.drawable.break_cell_background, context!!.theme)
-                }
+
             }
         })
 
@@ -129,11 +127,10 @@ class TimeTableFragment : Fragment() {
 
 
 
-        // Слушатель на расписание недели (при перелистывании недели)
-        vm.timeTableChanged.observe(viewLifecycleOwner) {
-            if (it.isNotEmpty()) {
+        vm.timeTableChanged.observe(viewLifecycleOwner) { updatedList ->
+            if (updatedList.isNotEmpty()) {
                 viewPager.adapter = viewPagerAdapter
-                viewPagerAdapter.setData(it)
+                viewPagerAdapter.setData(updatedList)
                 binding.viewPagerTimeTableFragment.currentItem = DateRepositoryImpl.getDayOfWeek()
             }
 
@@ -146,28 +143,24 @@ class TimeTableFragment : Fragment() {
         vm.mainParam.observe(viewLifecycleOwner) {
             if(binding.mainParam.text != it.name){
                 binding.mainParam.text = it.name
+                vm.getNewTimeTable()
+                viewPagerAdapter.clearData()
             }
-            binding.viewPagerTimeTableFragment.setCurrentItem(DateRepositoryImpl.getDayOfWeek(),true)
         }
 
 
         binding.setDateButton.setOnClickListener {
             datePicker.show(requireActivity().supportFragmentManager, datePicker.toString())
         }
-        /**
-         *  Нажатие на пикер
-         *  datePicker.clearOnPositiveButtonClickListeners() - исправляет интерестный баг
-         *  Слушатель с предыдущего раза не выключается, и фрагменты начинают создаваться
-         *  по несколько штук
-         */
+        datePicker.clearOnPositiveButtonClickListeners()
         datePicker.addOnPositiveButtonClickListener {
+
             val calender = Calendar.getInstance()
             calender.timeInMillis = it
             val day = calender.get(Calendar.DAY_OF_MONTH)
             val month = calender.get(Calendar.MONTH)
             val year = calender.get(Calendar.YEAR)
             val mainParam = vm.getMainParam()
-            Log.e("picker", "$day $month $year $mainParam ")
             try {
                 findNavController().navigate(TimeTableFragmentDirections
                     .actionTimeTableFragmentToCastomDateFragment(
@@ -175,13 +168,9 @@ class TimeTableFragment : Fragment() {
                         month = month,
                         year = year,
                         mainParam = mainParam))
-                datePicker.clearOnPositiveButtonClickListeners()
             }catch (_: Exception){
 
             }
-
-
-
         }
         binding.monthDate.text = DateRepositoryImpl.monthAndDayNow()
     }

@@ -1,114 +1,112 @@
-package com.NonEstArsMea.agz_time_table.present.timeTableFragment
+    package com.NonEstArsMea.agz_time_table.present.timeTableFragment
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.NonEstArsMea.agz_time_table.data.DataRepositoryImpl
-import com.NonEstArsMea.agz_time_table.data.DateRepositoryImpl
-import com.NonEstArsMea.agz_time_table.data.StorageRepositoryImpl
-import com.NonEstArsMea.agz_time_table.data.TimeTableRepositoryImpl
-import com.NonEstArsMea.agz_time_table.data.TimeTableRepositoryImpl.getListOfMainParam
-import com.NonEstArsMea.agz_time_table.domain.MainUseCase.Storage.GetLastWeekFromeStorageUseCase
-import com.NonEstArsMea.agz_time_table.domain.MainUseCase.Storage.GetMainParamFromStorageUseCase
-import com.NonEstArsMea.agz_time_table.domain.TimeTableUseCase.GetWeekTimeTableListUseCase
-import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
-import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
-import java.util.Calendar
+    import android.util.Log
+    import androidx.lifecycle.LiveData
+    import androidx.lifecycle.MutableLiveData
+    import androidx.lifecycle.ViewModel
+    import androidx.lifecycle.viewModelScope
+    import com.NonEstArsMea.agz_time_table.data.DataRepositoryImpl
+    import com.NonEstArsMea.agz_time_table.data.DateRepositoryImpl
+    import com.NonEstArsMea.agz_time_table.data.StorageRepositoryImpl
+    import com.NonEstArsMea.agz_time_table.data.TimeTableRepositoryImpl
+    import com.NonEstArsMea.agz_time_table.data.TimeTableRepositoryImpl.getListOfMainParam
+    import com.NonEstArsMea.agz_time_table.domain.MainUseCase.Storage.GetLastWeekFromeStorageUseCase
+    import com.NonEstArsMea.agz_time_table.domain.MainUseCase.Storage.GetMainParamFromStorageUseCase
+    import com.NonEstArsMea.agz_time_table.domain.TimeTableUseCase.GetWeekTimeTableListUseCase
+    import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
+    import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
+    import kotlinx.coroutines.CoroutineScope
+    import kotlinx.coroutines.Dispatchers
+    import kotlinx.coroutines.Job
+    import kotlinx.coroutines.SupervisorJob
+    import kotlinx.coroutines.launch
+    import java.util.Calendar
 
-class TimeTableViewModel(
-    private val getWeekTimeTableUseCase: GetWeekTimeTableListUseCase,
-): ViewModel() {
-
-
-    private var jobVM = SupervisorJob()
-    private val uiScope = CoroutineScope(Dispatchers.Main + jobVM)
-
-    private var job: Job = uiScope.launch {  }
+    class TimeTableViewModel(
+        private val getWeekTimeTableUseCase: GetWeekTimeTableListUseCase,
+    ): ViewModel() {
 
 
-    private var _timeTableChanged = TimeTableRepositoryImpl.getArrayOfWeekTimeTable()
-    val timeTableChanged: LiveData<ArrayList<ArrayList<CellApi>>>
-        get() = _timeTableChanged
-
-    // хранит список с расписанием
-    val dataLiveData = DataRepositoryImpl.getData()
-
-    // хранит состояние загрузки
-    private val _loading = MutableLiveData<Boolean>()
-    val loading: LiveData<Boolean>
-        get() = _loading
-
-    // хранит Calendar
-    private val _calendarLiveData = DateRepositoryImpl.getCalendarLD()
-    val calendarLiveData: LiveData<Calendar>
-        get() = _calendarLiveData
-
-    var loadCount: Boolean = false
+        private var job: Job = viewModelScope.launch {  }
 
 
-    // Хранит параметр поиска
-    private val _mainParam = TimeTableRepositoryImpl.getMainParam()
-    val mainParam: LiveData<MainParam>
-        get() = _mainParam
+        private var _timeTableChanged = TimeTableRepositoryImpl.getArrayOfWeekTimeTable()
+        val timeTableChanged: LiveData<List<List<CellApi>>>
+            get() = _timeTableChanged
+
+        // хранит список с расписанием
+        val dataLiveData = DataRepositoryImpl.getData()
+
+        // хранит состояние загрузки
+        private val _loading = MutableLiveData<Boolean>()
+        val loading: LiveData<Boolean>
+            get() = _loading
+
+        // хранит Calendar
+        private val _calendarLiveData = DateRepositoryImpl.getCalendarLD()
+        val calendarLiveData: LiveData<Calendar>
+            get() = _calendarLiveData
+
+        private var loadCount: Boolean = false
 
 
-    fun getMainParam():String{
-        return mainParam.value!!.name
-    }
-    // создание массивов с расписанием
-    fun getTimeTable(newTime: Int? = null){
-            if (loadCount != true) {
-                getNewTimeTable()
-                uiScope.launch {
-                    getListOfMainParam(dataLiveData.value!!)
-                }
-                loadCount = true
-            }
-    }
+        // Хранит параметр поиска
+        private val _mainParam = TimeTableRepositoryImpl.getMainParam()
+        val mainParam: LiveData<MainParam>
+            get() = _mainParam
 
-    fun getNewTimeTable(newTime: Int? = null){
-        if(newTime != null){
-            DateRepositoryImpl.setNewCalendar(newTime)
+
+        fun getMainParam():String{
+            return TimeTableRepositoryImpl.getMainParam().value!!.name
         }
-        if(dataLiveData.value != null) {
-            // для прерывания предыдущих корутин
-            if (job.isActive) {
-                job.cancel()
+        // создание массивов с расписанием
+        fun getTimeTable(newTime: Int? = null){
+                if (loadCount != true) {
+                    getNewTimeTable()
+                    viewModelScope.launch {
+                        getListOfMainParam(dataLiveData.value!!)
+                    }
+                    loadCount = true
+                }
+        }
+
+        fun getNewTimeTable(newTime: Int? = null){
+            if(newTime != null){
+                DateRepositoryImpl.setNewCalendar(newTime)
             }
-            job = uiScope.launch {
-                try {
-                    setConditionLoading(true)
-                    _timeTableChanged.value = getWeekTimeTableUseCase.execute(dataLiveData.value!!)
-                    setConditionLoading(false)
-                } catch (e: Exception) {
-                    Log.e("Flow exception", e.toString())
+            if(dataLiveData.value != null) {
+                // для прерывания предыдущих корутин
+                if (job.isActive) {
+                    job.cancel()
+                }
+                job = viewModelScope.launch {
+                    try {
+                        setConditionLoading(true)
+                        _timeTableChanged.value = getWeekTimeTableUseCase.execute(dataLiveData.value!!)
+                        setConditionLoading(false)
+                    } catch (e: Exception) {
+                        Log.e("Flow exception", e.toString())
+                    }
                 }
             }
         }
+
+
+        /**
+         * Остановка корутины после завершения работы
+         */
+        override fun onCleared() {
+            super.onCleared()
+            job.cancel()
+        }
+
+        /**
+        Установка состояние загрузки
+         */
+        fun setConditionLoading(condition: Boolean){
+            _loading.value = condition
+        }
+
+
+
     }
-
-
-    /**
-     * Остановка корутины после завершения работы
-     */
-    override fun onCleared() {
-        super.onCleared()
-        job.cancel()
-    }
-
-    /**
-    Установка состояние загрузки
-     */
-    fun setConditionLoading(condition: Boolean){
-        _loading.value = condition
-    }
-
-
-
-}
