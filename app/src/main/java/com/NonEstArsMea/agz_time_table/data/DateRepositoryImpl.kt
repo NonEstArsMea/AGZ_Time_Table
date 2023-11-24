@@ -7,21 +7,15 @@ import java.util.Calendar
 
 object DateRepositoryImpl: DateRepository {
 
-    private var calendar:Calendar = Calendar.getInstance().apply {
-        firstDayOfWeek = Calendar.MONDAY
-    }
+    private var calendar:Calendar = Calendar.getInstance()
 
-    private val constCalendar:Calendar = Calendar.getInstance().apply {
-        firstDayOfWeek = Calendar.MONDAY
-    }
+    private val constCalendar:Calendar = Calendar.getInstance()
 
     private val calendarLiveData = MutableLiveData<Calendar>()
 
     fun setDayNow(){
-        if (calendar != constCalendar){
-            calendar = constCalendar
-            updateCalendar()
-        }
+        calendar = constCalendar
+        updateCalendar()
     }
 
     override fun monthToString(number: Int): String {

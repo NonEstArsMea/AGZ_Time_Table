@@ -47,7 +47,11 @@
         val calendarLiveData: LiveData<Calendar>
             get() = _calendarLiveData
 
-        private var loadCount: Boolean = false
+        private var dataIsLoad: Boolean = false
+
+        private var dataWasChanged: Boolean = true
+
+        private var lastMainParam: String = ""
 
 
         // Хранит параметр поиска
@@ -61,12 +65,12 @@
         }
         // создание массивов с расписанием
         fun getTimeTable(newTime: Int? = null){
-                if (loadCount != true) {
+                if (dataIsLoad != true) {
                     getNewTimeTable()
                     viewModelScope.launch {
                         getListOfMainParam(dataLiveData.value!!)
                     }
-                    loadCount = true
+                    dataIsLoad = true
                 }
         }
 
@@ -79,6 +83,7 @@
                 if (job.isActive) {
                     job.cancel()
                 }
+                dataWasChanged = true
                 job = viewModelScope.launch {
                     try {
                         setConditionLoading(true)
@@ -88,6 +93,25 @@
                         Log.e("Flow exception", e.toString())
                     }
                 }
+            }
+        }
+
+        fun dataWasChanged():Boolean{
+            return if(dataWasChanged){
+                dataWasChanged = false
+                true
+            }else{
+                false
+            }
+        }
+
+        fun checkMainParam(){
+            Log.e("name", lastMainParam.toString())
+            Log.e("name", _mainParam.value?.name.toString())
+            if(lastMainParam != _mainParam.value?.name){
+                lastMainParam = _mainParam.value?.name!!
+                Log.e("newTT", _mainParam.value?.name.toString())
+                getNewTimeTable()
             }
         }
 

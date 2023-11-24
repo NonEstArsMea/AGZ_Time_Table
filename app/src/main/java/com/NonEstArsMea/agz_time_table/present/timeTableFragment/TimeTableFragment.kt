@@ -122,25 +122,19 @@ class TimeTableFragment : Fragment() {
 
 
         vm.timeTableChanged.observe(viewLifecycleOwner) { updatedList ->
-            if (updatedList.isNotEmpty()) {
                 viewPager.adapter = viewPagerAdapter
                 viewPagerAdapter.setData(updatedList)
-                Log.e("TTRI", DateRepositoryImpl.getDayOfWeek().toString())
                 binding.viewPagerTimeTableFragment.currentItem = DateRepositoryImpl.getDayOfWeek()
             }
 
-        }
 
         vm.loading.observe(viewLifecycleOwner) {
             binding.progressBar.isVisible = it
         }
 
         vm.mainParam.observe(viewLifecycleOwner) {
-            if(binding.mainParam.text != it.name){
-                binding.mainParam.text = it.name
-                vm.getNewTimeTable()
-                viewPagerAdapter.clearData()
-            }
+            binding.mainParam.text = it.name
+            vm.checkMainParam()
         }
 
 
