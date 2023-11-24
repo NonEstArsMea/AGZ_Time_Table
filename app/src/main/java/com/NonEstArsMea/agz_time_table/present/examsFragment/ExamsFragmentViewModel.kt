@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.NonEstArsMea.agz_time_table.data.DataRepositoryImpl
 import com.NonEstArsMea.agz_time_table.data.TimeTableRepositoryImpl
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
@@ -14,10 +15,8 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 
 class ExamsFragmentViewModel: ViewModel() {
-    private var jobVM = SupervisorJob()
-    private val uiScope = CoroutineScope(Dispatchers.Main + jobVM)
 
-    private var job: Job = uiScope.launch {  }
+    private var job: Job = viewModelScope.launch {  }
 
 
     // хранит состояние загрузки
@@ -33,15 +32,16 @@ class ExamsFragmentViewModel: ViewModel() {
         if (job.isActive) {
             job.cancel()
         }
-        job = uiScope.launch {
+        job = viewModelScope.launch {
             try {
                 setConditionLoading(true)
-                Log.e("CDFVM", mainParam.toString())
-                _timeTableChanged.value = TimeTableRepositoryImpl.getExams(
-                    DataRepositoryImpl.getContent(), mainParam)
+                Log.e("EFVM", mainParam.toString())
+                _timeTableChanged.postValue(TimeTableRepositoryImpl.getExams(
+                    DataRepositoryImpl.getContent(), mainParam))
+                Log.e("EFVM", _timeTableChanged.value.toString())
                 setConditionLoading(false)
             } catch (e: Exception) {
-                Log.e("CDFVM", e.toString())
+                Log.e("EFVM", e.toString())
             }
         }
     }

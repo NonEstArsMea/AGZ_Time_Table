@@ -125,6 +125,7 @@ class TimeTableFragment : Fragment() {
             if (updatedList.isNotEmpty()) {
                 viewPager.adapter = viewPagerAdapter
                 viewPagerAdapter.setData(updatedList)
+                Log.e("TTRI", DateRepositoryImpl.getDayOfWeek().toString())
                 binding.viewPagerTimeTableFragment.currentItem = DateRepositoryImpl.getDayOfWeek()
             }
 
@@ -167,12 +168,9 @@ class TimeTableFragment : Fragment() {
             }
         }
         binding.monthDate.text = DateRepositoryImpl.monthAndDayNow()
+        setButtonNumbers()
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewPager.setCurrentItem(0)
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -186,7 +184,6 @@ class TimeTableFragment : Fragment() {
     }
 
     private fun updateData(newTime: Int? = null) {
-        binding.viewPagerTimeTableFragment.currentItem = DateRepositoryImpl.getDayOfWeek()
         vm.getNewTimeTable(newTime)
         binding.monthDate.text = DateRepositoryImpl.monthAndDayNow()
         setButtonNumbers()

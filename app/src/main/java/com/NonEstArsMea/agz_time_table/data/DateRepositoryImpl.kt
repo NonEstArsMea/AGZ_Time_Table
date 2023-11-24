@@ -1,5 +1,6 @@
 package com.NonEstArsMea.agz_time_table.data
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.NonEstArsMea.agz_time_table.domain.DateRepository
 import java.util.Calendar
@@ -10,7 +11,9 @@ object DateRepositoryImpl: DateRepository {
         firstDayOfWeek = Calendar.MONDAY
     }
 
-    private val constCalendar:Calendar = Calendar.getInstance()
+    private val constCalendar:Calendar = Calendar.getInstance().apply {
+        firstDayOfWeek = Calendar.MONDAY
+    }
 
     private val calendarLiveData = MutableLiveData<Calendar>()
 
@@ -30,16 +33,17 @@ object DateRepositoryImpl: DateRepository {
     }
 
     override fun dayNumberOnButton(): List<String> {
-        var days = mutableListOf<String>()
+        val days = mutableListOf<String>()
 
-        var razn = calendar.get(Calendar.DAY_OF_WEEK)
+        val razn = (calendar.get(Calendar.DAY_OF_WEEK) + 5) % 7
+        Log.e("TTRI", razn.toString())
         calendar.add(Calendar.DAY_OF_MONTH,- razn)
 
         for(a in 0..5){
             days.add(calendar.get(Calendar.DAY_OF_MONTH).toString())
             calendar.add(Calendar.DAY_OF_MONTH, 1)
         }
-
+        Log.e("TTRI", days.toString())
         calendar.add(Calendar.DAY_OF_WEEK, razn - 6)
 
         return days
@@ -78,7 +82,7 @@ object DateRepositoryImpl: DateRepository {
     override fun getArrayOfWeekDate(): ArrayList<String> {
         val days = ArrayList<String>()
 
-        val razn = calendar.get(Calendar.DAY_OF_WEEK)
+        val razn = (calendar.get(Calendar.DAY_OF_WEEK) + 5) % 7
         calendar.add(Calendar.DAY_OF_MONTH,-razn)
 
         var dayNow = ""
@@ -97,17 +101,18 @@ object DateRepositoryImpl: DateRepository {
             days.add("${dayNow}-${monthNow}-${yearNow}")
             calendar.add(Calendar.DAY_OF_MONTH, 1)
         }
-
         calendar.add(Calendar.DAY_OF_WEEK, razn - 6)
         return days
     }
 
     override fun getDayOfWeek(): Int {
-        return if(calendar.get(Calendar.DAY_OF_WEEK) == 7){
-            calendar.get(Calendar.DAY_OF_WEEK) - 1
-        }else{
-            calendar.get(Calendar.DAY_OF_WEEK)
+        val dayOfWeek = (calendar.get(Calendar.DAY_OF_WEEK) + 5) % 7
+        Log.e("TTRI", dayOfWeek.toString())
+        if(dayOfWeek == 7){
+            calendar.add(Calendar.DAY_OF_MONTH, 1)
+            return 1
         }
+        return dayOfWeek
     }
 
 

@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity(),
 
     override fun onStart() {
         super.onStart()
-        binding.bottomInfo.selectedItemId = R.id.menu_exams
+        //binding.bottomInfo.selectedItemId = R.id.menu_exams
         binding.bottomInfo.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.menu_tt -> {

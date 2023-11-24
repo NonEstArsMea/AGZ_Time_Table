@@ -164,12 +164,6 @@ object TimeTableRepositoryImpl : TimeTableRepository {
         return@withContext listTT
     }
 
-    private fun initializeEmptySchedule(listTT: ArrayList<CellApi>): ArrayList<CellApi>  {
-        for (a in 1..5) {
-            listTT.add(CellApi(noEmpty = false))
-        }
-        return listTT
-    }
 
     fun getMainParam(): MutableLiveData<MainParam> {
         return mainParam
@@ -215,12 +209,12 @@ object TimeTableRepositoryImpl : TimeTableRepository {
                     .withTrim()
                     .withDelimiter(';')
             )
-
-            var listTT = ArrayList<CellApi>()
+            Log.e("TTRI", mainParam.toString() + " ${data.length}.size")
+            val listTT = ArrayList<CellApi>()
             var currentExam = CellApi(noEmpty = false)
             var lastDate = ""
             var lastSubject = ""
-
+            Log.e("TTRI", csvParser.toString() + " $listTT.size")
             try {
                 for (line in csvParser) {
                     val group = line.get(0)
@@ -230,7 +224,6 @@ object TimeTableRepositoryImpl : TimeTableRepository {
                     val subj_type = line.get(9)
                     val date = line.get(10).replace('.', '-')
                     val themas = line.get(12)
-
                     if ((mainParam == group) and (Methods.validExams(subj_type))) {
                         if ((lastDate != date) or (lastSubject != subject)) {
                             listTT.add(currentExam)
@@ -267,6 +260,7 @@ object TimeTableRepositoryImpl : TimeTableRepository {
             } catch (e: Exception) {
                 Log.e("TTRI", e.toString() + " $listTT.size")
             }
+            listTT.removeAt(0)
             return@withContext listTT
         }
 
@@ -319,6 +313,9 @@ object TimeTableRepositoryImpl : TimeTableRepository {
             }
 
         }
+
+
+
         listGroup.sortBy { it.name }
         listGroup.forEachIndexed { index, mainParam -> mainParam.position = index }
 
