@@ -15,6 +15,7 @@
 
 
         <item name="colorSurface">@color/black</item>
+        <item name="colorOnPrimary">@color/white</item>
 
         //кнопки bottomView
         <item name="colorButtonNormal">@color/black</item>

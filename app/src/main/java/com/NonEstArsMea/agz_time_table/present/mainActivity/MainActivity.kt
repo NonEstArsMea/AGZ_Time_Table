@@ -62,7 +62,6 @@ class MainActivity : AppCompatActivity(),
         super.onStart()
         val menu = binding.bottomInfo.menu
         mainViewModel.selectedItem.observe(this){
-            Log.e("selectedItem", it.toString())
             menu.getItem(it).isChecked = true
 
         }
@@ -136,9 +135,6 @@ class MainActivity : AppCompatActivity(),
         mainViewModel.setCustomTheme(MainViewModel.SYSTEM_THEME)
     }
 
-    override fun getOnBackInvokedDispatcher(): OnBackInvokedDispatcher {
-        return super.getOnBackInvokedDispatcher()
-    }
 
 
 }

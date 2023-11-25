@@ -51,6 +51,11 @@ object DateRepositoryImpl: DateRepository {
         return "$dayNow $monthStrNow - $yearNow"
     }
 
+    fun getStrDate(day:Int, month: Int, year: Int): String {
+
+        return "$day ${monthToString(month)} - $year"
+    }
+
     override fun setNewCalendar(newTime: Int){
         calendar.add(Calendar.DAY_OF_MONTH, newTime)
         updateCalendar()

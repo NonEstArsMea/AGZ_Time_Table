@@ -32,11 +32,12 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/setting_layout_header"
                 app:layout_constraintBottom_toBottomOf="parent">
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_marginTop="15dp"
-                    android:paddingBottom="@dimen/margine_all">
+                    android:paddingBottom="@dimen/margine_all"
+                    android:orientation="vertical">
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -44,9 +45,6 @@
                             style="?attr/textAppearanceHeadline2"
                             android:padding="10dp"
                             android:id="@+id/search_button"
-
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintLeft_toLeftOf="parent"
                             />
 
                         <androidx.recyclerview.widget.RecyclerView
@@ -55,10 +53,8 @@
                             android:nestedScrollingEnabled="false"
                             android:overScrollMode="never"
                             android:layout_width="match_parent"
-                            android:layout_height="0dp"
+                            android:layout_height="wrap_content"
 
-                            app:layout_constraintTop_toBottomOf="@id/search_button"
-                            app:layout_constraintLeft_toLeftOf="parent"
                             tools:listitem="@layout/favorite_param_card"
                             tools:itemCount="3"/>
 
@@ -71,9 +67,7 @@
                             android:layout_margin="@dimen/margine_all"
                             app:icon="@drawable/plus"
                             app:iconGravity="textStart"
-                            style="@style/Widget.Material3.Button.IconButton.Outlined"
-                            app:layout_constraintTop_toBottomOf="@id/rv_setting_view"
-                            app:layout_constraintLeft_toLeftOf="parent"/>
+                            style="@style/Widget.Material3.Button.IconButton.Outlined" />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -82,14 +76,11 @@
                         android:layout_marginTop="15dp"
                         android:id="@+id/theme_change"
                         style="@style/MainTextViewStyle.Header1"
-                        app:layout_constraintTop_toBottomOf="@id/search_bar"
-                        app:layout_constraintLeft_toLeftOf="parent"/>
+                        />
                     <com.google.android.material.button.MaterialButtonToggleGroup
                         android:id="@+id/toggleButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@id/theme_change"
-                        app:layout_constraintLeft_toLeftOf="parent"
                         android:gravity="center_horizontal"
 
                         style="?attr/materialButtonToggleGroupStyle">
@@ -127,18 +118,14 @@
                             android:paddingStart="@dimen/margine_all"
                             android:layout_marginTop="15dp"
                             android:id="@+id/contacts"
-                            style="@style/MainTextViewStyle.Header1"
-                            app:layout_constraintTop_toBottomOf="@id/toggleButton"
-                            app:layout_constraintLeft_toLeftOf="parent"/>
+                            style="@style/MainTextViewStyle.Header1" />
                         <com.google.android.material.card.MaterialCardView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/bot_button"
                             android:layout_marginTop="10dp"
                             android:padding="@dimen/margine_all"
-                            style="@style/MyCard"
-                            app:layout_constraintTop_toBottomOf="@id/contacts"
-                            app:layout_constraintLeft_toLeftOf="parent">
+                            style="@style/MyCard">
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
@@ -184,9 +171,7 @@
                             android:id="@+id/agz_button"
                             android:layout_marginTop="10dp"
                             android:padding="@dimen/margine_all"
-                            style="@style/MyCard"
-                            app:layout_constraintTop_toBottomOf="@id/bot_button"
-                            app:layout_constraintLeft_toLeftOf="parent">
+                            style="@style/MyCard">
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
@@ -233,10 +218,7 @@
                             android:layout_marginTop="10dp"
                             android:layout_marginBottom="25dp"
                             android:padding="@dimen/margine_all"
-                            style="@style/MyCard"
-                            app:layout_constraintTop_toBottomOf="@id/agz_button"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent">
+                            style="@style/MyCard">
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
@@ -276,7 +258,7 @@
 
                             </androidx.constraintlayout.widget.ConstraintLayout>
                         </com.google.android.material.card.MaterialCardView>
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
 
             </ScrollView>
 

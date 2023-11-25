@@ -40,7 +40,7 @@
         android:id="@+id/castomDateFragment"
         android:name="com.NonEstArsMea.agz_time_table.present.customDateFragment.CastomDateFragment"
         android:label="fragment_castom_date"
-        tools:layout="@layout/fragment_castom_date" >
+        tools:layout="@layout/castom_date_fragment" >
         <action
             android:id="@+id/action_castomDateFragment_to_timeTableFragment"
             app:destination="@id/timeTableFragment" />

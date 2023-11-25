@@ -11,7 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.NonEstArsMea.agz_time_table.databinding.FragmentCastomDateBinding
+import com.NonEstArsMea.agz_time_table.data.DateRepositoryImpl
+import com.NonEstArsMea.agz_time_table.databinding.CastomDateFragmentBinding
 import com.NonEstArsMea.agz_time_table.present.timeTableFragment.recycleView.TimeTableRecycleViewAdapter
 
 class CastomDateFragment : Fragment() {
@@ -25,7 +26,7 @@ class CastomDateFragment : Fragment() {
     private lateinit var onStartAndFinishListener: OnStartAndFinishListener
 
     private val adapter = TimeTableRecycleViewAdapter()
-    private var _binding: FragmentCastomDateBinding? = null
+    private var _binding: CastomDateFragmentBinding? = null
 
     private val vm: CastomDateFragmentViewModel by lazy {
         ViewModelProvider(this)[CastomDateFragmentViewModel::class.java]
@@ -61,7 +62,7 @@ class CastomDateFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentCastomDateBinding.inflate(layoutInflater)
+        _binding = CastomDateFragmentBinding.inflate(layoutInflater)
         return binding.root
     }
 
@@ -80,6 +81,8 @@ class CastomDateFragment : Fragment() {
             onStartAndFinishListener.closeFragment()
             findNavController().popBackStack()
         }
+
+        binding.dateText.text = DateRepositoryImpl.getStrDate(day, month, year)
 
     }
 
