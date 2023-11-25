@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -36,6 +37,13 @@ class CastomDateFragment : Fragment() {
             onStartAndFinishListener = context
         }else throw RuntimeException( "$context is empty")
 
+        val callback = object : OnBackPressedCallback( true){
+            override fun handleOnBackPressed() {
+                findNavController().popBackStack()
+                onStartAndFinishListener.closeFragment()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

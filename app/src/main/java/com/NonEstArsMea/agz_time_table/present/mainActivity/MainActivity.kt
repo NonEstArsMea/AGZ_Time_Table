@@ -2,9 +2,12 @@ package com.NonEstArsMea.agz_time_table.present.mainActivity
 
 import android.os.Bundle
 import android.text.Layout.Directions
+import android.util.Log
+import android.window.OnBackInvokedDispatcher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isGone
+import androidx.core.view.size
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.NonEstArsMea.agz_time_table.NavGraphDirections
@@ -19,6 +22,8 @@ import com.NonEstArsMea.agz_time_table.present.timeTableFragment.TimeTableFragme
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
+import androidx.activity.addCallback
+import com.NonEstArsMea.agz_time_table.data.StateRepositoryImpl
 
 
 class MainActivity : AppCompatActivity(),
@@ -47,7 +52,7 @@ class MainActivity : AppCompatActivity(),
         mainViewModel.getDataFromStorage()
 
         mainViewModel.theme.observe(this){
-            setCustomTheme(it)
+            mainViewModel.setCustomTheme(it)
         }
 
 
@@ -55,7 +60,13 @@ class MainActivity : AppCompatActivity(),
 
     override fun onStart() {
         super.onStart()
-        //binding.bottomInfo.selectedItemId = R.id.menu_exams
+        val menu = binding.bottomInfo.menu
+        mainViewModel.selectedItem.observe(this){
+            Log.e("selectedItem", it.toString())
+            menu.getItem(it).isChecked = true
+
+        }
+
         binding.bottomInfo.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.menu_tt -> {
@@ -75,16 +86,17 @@ class MainActivity : AppCompatActivity(),
                 }
 
                 R.id.menu_setting -> {
-
-                    findNavController(R.id.fragmentContainerView)
-                        .navigate(R.id.settingFragment)
-
+                    if(StateRepositoryImpl.stateNow() != StateRepositoryImpl.SETTING_ITEM){
+                        findNavController(R.id.fragmentContainerView)
+                            .navigate(R.id.settingFragment)
+                    }
                 }
 
 
             }
             return@setOnItemSelectedListener true
         }
+
         mainViewModel.loadDataFromURL()
         mainViewModel.isStartLoad.observe(this) {
             if (DataRepositoryImpl.isInternetConnected(this)) {
@@ -113,30 +125,21 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun setLightTheme() {
-        setCustomTheme(LIGHT_THEME)
+        mainViewModel.setCustomTheme(MainViewModel.LIGHT_THEME)
     }
 
     override fun setDarkTheme() {
-        setCustomTheme(NIGHT_THEME)
+        mainViewModel.setCustomTheme(MainViewModel.NIGHT_THEME)
     }
 
     override fun setSystemTheme() {
-        setCustomTheme(SYSTEM_THEME)
+        mainViewModel.setCustomTheme(MainViewModel.SYSTEM_THEME)
     }
 
-    fun setCustomTheme(themeNumber: Int){
-        when(themeNumber){
-            1 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-            2 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            3 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            else -> throw RuntimeException("Unknown number of theme")
-        }
+    override fun getOnBackInvokedDispatcher(): OnBackInvokedDispatcher {
+        return super.getOnBackInvokedDispatcher()
     }
 
-    companion object{
-        private const val SYSTEM_THEME = 1
-        private const val NIGHT_THEME = 2
-        private const val LIGHT_THEME = 3
-    }
+
 }
 

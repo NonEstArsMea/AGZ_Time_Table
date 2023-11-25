@@ -3,6 +3,7 @@ package com.NonEstArsMea.agz_time_table.present.settingFragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.NonEstArsMea.agz_time_table.R
+import com.NonEstArsMea.agz_time_table.data.StateRepositoryImpl
 import com.NonEstArsMea.agz_time_table.data.TimeTableRepositoryImpl
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
 
@@ -46,5 +47,9 @@ class SettingViewModel : ViewModel() {
 
     fun setMainParam(mainParam: MainParam) {
         TimeTableRepositoryImpl.setMainParam(mainParam)
+    }
+
+    fun startFragment(){
+        StateRepositoryImpl.setNewMenuItem(StateRepositoryImpl.SETTING_ITEM)
     }
 }

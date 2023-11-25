@@ -2,9 +2,11 @@ package com.NonEstArsMea.agz_time_table.present.examsFragment
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -35,10 +37,20 @@ class ExamsFragment: Fragment() {
             onStartAndFinishListener = context
         }else throw RuntimeException( "$context is empty")
 
+
+        val callback = object : OnBackPressedCallback( true){
+            override fun handleOnBackPressed() {
+                findNavController().popBackStack()
+                onStartAndFinishListener.closeFragment()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+
+
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        Log.e("staratSetting", "Setting FRAGMENT is startet")
         args?.let {
             mainParam = it.nameParam
         }
@@ -70,6 +82,8 @@ class ExamsFragment: Fragment() {
         }
 
     }
+
+
 
 
     interface OnStartAndFinishListener{

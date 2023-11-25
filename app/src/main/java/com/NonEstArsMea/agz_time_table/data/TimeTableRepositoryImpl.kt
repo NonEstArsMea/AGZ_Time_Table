@@ -224,7 +224,7 @@ object TimeTableRepositoryImpl : TimeTableRepository {
                     val subj_type = line.get(9)
                     val date = line.get(10).replace('.', '-')
                     val themas = line.get(12)
-                    if ((mainParam == group) and (Methods.validExams(subj_type))) {
+                    if ((mainParam == group) or ((mainParam == name)) and (Methods.validExams(subj_type))) {
                         if ((lastDate != date) or (lastSubject != subject)) {
                             listTT.add(currentExam)
                             currentExam = CellApi(noEmpty = true)
@@ -261,6 +261,7 @@ object TimeTableRepositoryImpl : TimeTableRepository {
                 Log.e("TTRI", e.toString() + " $listTT.size")
             }
             listTT.removeAt(0)
+            listTT.add(currentExam)
             return@withContext listTT
         }
 

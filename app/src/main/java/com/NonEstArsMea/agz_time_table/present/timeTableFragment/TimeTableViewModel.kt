@@ -7,6 +7,7 @@
     import androidx.lifecycle.viewModelScope
     import com.NonEstArsMea.agz_time_table.data.DataRepositoryImpl
     import com.NonEstArsMea.agz_time_table.data.DateRepositoryImpl
+    import com.NonEstArsMea.agz_time_table.data.StateRepositoryImpl
     import com.NonEstArsMea.agz_time_table.data.StorageRepositoryImpl
     import com.NonEstArsMea.agz_time_table.data.TimeTableRepositoryImpl
     import com.NonEstArsMea.agz_time_table.data.TimeTableRepositoryImpl.getListOfMainParam
@@ -42,10 +43,6 @@
         val loading: LiveData<Boolean>
             get() = _loading
 
-        // хранит Calendar
-        private val _calendarLiveData = DateRepositoryImpl.getCalendarLD()
-        val calendarLiveData: LiveData<Calendar>
-            get() = _calendarLiveData
 
         private var dataIsLoad: Boolean = false
 
@@ -64,8 +61,8 @@
             return TimeTableRepositoryImpl.getMainParam().value!!.name
         }
         // создание массивов с расписанием
-        fun getTimeTable(newTime: Int? = null){
-                if (dataIsLoad != true) {
+        fun getTimeTable(){
+                if (!dataIsLoad) {
                     getNewTimeTable()
                     viewModelScope.launch {
                         getListOfMainParam(dataLiveData.value!!)
@@ -96,21 +93,9 @@
             }
         }
 
-        fun dataWasChanged():Boolean{
-            return if(dataWasChanged){
-                dataWasChanged = false
-                true
-            }else{
-                false
-            }
-        }
-
         fun checkMainParam(){
-            Log.e("name", lastMainParam.toString())
-            Log.e("name", _mainParam.value?.name.toString())
             if(lastMainParam != _mainParam.value?.name){
                 lastMainParam = _mainParam.value?.name!!
-                Log.e("newTT", _mainParam.value?.name.toString())
                 getNewTimeTable()
             }
         }
@@ -129,6 +114,11 @@
          */
         fun setConditionLoading(condition: Boolean){
             _loading.value = condition
+        }
+
+
+        fun startFragment(){
+            StateRepositoryImpl.setNewMenuItem(StateRepositoryImpl.TIME_TABLE_ITEM)
         }
 
 

@@ -1,10 +1,12 @@
 package com.NonEstArsMea.agz_time_table.present.mainActivity
 
 import android.util.Log
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.NonEstArsMea.agz_time_table.R
+import com.NonEstArsMea.agz_time_table.data.StateRepositoryImpl
 import com.NonEstArsMea.agz_time_table.data.TimeTableRepositoryImpl
 import com.NonEstArsMea.agz_time_table.domain.MainUseCase.LoadData.LoadDataUseCase
 import com.NonEstArsMea.agz_time_table.domain.MainUseCase.Storage.GetFavoriteMainParamsFromStorageUseCase
@@ -37,6 +39,10 @@ class MainViewModel(
     val theme: LiveData<Int>
         get() = _theme
 
+    private var _selectedItem: MutableLiveData<Int> = StateRepositoryImpl.getMenuItem()
+    val selectedItem: LiveData<Int>
+        get() = _selectedItem
+
     private val _menuItem = MutableLiveData<Int>()
 
     // закгрузка данных и сохраниение
@@ -54,14 +60,6 @@ class MainViewModel(
     fun getMainParam():String{
         return TimeTableRepositoryImpl.getMainParam().value?.name.toString()
     }
-    fun isNewItem(item: Int): Boolean {
-        return if (_menuItem.value != item) {
-            _menuItem.value = R.id.menu_tt
-            true
-        } else
-            false
-
-    }
 
     fun getDataFromStorage() {
         TimeTableRepositoryImpl.setMainParam(getMainParamFromStorage.execute())
@@ -78,5 +76,19 @@ class MainViewModel(
             TimeTableRepositoryImpl.getArrayOfWeekTimeTable().value,
             _theme.value
         )
+    }
+
+    fun setCustomTheme(themeNumber: Int){
+        when(themeNumber){
+            SYSTEM_THEME -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+            NIGHT_THEME -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            LIGHT_THEME -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            else -> throw RuntimeException("Unknown number of theme")
+        }
+    }
+    companion object{
+        const val SYSTEM_THEME = 1
+        const val NIGHT_THEME = 2
+        const val LIGHT_THEME = 3
     }
 }

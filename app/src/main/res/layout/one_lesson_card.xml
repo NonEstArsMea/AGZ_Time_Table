@@ -78,7 +78,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Subject"
-                android:maxLines="2"
+                android:maxLines="4"
                 android:layout_marginEnd="@dimen/margine_all"
                 style="@style/MainTextViewStyle.Header1"
 

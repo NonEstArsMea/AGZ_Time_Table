@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.NonEstArsMea.agz_time_table.data.DataRepositoryImpl
+import com.NonEstArsMea.agz_time_table.data.StateRepositoryImpl
 import com.NonEstArsMea.agz_time_table.data.TimeTableRepositoryImpl
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
 import kotlinx.coroutines.CoroutineScope
@@ -48,4 +49,5 @@ class ExamsFragmentViewModel: ViewModel() {
     fun setConditionLoading(condition: Boolean){
         _loading.value = condition
     }
+
 }

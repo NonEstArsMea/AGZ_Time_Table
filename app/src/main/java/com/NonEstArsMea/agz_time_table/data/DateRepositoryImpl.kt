@@ -30,14 +30,12 @@ object DateRepositoryImpl: DateRepository {
         val days = mutableListOf<String>()
 
         val razn = (calendar.get(Calendar.DAY_OF_WEEK) + 5) % 7
-        Log.e("TTRI", razn.toString())
         calendar.add(Calendar.DAY_OF_MONTH,- razn)
 
         for(a in 0..5){
             days.add(calendar.get(Calendar.DAY_OF_MONTH).toString())
             calendar.add(Calendar.DAY_OF_MONTH, 1)
         }
-        Log.e("TTRI", days.toString())
         calendar.add(Calendar.DAY_OF_WEEK, razn - 6)
 
         return days
@@ -101,7 +99,6 @@ object DateRepositoryImpl: DateRepository {
 
     override fun getDayOfWeek(): Int {
         val dayOfWeek = (calendar.get(Calendar.DAY_OF_WEEK) + 5) % 7
-        Log.e("TTRI", dayOfWeek.toString())
         if(dayOfWeek == 7){
             calendar.add(Calendar.DAY_OF_MONTH, 1)
             return 1

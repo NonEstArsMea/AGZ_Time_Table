@@ -39,6 +39,7 @@ class SettingFragment : Fragment() {
     }
 
 
+
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,6 +47,8 @@ class SettingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = SettingLayoutBinding.inflate(inflater, container, false)
+        Log.e("Create", "Create")
+        vm.startFragment()
         return binding.root
     }
 

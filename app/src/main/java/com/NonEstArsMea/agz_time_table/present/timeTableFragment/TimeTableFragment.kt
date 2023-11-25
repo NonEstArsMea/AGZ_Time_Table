@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.data.DateRepositoryImpl
+import com.NonEstArsMea.agz_time_table.data.StateRepositoryImpl
 import com.NonEstArsMea.agz_time_table.databinding.TimeTableFragmentBinding
 import com.google.android.material.datepicker.MaterialDatePicker
 import java.util.Calendar
@@ -55,7 +56,6 @@ class TimeTableFragment : Fragment() {
     ): View {
         _binding = TimeTableFragmentBinding.inflate(inflater, container, false)
 
-
         days = listOf(
             binding.day1,
             binding.day2,
@@ -75,7 +75,6 @@ class TimeTableFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
         viewPager = binding.viewPagerTimeTableFragment
         viewPagerAdapter = ViewPagerAdapter(this)
@@ -163,6 +162,11 @@ class TimeTableFragment : Fragment() {
         }
         binding.monthDate.text = DateRepositoryImpl.monthAndDayNow()
         setButtonNumbers()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        vm.startFragment()
     }
 
 
