@@ -1,7 +1,9 @@
 package com.NonEstArsMea.agz_time_table.data
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.domain.Methods
 import com.NonEstArsMea.agz_time_table.domain.TimeTableUseCase.TimeTableRepository
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
@@ -26,7 +28,8 @@ object TimeTableRepositoryImpl : TimeTableRepository {
     override suspend fun preparationData(
         data: String,
         dayOfWeek: String,
-        mainParam: String
+        mainParam: String,
+        context: Context
     ): ArrayList<CellApi> = withContext(Dispatchers.Default) {
 
 
@@ -51,36 +54,38 @@ object TimeTableRepositoryImpl : TimeTableRepository {
             for (line in csvParser) {
                 l++
 
-                val Group = line.get(0)
-                val Les = line.get(2).toInt() - 1
-                val Aud = line.get(3)
-                val Name = line.get(6)
-                val Subject = line.get(8)
-                val Subj_type = line.get(9)
+                val group = line.get(0)
+                val les = line.get(2).toInt() - 1
+                val aud = line.get(3)
+                val name = line.get(6)
+                val _subject = line.get(8)
+                val subj_type = line.get(9)
                 val departmentId = line.get(7)
-                val Date = line.get(10).replace('.', '-')
-                val Themas = line.get(12)
-                if ((Date == dayOfWeek) and ((mainParam == Group) or (mainParam == Aud) or (mainParam == Name))) {
-                    if (listTT[Les].teacher == null) {
-                        listTT[Les].teacher = Name
-                        listTT[Les].studyGroup = Group
-                        listTT[Les].classroom = Aud
-                        listTT[Les].subject = Subject
-                        listTT[Les].subjectNumber = Les + 1
-                        listTT[Les].subjectType = "$Themas ${Methods.replaceText(Subj_type)}"
-                        listTT[Les].color = Methods.setColor(Subj_type)
-                        listTT[Les].noEmpty = true
-                        listTT[Les].date = Date
-                        listTT[Les].department = departmentId
-                        listTT[Les].startTime = getStartTime(number = Les + 1)
-                        listTT[Les].endTime = getEndTime(number = Les + 1)
-                        listOfLes.add(Les + 1)
-                    } else {
-                        if (Name !in listTT[Les].teacher!!) {
-                            listTT[Les].teacher += "\n${Name}"
-                        }
-                        if (Aud !in listTT[Les].classroom!!) {
-                            listTT[Les].classroom += "\n${Aud}"
+                val _date = line.get(10).replace('.', '-')
+                val themas = line.get(12)
+                if ((_date == dayOfWeek) and ((mainParam == group) or (mainParam == aud) or (mainParam == name))) {
+                    listTT[les].apply {
+                        if (teacher == null) {
+                            teacher = name
+                            studyGroup = group
+                            classroom = aud
+                            subject = _subject
+                            subjectNumber = les + 1
+                            subjectType = "$themas ${Methods.replaceText(subj_type)}"
+                            color = Methods.setColor(subj_type)
+                            noEmpty = true
+                            date = _date
+                            department = departmentId
+                            startTime = getStartTime(number = les + 1)
+                            endTime = getEndTime(number = les + 1)
+                            listOfLes.add(les + 1)
+                        }else {
+                            if (name !in listTT[les].teacher!!) {
+                                listTT[les].teacher += "\n${name}"
+                            }
+                            if (aud !in listTT[les].classroom!!) {
+                                listTT[les].classroom += "\n${aud}"
+                            }
                         }
                     }
                 }
@@ -106,7 +111,8 @@ object TimeTableRepositoryImpl : TimeTableRepository {
                         // 9.00 - 10.30     2 пары
                         text = "9:00 - ${getStartTime(listTT[0].subjectNumber!!)}     ${listTT[0].subjectNumber!! - 1} ${
                             wordEnding(
-                                listTT[0].subjectNumber!! - 1
+                                listTT[0].subjectNumber!! - 1,
+                                context
                             )
                         }",
                         noEmpty = true,
@@ -124,13 +130,13 @@ object TimeTableRepositoryImpl : TimeTableRepository {
                     if (diff > 1) {
 
                         val endTime =
-                            getEndTime(listTT[a + lessonOffset].subjectNumber!!).toString()
+                            getEndTime(listTT[a + lessonOffset].subjectNumber!!)
                         val startTime =
-                            getStartTime(listTT[a + lessonOffset + 1].subjectNumber!!).toString()
+                            getStartTime(listTT[a + lessonOffset + 1].subjectNumber!!)
                         listTT.add(
                             index = a + lessonOffset + 1,
                             element = CellApi(
-                                text = "${endTime} - ${startTime}   ${diff - 1} ${wordEnding(diff - 1)}",
+                                text = "${endTime} - ${startTime}   ${diff - 1} ${wordEnding(diff - 1, context)}",
                                 noEmpty = true,
                                 viewSize = 60
                             )
@@ -140,7 +146,7 @@ object TimeTableRepositoryImpl : TimeTableRepository {
                         listTT.add(
                             index = a + lessonOffset + 1,
                             element = CellApi(
-                                text = "Перерыв на обед - 45 минут",
+                                text = context.getString(R.string.break_45),
                                 noEmpty = true,
                                 viewSize = 50
                             )
@@ -150,7 +156,7 @@ object TimeTableRepositoryImpl : TimeTableRepository {
                         listTT.add(
                             index = a + lessonOffset + 1,
                             element = CellApi(
-                                text = "Перерыв 15 минут",
+                                text = context.getString(R.string.break_15),
                                 noEmpty = true,
                                 viewSize = 16
                             )
@@ -160,7 +166,7 @@ object TimeTableRepositoryImpl : TimeTableRepository {
                 }
             }
         } else {
-            listTT.add(CellApi(text = "В этот день занятий нет.", noEmpty = true, viewSize = 20))
+            listTT.add(CellApi(text = context.getString(R.string.no_school), noEmpty = true, viewSize = 20))
             return@withContext listTT
         }
         return@withContext listTT
@@ -211,58 +217,52 @@ object TimeTableRepositoryImpl : TimeTableRepository {
                     .withTrim()
                     .withDelimiter(';')
             )
-            Log.e("TTRI", mainParam.toString() + " ${data.length}.size")
             val listTT = ArrayList<CellApi>()
             var currentExam = CellApi(noEmpty = false)
             var lastDate = ""
             var lastSubject = ""
-            Log.e("TTRI", csvParser.toString() + " $listTT.size")
-            try {
-                for (line in csvParser) {
-                    val group = line.get(0)
-                    val aud = line.get(3)
-                    val name = line.get(6)
-                    val departmentId = line.get(7)
-                    val subject = line.get(8)
-                    val subj_type = line.get(9)
-                    val date = line.get(10).replace('.', '-')
-                    val themas = line.get(12)
-                    if ((mainParam == group) or ((mainParam == name)) and (Methods.validExams(subj_type))) {
-                        if ((lastDate != date) or (lastSubject != subject)) {
-                            listTT.add(currentExam)
-                            currentExam = CellApi(noEmpty = true)
-                            lastDate = date
-                            lastSubject = subject
-                        }
-                        currentExam.apply {
-                            if (teacher == null) {
-                                teacher = name
-                                studyGroup = group
-                                classroom = aud
-                                this.subject = subject
-                                subjectNumber = listTT.size
-                                subjectType = "$themas ${Methods.replaceText(subj_type)}"
-                                color = Methods.setColor(subj_type)
-                                noEmpty = true
-                                this.date = date
-                                startTime = getStartTime(number = line.get(2).toInt())
-                                endTime = getEndTime(number = line.get(2).toInt())
-                                department = departmentId
-                            } else {
-                                if (name !in teacher!!) {
-                                    teacher += "\n${name}"
-                                }
-                                if (aud !in classroom!!) {
-                                    classroom += "\n${aud}"
-                                }
+            for (line in csvParser) {
+                val group = line.get(0)
+                val aud = line.get(3)
+                val name = line.get(6)
+                val departmentId = line.get(7)
+                val subject = line.get(8)
+                val subj_type = line.get(9)
+                val date = line.get(10).replace('.', '-')
+                val themas = line.get(12)
+                if ((mainParam == group) or ((mainParam == name)) and (Methods.validExams(subj_type))) {
+                    if ((lastDate != date) or (lastSubject != subject)) {
+                        listTT.add(currentExam)
+                        currentExam = CellApi(noEmpty = true)
+                        lastDate = date
+                        lastSubject = subject
+                    }
+                    currentExam.apply {
+                        if (teacher == null) {
+                            teacher = name
+                            studyGroup = group
+                            classroom = aud
+                            this.subject = subject
+                            subjectNumber = listTT.size
+                            subjectType = "$themas ${Methods.replaceText(subj_type)}"
+                            color = Methods.setColor(subj_type)
+                            noEmpty = true
+                            this.date = date
+                            startTime = getStartTime(number = line.get(2).toInt())
+                            endTime = getEndTime(number = line.get(2).toInt())
+                            department = departmentId
+                        } else {
+                            if (name !in teacher!!) {
+                                teacher += "\n${name}"
+                            }
+                            if (aud !in classroom!!) {
+                                classroom += "\n${aud}"
                             }
                         }
-
                     }
 
                 }
-            } catch (e: Exception) {
-                Log.e("TTRI", e.toString() + " $listTT.size")
+
             }
             listTT.removeAt(0)
             listTT.add(currentExam)
@@ -270,19 +270,18 @@ object TimeTableRepositoryImpl : TimeTableRepository {
         }
 
 
-    override suspend fun getWeekTimeTable(newData: String): List<List<CellApi>> {
+    override suspend fun getWeekTimeTable(newData: String, context: Context): List<List<CellApi>> {
         val dayOfWeek = DateRepositoryImpl.getArrayOfWeekDate()
         return mainParam.value?.let { mainParamValue ->
             try {
                 coroutineScope {
                     dayOfWeek.map { day ->
                         async {
-                            preparationData(newData, day, mainParamValue.name)
+                            preparationData(newData, day, mainParamValue.name, context)
                         }
                     }.awaitAll()
                 }
             } catch (e: Exception) {
-                Log.e("my-tag", e.toString() + " problem with getWeekTimeTable in TimeTableRepositoryImpl")
                 emptyList()
             }
         } ?: emptyList()
@@ -367,10 +366,10 @@ object TimeTableRepositoryImpl : TimeTableRepository {
         }
     }
 
-    private fun wordEnding(number: Int): String {
+    private fun wordEnding(number: Int, context: Context): String {
         return when (number) {
-            1 -> "пара"
-            2, 3, 4 -> "пары"
+            1 -> context.getString(R.string.pair)
+            2, 3, 4 -> context.getString(R.string.pairs)
             else -> {
                 throw Exception("Unknown Number - $number")
             }

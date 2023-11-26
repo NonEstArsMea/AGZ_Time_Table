@@ -1,5 +1,6 @@
 package com.NonEstArsMea.agz_time_table.present.timeTableFragment.recycleView
 
+import android.content.Context
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -25,9 +26,9 @@ class TimeTableLessonViewHolder(val view: View) : RecyclerView.ViewHolder(view) 
     val dateNumber = view.findViewById<TextView>(R.id.add_date)
     val department = view.findViewById<TextView>(R.id.add_department)
 
-    fun bind(dayTimeTable: CellApi) {
+    fun bind(dayTimeTable: CellApi, context: Context) {
 
-        if (dayTimeTable.noEmpty == true) {
+        if (dayTimeTable.noEmpty) {
             vhSubject.text = dayTimeTable.subject
             vhTeacher.text = dayTimeTable.classroom
             vhClassroom.text = dayTimeTable.teacher
@@ -36,11 +37,10 @@ class TimeTableLessonViewHolder(val view: View) : RecyclerView.ViewHolder(view) 
             startTime.text = dayTimeTable.startTime
             endTime.text = dayTimeTable.endTime
             icon.text = dayTimeTable.subjectNumber.toString()
-            groupNumber.text = "Группа № " + dayTimeTable.studyGroup
+            groupNumber.text = context.getString(R.string.group_number) + dayTimeTable.studyGroup
             dateNumber.text = dayTimeTable.date
             add_info.visibility = View.GONE
-            department.text = "Кафедра № " + dayTimeTable.department
-            Log.e("longPressed", vhSubject.isGone.toString())
+            department.text = context.getString(R.string.department_number) + dayTimeTable.department
         }
     }
 }

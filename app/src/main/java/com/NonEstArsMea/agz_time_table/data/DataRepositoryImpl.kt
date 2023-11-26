@@ -15,14 +15,12 @@ object DataRepositoryImpl: DataRepository {
 
     private var content = ""
     override suspend fun loadData(): MutableLiveData<String> {
-        Log.e("Load Data", "Start load")
         if(dataLiveData.value == null){
             val connection = URL("http://a0755299.xsph.ru/wp-content/uploads/3-1-1.txt").openConnection()
             connection.connect()
             content = connection.getInputStream().bufferedReader().use { it.readText() }
             dataLiveData.postValue(content)
         }
-        Log.e("Load Data", "Data was loaded")
         return dataLiveData
     }
 

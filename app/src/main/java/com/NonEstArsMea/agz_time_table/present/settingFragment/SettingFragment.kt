@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.data.TimeTableRepositoryImpl
 import com.NonEstArsMea.agz_time_table.databinding.SettingLayoutBinding
+import com.NonEstArsMea.agz_time_table.present.mainActivity.MainViewModel
 import com.NonEstArsMea.agz_time_table.present.settingFragment.recycleView.SettingRecycleViewAdapter
 
 class SettingFragment : Fragment() {
@@ -98,9 +99,9 @@ class SettingFragment : Fragment() {
         binding.toggleButton.addOnButtonCheckedListener { toggleGroup, checkedId, isChecked ->
             if (isChecked) {
                 when (checkedId) {
-                    R.id.button1 -> TimeTableRepositoryImpl.setTheme(1)
-                    R.id.button2 -> TimeTableRepositoryImpl.setTheme(2)
-                    R.id.button3 -> TimeTableRepositoryImpl.setTheme(3)
+                    R.id.button1 -> TimeTableRepositoryImpl.setTheme(MainViewModel.LIGHT_THEME)
+                    R.id.button2 -> TimeTableRepositoryImpl.setTheme(MainViewModel.NIGHT_THEME)
+                    R.id.button3 -> TimeTableRepositoryImpl.setTheme(MainViewModel.SYSTEM_THEME)
                 }
             }
         }

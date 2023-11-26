@@ -8,7 +8,6 @@ object StateRepositoryImpl {
 
     private val menuItem = MutableLiveData<Int>().apply {
         this.value = TIME_TABLE_ITEM
-        Log.e("selectedItem", this.value.toString())
     }
 
 
@@ -17,7 +16,6 @@ object StateRepositoryImpl {
     }
 
     fun setNewMenuItem(newItemId: Int){
-        Log.e("selectedItem", newItemId.toString())
         menuItem.value = newItemId
     }
 

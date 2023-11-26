@@ -22,7 +22,7 @@ class SettingRecycleViewAdapter : ListAdapter<MainParam, FavoriteParamViewHolder
             DESABLET_TYPE -> R.layout.favorite_param_card_disabled
             ENEBLED_TYPE -> R.layout.favorite_param_card
 
-            else -> throw java.lang.RuntimeException("ХЗ что за тип : $viewType ")
+            else -> throw java.lang.RuntimeException("Unknown type : $viewType ")
         }
 
         val view = LayoutInflater

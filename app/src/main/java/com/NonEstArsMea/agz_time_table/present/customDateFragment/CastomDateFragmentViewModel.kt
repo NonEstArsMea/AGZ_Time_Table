@@ -36,16 +36,10 @@ class CastomDateFragmentViewModel: ViewModel() {
                 job.cancel()
             }
             job = uiScope.launch {
-                try {
-                    setConditionLoading(true)
-                    Log.e("CDFVM", mainParam.toString())
-                    _timeTableChanged.postValue(TimeTableRepositoryImpl.preparationData(
-                        DataRepositoryImpl.getContent(), dayOfWeek, mainParam))
-                    Log.e("CDFVM", _timeTableChanged.value.toString())
-                    setConditionLoading(false)
-                } catch (e: Exception) {
-                    Log.e("CDFVM", e.toString())
-                }
+                setConditionLoading(true)
+                _timeTableChanged.postValue(TimeTableRepositoryImpl.preparationData(
+                    DataRepositoryImpl.getContent(), dayOfWeek, mainParam), //todo)
+                setConditionLoading(false)
             }
     }
     fun setConditionLoading(condition: Boolean){

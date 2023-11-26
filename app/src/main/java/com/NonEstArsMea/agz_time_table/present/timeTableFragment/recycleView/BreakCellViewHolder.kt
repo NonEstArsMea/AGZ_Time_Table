@@ -10,8 +10,9 @@ class BreakCellViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
     val text = view.findViewById<TextView>(R.id.text_break_cell)!!
     fun bind(breakCell: CellApi) {
         text.text = breakCell.text
-        if (breakCell.viewSize != null)
+        if (breakCell.viewSize != null) {
             text.setPadding(0, breakCell.viewSize, 0, breakCell.viewSize)
+        }
     }
 
 }

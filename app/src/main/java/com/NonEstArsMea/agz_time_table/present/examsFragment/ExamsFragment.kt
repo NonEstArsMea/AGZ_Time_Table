@@ -50,8 +50,7 @@ class ExamsFragment: Fragment() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.e("staratSetting", "Setting FRAGMENT is startet")
-        args?.let {
+        args.let {
             mainParam = it.nameParam
         }
         vm.getTimeTable(mainParam)

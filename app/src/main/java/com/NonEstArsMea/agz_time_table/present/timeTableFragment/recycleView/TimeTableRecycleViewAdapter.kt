@@ -40,7 +40,7 @@ class TimeTableRecycleViewAdapter : ListAdapter<CellApi, RecyclerView.ViewHolder
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is TimeTableLessonViewHolder -> {
-                holder.bind(getItem(position))
+                holder.bind(getItem(position), holder.view.context)
                 holder.view.setOnClickListener{
                     setAnimation(holder)
                 }

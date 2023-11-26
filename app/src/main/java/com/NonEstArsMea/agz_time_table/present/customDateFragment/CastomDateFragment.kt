@@ -49,7 +49,7 @@ class CastomDateFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        args?.let {
+        args.let {
             day = it.day
             month = it.month
             year = it.year

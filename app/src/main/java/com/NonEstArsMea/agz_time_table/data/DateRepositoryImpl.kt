@@ -1,7 +1,9 @@
 package com.NonEstArsMea.agz_time_table.data
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.domain.DateRepository
 import java.util.Calendar
 
@@ -18,10 +20,12 @@ object DateRepositoryImpl: DateRepository {
         updateCalendar()
     }
 
-    override fun monthToString(number: Int): String {
+    override fun getMonth(number: Int): Int {
         val month = arrayOf(
-            "Января", "Февраля", "Марта", "Апреля", "Мая", "Июня",
-            "Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря"
+            R.string.January, R.string.February,
+            R.string.March, R.string.April, R.string.May, R.string.June,
+            R.string.July, R.string.August, R.string.September,
+            R.string.October, R.string.November, R.string.December
         )
         return month[number]
     }
@@ -41,11 +45,11 @@ object DateRepositoryImpl: DateRepository {
         return days
     }
 
-    override fun monthAndDayNow(): String {
+    override fun monthAndDayNow(context: Context): String {
 
         val dayNow = calendar.get(Calendar.DAY_OF_MONTH).toString()
         val monthNow  = calendar.get(Calendar.MONTH)
-        val monthStrNow = monthToString(monthNow)
+        val monthStrNow = context.getString(getMonth(monthNow))
         val yearNow = calendar.get(Calendar.YEAR).toString()
 
         return "$dayNow $monthStrNow - $yearNow"
@@ -53,26 +57,23 @@ object DateRepositoryImpl: DateRepository {
 
     fun getStrDate(day:Int, month: Int, year: Int): String {
 
-        return "$day ${monthToString(month)} - $year"
+        return "$day ${getMonth(month)} - $year"
     }
 
     override fun setNewCalendar(newTime: Int){
         calendar.add(Calendar.DAY_OF_MONTH, newTime)
         updateCalendar()
     }
-    fun updateCalendar(){
+    private fun updateCalendar(){
         calendarLiveData.value = calendar
     }
 
-    fun getCalendarLD(): MutableLiveData<Calendar>{
-        return calendarLiveData
-    }
 
     override fun engToRusDayOfWeekNumbers(time: Int): Int {
-        if(time == 1){
-            return 7
+        return if(time == 1){
+            SUNDAY
         }else{
-            return (time - 2)
+            (time - 2)
         }
     }
 
@@ -104,12 +105,14 @@ object DateRepositoryImpl: DateRepository {
 
     override fun getDayOfWeek(): Int {
         val dayOfWeek = (calendar.get(Calendar.DAY_OF_WEEK) + 5) % 7
-        if(dayOfWeek == 7){
+        if(dayOfWeek == SUNDAY){
             calendar.add(Calendar.DAY_OF_MONTH, 1)
             return 1
         }
         return dayOfWeek
     }
+
+    private const val SUNDAY = 7
 
 
 }

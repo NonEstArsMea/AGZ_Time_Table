@@ -19,7 +19,7 @@ class CellMapper {
                 endTime = api.endTime,
                 subjectNumber = api.subjectNumber,
                 noEmpty = true,
-                color = api.color!!,
+                color = api.color,
                 viewType = 0,
             )
         }

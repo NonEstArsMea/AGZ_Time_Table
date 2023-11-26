@@ -1,10 +1,12 @@
 package com.NonEstArsMea.agz_time_table.domain
 
+import android.content.Context
+
 interface DateRepository {
 
-    fun monthToString(number: Int): String
+    fun getMonth(number: Int): Int
 
-    fun monthAndDayNow(): String
+    fun monthAndDayNow(context: Context): String
 
     fun engToRusDayOfWeekNumbers(time: Int): Int
 

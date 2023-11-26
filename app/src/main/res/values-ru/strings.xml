@@ -2,4 +2,20 @@
 <resources>
     <string name="agz_text_button">Нажмите, чтобы перейти на официальный сайт Академии</string>
     <string name="agz_bot_telegram_button">Нажмите, чтобы перейти к официальному боту с расписанием</string>
+    <string name="January">Января</string>
+    <string name="February">Февраля</string>
+    <string name="March">Марта</string>
+    <string name="April">Апреля</string>
+    <string name="May">Мая</string>
+    <string name="July">Июля</string>
+    <string name="August">Августа</string>
+    <string name="September">Сентября</string>
+    <string name="October">Октября</string>
+    <string name="November">Ноября</string>
+    <string name="December">Декабря</string>
+    <string name="set_date">Выберите дату</string>
+    <string name="break_45">Перерыв на обед - 45 минут</string>
+    <string name="pair">пара</string>
+    <string name="pairs">пары</string>
+    <string name="group_number">"Группа № "</string>
 </resources>

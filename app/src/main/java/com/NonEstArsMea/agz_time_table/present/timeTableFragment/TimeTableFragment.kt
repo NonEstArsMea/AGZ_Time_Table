@@ -33,7 +33,7 @@ class TimeTableFragment : Fragment() {
 
     private val datePicker =
         MaterialDatePicker.Builder.datePicker()
-            .setTitleText("Выберите дату")
+            .setTitleText(getString(R.string.set_date))
             .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
             .build()
 
@@ -162,7 +162,7 @@ class TimeTableFragment : Fragment() {
 
             }
         }
-        binding.monthDate.text = DateRepositoryImpl.monthAndDayNow()
+        binding.monthDate.text = DateRepositoryImpl.monthAndDayNow(requireContext())
         setButtonNumbers()
     }
 
@@ -185,7 +185,7 @@ class TimeTableFragment : Fragment() {
 
     private fun updateData(newTime: Int? = null) {
         vm.getNewTimeTable(newTime)
-        binding.monthDate.text = DateRepositoryImpl.monthAndDayNow()
+        binding.monthDate.text = DateRepositoryImpl.monthAndDayNow(requireContext())
         setButtonNumbers()
     }
 

@@ -82,13 +82,9 @@
                 }
                 dataWasChanged = true
                 job = viewModelScope.launch {
-                    try {
-                        setConditionLoading(true)
-                        _timeTableChanged.value = getWeekTimeTableUseCase.execute(dataLiveData.value!!)
-                        setConditionLoading(false)
-                    } catch (e: Exception) {
-                        Log.e("Flow exception", e.toString())
-                    }
+                    setConditionLoading(true)
+                    _timeTableChanged.value = getWeekTimeTableUseCase.execute(dataLiveData.value!!)
+                    setConditionLoading(false)
                 }
             }
         }

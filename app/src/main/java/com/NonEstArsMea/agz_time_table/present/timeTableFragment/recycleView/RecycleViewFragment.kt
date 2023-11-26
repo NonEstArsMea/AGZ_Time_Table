@@ -33,13 +33,6 @@ class RecycleViewFragment : Fragment() {
             rvTimeTable.layoutManager = LinearLayoutManager(context)
             adapter.submitList(timeTableDay)
         }
-
-//        adapter.onHolderClickListener = {
-//            timeTableDay[it].isGone = !timeTableDay[it].isGone
-//            adapter.submitList(timeTableDay)
-//            rvTimeTable.adapter = adapter
-//        }
-
         return view
     }
 

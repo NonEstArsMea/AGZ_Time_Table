@@ -20,34 +20,19 @@ class ExamsFragmentViewModel: ViewModel() {
     private var job: Job = viewModelScope.launch {  }
 
 
-    // хранит состояние загрузки
-    private val _loading = MutableLiveData<Boolean>()
-    val loading: LiveData<Boolean>
-        get() = _loading
-
     private var _timeTableChanged = MutableLiveData<ArrayList<CellApi>>()
     val timeTableChanged: LiveData<ArrayList<CellApi>>
         get() = _timeTableChanged
+
     fun getTimeTable(mainParam: String){
 
         if (job.isActive) {
             job.cancel()
         }
         job = viewModelScope.launch {
-            try {
-                setConditionLoading(true)
-                Log.e("EFVM", mainParam.toString())
-                _timeTableChanged.postValue(TimeTableRepositoryImpl.getExams(
-                    DataRepositoryImpl.getContent(), mainParam))
-                Log.e("EFVM", _timeTableChanged.value.toString())
-                setConditionLoading(false)
-            } catch (e: Exception) {
-                Log.e("EFVM", e.toString())
-            }
+            _timeTableChanged.postValue(TimeTableRepositoryImpl.getExams(
+                DataRepositoryImpl.getContent(), mainParam))
         }
-    }
-    fun setConditionLoading(condition: Boolean){
-        _loading.value = condition
     }
 
 }
