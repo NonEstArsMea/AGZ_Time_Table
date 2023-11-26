@@ -100,7 +100,9 @@ class TimeTableFragment : Fragment() {
         })
 
 
-
+        binding.mainParam.setOnClickListener {
+            findNavController().navigate(R.id.searchFragment)
+        }
 
         // Слушатель на дни
         days.toList().forEachIndexed { index, textView ->

@@ -57,6 +57,7 @@ object TimeTableRepositoryImpl : TimeTableRepository {
                 val Name = line.get(6)
                 val Subject = line.get(8)
                 val Subj_type = line.get(9)
+                val departmentId = line.get(7)
                 val Date = line.get(10).replace('.', '-')
                 val Themas = line.get(12)
                 if ((Date == dayOfWeek) and ((mainParam == Group) or (mainParam == Aud) or (mainParam == Name))) {
@@ -70,6 +71,7 @@ object TimeTableRepositoryImpl : TimeTableRepository {
                         listTT[Les].color = Methods.setColor(Subj_type)
                         listTT[Les].noEmpty = true
                         listTT[Les].date = Date
+                        listTT[Les].department = departmentId
                         listTT[Les].startTime = getStartTime(number = Les + 1)
                         listTT[Les].endTime = getEndTime(number = Les + 1)
                         listOfLes.add(Les + 1)
@@ -220,6 +222,7 @@ object TimeTableRepositoryImpl : TimeTableRepository {
                     val group = line.get(0)
                     val aud = line.get(3)
                     val name = line.get(6)
+                    val departmentId = line.get(7)
                     val subject = line.get(8)
                     val subj_type = line.get(9)
                     val date = line.get(10).replace('.', '-')
@@ -244,6 +247,7 @@ object TimeTableRepositoryImpl : TimeTableRepository {
                                 this.date = date
                                 startTime = getStartTime(number = line.get(2).toInt())
                                 endTime = getEndTime(number = line.get(2).toInt())
+                                department = departmentId
                             } else {
                                 if (name !in teacher!!) {
                                     teacher += "\n${name}"

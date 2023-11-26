@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="agz_text_button">Нажмите, чтобы перейти на официальный сайт Академии</string>
+    <string name="agz_bot_telegram_button">Нажмите, чтобы перейти к официальному боту с расписанием</string>
+</resources>

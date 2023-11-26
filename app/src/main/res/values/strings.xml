@@ -12,5 +12,15 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="BTB_tmenu_tt">Расписание</string>
+    <string name="agz_text_button">Нажмите, чтобы перейти на официальный сайт Академии</string>
+    <string name="my_tg_text_button">Возникили ошибки в работе приложения? \nНапишите разработчику в Telegram</string>
+    <string name="my_tg_text_button_name">Вопросы и предложения?</string>
+    <string name="agz_button_name">Сайт Академии</string>
+    <string name="agz_bot_telegram_button_name">Telegram-бот</string>
+    <string name="agz_bot_telegram_button">Нажмите, чтобы перейти к официальному боту с расписанием</string>
+    <string name="theme_change_lable">Выбор темы</string>
+    <string name="add_group_button">Добавить группу</string>
+    <string name="change_group_lable">Выбор группы</string>
+    <string name="setting_lable">Настройки</string>
 
 </resources>

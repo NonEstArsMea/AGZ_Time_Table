@@ -98,8 +98,7 @@
                 android:gravity="bottom"
 
                 app:layout_constraintLeft_toLeftOf="@id/subject"
-                app:layout_constraintTop_toBottomOf="@id/subject"
-                app:layout_constraintBottom_toTopOf="@id/group_number"/>
+                app:layout_constraintTop_toBottomOf="@id/subject" />
             <TextView
                 android:id="@+id/separator"
                 android:layout_width="wrap_content"
@@ -129,25 +128,36 @@
 
                 app:layout_constraintLeft_toRightOf="@id/separator"
                 app:layout_constraintBottom_toBottomOf="@id/teacher"/>
-
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/MainTextViewStyle"
-                android:id="@+id/group_number"
-                android:text="22222222222222"
                 app:layout_constraintTop_toBottomOf="@id/teacher"
                 app:layout_constraintLeft_toLeftOf="parent"
-                android:visibility="visible"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/MainTextViewStyle"
-                android:id="@+id/date_number"
-                android:text="33333333333333"
-                app:layout_constraintTop_toBottomOf="@id/group_number"
-                app:layout_constraintLeft_toLeftOf="parent"
-                android:visibility="visible"/>
+                android:orientation="vertical"
+                android:id="@+id/additional_information">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/MainTextViewStyle"
+                    android:id="@+id/add_date"
+                    android:text="22222222222222"
+                    android:visibility="visible"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/MainTextViewStyle"
+                    android:id="@+id/add_group"
+                    android:text="33333333333333"
+                    android:visibility="visible"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/MainTextViewStyle"
+                    android:id="@+id/add_department"
+                    android:text="33333333333333"
+                    android:visibility="visible"/>
+            </LinearLayout>
+
 
             <com.google.android.material.circularreveal.cardview.CircularRevealCardView
                 android:id="@+id/lesson_number"

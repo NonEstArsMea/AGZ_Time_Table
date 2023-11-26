@@ -5,7 +5,7 @@ import com.NonEstArsMea.agz_time_table.R
 object Methods {
 
     fun validExams(type: String): Boolean{
-        val exams = listOf("Курс.р", "Ку", "Контр.р", "ЗаО", "э", "эк", "экз", "экз.")
+        val exams = listOf("ЗаО", "э", "эк", "экз", "экз.", "Зачет")
         return type in exams
     }
     fun replaceText(text: String): String {
@@ -28,6 +28,7 @@ object Methods {
         "экз." -> "Экзамен"
         "ГК" -> "Групповая консультация"
         "ГЗ" -> "Групповое занятие"
+        "Зачет" -> "Зачет"
         else -> {text}
     }}
 
@@ -46,6 +47,7 @@ object Methods {
             "ГЗ" -> R.drawable.yellow_color
             "с" -> R.drawable.yellow_color
             "см" -> R.drawable.yellow_color
+            "Зачет" -> R.drawable.yellow_color
             else -> {
                 R.drawable.green_color
             }

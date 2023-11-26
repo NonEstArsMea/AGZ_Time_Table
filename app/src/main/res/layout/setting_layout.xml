@@ -13,7 +13,7 @@
                 android:layout_margin="15dp"
                 android:paddingBottom="@dimen/margine_all"
                 android:id="@+id/setting_layout_header"
-                android:text="Настройки"
+                android:text="@string/setting_lable"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 style="?attr/textAppearanceHeadline2"
@@ -41,7 +41,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Выбор группы"
+                            android:text="@string/change_group_lable"
                             style="?attr/textAppearanceHeadline2"
                             android:padding="10dp"
                             android:id="@+id/search_button"
@@ -62,8 +62,7 @@
                             android:id="@+id/search_bar"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="0dp"
-                            android:text="  Добавить группу"
+                            android:text="@string/add_group_button"
                             android:layout_margin="@dimen/margine_all"
                             app:icon="@drawable/plus"
                             app:iconGravity="textStart"
@@ -71,7 +70,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Выбор темы"
+                        android:text="@string/theme_change_lable"
                         android:paddingStart="@dimen/margine_all"
                         android:layout_marginTop="15dp"
                         android:id="@+id/theme_change"
@@ -89,7 +88,7 @@
                             android:id="@+id/button1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Система"
+                            android:text="Системная"
 
                             android:layout_weight="1"
                             />
@@ -137,7 +136,7 @@
                                     android:layout_margin="8dp"
                                     style="@style/MainTextViewStyle.Header1"
                                     android:textSize="14sp"
-                                    android:text="Telegram-бот"
+                                    android:text="@string/agz_bot_telegram_button_name"
                                     app:layout_constraintLeft_toLeftOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"/>
                                 <TextView
@@ -145,9 +144,10 @@
                                     android:layout_height="wrap_content"
                                     style="@style/MainTextViewStyle.Header1"
                                     android:layout_marginStart="8dp"
+                                    android:layout_marginRight="@dimen/margine_all"
                                     android:textSize="14sp"
                                     android:textColor="@color/gray_400"
-                                    android:text="Нажмите, чтобы перейти к официальному боту с расписанием"
+                                    android:text="@string/agz_bot_telegram_button"
 
                                     app:layout_constraintRight_toLeftOf="@id/telegram_icon"
                                     app:layout_constraintLeft_toLeftOf="parent"
@@ -183,7 +183,7 @@
                                     android:layout_margin="8dp"
                                     style="@style/MainTextViewStyle.Header1"
                                     android:textSize="14sp"
-                                    android:text="Сайт Академии"
+                                    android:text="@string/agz_button_name"
                                     app:layout_constraintLeft_toLeftOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"/>
                                 <TextView
@@ -191,9 +191,10 @@
                                     android:layout_height="wrap_content"
                                     style="@style/MainTextViewStyle.Header1"
                                     android:layout_marginStart="8dp"
+                                    android:layout_marginRight="@dimen/margine_all"
                                     android:textSize="14sp"
                                     android:textColor="@color/gray_400"
-                                    android:text="Нажмите, чтобы на официальный сайт Академии"
+                                    android:text="@string/agz_text_button"
 
                                     app:layout_constraintRight_toLeftOf="@id/agz_icon"
                                     app:layout_constraintLeft_toLeftOf="parent"
@@ -230,7 +231,7 @@
                                     android:layout_margin="8dp"
                                     style="@style/MainTextViewStyle.Header1"
                                     android:textSize="14sp"
-                                    android:text="Вопросы и предложения?"
+                                    android:text="@string/my_tg_text_button_name"
                                     app:layout_constraintLeft_toLeftOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"/>
                                 <TextView
@@ -238,9 +239,10 @@
                                     android:layout_height="wrap_content"
                                     style="@style/MainTextViewStyle.Header1"
                                     android:layout_marginStart="8dp"
+                                    android:layout_marginRight="@dimen/margine_all"
                                     android:textSize="14sp"
                                     android:textColor="@color/gray_400"
-                                    android:text="Возникили ошибки в работе приложения? \nНапишите разработчику в Telegram"
+                                    android:text="@string/my_tg_text_button"
 
                                     app:layout_constraintRight_toLeftOf="@id/my_tg_icon"
                                     app:layout_constraintLeft_toLeftOf="parent"

@@ -21,62 +21,9 @@ data class CellApi(
     var color: Int= R.color.yellow_fo_lessons_card,
     val viewType: Int?= null,
     val viewSize: Int?= null,
-    var isGone: Boolean = true
-): Parcelable{
-    constructor(parcel: Parcel) : this(
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readValue(Int::class.java.classLoader) as? Int,
-        parcel.readByte() != 0.toByte(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readInt(),
-        parcel.readValue(Int::class.java.classLoader) as? Int,
-        parcel.readValue(Int::class.java.classLoader) as? Int,
-        parcel.readByte() != 0.toByte()
-    ) {
-    }
-
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(subject)
-        parcel.writeString(teacher)
-        parcel.writeString(classroom)
-        parcel.writeString(studyGroup)
-        parcel.writeString(date)
-        parcel.writeString(subjectType)
-        parcel.writeString(startTime)
-        parcel.writeString(endTime)
-        parcel.writeValue(subjectNumber)
-        parcel.writeByte(if (noEmpty) 1 else 0)
-        parcel.writeString(text)
-        parcel.writeString(lessonTheme)
-        parcel.writeInt(color)
-        parcel.writeValue(viewType)
-        parcel.writeValue(viewSize)
-        parcel.writeByte(if (isGone) 1 else 0)
-    }
-
-    override fun describeContents(): Int {
-        return 0
-    }
-
-    companion object CREATOR : Parcelable.Creator<CellApi> {
-        override fun createFromParcel(parcel: Parcel): CellApi {
-            return CellApi(parcel)
-        }
-
-        override fun newArray(size: Int): Array<CellApi?> {
-            return arrayOfNulls(size)
-        }
-    }
-
-}
+    var isGone: Boolean = true,
+    var department: String? = null,
+)
 
 sealed class Cell
 data class LessonTimeTable(

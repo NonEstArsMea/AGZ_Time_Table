@@ -34,11 +34,11 @@ class RecycleViewFragment : Fragment() {
             adapter.submitList(timeTableDay)
         }
 
-        adapter.onHolderClickListener = {
-            timeTableDay[it].isGone = !timeTableDay[it].isGone
-            adapter.submitList(timeTableDay)
-            rvTimeTable.adapter = adapter
-        }
+//        adapter.onHolderClickListener = {
+//            timeTableDay[it].isGone = !timeTableDay[it].isGone
+//            adapter.submitList(timeTableDay)
+//            rvTimeTable.adapter = adapter
+//        }
 
         return view
     }

@@ -3,6 +3,7 @@ package com.NonEstArsMea.agz_time_table.present.timeTableFragment.recycleView
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.isGone
 import androidx.recyclerview.widget.RecyclerView
@@ -19,8 +20,10 @@ class TimeTableLessonViewHolder(val view: View) : RecyclerView.ViewHolder(view) 
     val startTime = view.findViewById<TextView>(R.id.start_lesson_time)
     val endTime = view.findViewById<TextView>(R.id.end_lesson_time)
     val icon = view.findViewById<TextView>(R.id.lesson_number_text)
-    val groupNumber = view.findViewById<TextView>(R.id.group_number)
-    val dateNumber = view.findViewById<TextView>(R.id.date_number)
+    val add_info = view.findViewById<LinearLayout>(R.id.additional_information)
+    val groupNumber = view.findViewById<TextView>(R.id.add_group)
+    val dateNumber = view.findViewById<TextView>(R.id.add_date)
+    val department = view.findViewById<TextView>(R.id.add_department)
 
     fun bind(dayTimeTable: CellApi) {
 
@@ -29,14 +32,14 @@ class TimeTableLessonViewHolder(val view: View) : RecyclerView.ViewHolder(view) 
             vhTeacher.text = dayTimeTable.classroom
             vhClassroom.text = dayTimeTable.teacher
             vhSubjectType.text = dayTimeTable.subjectType
-            dayTimeTable.color?.let { vhSeparatorColor.setBackgroundResource(it) }
+            vhSeparatorColor.setBackgroundResource(dayTimeTable.color)
             startTime.text = dayTimeTable.startTime
             endTime.text = dayTimeTable.endTime
             icon.text = dayTimeTable.subjectNumber.toString()
-            groupNumber.text = dayTimeTable.studyGroup
+            groupNumber.text = "Группа № " + dayTimeTable.studyGroup
             dateNumber.text = dayTimeTable.date
-            groupNumber.isGone = dayTimeTable.isGone
-            dateNumber.isGone = dayTimeTable.isGone
+            add_info.visibility = View.GONE
+            department.text = "Кафедра № " + dayTimeTable.department
             Log.e("longPressed", vhSubject.isGone.toString())
         }
     }
