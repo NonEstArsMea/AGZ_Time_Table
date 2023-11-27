@@ -28,7 +28,6 @@ class RecycleViewOnSearchFragmentAdapter : ListAdapter<MainParam, RVOnSearchFrag
     override fun onBindViewHolder(holder: RVOnSearchFragmentViewHolder, position: Int) {
         val mainParam = getItem(position)
         holder.bind(getItem(position))
-        // Нажатие на объект
         holder.view.setOnClickListener {
             onMainParamClickListener?.invoke(mainParam)
         }

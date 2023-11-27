@@ -58,7 +58,7 @@ class SettingFragment : Fragment() {
         binding.searchBar.setOnClickListener {
             findNavController().navigate(R.id.searchFragment)
         }
-        binding.myTelegramButton.setOnClickListener {
+        binding.botButton.setOnClickListener {
             actionViewStart("https://t.me/timeagzbot")
         }
 
@@ -74,7 +74,7 @@ class SettingFragment : Fragment() {
             actionViewStart("https://amchs.ru/")
         }
 
-        binding.botButton.setOnClickListener {
+        binding.myTelegramButton.setOnClickListener {
             actionViewStart("https://t.me/delonevogne")
         }
 

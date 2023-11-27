@@ -21,11 +21,6 @@ class CastomDateFragmentViewModel: ViewModel() {
     private var job: Job = uiScope.launch {  }
 
 
-    // хранит состояние загрузки
-    private val _loading = MutableLiveData<Boolean>()
-    val loading: LiveData<Boolean>
-        get() = _loading
-
     private var _timeTableChanged = MutableLiveData<ArrayList<CellApi>>()
     val timeTableChanged: LiveData<ArrayList<CellApi>>
         get() = _timeTableChanged
@@ -36,14 +31,8 @@ class CastomDateFragmentViewModel: ViewModel() {
                 job.cancel()
             }
             job = uiScope.launch {
-                setConditionLoading(true)
-                _timeTableChanged.postValue(TimeTableRepositoryImpl.preparationData(
-                    DataRepositoryImpl.getContent(), dayOfWeek, mainParam), //todo)
-                setConditionLoading(false)
+                //_timeTableChanged.postValue()
             }
-    }
-    fun setConditionLoading(condition: Boolean){
-        _loading.value = condition
     }
 
 

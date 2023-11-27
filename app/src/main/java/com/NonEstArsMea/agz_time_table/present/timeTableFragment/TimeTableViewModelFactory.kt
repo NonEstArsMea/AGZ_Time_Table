@@ -13,7 +13,7 @@ class TimeTableViewModelFactory(context: Context): ViewModelProvider.Factory {
 
 
     private val repository = TimeTableRepositoryImpl
-    private val getWeekTimeTable = GetWeekTimeTableListUseCase(repository)
+    private val getWeekTimeTable = GetWeekTimeTableListUseCase(repository, context)
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return TimeTableViewModel(
             getWeekTimeTableUseCase = getWeekTimeTable,

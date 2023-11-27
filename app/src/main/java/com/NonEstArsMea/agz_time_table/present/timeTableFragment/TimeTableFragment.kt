@@ -31,11 +31,12 @@ class TimeTableFragment : Fragment() {
     var days = mutableListOf<TextView>()
     private lateinit var viewPagerAdapter: ViewPagerAdapter
 
-    private val datePicker =
+    private val datePicker by lazy {
         MaterialDatePicker.Builder.datePicker()
             .setTitleText(getString(R.string.set_date))
             .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
             .build()
+    }
 
     private lateinit var viewPager: ViewPager2
 

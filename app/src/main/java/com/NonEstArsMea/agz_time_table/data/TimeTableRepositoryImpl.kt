@@ -50,49 +50,45 @@ object TimeTableRepositoryImpl : TimeTableRepository {
             )
         }
         var l = 0
-        try {
-            for (line in csvParser) {
-                l++
+        for (line in csvParser) {
+            l++
 
-                val group = line.get(0)
-                val les = line.get(2).toInt() - 1
-                val aud = line.get(3)
-                val name = line.get(6)
-                val _subject = line.get(8)
-                val subj_type = line.get(9)
-                val departmentId = line.get(7)
-                val _date = line.get(10).replace('.', '-')
-                val themas = line.get(12)
-                if ((_date == dayOfWeek) and ((mainParam == group) or (mainParam == aud) or (mainParam == name))) {
-                    listTT[les].apply {
-                        if (teacher == null) {
-                            teacher = name
-                            studyGroup = group
-                            classroom = aud
-                            subject = _subject
-                            subjectNumber = les + 1
-                            subjectType = "$themas ${Methods.replaceText(subj_type)}"
-                            color = Methods.setColor(subj_type)
-                            noEmpty = true
-                            date = _date
-                            department = departmentId
-                            startTime = getStartTime(number = les + 1)
-                            endTime = getEndTime(number = les + 1)
-                            listOfLes.add(les + 1)
-                        }else {
-                            if (name !in listTT[les].teacher!!) {
-                                listTT[les].teacher += "\n${name}"
-                            }
-                            if (aud !in listTT[les].classroom!!) {
-                                listTT[les].classroom += "\n${aud}"
-                            }
+            val group = line.get(0)
+            val les = line.get(2).toInt() - 1
+            val aud = line.get(3)
+            val name = line.get(6)
+            val _subject = line.get(8)
+            val subj_type = line.get(9)
+            val departmentId = line.get(7)
+            val _date = line.get(10).replace('.', '-')
+            val themas = line.get(12)
+            if ((_date == dayOfWeek) and ((mainParam == group) or (mainParam == aud) or (mainParam == name))) {
+                listTT[les].apply {
+                    if (teacher == null) {
+                        teacher = name
+                        studyGroup = group
+                        classroom = aud
+                        subject = _subject
+                        subjectNumber = les + 1
+                        subjectType = "$themas ${Methods.replaceText(subj_type)}"
+                        color = Methods.setColor(subj_type)
+                        noEmpty = true
+                        date = _date
+                        department = departmentId
+                        startTime = getStartTime(number = les + 1)
+                        endTime = getEndTime(number = les + 1)
+                        listOfLes.add(les + 1)
+                    }else {
+                        if (name !in listTT[les].teacher!!) {
+                            listTT[les].teacher += "\n${name}"
+                        }
+                        if (aud !in listTT[les].classroom!!) {
+                            listTT[les].classroom += "\n${aud}"
                         }
                     }
                 }
-
             }
-        } catch (e: Exception) {
-            Log.e("TTRI", e.toString() + " $l")
+
         }
         // Фильтрация списка
         listTT = listTT.filter {
