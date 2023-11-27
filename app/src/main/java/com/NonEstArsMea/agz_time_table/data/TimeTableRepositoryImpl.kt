@@ -1,7 +1,6 @@
 package com.NonEstArsMea.agz_time_table.data
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.domain.Methods

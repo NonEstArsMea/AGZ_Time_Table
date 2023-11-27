@@ -3,7 +3,6 @@ package com.NonEstArsMea.agz_time_table.present.timeTableFragment
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +14,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.data.DateRepositoryImpl
-import com.NonEstArsMea.agz_time_table.data.StateRepositoryImpl
 import com.NonEstArsMea.agz_time_table.databinding.TimeTableFragmentBinding
 import com.google.android.material.datepicker.MaterialDatePicker
 import java.util.Calendar
