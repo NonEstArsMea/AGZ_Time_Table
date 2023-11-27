@@ -31,9 +31,9 @@ object TimeTableRepositoryImpl : TimeTableRepository {
         context: Context
     ): ArrayList<CellApi> = withContext(Dispatchers.Default) {
 
-
+        val _data = DataRepositoryImpl.getContent()
         val csvParser = CSVParser(
-            data.reader(), CSVFormat.DEFAULT
+            _data.reader(), CSVFormat.DEFAULT
                 .withFirstRecordAsHeader()
                 .withIgnoreHeaderCase()
                 .withTrim()

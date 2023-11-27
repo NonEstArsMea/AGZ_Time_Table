@@ -28,24 +28,28 @@ class CastomDateFragment : Fragment() {
     private val adapter = TimeTableRecycleViewAdapter()
     private var _binding: CastomDateFragmentBinding? = null
 
-    private val vm: CastomDateFragmentViewModel by lazy {
-        ViewModelProvider(this)[CastomDateFragmentViewModel::class.java]
-    }
+    private lateinit var vm: CastomDateFragmentViewModel
     private val binding get() = _binding!!
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if(context is OnStartAndFinishListener){
+        if (context is OnStartAndFinishListener) {
             onStartAndFinishListener = context
-        }else throw RuntimeException( "$context is empty")
+        } else throw RuntimeException("$context is empty")
 
-        val callback = object : OnBackPressedCallback( true){
+        val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 findNavController().popBackStack()
                 onStartAndFinishListener.closeFragment()
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+
+        vm = ViewModelProvider(
+            this,
+            CastomDateFragmentViewModelFactory(context)
+        )[CastomDateFragmentViewModel::class.java]
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -73,7 +77,7 @@ class CastomDateFragment : Fragment() {
         recycleView.adapter = adapter
         recycleView.layoutManager = LinearLayoutManager(context)
 
-        vm.timeTableChanged.observe(viewLifecycleOwner){
+        vm.timeTableChanged.observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
 
@@ -87,7 +91,7 @@ class CastomDateFragment : Fragment() {
     }
 
 
-    interface OnStartAndFinishListener{
+    interface OnStartAndFinishListener {
         fun startFragment()
         fun closeFragment()
     }
