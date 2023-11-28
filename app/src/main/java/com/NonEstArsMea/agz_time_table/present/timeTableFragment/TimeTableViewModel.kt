@@ -13,7 +13,12 @@
     import com.NonEstArsMea.agz_time_table.data.TimeTableRepositoryImpl.getListOfMainParam
     import com.NonEstArsMea.agz_time_table.domain.MainUseCase.Storage.GetLastWeekFromeStorageUseCase
     import com.NonEstArsMea.agz_time_table.domain.MainUseCase.Storage.GetMainParamFromStorageUseCase
+    import com.NonEstArsMea.agz_time_table.domain.TimeTableUseCase.GetDayOfWeekUseCase
+    import com.NonEstArsMea.agz_time_table.domain.TimeTableUseCase.GetListOfMainParam
+    import com.NonEstArsMea.agz_time_table.domain.TimeTableUseCase.GetListOfMainParamUseCase
+    import com.NonEstArsMea.agz_time_table.domain.TimeTableUseCase.GetMonthUseCase
     import com.NonEstArsMea.agz_time_table.domain.TimeTableUseCase.GetWeekTimeTableListUseCase
+    import com.NonEstArsMea.agz_time_table.domain.TimeTableUseCase.SetNewCalendarUseCase
     import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
     import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
     import kotlinx.coroutines.CoroutineScope
@@ -25,6 +30,10 @@
 
     class TimeTableViewModel(
         private val getWeekTimeTableUseCase: GetWeekTimeTableListUseCase,
+        private val getMonthUseCase: GetMonthUseCase,
+        private val getDayOfWeekUseCase: GetDayOfWeekUseCase,
+        private val setNewCalendarUseCase: SetNewCalendarUseCase,
+        private val getListOfMainParamUseCase: GetListOfMainParamUseCase
     ): ViewModel() {
 
 
@@ -65,16 +74,14 @@
                 if (!dataIsLoad) {
                     getNewTimeTable()
                     viewModelScope.launch {
-                        getListOfMainParam(dataLiveData.value!!)
+                        getListOfMainParamUseCase.execute()
                     }
                     dataIsLoad = true
                 }
         }
 
         fun getNewTimeTable(newTime: Int? = null){
-            if(newTime != null){
-                DateRepositoryImpl.setNewCalendar(newTime)
-            }
+            setNewCalendarUseCase.execute(newTime)
             if(dataLiveData.value != null) {
                 // для прерывания предыдущих корутин
                 if (job.isActive) {
@@ -115,6 +122,14 @@
 
         fun startFragment(){
             StateRepositoryImpl.setNewMenuItem(StateRepositoryImpl.TIME_TABLE_ITEM)
+        }
+
+        fun getCurrentItem():Int{
+            return getDayOfWeekUseCase.execute()
+        }
+
+        fun getMonth(): String{
+            return getMonthUseCase.execute()
         }
 
 

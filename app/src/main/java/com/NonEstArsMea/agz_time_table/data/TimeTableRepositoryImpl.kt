@@ -283,9 +283,10 @@ object TimeTableRepositoryImpl : TimeTableRepository {
     }
 
 
-    override fun getListOfMainParam(data: String) {
+    override fun getListOfMainParam() {
+        val _data = DataRepositoryImpl.getContent()
         val csvParser = CSVParser(
-            data.reader(), CSVFormat.DEFAULT
+            _data.reader(), CSVFormat.DEFAULT
                 .withFirstRecordAsHeader()
                 .withIgnoreHeaderCase()
                 .withTrim()

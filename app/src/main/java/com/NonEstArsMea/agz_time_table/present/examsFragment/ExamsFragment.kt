@@ -2,7 +2,6 @@ package com.NonEstArsMea.agz_time_table.present.examsFragment
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.NonEstArsMea.agz_time_table.databinding.ExamsLayoutBinding
-import com.NonEstArsMea.agz_time_table.present.customDateFragment.CastomDateFragment
+import com.NonEstArsMea.agz_time_table.present.customDateFragment.CustomDateFragment
 import com.NonEstArsMea.agz_time_table.present.timeTableFragment.recycleView.TimeTableRecycleViewAdapter
 
 class ExamsFragment: Fragment() {
@@ -22,7 +21,7 @@ class ExamsFragment: Fragment() {
 
     private val args by navArgs<ExamsFragmentArgs>()
 
-    private lateinit var onStartAndFinishListener: CastomDateFragment.OnStartAndFinishListener
+    private lateinit var onStartAndFinishListener: CustomDateFragment.OnStartAndFinishListener
 
     private val adapter = TimeTableRecycleViewAdapter()
     private var _binding: ExamsLayoutBinding? = null
@@ -33,7 +32,7 @@ class ExamsFragment: Fragment() {
     private val binding get() = _binding!!
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if(context is CastomDateFragment.OnStartAndFinishListener){
+        if(context is CustomDateFragment.OnStartAndFinishListener){
             onStartAndFinishListener = context
         }else throw RuntimeException( "$context is empty")
 

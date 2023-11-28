@@ -14,5 +14,5 @@ interface TimeTableRepository {
                                 dayOfWeek: String,
                                 mainParam: String,
                                 context: Context): List<CellApi>
-    fun getListOfMainParam(data: String)
+    fun getListOfMainParam()
 }

@@ -124,7 +124,7 @@ class TimeTableFragment : Fragment() {
         vm.timeTableChanged.observe(viewLifecycleOwner) { updatedList ->
                 viewPager.adapter = viewPagerAdapter
                 viewPagerAdapter.setData(updatedList)
-                binding.viewPagerTimeTableFragment.currentItem = DateRepositoryImpl.getDayOfWeek()
+                binding.viewPagerTimeTableFragment.currentItem = vm.getCurrentItem()
             }
 
 
@@ -152,7 +152,7 @@ class TimeTableFragment : Fragment() {
             val mainParam = vm.getMainParam()
             try {
                 findNavController().navigate(TimeTableFragmentDirections
-                    .actionTimeTableFragmentToCastomDateFragment(
+                    .actionTimeTableFragmentToCustomDateFragment(
                         day = day,
                         month = month,
                         year = year,
@@ -161,7 +161,7 @@ class TimeTableFragment : Fragment() {
 
             }
         }
-        binding.monthDate.text = DateRepositoryImpl.monthAndDayNow(requireContext())
+        binding.monthDate.text = vm.getMonth()
         setButtonNumbers()
     }
 

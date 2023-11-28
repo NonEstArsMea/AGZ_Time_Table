@@ -15,20 +15,20 @@ import com.NonEstArsMea.agz_time_table.data.DateRepositoryImpl
 import com.NonEstArsMea.agz_time_table.databinding.CastomDateFragmentBinding
 import com.NonEstArsMea.agz_time_table.present.timeTableFragment.recycleView.TimeTableRecycleViewAdapter
 
-class CastomDateFragment : Fragment() {
+class CustomDateFragment : Fragment() {
     private var day: Int = 0
     private var month: Int = 0
     private var year: Int = 0
     private var mainParam: String = ""
 
-    private val args by navArgs<CastomDateFragmentArgs>()
+    private val args by navArgs<CustomDateFragmentArgs>()
 
     private lateinit var onStartAndFinishListener: OnStartAndFinishListener
 
     private val adapter = TimeTableRecycleViewAdapter()
     private var _binding: CastomDateFragmentBinding? = null
 
-    private lateinit var vm: CastomDateFragmentViewModel
+    private lateinit var vm: CustomDateFragmentViewModel
     private val binding get() = _binding!!
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -46,8 +46,8 @@ class CastomDateFragment : Fragment() {
 
         vm = ViewModelProvider(
             this,
-            CastomDateFragmentViewModelFactory(context)
-        )[CastomDateFragmentViewModel::class.java]
+            CustomDateFragmentViewModelFactory(context)
+        )[CustomDateFragmentViewModel::class.java]
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

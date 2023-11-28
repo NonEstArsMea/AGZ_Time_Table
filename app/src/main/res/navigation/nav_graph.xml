@@ -12,8 +12,8 @@
             android:id="@+id/action_timeTableFragment_to_settingFragment"
             app:destination="@id/settingFragment" />
         <action
-            android:id="@+id/action_timeTableFragment_to_castomDateFragment"
-            app:destination="@id/castomDateFragment" />
+            android:id="@+id/action_timeTableFragment_to_customDateFragment"
+            app:destination="@id/customDateFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingFragment"
@@ -37,12 +37,12 @@
             app:destination="@id/settingFragment" />
     </fragment>
     <fragment
-        android:id="@+id/castomDateFragment"
-        android:name="com.NonEstArsMea.agz_time_table.present.customDateFragment.CastomDateFragment"
-        android:label="fragment_castom_date"
-        tools:layout="@layout/castom_date_fragment" >
+        android:id="@+id/customDateFragment"
+        android:name="com.NonEstArsMea.agz_time_table.present.customDateFragment.CustomDateFragment"
+        android:label="fragment_custom_date"
+        tools:layout="@layout/custom_date_fragment" >
         <action
-            android:id="@+id/action_castomDateFragment_to_timeTableFragment"
+            android:id="@+id/action_customDateFragment_to_timeTableFragment"
             app:destination="@id/timeTableFragment" />
         <argument
             android:name="day"

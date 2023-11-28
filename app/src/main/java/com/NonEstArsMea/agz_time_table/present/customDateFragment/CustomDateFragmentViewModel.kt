@@ -3,7 +3,6 @@ package com.NonEstArsMea.agz_time_table.present.customDateFragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.NonEstArsMea.agz_time_table.data.TimeTableRepositoryImpl
 import com.NonEstArsMea.agz_time_table.domain.GetTimeTableUseCase
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
 import kotlinx.coroutines.CoroutineScope
@@ -12,7 +11,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 
-class CastomDateFragmentViewModel(
+class CustomDateFragmentViewModel(
     private val getTimeTableUseCase: GetTimeTableUseCase
 ): ViewModel() {
 

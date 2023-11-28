@@ -1,13 +1,8 @@
 package com.NonEstArsMea.agz_time_table.present.mainActivity
 
 import android.os.Bundle
-import android.text.Layout.Directions
-import android.util.Log
-import android.window.OnBackInvokedDispatcher
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isGone
-import androidx.core.view.size
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.NonEstArsMea.agz_time_table.NavGraphDirections
@@ -15,19 +10,17 @@ import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.data.DataRepositoryImpl
 import com.NonEstArsMea.agz_time_table.data.DateRepositoryImpl
 import com.NonEstArsMea.agz_time_table.databinding.MainLayoutBinding
-import com.NonEstArsMea.agz_time_table.present.customDateFragment.CastomDateFragment
+import com.NonEstArsMea.agz_time_table.present.customDateFragment.CustomDateFragment
 import com.NonEstArsMea.agz_time_table.present.examsFragment.ExamsFragment
 import com.NonEstArsMea.agz_time_table.present.settingFragment.SettingFragment
-import com.NonEstArsMea.agz_time_table.present.timeTableFragment.TimeTableFragmentDirections
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
-import androidx.activity.addCallback
 import com.NonEstArsMea.agz_time_table.data.StateRepositoryImpl
 
 
 class MainActivity : AppCompatActivity(),
-    CastomDateFragment.OnStartAndFinishListener,
+    CustomDateFragment.OnStartAndFinishListener,
     SettingFragment.setThemeInterface,
     ExamsFragment.OnStartAndFinishListener{
 
