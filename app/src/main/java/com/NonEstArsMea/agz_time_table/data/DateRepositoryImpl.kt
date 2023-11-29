@@ -15,7 +15,7 @@ object DateRepositoryImpl: DateRepository {
 
     private val calendarLiveData = MutableLiveData<Calendar>()
 
-    fun setDayNow(){
+    override fun setDayNow(){
         calendar = constCalendar
         updateCalendar()
     }
@@ -55,9 +55,9 @@ object DateRepositoryImpl: DateRepository {
         return "$dayNow $monthStrNow - $yearNow"
     }
 
-    fun getStrDate(day:Int, month: Int, year: Int): String {
+    override fun getStrDate(day:Int, month: Int, year: Int, context: Context): String {
 
-        return "$day ${getMonth(month)} - $year"
+        return "$day ${context.getString(getMonth(month))} - $year"
     }
 
     override fun setNewCalendar(newTime: Int){
@@ -83,9 +83,9 @@ object DateRepositoryImpl: DateRepository {
         val razn = (calendar.get(Calendar.DAY_OF_WEEK) + 5) % 7
         calendar.add(Calendar.DAY_OF_MONTH,-razn)
 
-        var dayNow = ""
-        var monthNow = ""
-        var yearNow = ""
+        var dayNow: String
+        var monthNow: String
+        var yearNow: String
 
         for(a in 0..5){
             dayNow = calendar.get(Calendar.DAY_OF_MONTH).toString()

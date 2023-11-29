@@ -47,7 +47,6 @@ class SettingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = SettingLayoutBinding.inflate(inflater, container, false)
-        Log.e("Create", "Create")
         vm.startFragment()
         return binding.root
     }
@@ -96,13 +95,7 @@ class SettingFragment : Fragment() {
         binding.toggleButton.isSingleSelection = true
         binding.toggleButton.check(vm.getTheme())
         binding.toggleButton.addOnButtonCheckedListener { toggleGroup, checkedId, isChecked ->
-            if (isChecked) {
-                when (checkedId) {
-                    R.id.button1 -> TimeTableRepositoryImpl.setTheme(MainViewModel.LIGHT_THEME)
-                    R.id.button2 -> TimeTableRepositoryImpl.setTheme(MainViewModel.NIGHT_THEME)
-                    R.id.button3 -> TimeTableRepositoryImpl.setTheme(MainViewModel.SYSTEM_THEME)
-                }
-            }
+            vm.setTheme(isChecked, checkedId)
         }
 
 

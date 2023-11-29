@@ -22,10 +22,6 @@ class ViewPagerAdapter(
         diffResult.dispatchUpdatesTo(this)
     }
 
-    fun clearData(){
-        val diffResult = DiffUtil.calculateDiff(WeekScheduleDiffUtilCallback(weekSchedule, emptyList()))
-        diffResult.dispatchUpdatesTo(this)
-    }
 
     override fun getItemCount() = weekSchedule.size
 

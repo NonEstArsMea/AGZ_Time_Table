@@ -52,7 +52,6 @@ class MainViewModel(
                 loadData.execute()
             } catch (e: Exception) {
                 _isStartLoad.postValue(Unit)
-                Log.e("my-tag", e.toString())
             }
         }
     }

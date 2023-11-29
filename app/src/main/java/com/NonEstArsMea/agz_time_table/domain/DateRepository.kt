@@ -17,4 +17,8 @@ interface DateRepository {
     fun getArrayOfWeekDate(): List<String>
 
     fun getDayOfWeek(): Int
+
+    fun setDayNow()
+
+    fun getStrDate(day:Int, month: Int, year: Int, context: Context): String
 }

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.NonEstArsMea.agz_time_table.domain.GetTimeTableUseCase
+import com.NonEstArsMea.agz_time_table.domain.TimeTableUseCase.GetDateUseCase
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -12,7 +13,8 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 
 class CustomDateFragmentViewModel(
-    private val getTimeTableUseCase: GetTimeTableUseCase
+    private val getTimeTableUseCase: GetTimeTableUseCase,
+    private val getDateUseCase: GetDateUseCase
 ): ViewModel() {
 
     private var jobVM = SupervisorJob()
@@ -33,6 +35,11 @@ class CustomDateFragmentViewModel(
             job = uiScope.launch {
                 _timeTableChanged.postValue(getTimeTableUseCase.execute(dayOfWeek, mainParam))
             }
+    }
+
+    fun getDate(day: Int, month: Int, year: Int): String{
+        return getDateUseCase.execute(day, month, year)
+
     }
 
 

@@ -168,42 +168,42 @@ object TimeTableRepositoryImpl : TimeTableRepository {
     }
 
 
-    fun getMainParam(): MutableLiveData<MainParam> {
+    override fun getMainParam(): MutableLiveData<MainParam> {
         return mainParam
     }
 
-    fun getArrayOfFavoriteMainParam(): MutableLiveData<ArrayList<MainParam>> {
+    override fun getArrayOfFavoriteMainParam(): MutableLiveData<ArrayList<MainParam>> {
         return listOfFavoriteMainParam
     }
 
-    fun getArrayOfWeekTimeTable(): MutableLiveData<List<List<CellApi>>> {
+    override fun getArrayOfWeekTimeTable(): MutableLiveData<List<List<CellApi>>> {
         return weekTimeTable
     }
 
-    fun getTheme(): MutableLiveData<Int> {
+    override fun getTheme(): MutableLiveData<Int> {
         return theme
     }
 
-    fun setMainParam(newMainParam: MainParam) {
+    override fun setMainParam(newMainParam: MainParam) {
         if (mainParam.value != newMainParam) {
             mainParam.postValue(newMainParam)
         }
     }
 
-    fun setListOfFavoriteMainParam(list: ArrayList<MainParam>) {
+    override fun setListOfFavoriteMainParam(list: ArrayList<MainParam>) {
         listOfFavoriteMainParam.value = list
     }
 
-    fun setWeekTimeTable(list: ArrayList<ArrayList<CellApi>>) {
+    override fun setWeekTimeTable(list: ArrayList<ArrayList<CellApi>>) {
         weekTimeTable.value = list
     }
 
-    fun setTheme(newTheme: Int) {
+    override fun setTheme(newTheme: Int) {
 
         theme.value = newTheme
     }
 
-    suspend fun getExams(data: String, mainParam: String): ArrayList<CellApi> =
+    override suspend fun getExams(data: String, mainParam: String): ArrayList<CellApi> =
         withContext(Dispatchers.Default) {
             val csvParser = CSVParser(
                 data.reader(), CSVFormat.DEFAULT
@@ -332,7 +332,7 @@ object TimeTableRepositoryImpl : TimeTableRepository {
         }
     }
 
-    fun getNewListOfMainParam(): MutableLiveData<ArrayList<MainParam>> {
+    override fun getNewListOfMainParam(): MutableLiveData<ArrayList<MainParam>> {
         return listOfMainParam
     }
 
@@ -372,7 +372,7 @@ object TimeTableRepositoryImpl : TimeTableRepository {
         }
     }
 
-    fun updateFavoriteParamList(newMainParam: MainParam) {
+    override fun updateFavoriteParamList(newMainParam: MainParam) {
         val list = (listOfFavoriteMainParam.value?.toMutableList() ?: mutableListOf()) as ArrayList<MainParam>
 
         with(list) {

@@ -32,6 +32,7 @@ class CustomDateFragment : Fragment() {
     private val binding get() = _binding!!
     override fun onAttach(context: Context) {
         super.onAttach(context)
+
         if (context is OnStartAndFinishListener) {
             onStartAndFinishListener = context
         } else throw RuntimeException("$context is empty")
@@ -42,6 +43,7 @@ class CustomDateFragment : Fragment() {
                 onStartAndFinishListener.closeFragment()
             }
         }
+
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
 
         vm = ViewModelProvider(
@@ -86,7 +88,7 @@ class CustomDateFragment : Fragment() {
             findNavController().popBackStack()
         }
 
-        binding.dateText.text = DateRepositoryImpl.getStrDate(day, month, year)
+        binding.dateText.text = vm.getDate(day, month, year)
 
     }
 

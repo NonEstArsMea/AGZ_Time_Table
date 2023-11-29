@@ -14,25 +14,34 @@
 - Возможность просмотра загруженности аудиторий.
 - Вывод расписания для преподавателей.
 
-Планы:
-1. Реализация табличного отображения расписания.
-2. Возможность авторизации преподавателей.
-3. Добавление заметок для студентов от преподавателей.
+Main functions:
+- Output of personalized schedules for work, study and additional classes.
+- View daily, weekly and monthly schedules.
+- Ability to view the schedule on a specific day.
+- Synchronization with the device's calendar for automatic schedule selection.
+- Support for different color labels to divide the complexity of classes into categories.
+- The ability to view the workload of the audience.
+- Output of the schedule for teachers.
+
+Plans:
+1. Implementation of a tabular schedule display.
+2. The possibility of authorization of teachers.
+3. Adding notes for students from teachers.
 
 
-Особенности:
-- Интуитивно понятный интерфейс для удобного создания и редактирования расписания.
-- Адаптация темы приложения под тему системы пользователя. 
-- Автоматическое обновление расписания при изменении времени или даты событий, или при изменении расписания.
+Features:
+- Intuitive interface for easy creation and editing of schedules.
+- Adaptation of the application theme to the user's system theme.
+- Automatic schedule update when the time or date of events changes, or when the schedule changes.
 
 ## Что было использовано
- - Чистый Kotlin
+ - Kotlin
  - Jetpack Navigation
- - С MVP переведено на MVVM
- - Вся многопоточность через Coroutines
+ - MVVM
+ - Coroutines
  - Material 3
- - Обработка CSV
- - (Да из интерестного всё
+ - commons-csv
+
 
 Приложение:
 

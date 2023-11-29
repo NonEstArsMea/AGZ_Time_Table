@@ -14,6 +14,7 @@ object DataRepositoryImpl: DataRepository {
     private var dataLiveData = MutableLiveData<String>()
 
     private var content = ""
+
     override suspend fun loadData(): MutableLiveData<String> {
         if(dataLiveData.value == null){
             val connection = URL("http://a0755299.xsph.ru/wp-content/uploads/3-1-1.txt").openConnection()
@@ -24,15 +25,15 @@ object DataRepositoryImpl: DataRepository {
         return dataLiveData
     }
 
-    fun getData(): MutableLiveData<String>{
+    override fun getData(): MutableLiveData<String>{
         return dataLiveData
     }
 
-    fun getContent():String{
+    override fun getContent():String{
         return content
     }
 
-    fun isInternetConnected(context: Context): Boolean {
+    override fun isInternetConnected(context: Context): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
