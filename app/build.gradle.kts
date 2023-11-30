@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlinAndroid)
     id("androidx.navigation.safeargs.kotlin")
     id("com.google.gms.google-services")
+    id ("kotlin-kapt")
 }
 
 
@@ -108,5 +109,9 @@ dependencies {
 
     implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
     implementation("com.google.firebase:firebase-analytics")
+
+
+    implementation ("com.google.dagger:dagger:2.48.1")
+    kapt ("com.google.dagger:dagger-compiler:2.48.1")
 
 }
