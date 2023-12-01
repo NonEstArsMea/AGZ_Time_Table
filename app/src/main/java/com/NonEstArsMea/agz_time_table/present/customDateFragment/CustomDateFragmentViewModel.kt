@@ -11,8 +11,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class CustomDateFragmentViewModel(
+class CustomDateFragmentViewModel @Inject constructor(
     private val getTimeTableUseCase: GetTimeTableUseCase,
     private val getDateUseCase: GetDateUseCase
 ): ViewModel() {

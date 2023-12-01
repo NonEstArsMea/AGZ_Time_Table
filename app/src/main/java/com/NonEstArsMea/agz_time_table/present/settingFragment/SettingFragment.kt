@@ -17,8 +17,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.data.TimeTableRepositoryImpl
 import com.NonEstArsMea.agz_time_table.databinding.SettingLayoutBinding
+import com.NonEstArsMea.agz_time_table.present.TimeTableApplication
 import com.NonEstArsMea.agz_time_table.present.mainActivity.MainViewModel
 import com.NonEstArsMea.agz_time_table.present.settingFragment.recycleView.SettingRecycleViewAdapter
+import javax.inject.Inject
 
 class SettingFragment : Fragment() {
     private var _binding: SettingLayoutBinding? = null
@@ -30,8 +32,14 @@ class SettingFragment : Fragment() {
 
     private val rvSettingViewAdapter = SettingRecycleViewAdapter()
 
+
+    private val component by lazy {
+        (requireActivity().application as TimeTableApplication).component
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
+        component.inject(this)
         vm = ViewModelProvider(this)[SettingViewModel::class.java]
         if(context is setThemeInterface){
             setSystemTheme = context

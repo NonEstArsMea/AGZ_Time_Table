@@ -11,8 +11,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
-import com.NonEstArsMea.agz_time_table.domain.dataClass.CellMapper
-import com.google.android.material.transition.Hold
 
 class TimeTableRecycleViewAdapter : ListAdapter<CellApi, RecyclerView.ViewHolder>(
     TimeTableItemDiffCallback()

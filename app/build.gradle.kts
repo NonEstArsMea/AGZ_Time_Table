@@ -110,7 +110,7 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
     implementation("com.google.firebase:firebase-analytics")
 
-
+    //Dagger2
     implementation ("com.google.dagger:dagger:2.48.1")
     kapt ("com.google.dagger:dagger-compiler:2.48.1")
 

@@ -1,0 +1,41 @@
+package com.NonEstArsMea.agz_time_table.di
+
+import android.app.Application
+import android.content.Context
+import com.NonEstArsMea.agz_time_table.present.customDateFragment.CustomDateFragment
+import com.NonEstArsMea.agz_time_table.present.examsFragment.ExamsFragment
+import com.NonEstArsMea.agz_time_table.present.mainActivity.MainActivity
+import com.NonEstArsMea.agz_time_table.present.searchFragment.SearchFragment
+import com.NonEstArsMea.agz_time_table.present.settingFragment.SettingFragment
+import com.NonEstArsMea.agz_time_table.present.timeTableFragment.TimeTableFragment
+import dagger.BindsInstance
+import dagger.Component
+
+
+@ApplicationScope
+@Component(
+    modules = [DataModule::class, ViewModelModule::class]
+)
+interface ApplicationComponent {
+
+    fun inject(activity: MainActivity)
+
+    fun inject(fragment: TimeTableFragment)
+
+    fun inject(fragment: SettingFragment)
+
+    fun inject(fragment: SearchFragment)
+
+    fun inject(fragment: ExamsFragment)
+
+    fun inject(fragment: CustomDateFragment)
+
+    @Component.Factory
+    interface Factory {
+        fun create(
+            @BindsInstance application: Application,
+            @BindsInstance context: Context
+        ): ApplicationComponent
+    }
+
+}

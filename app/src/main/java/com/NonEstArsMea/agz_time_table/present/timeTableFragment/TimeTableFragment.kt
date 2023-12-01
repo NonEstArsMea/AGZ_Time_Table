@@ -15,8 +15,11 @@ import androidx.viewpager2.widget.ViewPager2
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.data.DateRepositoryImpl
 import com.NonEstArsMea.agz_time_table.databinding.TimeTableFragmentBinding
+import com.NonEstArsMea.agz_time_table.present.TimeTableApplication
+import com.NonEstArsMea.agz_time_table.present.mainActivity.MainViewModelFactory
 import com.google.android.material.datepicker.MaterialDatePicker
 import java.util.Calendar
+import javax.inject.Inject
 
 
 class TimeTableFragment : Fragment() {
@@ -39,12 +42,19 @@ class TimeTableFragment : Fragment() {
     private lateinit var viewPager: ViewPager2
 
 
+    @Inject
+    lateinit var timeTableViewModelFactory: MainViewModelFactory
+
+    private val component by lazy {
+        (requireActivity().application as TimeTableApplication).component
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+        component.inject(this)
         vm = ViewModelProvider(
             this,
-            TimeTableViewModelFactory(context)
+            timeTableViewModelFactory
         )[TimeTableViewModel::class.java]
     }
 

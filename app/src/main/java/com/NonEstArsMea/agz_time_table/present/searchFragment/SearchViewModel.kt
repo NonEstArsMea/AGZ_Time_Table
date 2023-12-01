@@ -4,8 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.NonEstArsMea.agz_time_table.data.TimeTableRepositoryImpl
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
+import javax.inject.Inject
 
-class SearchViewModel : ViewModel() {
+class SearchViewModel @Inject constructor(): ViewModel() {
 
     private var _listOfMainParam = TimeTableRepositoryImpl.getNewListOfMainParam()
     val listOfMainParam: LiveData<ArrayList<MainParam>>

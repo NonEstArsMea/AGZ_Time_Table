@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
 
+
 interface TimeTableRepository {
 
 
