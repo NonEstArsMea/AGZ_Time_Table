@@ -13,7 +13,10 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.NonEstArsMea.agz_time_table.data.DateRepositoryImpl
 import com.NonEstArsMea.agz_time_table.databinding.CastomDateFragmentBinding
+import com.NonEstArsMea.agz_time_table.present.TimeTableApplication
+import com.NonEstArsMea.agz_time_table.present.mainActivity.MainViewModelFactory
 import com.NonEstArsMea.agz_time_table.present.timeTableFragment.recycleView.TimeTableRecycleViewAdapter
+import javax.inject.Inject
 
 class CustomDateFragment : Fragment() {
     private var day: Int = 0
@@ -30,9 +33,17 @@ class CustomDateFragment : Fragment() {
 
     private lateinit var vm: CustomDateFragmentViewModel
     private val binding get() = _binding!!
+
+    @Inject
+    lateinit var customDateFragmentViewModelFactory: MainViewModelFactory
+
+    private val component by lazy {
+        (requireActivity().application as TimeTableApplication).component
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
-
+        component.inject(this)
         if (context is OnStartAndFinishListener) {
             onStartAndFinishListener = context
         } else throw RuntimeException("$context is empty")
@@ -48,7 +59,7 @@ class CustomDateFragment : Fragment() {
 
         vm = ViewModelProvider(
             this,
-            CustomDateFragmentViewModelFactory(context)
+            customDateFragmentViewModelFactory
         )[CustomDateFragmentViewModel::class.java]
     }
 

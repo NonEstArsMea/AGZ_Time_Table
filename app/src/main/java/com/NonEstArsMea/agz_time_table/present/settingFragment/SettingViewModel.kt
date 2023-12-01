@@ -7,8 +7,9 @@ import com.NonEstArsMea.agz_time_table.data.StateRepositoryImpl
 import com.NonEstArsMea.agz_time_table.data.TimeTableRepositoryImpl
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
 import com.NonEstArsMea.agz_time_table.present.mainActivity.MainViewModel
+import javax.inject.Inject
 
-class SettingViewModel : ViewModel() {
+class SettingViewModel @Inject constructor() : ViewModel() {
 
     // хранит список с главными параметрами
     private val _listOfFavoriteMainParam = TimeTableRepositoryImpl.getArrayOfFavoriteMainParam()

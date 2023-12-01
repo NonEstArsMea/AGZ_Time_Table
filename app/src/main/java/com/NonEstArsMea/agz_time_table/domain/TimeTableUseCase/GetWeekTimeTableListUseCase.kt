@@ -3,8 +3,9 @@ package com.NonEstArsMea.agz_time_table.domain.TimeTableUseCase
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
+import javax.inject.Inject
 
-class GetWeekTimeTableListUseCase(
+class GetWeekTimeTableListUseCase @Inject constructor(
     private val timeTableRepository: TimeTableRepository,
     private val context: Context
 ) {

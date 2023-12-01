@@ -7,21 +7,23 @@ import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import javax.inject.Inject
 
-class StorageRepositoryImpl(context: Context) : StrotageRepository {
+class StorageRepositoryImpl @Inject constructor(private val context: Context) : StrotageRepository {
 
-    private val _context = context
     private val sharedPreferences =
-        _context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
+        context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
 
 
     override fun getMainParamFromStorage(): MainParam {
         val token = object : TypeToken<MainParam>() {}.type
         val string = GsonInstance.gson.fromJson(
             sharedPreferences.getString(
-            MAIN_PARAM_KEY,
-            null),
-            token) ?: MainParam(_context.resources.getString(R.string.name_param_is_null))
+                MAIN_PARAM_KEY,
+                null
+            ),
+            token
+        ) ?: MainParam(context.resources.getString(R.string.name_param_is_null))
         return string
     }
 
@@ -29,9 +31,11 @@ class StorageRepositoryImpl(context: Context) : StrotageRepository {
         val token = object : TypeToken<ArrayList<MainParam>>() {}.type
         val string = GsonInstance.gson.fromJson(
             sharedPreferences.getString(
-            LIST_OF_FAVORITE_MAIN_PARAMS,
-            null),
-            token) ?: arrayListOf<MainParam>()
+                LIST_OF_FAVORITE_MAIN_PARAMS,
+                null
+            ),
+            token
+        ) ?: arrayListOf<MainParam>()
         return string
     }
 
@@ -39,9 +43,11 @@ class StorageRepositoryImpl(context: Context) : StrotageRepository {
         val token = object : TypeToken<ArrayList<ArrayList<CellApi>>>() {}.type
         val string = GsonInstance.gson.fromJson(
             sharedPreferences.getString(
-            LAST_WEEK_TIME_TABLE_LIST,
-            null),
-            token) ?: arrayListOf<ArrayList<CellApi>>()
+                LAST_WEEK_TIME_TABLE_LIST,
+                null
+            ),
+            token
+        ) ?: arrayListOf<ArrayList<CellApi>>()
 
         return string
     }

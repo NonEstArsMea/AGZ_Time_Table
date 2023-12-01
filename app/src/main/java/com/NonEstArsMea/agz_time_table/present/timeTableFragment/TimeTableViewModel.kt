@@ -16,8 +16,9 @@ import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class TimeTableViewModel(
+class TimeTableViewModel @Inject constructor(
     private val getWeekTimeTableUseCase: GetWeekTimeTableListUseCase,
     private val getMonthUseCase: GetMonthUseCase,
     private val getDayOfWeekUseCase: GetDayOfWeekUseCase,
@@ -36,7 +37,9 @@ class TimeTableViewModel(
         get() = _timeTableChanged
 
     // хранит список с расписанием
-    val dataLiveData = getDataUseCase.execute()
+    private var _dataLiveData = getDataUseCase.execute()
+    val dataLiveData: LiveData<String>
+        get() = _dataLiveData
 
     // хранит состояние загрузки
     private val _loading = MutableLiveData<Boolean>()
@@ -74,7 +77,7 @@ class TimeTableViewModel(
 
     fun getNewTimeTable(newTime: Int? = null) {
         setNewCalendarUseCase.execute(newTime)
-        if (dataLiveData.value != null) {
+        if (_dataLiveData.value != null) {
             // для прерывания предыдущих корутин
             if (job.isActive) {
                 job.cancel()
@@ -82,7 +85,7 @@ class TimeTableViewModel(
             dataWasChanged = true
             job = viewModelScope.launch {
                 setConditionLoading(true)
-                _timeTableChanged.value = getWeekTimeTableUseCase.execute(dataLiveData.value!!)
+                _timeTableChanged.value = getWeekTimeTableUseCase.execute(_dataLiveData.value!!)
                 setConditionLoading(false)
             }
         }

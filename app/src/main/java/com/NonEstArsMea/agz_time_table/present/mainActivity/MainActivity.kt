@@ -17,6 +17,8 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import com.NonEstArsMea.agz_time_table.data.StateRepositoryImpl
+import com.NonEstArsMea.agz_time_table.present.TimeTableApplication
+import javax.inject.Inject
 
 
 class MainActivity : AppCompatActivity(),
@@ -31,6 +33,13 @@ class MainActivity : AppCompatActivity(),
 
     private lateinit var analytics: FirebaseAnalytics
 
+    @Inject
+    lateinit var viewModelFactory: MainViewModelFactory
+
+    private val component by lazy {
+        (application as TimeTableApplication).component
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,9 +47,9 @@ class MainActivity : AppCompatActivity(),
         val view = binding.root
         setContentView(view)
 
+        component.inject(this)
         analytics = Firebase.analytics
 
-        val viewModelFactory = MainViewModelFactory(this)
         mainViewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
         mainViewModel.getDataFromStorage()
 

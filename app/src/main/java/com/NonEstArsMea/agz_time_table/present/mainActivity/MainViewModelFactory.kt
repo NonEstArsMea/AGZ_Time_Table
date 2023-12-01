@@ -10,34 +10,15 @@ import com.NonEstArsMea.agz_time_table.domain.MainUseCase.Storage.GetFavoriteMai
 import com.NonEstArsMea.agz_time_table.domain.MainUseCase.Storage.GetLastWeekFromeStorageUseCase
 import com.NonEstArsMea.agz_time_table.domain.MainUseCase.Storage.GetMainParamFromStorageUseCase
 import com.NonEstArsMea.agz_time_table.domain.MainUseCase.Storage.SetDataInStorageUseCase
+import javax.inject.Inject
+import javax.inject.Provider
 
-class MainViewModelFactory(context: Context) : ViewModelProvider.Factory {
+class MainViewModelFactory @Inject constructor(
+    context: Context,
+    private val viewModelProviders: @JvmSuppressWildcards Map<Class<out ViewModel>, Provider<ViewModel>>
+) : ViewModelProvider.Factory {
 
-    /**
-     * Work with Storage
-     * */
-
-    private val storageRepository = StorageRepositoryImpl(context = context)
-    private val setDataInStorage = SetDataInStorageUseCase(storageRepository)
-    private val getFavoriteMainParamsFromStorageUseCase =
-        GetFavoriteMainParamsFromStorageUseCase(storageRepository)
-    private val getLastWeekTimeTable = GetLastWeekFromeStorageUseCase(storageRepository)
-    private val getMainParamFromStorage = GetMainParamFromStorageUseCase(storageRepository)
-    private val getTheme = storageRepository.getThemeFromStorage()
-
-    /**
-    Work with Network
-     */
-    private val dataReposytory = DataRepositoryImpl
-    private val loadData = LoadDataUseCase(dataReposytory)
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return MainViewModel(
-            setDataInStorage = setDataInStorage,
-            loadData = loadData,
-            getMainParamFromStorage = getMainParamFromStorage,
-            getFavoriteMainParamsFromStorageUseCase = getFavoriteMainParamsFromStorageUseCase,
-            getLastWeekTimeTableFromStorage = getLastWeekTimeTable,
-            getThemeFromStorage = getTheme
-        ) as T
+        return viewModelProviders[modelClass]?.get() as T
     }
 }
