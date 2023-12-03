@@ -52,6 +52,7 @@ class TimeTableFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         component.inject(this)
+
         vm = ViewModelProvider(
             this,
             timeTableViewModelFactory

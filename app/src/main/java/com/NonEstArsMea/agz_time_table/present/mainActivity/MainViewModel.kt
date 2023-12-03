@@ -12,6 +12,7 @@ import com.NonEstArsMea.agz_time_table.domain.MainUseCase.LoadData.LoadDataUseCa
 import com.NonEstArsMea.agz_time_table.domain.MainUseCase.Storage.GetFavoriteMainParamsFromStorageUseCase
 import com.NonEstArsMea.agz_time_table.domain.MainUseCase.Storage.GetLastWeekFromeStorageUseCase
 import com.NonEstArsMea.agz_time_table.domain.MainUseCase.Storage.GetMainParamFromStorageUseCase
+import com.NonEstArsMea.agz_time_table.domain.MainUseCase.Storage.GetThemeFromStorage
 import com.NonEstArsMea.agz_time_table.domain.MainUseCase.Storage.SetDataInStorageUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,7 +26,7 @@ class MainViewModel @Inject constructor(
     private val getMainParamFromStorage: GetMainParamFromStorageUseCase,
     private val getFavoriteMainParamsFromStorageUseCase: GetFavoriteMainParamsFromStorageUseCase,
     private val getLastWeekTimeTableFromStorage: GetLastWeekFromeStorageUseCase,
-    private val getThemeFromStorage: Int
+    private val getThemeFromStorage: GetThemeFromStorage
 ) : ViewModel() {
 
 
@@ -65,7 +66,7 @@ class MainViewModel @Inject constructor(
         TimeTableRepositoryImpl.setMainParam(getMainParamFromStorage.execute())
         TimeTableRepositoryImpl.setWeekTimeTable(getLastWeekTimeTableFromStorage.execute())
         TimeTableRepositoryImpl.setListOfFavoriteMainParam(getFavoriteMainParamsFromStorageUseCase.execute())
-        TimeTableRepositoryImpl.setTheme(getThemeFromStorage)
+        TimeTableRepositoryImpl.setTheme(getThemeFromStorage.execute())
 
     }
 
