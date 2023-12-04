@@ -5,14 +5,25 @@ import androidx.lifecycle.ViewModel
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.data.StateRepositoryImpl
 import com.NonEstArsMea.agz_time_table.data.TimeTableRepositoryImpl
+import com.NonEstArsMea.agz_time_table.domain.MainUseCase.State.SetSettingItemUseCase
+import com.NonEstArsMea.agz_time_table.domain.SettingUseCase.GetArrayOfFavoriteMainParamUseCase
+import com.NonEstArsMea.agz_time_table.domain.SettingUseCase.GetThemeUseCase
+import com.NonEstArsMea.agz_time_table.domain.SettingUseCase.SetMainParamUseCase
+import com.NonEstArsMea.agz_time_table.domain.SettingUseCase.SetThemeUseCase
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
 import com.NonEstArsMea.agz_time_table.present.mainActivity.MainViewModel
 import javax.inject.Inject
 
-class SettingViewModel @Inject constructor() : ViewModel() {
+class SettingViewModel @Inject constructor(
+    private val getArrayOfFavoriteMainParam: GetArrayOfFavoriteMainParamUseCase,
+    private val getTheme: GetThemeUseCase,
+    private val setTheme: SetThemeUseCase,
+    private val setMainParam: SetMainParamUseCase,
+    private val setSettingItem: SetSettingItemUseCase
+) : ViewModel() {
 
     // хранит список с главными параметрами
-    private val _listOfFavoriteMainParam = TimeTableRepositoryImpl.getArrayOfFavoriteMainParam()
+    private val _listOfFavoriteMainParam = getArrayOfFavoriteMainParam.execute()
     val listOfFavoriteMainParam: LiveData<ArrayList<MainParam>>
         get() = _listOfFavoriteMainParam
 
@@ -31,14 +42,7 @@ class SettingViewModel @Inject constructor() : ViewModel() {
     }
 
     fun getTheme(): Int {
-        return when (TimeTableRepositoryImpl.getTheme().value) {
-            1 -> R.id.button1
-            2 -> R.id.button2
-            3 -> R.id.button3
-            else -> {
-                R.id.button1
-            }
-        }
+        return getTheme.execute()
     }
 
     fun delParamFromFavoriteMainParam(index: MainParam) {
@@ -48,20 +52,14 @@ class SettingViewModel @Inject constructor() : ViewModel() {
     }
 
     fun setTheme(isChecked: Boolean, checkedId: Int){
-        if (isChecked) {
-            when (checkedId) {
-                R.id.button1 -> TimeTableRepositoryImpl.setTheme(MainViewModel.LIGHT_THEME)
-                R.id.button2 -> TimeTableRepositoryImpl.setTheme(MainViewModel.NIGHT_THEME)
-                R.id.button3 -> TimeTableRepositoryImpl.setTheme(MainViewModel.SYSTEM_THEME)
-            }
-        }
+        setTheme.execute(isChecked, checkedId)
     }
 
     fun setMainParam(mainParam: MainParam) {
-        TimeTableRepositoryImpl.setMainParam(mainParam)
+        setMainParam.execute(mainParam)
     }
 
     fun startFragment(){
-        StateRepositoryImpl.setNewMenuItem(StateRepositoryImpl.SETTING_ITEM)
+        setSettingItem.execute()
     }
 }

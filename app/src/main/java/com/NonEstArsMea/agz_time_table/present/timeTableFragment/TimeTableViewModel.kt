@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.NonEstArsMea.agz_time_table.data.StateRepositoryImpl
+import com.NonEstArsMea.agz_time_table.domain.MainUseCase.State.SetTimeTableItemUseCase
 import com.NonEstArsMea.agz_time_table.domain.TimeTableUseCase.GetDataUseCase
 import com.NonEstArsMea.agz_time_table.domain.TimeTableUseCase.GetDayOfWeekUseCase
 import com.NonEstArsMea.agz_time_table.domain.TimeTableUseCase.GetListOfMainParamUseCase
@@ -25,7 +25,8 @@ class TimeTableViewModel @Inject constructor(
     private val setNewCalendarUseCase: SetNewCalendarUseCase,
     private val getListOfMainParamUseCase: GetListOfMainParamUseCase,
     private val getMainParamUseCase: GetMainParamUseCase,
-    private val getDataUseCase: GetDataUseCase
+    private val getDataUseCase: GetDataUseCase,
+    private val setTimeTableItem: SetTimeTableItemUseCase
 ) : ViewModel() {
 
 
@@ -78,7 +79,6 @@ class TimeTableViewModel @Inject constructor(
     fun getNewTimeTable(newTime: Int? = null) {
         setNewCalendarUseCase.execute(newTime)
         if (_dataLiveData.value != null) {
-            // для прерывания предыдущих корутин
             if (job.isActive) {
                 job.cancel()
             }
@@ -116,7 +116,7 @@ class TimeTableViewModel @Inject constructor(
 
 
     fun startFragment() {
-        StateRepositoryImpl.setNewMenuItem(StateRepositoryImpl.TIME_TABLE_ITEM)
+        setTimeTableItem.execute()
     }
 
     fun getCurrentItem(): Int {

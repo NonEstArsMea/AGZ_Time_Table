@@ -10,4 +10,5 @@ interface StateRepository {
 
     fun stateNow(): Int
 
+
 }
