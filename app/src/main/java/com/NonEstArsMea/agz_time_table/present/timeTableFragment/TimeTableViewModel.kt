@@ -85,7 +85,7 @@ class TimeTableViewModel @Inject constructor(
             dataWasChanged = true
             job = viewModelScope.launch {
                 setConditionLoading(true)
-                _timeTableChanged.value = getWeekTimeTableUseCase.execute(_dataLiveData.value!!)
+                _timeTableChanged.value = getWeekTimeTableUseCase.execute()
                 setConditionLoading(false)
             }
         }

@@ -9,7 +9,7 @@ import com.NonEstArsMea.agz_time_table.data.TimeTableRepositoryImpl
 import com.NonEstArsMea.agz_time_table.domain.DateRepository
 import com.NonEstArsMea.agz_time_table.domain.MainUseCase.LoadData.DataRepository
 import com.NonEstArsMea.agz_time_table.domain.MainUseCase.Storage.StrotageRepository
-import com.NonEstArsMea.agz_time_table.domain.StateRepository
+import com.NonEstArsMea.agz_time_table.domain.MainUseCase.State.StateRepository
 import com.NonEstArsMea.agz_time_table.domain.TimeTableUseCase.TimeTableRepository
 import dagger.Module
 import dagger.Provides
@@ -37,7 +37,7 @@ class DataModule {
 
     @ApplicationScope
     @Provides
-    fun bindStateRepository(): StateRepository{
+    fun bindStateRepository(): StateRepository {
         return StateRepositoryImpl
     }
 

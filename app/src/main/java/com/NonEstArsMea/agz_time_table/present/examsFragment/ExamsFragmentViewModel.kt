@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.NonEstArsMea.agz_time_table.data.DataRepositoryImpl
 import com.NonEstArsMea.agz_time_table.data.StateRepositoryImpl
 import com.NonEstArsMea.agz_time_table.data.TimeTableRepositoryImpl
+import com.NonEstArsMea.agz_time_table.domain.TimeTableUseCase.GetExamsUseCase
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -16,7 +17,9 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class ExamsFragmentViewModel @Inject constructor(): ViewModel() {
+class ExamsFragmentViewModel @Inject constructor(
+    private val getExams: GetExamsUseCase
+): ViewModel() {
 
     private var job: Job = viewModelScope.launch {  }
 
@@ -31,8 +34,9 @@ class ExamsFragmentViewModel @Inject constructor(): ViewModel() {
             job.cancel()
         }
         job = viewModelScope.launch {
-            _timeTableChanged.postValue(TimeTableRepositoryImpl.getExams(
-                DataRepositoryImpl.getContent(), mainParam))
+            _timeTableChanged.postValue(
+                getExams.execute(mainParam)
+            )
         }
     }
 

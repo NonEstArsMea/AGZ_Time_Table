@@ -1,9 +1,7 @@
 package com.NonEstArsMea.agz_time_table.data
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.NonEstArsMea.agz_time_table.R
-import com.NonEstArsMea.agz_time_table.domain.StateRepository
+import com.NonEstArsMea.agz_time_table.domain.MainUseCase.State.StateRepository
 
 object StateRepositoryImpl: StateRepository {
 

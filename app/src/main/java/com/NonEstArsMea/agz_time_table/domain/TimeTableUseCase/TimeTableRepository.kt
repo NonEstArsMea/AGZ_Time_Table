@@ -9,11 +9,10 @@ import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
 interface TimeTableRepository {
 
 
-    suspend fun getWeekTimeTable(newData: String, context: Context): List<List<CellApi>>
+    suspend fun getWeekTimeTable(context: Context): List<List<CellApi>>
 
 
-    suspend fun preparationData(data: String,
-                                dayOfWeek: String,
+    suspend fun preparationData(dayOfWeek: String,
                                 mainParam: String,
                                 context: Context): List<CellApi>
     fun getListOfMainParam()
@@ -32,7 +31,7 @@ interface TimeTableRepository {
     fun getTheme(): MutableLiveData<Int>
     fun setTheme(newTheme: Int)
 
-    suspend fun getExams(data: String, mainParam: String): ArrayList<CellApi>
+    suspend fun getExams(mainParam: String): ArrayList<CellApi>
 
 
 }

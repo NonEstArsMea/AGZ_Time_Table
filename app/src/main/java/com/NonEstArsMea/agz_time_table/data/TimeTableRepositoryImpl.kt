@@ -25,7 +25,6 @@ object TimeTableRepositoryImpl : TimeTableRepository {
     private var theme = MutableLiveData<Int>()
 
     override suspend fun preparationData(
-        data: String,
         dayOfWeek: String,
         mainParam: String,
         context: Context
@@ -203,10 +202,11 @@ object TimeTableRepositoryImpl : TimeTableRepository {
         theme.value = newTheme
     }
 
-    override suspend fun getExams(data: String, mainParam: String): ArrayList<CellApi> =
+    override suspend fun getExams(mainParam: String): ArrayList<CellApi> =
         withContext(Dispatchers.Default) {
+            val _data = DataRepositoryImpl.getContent()
             val csvParser = CSVParser(
-                data.reader(), CSVFormat.DEFAULT
+                _data.reader(), CSVFormat.DEFAULT
                     .withFirstRecordAsHeader()
                     .withIgnoreHeaderCase()
                     .withTrim()
@@ -265,14 +265,14 @@ object TimeTableRepositoryImpl : TimeTableRepository {
         }
 
 
-    override suspend fun getWeekTimeTable(newData: String, context: Context): List<List<CellApi>> {
+    override suspend fun getWeekTimeTable(context: Context): List<List<CellApi>> {
         val dayOfWeek = DateRepositoryImpl.getArrayOfWeekDate()
         return mainParam.value?.let { mainParamValue ->
             try {
                 coroutineScope {
                     dayOfWeek.map { day ->
                         async {
-                            preparationData(newData, day, mainParamValue.name, context)
+                            preparationData(day, mainParamValue.name, context)
                         }
                     }.awaitAll()
                 }

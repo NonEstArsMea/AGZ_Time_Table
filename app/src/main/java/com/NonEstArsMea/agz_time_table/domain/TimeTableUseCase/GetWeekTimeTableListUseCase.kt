@@ -9,8 +9,8 @@ class GetWeekTimeTableListUseCase @Inject constructor(
     private val timeTableRepository: TimeTableRepository,
     private val context: Context
 ) {
-    suspend fun execute(newData: String): List<List<CellApi>> {
-        return timeTableRepository.getWeekTimeTable(newData, context)
+    suspend fun execute(): List<List<CellApi>> {
+        return timeTableRepository.getWeekTimeTable(context)
     }
 
     fun getArrayOfWeekTimeTable():MutableLiveData<List<List<CellApi>>>{
