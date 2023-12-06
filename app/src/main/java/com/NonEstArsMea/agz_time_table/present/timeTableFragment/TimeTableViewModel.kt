@@ -19,13 +19,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class TimeTableViewModel @Inject constructor(
-    private val getWeekTimeTableUseCase: GetWeekTimeTableListUseCase,
+    private val getWeekTimeTableListUseCase: GetWeekTimeTableListUseCase,
     private val getMonthUseCase: GetMonthUseCase,
     private val getDayOfWeekUseCase: GetDayOfWeekUseCase,
     private val setNewCalendarUseCase: SetNewCalendarUseCase,
     private val getListOfMainParamUseCase: GetListOfMainParamUseCase,
     private val getMainParamUseCase: GetMainParamUseCase,
-    private val getDataUseCase: GetDataUseCase,
+    getDataUseCase: GetDataUseCase,
     private val setTimeTableItem: SetTimeTableItemUseCase
 ) : ViewModel() {
 
@@ -33,7 +33,7 @@ class TimeTableViewModel @Inject constructor(
     private var job: Job = viewModelScope.launch { }
 
 
-    private var _timeTableChanged = getWeekTimeTableUseCase.getArrayOfWeekTimeTable()
+    private var _timeTableChanged = getWeekTimeTableListUseCase.getArrayOfWeekTimeTable()
     val timeTableChanged: LiveData<List<List<CellApi>>>
         get() = _timeTableChanged
 
@@ -85,7 +85,7 @@ class TimeTableViewModel @Inject constructor(
             dataWasChanged = true
             job = viewModelScope.launch {
                 setConditionLoading(true)
-                _timeTableChanged.value = getWeekTimeTableUseCase.execute()
+                _timeTableChanged.value = getWeekTimeTableListUseCase.execute()
                 setConditionLoading(false)
             }
         }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:locale="ru">
-    <string name="app_name" translatable="false">Расписание АГЗ</string>
-    <string name="name_param_is_null" translatable="false">Группа не выбрана</string>
+    <string name="app_name">Расписание АГЗ</string>
+    <string name="name_param_is_null">Группа не выбрана</string>
 
     <dimen name="card_time_text_size">20dp</dimen>
     <dimen name="card_time_text_size_2">17dp</dimen>
@@ -42,5 +42,19 @@
     <string name="pairs">пары</string>
     <string name="group_number">"Группа № "</string>
     <string name="department_number">"Кафедра № "</string>
+    <string name="type_subject_pz">Практическое занятие</string>
+    <string name="type_subject_practic">Практика</string>
+    <string name="type_subject_credit_with_an_assessment">Зачет с оценкой</string>
+    <string name="type_subject_control_work">Контрольная работа</string>
+    <string name="type_subject_coursework">Курсовая работа</string>
+    <string name="type_subject_lecture">Лекция</string>
+    <string name="type_subject_laboratory_work">Лабораторная работа</string>
+    <string name="type_subject_seminar">Семинар</string>
+    <string name="type_subject_SRPP">СРПП</string>
+    <string name="type_subject_exam">Экзамен</string>
+    <string name="type_subject_group_consultation">Групповая консультация</string>
+    <string name="type_subject_group_lesson">Групповое занятие</string>
+    <string name="type_subject_test">Зачет</string>
+    <string name="type_subject_lesson">Занятие</string>
 
 </resources>

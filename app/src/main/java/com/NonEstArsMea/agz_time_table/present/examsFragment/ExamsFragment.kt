@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 class ExamsFragment: Fragment() {
 
-    private var mainParam: String = ""
+    private lateinit var mainParam: String
 
     private val args by navArgs<ExamsFragmentArgs>()
 

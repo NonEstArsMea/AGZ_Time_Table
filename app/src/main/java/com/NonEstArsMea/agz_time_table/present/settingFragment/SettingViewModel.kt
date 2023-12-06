@@ -15,7 +15,7 @@ import com.NonEstArsMea.agz_time_table.present.mainActivity.MainViewModel
 import javax.inject.Inject
 
 class SettingViewModel @Inject constructor(
-    private val getArrayOfFavoriteMainParam: GetArrayOfFavoriteMainParamUseCase,
+    getArrayOfFavoriteMainParam: GetArrayOfFavoriteMainParamUseCase,
     private val getTheme: GetThemeUseCase,
     private val setTheme: SetThemeUseCase,
     private val setMainParam: SetMainParamUseCase,

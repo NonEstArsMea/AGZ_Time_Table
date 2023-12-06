@@ -18,4 +18,18 @@
     <string name="pair">пара</string>
     <string name="pairs">пары</string>
     <string name="group_number">"Группа № "</string>
+    <string name="type_subject_pz">Практическое занятие</string>
+    <string name="type_subject_practic">Практика</string>
+    <string name="type_subject_credit_with_an_assessment">Зачет с оценкой</string>
+    <string name="type_subject_control_work">Контрольная работа</string>
+    <string name="type_subject_coursework">Курсовая работа</string>
+    <string name="type_subject_lecture">Лекция</string>
+    <string name="type_subject_laboratory_work">Лабораторная работа</string>
+    <string name="type_subject_seminar">Семинар</string>
+    <string name="type_subject_SRPP">СРПП</string>
+    <string name="type_subject_exam">Экзамен</string>
+    <string name="type_subject_group_consultation">Групповая консультация</string>
+    <string name="type_subject_group_lesson">Групповое занятие</string>
+    <string name="type_subject_test">Зачет</string>
+    <string name="type_subject_lesson">Занятие</string>
 </resources>

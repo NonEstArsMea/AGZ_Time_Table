@@ -3,7 +3,7 @@ package com.NonEstArsMea.agz_time_table.present.customDateFragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.NonEstArsMea.agz_time_table.domain.GetTimeTableUseCase
+import com.NonEstArsMea.agz_time_table.domain.TimeTableUseCase.GetTimeTableUseCase
 import com.NonEstArsMea.agz_time_table.domain.TimeTableUseCase.GetDateUseCase
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
 import kotlinx.coroutines.CoroutineScope
@@ -27,6 +27,8 @@ class CustomDateFragmentViewModel @Inject constructor(
     private var _timeTableChanged = MutableLiveData<ArrayList<CellApi>>()
     val timeTableChanged: LiveData<ArrayList<CellApi>>
         get() = _timeTableChanged
+
+
     fun getTimeTable(day: Int, month: Int, year: Int, mainParam: String){
 
             val dayOfWeek = "$day-${month+1}-$year"

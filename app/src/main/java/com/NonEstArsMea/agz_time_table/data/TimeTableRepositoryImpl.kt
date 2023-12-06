@@ -30,15 +30,15 @@ object TimeTableRepositoryImpl : TimeTableRepository {
         context: Context
     ): ArrayList<CellApi> = withContext(Dispatchers.Default) {
 
-        val _data = DataRepositoryImpl.getContent()
+        val data = DataRepositoryImpl.getContent()
         val csvParser = CSVParser(
-            _data.reader(), CSVFormat.DEFAULT
+            data.reader(), CSVFormat.DEFAULT
                 .withFirstRecordAsHeader()
                 .withIgnoreHeaderCase()
                 .withTrim()
                 .withDelimiter(';')
         )
-        var listOfLes = mutableListOf<Int>()
+        val listOfLes = mutableListOf<Int>()
         var listTT = ArrayList<CellApi>()
         for (a in 1..5) {
             listTT.add(
@@ -47,19 +47,27 @@ object TimeTableRepositoryImpl : TimeTableRepository {
                 )
             )
         }
-        var l = 0
-        for (line in csvParser) {
-            l++
+        var group: String
+        var les: Int
+        var aud: String
+        var name: String
+        var _subject: String
+        var subj_type: String
+        var departmentId: String
+        var _date: String
+        var themas: String
 
-            val group = line.get(0)
-            val les = line.get(2).toInt() - 1
-            val aud = line.get(3)
-            val name = line.get(6)
-            val _subject = line.get(8)
-            val subj_type = line.get(9)
-            val departmentId = line.get(7)
-            val _date = line.get(10).replace('.', '-')
-            val themas = line.get(12)
+        for (line in csvParser) {
+
+            group = line.get(0)
+            les = line.get(2).toInt() - 1
+            aud = line.get(3)
+            name = line.get(6)
+            _subject = line.get(8)
+            subj_type = line.get(9)
+            departmentId = line.get(7)
+            _date = line.get(10).replace('.', '-')
+            themas = line.get(12)
             if ((_date == dayOfWeek) and ((mainParam == group) or (mainParam == aud) or (mainParam == name))) {
                 listTT[les].apply {
                     if (teacher == null) {
@@ -68,7 +76,7 @@ object TimeTableRepositoryImpl : TimeTableRepository {
                         classroom = aud
                         subject = _subject
                         subjectNumber = les + 1
-                        subjectType = "$themas ${Methods.replaceText(subj_type)}"
+                        subjectType = "$themas ${context.getString(Methods.returnFullNameOfTheItemType(subj_type))}"
                         color = Methods.setColor(subj_type)
                         noEmpty = true
                         date = _date
@@ -93,22 +101,27 @@ object TimeTableRepositoryImpl : TimeTableRepository {
             it.noEmpty
         } as ArrayList<CellApi>
 
-        listOfLes = listOfLes.sorted().toMutableList()
+        return@withContext setBreakCell(listOfLes, listTT, context)
+    }
+
+    private fun setBreakCell(
+        listOfLes: MutableList<Int>,
+        listTT: ArrayList<CellApi>,
+        context: Context
+    ): ArrayList<CellApi> {
+        var listOfLes1 = listOfLes
+        listOfLes1 = listOfLes1.sorted().toMutableList()
         var lessonOffset = 0
-        // Список может быть пустым
         if (!listTT.isEmpty()) {
-            // ПРоверка первого элемента
+            // Проверка первого элемента
             if (listTT[0].subjectNumber != 1) {
+                val endTime = getStartTime(listTT[0].subjectNumber!!)
+                val countOfPairs = listTT[0].subjectNumber!! - 1
+                val wordEnd = wordEnding(listTT[0].subjectNumber!! - 1, context)
                 listTT.add(
                     0,
                     CellApi(
-                        // 9.00 - 10.30     2 пары
-                        text = "9:00 - ${getStartTime(listTT[0].subjectNumber!!)}     ${listTT[0].subjectNumber!! - 1} ${
-                            wordEnding(
-                                listTT[0].subjectNumber!! - 1,
-                                context
-                            )
-                        }",
+                        text = "9:00 - $endTime     $countOfPairs $wordEnd",
                         noEmpty = true,
                         viewSize = 50
                     )
@@ -116,10 +129,10 @@ object TimeTableRepositoryImpl : TimeTableRepository {
                 // Нужно для вставки по индексу
                 lessonOffset += 1
             }
-            if (listOfLes.size > 1) {
-                for (a in 0 until listOfLes.size - 1) {
+            if (listOfLes1.size > 1) {
+                for (a in 0 until listOfLes1.size - 1) {
                     // Разность пар
-                    val diff = (listOfLes[a + 1] - listOfLes[a])
+                    val diff = (listOfLes1[a + 1] - listOfLes1[a])
 
                     if (diff > 1) {
 
@@ -127,16 +140,17 @@ object TimeTableRepositoryImpl : TimeTableRepository {
                             getEndTime(listTT[a + lessonOffset].subjectNumber!!)
                         val startTime =
                             getStartTime(listTT[a + lessonOffset + 1].subjectNumber!!)
+                        val wordEnd = wordEnding(diff - 1, context)
                         listTT.add(
                             index = a + lessonOffset + 1,
                             element = CellApi(
-                                text = "${endTime} - ${startTime}   ${diff - 1} ${wordEnding(diff - 1, context)}",
+                                text = "${endTime} - ${startTime}   ${diff - 1} $wordEnd",
                                 noEmpty = true,
                                 viewSize = 60
                             )
                         )
                         lessonOffset += 1
-                    } else if (listOfLes[a + 1] == 4) {
+                    } else if (listOfLes1[a + 1] == 4) {
                         listTT.add(
                             index = a + lessonOffset + 1,
                             element = CellApi(
@@ -160,11 +174,18 @@ object TimeTableRepositoryImpl : TimeTableRepository {
                 }
             }
         } else {
-            listTT.add(CellApi(text = context.getString(R.string.no_school), noEmpty = true, viewSize = 20))
-            return@withContext listTT
+            listTT.add(
+                CellApi(
+                    text = context.getString(R.string.no_school),
+                    noEmpty = true,
+                    viewSize = 20
+                )
+            )
         }
-        return@withContext listTT
+
+        return listTT
     }
+
 
 
     override fun getMainParam(): MutableLiveData<MainParam> {
@@ -202,7 +223,7 @@ object TimeTableRepositoryImpl : TimeTableRepository {
         theme.value = newTheme
     }
 
-    override suspend fun getExams(mainParam: String): ArrayList<CellApi> =
+    override suspend fun getExams(mainParam: String, context: Context): ArrayList<CellApi> =
         withContext(Dispatchers.Default) {
             val _data = DataRepositoryImpl.getContent()
             val csvParser = CSVParser(
@@ -239,7 +260,7 @@ object TimeTableRepositoryImpl : TimeTableRepository {
                             classroom = aud
                             this.subject = subject
                             subjectNumber = listTT.size
-                            subjectType = "$themas ${Methods.replaceText(subj_type)}"
+                            subjectType = "$themas ${context.getString(Methods.returnFullNameOfTheItemType(subj_type))}"
                             color = Methods.setColor(subj_type)
                             noEmpty = true
                             this.date = date
@@ -284,9 +305,9 @@ object TimeTableRepositoryImpl : TimeTableRepository {
 
 
     override fun getListOfMainParam() {
-        val _data = DataRepositoryImpl.getContent()
+        val data = DataRepositoryImpl.getContent()
         val csvParser = CSVParser(
-            _data.reader(), CSVFormat.DEFAULT
+            data.reader(), CSVFormat.DEFAULT
                 .withFirstRecordAsHeader()
                 .withIgnoreHeaderCase()
                 .withTrim()
@@ -298,18 +319,18 @@ object TimeTableRepositoryImpl : TimeTableRepository {
         val listName = ArrayList<MainParam>()
 
         for (line in csvParser) {
-            val Group = line.get(0)
-            val Aud = line.get(3)
-            val Name = line.get(6)
+            val group = line.get(0)
+            val aud = line.get(3)
+            val name = line.get(6)
 
-            if (listGroup.none { it.name == Group }) {
-                listGroup.add(MainParam(Group, false))
+            if (listGroup.none { it.name == group }) {
+                listGroup.add(MainParam(group, false))
             }
-            if (listAud.none { it.name == Aud }) {
-                listAud.add(MainParam(Aud, false))
+            if (listAud.none { it.name == aud }) {
+                listAud.add(MainParam(aud, false))
             }
-            if (listName.none { it.name == Name }) {
-                listName.add(MainParam(Name, false))
+            if (listName.none { it.name == name }) {
+                listName.add(MainParam(name, false))
             }
 
         }

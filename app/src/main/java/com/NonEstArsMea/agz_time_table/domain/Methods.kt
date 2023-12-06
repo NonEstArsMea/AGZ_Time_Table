@@ -8,28 +8,28 @@ object Methods {
         val exams = listOf("ЗаО", "э", "эк", "экз", "экз.", "Зачет")
         return type in exams
     }
-    fun replaceText(text: String): String {
+    fun returnFullNameOfTheItemType(text: String): Int {
     return when(text){
-        "ПЗ" -> "Практическое занятие"
-        "П" -> "Практическое занятие"
-        "ЗаО" -> "Зачет с оценкой"
-        "Контр.р" -> "Контрольная работа"
-        "Ку" -> "Курсовая работа"
-        "Курс" -> "Курсовая работа"
-        "Курс.р" -> "Курсовая работа"
-        "л" -> "Лекция"
-        "ЛР" -> "Лабораторная работа"
-        "с" -> "Семинар"
-        "см" -> "Семинар"
-        "СРПП" -> "СРПП"
-        "э" -> "Экзамен"
-        "эк" -> "Экзамен"
-        "экз" -> "Экзамен"
-        "экз." -> "Экзамен"
-        "ГК" -> "Групповая консультация"
-        "ГЗ" -> "Групповое занятие"
-        "Зачет" -> "Зачет"
-        else -> {text}
+        "ПЗ" -> R.string.type_subject_pz
+        "П" -> R.string.type_subject_practic
+        "ЗаО" -> R.string.type_subject_credit_with_an_assessment
+        "Контр.р" -> R.string.type_subject_control_work
+        "Ку" -> R.string.type_subject_coursework
+        "Курс" -> R.string.type_subject_coursework
+        "Курс.р" -> R.string.type_subject_coursework
+        "л" -> R.string.type_subject_lecture
+        "ЛР" -> R.string.type_subject_laboratory_work
+        "с" -> R.string.type_subject_seminar
+        "см" -> R.string.type_subject_seminar
+        "СРПП" -> R.string.type_subject_SRPP
+        "э" -> R.string.type_subject_exam
+        "эк" -> R.string.type_subject_exam
+        "экз" -> R.string.type_subject_exam
+        "экз." -> R.string.type_subject_exam
+        "ГК" -> R.string.type_subject_group_consultation
+        "ГЗ" -> R.string.type_subject_group_lesson
+        "Зачет" -> R.string.type_subject_test
+        else -> R.string.type_subject_lesson
     }}
 
     fun setColor(text: String): Int{

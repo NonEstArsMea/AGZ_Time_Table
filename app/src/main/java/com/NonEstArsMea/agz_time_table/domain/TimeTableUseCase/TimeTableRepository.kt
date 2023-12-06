@@ -31,7 +31,7 @@ interface TimeTableRepository {
     fun getTheme(): MutableLiveData<Int>
     fun setTheme(newTheme: Int)
 
-    suspend fun getExams(mainParam: String): ArrayList<CellApi>
+    suspend fun getExams(mainParam: String, context: Context): ArrayList<CellApi>
 
 
 }

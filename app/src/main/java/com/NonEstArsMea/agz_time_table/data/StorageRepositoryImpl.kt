@@ -17,43 +17,40 @@ class StorageRepositoryImpl @Inject constructor(private val context: Context) : 
 
     override fun getMainParamFromStorage(): MainParam {
         val token = object : TypeToken<MainParam>() {}.type
-        val string = GsonInstance.gson.fromJson(
+        return GsonInstance.gson.fromJson(
             sharedPreferences.getString(
                 MAIN_PARAM_KEY,
                 null
             ),
             token
         ) ?: MainParam(context.resources.getString(R.string.name_param_is_null))
-        return string
     }
 
     override fun getFavoriteMainParamsFromStorage(): ArrayList<MainParam> {
         val token = object : TypeToken<ArrayList<MainParam>>() {}.type
-        val string = GsonInstance.gson.fromJson(
+        return GsonInstance.gson.fromJson(
             sharedPreferences.getString(
                 LIST_OF_FAVORITE_MAIN_PARAMS,
                 null
             ),
             token
-        ) ?: arrayListOf<MainParam>()
-        return string
+        ) ?: arrayListOf()
     }
 
     override fun getLastWeekFromStorage(): ArrayList<ArrayList<CellApi>> {
         val token = object : TypeToken<ArrayList<ArrayList<CellApi>>>() {}.type
-        val string = GsonInstance.gson.fromJson(
+
+        return GsonInstance.gson.fromJson(
             sharedPreferences.getString(
                 LAST_WEEK_TIME_TABLE_LIST,
                 null
             ),
             token
-        ) ?: arrayListOf<ArrayList<CellApi>>()
-
-        return string
+        ) ?: arrayListOf()
     }
 
     override fun getThemeFromStorage(): Int {
-        return sharedPreferences.getInt(THEME, SYSTEM_THEME) ?: SYSTEM_THEME
+        return sharedPreferences.getInt(THEME, SYSTEM_THEME)
     }
 
     override fun setDataInStorage(
@@ -77,11 +74,11 @@ class StorageRepositoryImpl @Inject constructor(private val context: Context) : 
     }
 
     companion object {
-        const val SHARED_PREFERENCES_NAME = "SPN"
-        const val MAIN_PARAM_KEY = "mainParam"
-        const val LIST_OF_FAVORITE_MAIN_PARAMS = "LOFMP"
-        const val LAST_WEEK_TIME_TABLE_LIST = "LWTTL"
-        const val THEME = "T"
+        private const val SHARED_PREFERENCES_NAME = "SPN"
+        private const val MAIN_PARAM_KEY = "mainParam"
+        private const val LIST_OF_FAVORITE_MAIN_PARAMS = "LOFMP"
+        private const val LAST_WEEK_TIME_TABLE_LIST = "LWTTL"
+        private const val THEME = "T"
         private const val SYSTEM_THEME = 1
     }
 }

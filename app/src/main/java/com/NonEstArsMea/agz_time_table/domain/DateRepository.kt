@@ -20,5 +20,4 @@ interface DateRepository {
 
     fun setDayNow()
 
-    fun getStrDate(day:Int, month: Int, year: Int, context: Context): String
 }
