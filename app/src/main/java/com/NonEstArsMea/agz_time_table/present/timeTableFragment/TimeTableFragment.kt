@@ -195,7 +195,7 @@ class TimeTableFragment : Fragment() {
 
     private fun updateData(newTime: Int? = null) {
         vm.getNewTimeTable(newTime)
-        binding.monthDate.text = DateRepositoryImpl.monthAndDayNow(requireContext())
+        binding.monthDate.text = vm.getMonth()
         setButtonNumbers()
     }
 

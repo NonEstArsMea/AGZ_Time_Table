@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.Intent.ACTION_VIEW
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,10 +14,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.NonEstArsMea.agz_time_table.R
-import com.NonEstArsMea.agz_time_table.data.TimeTableRepositoryImpl
 import com.NonEstArsMea.agz_time_table.databinding.SettingLayoutBinding
 import com.NonEstArsMea.agz_time_table.present.TimeTableApplication
-import com.NonEstArsMea.agz_time_table.present.mainActivity.MainViewModel
+import com.NonEstArsMea.agz_time_table.present.mainActivity.MainViewModelFactory
 import com.NonEstArsMea.agz_time_table.present.settingFragment.recycleView.SettingRecycleViewAdapter
 import javax.inject.Inject
 
@@ -26,7 +24,10 @@ class SettingFragment : Fragment() {
     private var _binding: SettingLayoutBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var vm: SettingViewModel
+    @Inject lateinit var vm: SettingViewModel
+
+    @Inject
+    lateinit var viewModelFactory: MainViewModelFactory
 
     private lateinit var setSystemTheme: setThemeInterface
 
@@ -40,7 +41,7 @@ class SettingFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         component.inject(this)
-        vm = ViewModelProvider(this)[SettingViewModel::class.java]
+        vm = ViewModelProvider(this, viewModelFactory)[SettingViewModel::class.java]
         if(context is setThemeInterface){
             setSystemTheme = context
         }

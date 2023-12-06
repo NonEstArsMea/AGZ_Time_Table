@@ -6,14 +6,21 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.NonEstArsMea.agz_time_table.R
+import com.NonEstArsMea.agz_time_table.data.DataRepositoryImpl
 import com.NonEstArsMea.agz_time_table.data.StateRepositoryImpl
 import com.NonEstArsMea.agz_time_table.data.TimeTableRepositoryImpl
+import com.NonEstArsMea.agz_time_table.domain.MainUseCase.LoadData.IsInternetConnected
 import com.NonEstArsMea.agz_time_table.domain.MainUseCase.LoadData.LoadDataUseCase
+import com.NonEstArsMea.agz_time_table.domain.MainUseCase.State.ChangeThemeUseCase
+import com.NonEstArsMea.agz_time_table.domain.MainUseCase.Storage.GetDataFromStorageUseCase
 import com.NonEstArsMea.agz_time_table.domain.MainUseCase.Storage.GetFavoriteMainParamsFromStorageUseCase
 import com.NonEstArsMea.agz_time_table.domain.MainUseCase.Storage.GetLastWeekFromeStorageUseCase
 import com.NonEstArsMea.agz_time_table.domain.MainUseCase.Storage.GetMainParamFromStorageUseCase
 import com.NonEstArsMea.agz_time_table.domain.MainUseCase.Storage.GetThemeFromStorage
 import com.NonEstArsMea.agz_time_table.domain.MainUseCase.Storage.SetDataInStorageUseCase
+import com.NonEstArsMea.agz_time_table.domain.SettingUseCase.GetArrayOfFavoriteMainParamUseCase
+import com.NonEstArsMea.agz_time_table.domain.TimeTableUseCase.GetMainParamUseCase
+import com.NonEstArsMea.agz_time_table.domain.TimeTableUseCase.GetWeekTimeTableListUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -23,10 +30,12 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val setDataInStorage: SetDataInStorageUseCase,
     private val loadData: LoadDataUseCase,
-    private val getMainParamFromStorage: GetMainParamFromStorageUseCase,
-    private val getFavoriteMainParamsFromStorageUseCase: GetFavoriteMainParamsFromStorageUseCase,
-    private val getLastWeekTimeTableFromStorage: GetLastWeekFromeStorageUseCase,
-    private val getThemeFromStorage: GetThemeFromStorage
+    private val getNameParam: GetMainParamUseCase,
+    private val getArrayOfFavoriteMainParam : GetArrayOfFavoriteMainParamUseCase,
+    private val getArrayOfWeekTimeTable: GetWeekTimeTableListUseCase,
+    private val changeTheme: ChangeThemeUseCase,
+    private val getDataFromStorage: GetDataFromStorageUseCase,
+    private val isInternetConnected: IsInternetConnected
 ) : ViewModel() {
 
 
@@ -45,8 +54,6 @@ class MainViewModel @Inject constructor(
     val selectedItem: LiveData<Int>
         get() = _selectedItem
 
-    private val _menuItem = MutableLiveData<Int>()
-
     // закгрузка данных и сохраниение
     fun loadDataFromURL() {
         uiScope.launch(Dispatchers.IO) {
@@ -59,37 +66,32 @@ class MainViewModel @Inject constructor(
     }
 
     fun getMainParam():String{
-        return TimeTableRepositoryImpl.getMainParam().value?.name.toString()
+        return getNameParam.getNameOfMainParam()
     }
 
     fun getDataFromStorage() {
-        TimeTableRepositoryImpl.setMainParam(getMainParamFromStorage.execute())
-        TimeTableRepositoryImpl.setWeekTimeTable(getLastWeekTimeTableFromStorage.execute())
-        TimeTableRepositoryImpl.setListOfFavoriteMainParam(getFavoriteMainParamsFromStorageUseCase.execute())
-        TimeTableRepositoryImpl.setTheme(getThemeFromStorage.execute())
-
+        getDataFromStorage.execute()
     }
 
     fun setDataInStorage() {
         setDataInStorage.execute(
-            TimeTableRepositoryImpl.getMainParam().value,
-            TimeTableRepositoryImpl.getArrayOfFavoriteMainParam().value,
-            TimeTableRepositoryImpl.getArrayOfWeekTimeTable().value,
+            getNameParam.execute().value,
+            getArrayOfFavoriteMainParam.execute().value,
+            getArrayOfWeekTimeTable.getArrayOfWeekTimeTable().value,
             _theme.value
         )
     }
 
     fun setCustomTheme(themeNumber: Int){
-        when(themeNumber){
-            SYSTEM_THEME -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-            NIGHT_THEME -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            LIGHT_THEME -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            else -> throw RuntimeException("Unknown number of theme")
-        }
+        changeTheme.execute(themeNumber)
     }
-    companion object{
-        const val SYSTEM_THEME = 1
-        const val NIGHT_THEME = 2
-        const val LIGHT_THEME = 3
+
+    fun itemControl():Boolean{
+        return  StateRepositoryImpl.stateNow() != StateRepositoryImpl.SETTING_ITEM
     }
+
+    fun isInternetConnected(): Boolean{
+        return isInternetConnected.execute()
+    }
+
 }

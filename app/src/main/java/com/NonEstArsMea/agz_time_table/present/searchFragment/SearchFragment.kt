@@ -12,13 +12,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.databinding.SearchLayoutBinding
 import com.NonEstArsMea.agz_time_table.present.TimeTableApplication
+import com.NonEstArsMea.agz_time_table.present.mainActivity.MainViewModelFactory
 import com.NonEstArsMea.agz_time_table.present.searchFragment.recycleView.RecycleViewOnSearchFragmentAdapter
 import javax.inject.Inject
 
 class SearchFragment : Fragment() {
     private var _binding: SearchLayoutBinding? = null
     private val binding get() = _binding!!
-    private lateinit var vm: SearchViewModel
+
+    lateinit var vm: SearchViewModel
+
+    @Inject
+    lateinit var viewModelFactory: MainViewModelFactory
     private val mainParamAdapter = RecycleViewOnSearchFragmentAdapter()
 
 
@@ -28,7 +33,7 @@ class SearchFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         component.inject(this)
-        vm = ViewModelProvider(this)[SearchViewModel::class.java]
+        vm = ViewModelProvider(this,viewModelFactory)[SearchViewModel::class.java]
     }
 
     override fun onCreateView(

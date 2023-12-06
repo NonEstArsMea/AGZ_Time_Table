@@ -7,17 +7,16 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.NonEstArsMea.agz_time_table.NavGraphDirections
 import com.NonEstArsMea.agz_time_table.R
-import com.NonEstArsMea.agz_time_table.data.DataRepositoryImpl
 import com.NonEstArsMea.agz_time_table.data.DateRepositoryImpl
 import com.NonEstArsMea.agz_time_table.databinding.MainLayoutBinding
+import com.NonEstArsMea.agz_time_table.domain.MainUseCase.State.ChangeThemeUseCase
+import com.NonEstArsMea.agz_time_table.present.TimeTableApplication
 import com.NonEstArsMea.agz_time_table.present.customDateFragment.CustomDateFragment
 import com.NonEstArsMea.agz_time_table.present.examsFragment.ExamsFragment
 import com.NonEstArsMea.agz_time_table.present.settingFragment.SettingFragment
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
-import com.NonEstArsMea.agz_time_table.data.StateRepositoryImpl
-import com.NonEstArsMea.agz_time_table.present.TimeTableApplication
 import javax.inject.Inject
 
 
@@ -87,7 +86,7 @@ class MainActivity : AppCompatActivity(),
                 }
 
                 R.id.menu_setting -> {
-                    if(StateRepositoryImpl.stateNow() != StateRepositoryImpl.SETTING_ITEM){
+                    if(mainViewModel.itemControl()){
                         findNavController(R.id.fragmentContainerView)
                             .navigate(R.id.settingFragment)
                     }
@@ -100,7 +99,7 @@ class MainActivity : AppCompatActivity(),
 
         mainViewModel.loadDataFromURL()
         mainViewModel.isStartLoad.observe(this) {
-            if (DataRepositoryImpl.isInternetConnected(this)) {
+            if (mainViewModel.isInternetConnected()) {
                 mainViewModel.loadDataFromURL()
             }
         }
@@ -126,15 +125,15 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun setLightTheme() {
-        mainViewModel.setCustomTheme(MainViewModel.LIGHT_THEME)
+        mainViewModel.setCustomTheme(ChangeThemeUseCase.LIGHT_THEME)
     }
 
     override fun setDarkTheme() {
-        mainViewModel.setCustomTheme(MainViewModel.NIGHT_THEME)
+        mainViewModel.setCustomTheme(ChangeThemeUseCase.NIGHT_THEME)
     }
 
     override fun setSystemTheme() {
-        mainViewModel.setCustomTheme(MainViewModel.SYSTEM_THEME)
+        mainViewModel.setCustomTheme(ChangeThemeUseCase.SYSTEM_THEME)
     }
 
 

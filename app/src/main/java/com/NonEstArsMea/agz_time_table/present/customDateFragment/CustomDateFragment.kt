@@ -2,16 +2,15 @@ package com.NonEstArsMea.agz_time_table.present.customDateFragment
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.NonEstArsMea.agz_time_table.data.DateRepositoryImpl
 import com.NonEstArsMea.agz_time_table.databinding.CastomDateFragmentBinding
 import com.NonEstArsMea.agz_time_table.present.TimeTableApplication
 import com.NonEstArsMea.agz_time_table.present.mainActivity.MainViewModelFactory
@@ -31,7 +30,7 @@ class CustomDateFragment : Fragment() {
     private val adapter = TimeTableRecycleViewAdapter()
     private var _binding: CastomDateFragmentBinding? = null
 
-    private lateinit var vm: CustomDateFragmentViewModel
+    lateinit var vm: CustomDateFragmentViewModel
     private val binding get() = _binding!!
 
     @Inject
