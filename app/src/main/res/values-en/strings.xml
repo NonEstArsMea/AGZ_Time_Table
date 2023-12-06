@@ -2,7 +2,6 @@
 <resources>
     <string name="app_name">AGZ timetable</string>
     <string name="name_param_is_null">The group is not selected</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="BTB_tmenu_tt">Time table</string>
     <string name="agz_text_button">Click to go to the official website of the Academy</string>
     <string name="agz_bot_telegram_button">Click to go to the official bot with the schedule</string>
@@ -48,4 +47,16 @@
     <string name="type_subject_group_lesson">Group lesson</string>
     <string name="type_subject_test">Test</string>
     <string name="type_subject_lesson">Lesson</string>
+    <string name="theme_system">System</string>
+    <string name="theme_night">Dark</string>
+    <string name="theme_light">Light</string>
+    <string name="contacts_lable">Contacts</string>
+    <string name="exams_lable">Exams</string>
+    <string name="group_not_selected_text">The group is not selected</string>
+    <string name="first_day">M</string>
+    <string name="second_day">T</string>
+    <string name="third_day">W</string>
+    <string name="fourth_day">Th</string>
+    <string name="fifth_day">F</string>
+    <string name="sixth_day">Sa</string>
 </resources>

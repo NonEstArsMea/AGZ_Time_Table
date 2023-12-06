@@ -24,6 +24,7 @@ import com.NonEstArsMea.agz_time_table.domain.TimeTableUseCase.GetWeekTimeTableL
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -54,11 +55,14 @@ class MainViewModel @Inject constructor(
     val selectedItem: LiveData<Int>
         get() = _selectedItem
 
+    var isReady = false
+
     // закгрузка данных и сохраниение
     fun loadDataFromURL() {
         uiScope.launch(Dispatchers.IO) {
             try {
                 loadData.execute()
+                isReady = true
             } catch (e: Exception) {
                 _isStartLoad.postValue(Unit)
             }

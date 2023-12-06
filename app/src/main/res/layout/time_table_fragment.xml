@@ -54,7 +54,7 @@
                 android:gravity="left|bottom"
 
                 style="@style/MainTextViewStyle.HeaderText"
-                android:text="Группа не выбрана"
+                android:text="@string/group_not_selected_text"
                 android:paddingLeft="15dp"
                 android:id="@+id/main_param"/>
 
@@ -140,7 +140,7 @@
                             <TextView
                                 android:id="@+id/mon_text"
                                 style="?attr/textAppearanceHeadline1"
-                                android:text="пн"
+                                android:text="@string/first_day"
 
                                 />
 
@@ -164,7 +164,7 @@
                             <TextView
                                 android:id="@+id/tue_text"
                                 style="?attr/textAppearanceHeadline1"
-                                android:text="вт" />
+                                android:text="@string/second_day" />
                             <TextView
                                 android:id="@+id/day_2"
                                 android:text="2"
@@ -184,7 +184,7 @@
                             <TextView
                                 android:id="@+id/wed_text"
                                 style="?attr/textAppearanceHeadline1"
-                                android:text="ср" />
+                                android:text="@string/third_day" />
 
                             <TextView
                                 android:id="@+id/day_3"
@@ -204,7 +204,7 @@
                             <TextView
                                 android:id="@+id/thu_text"
                                 style="?attr/textAppearanceHeadline1"
-                                android:text="чт" />
+                                android:text="@string/fourth_day" />
                             <TextView
                                 android:id="@+id/day_4"
                                 style="?attr/textAppearanceHeadline3"
@@ -223,7 +223,7 @@
                             <TextView
                                 android:id="@+id/fri_text"
                                 style="?attr/textAppearanceHeadline1"
-                                android:text="пт" />
+                                android:text="@string/fifth_day" />
                             <TextView
                                 android:id="@+id/day_5"
                                 style="?attr/textAppearanceHeadline3"
@@ -243,7 +243,7 @@
                             <TextView
                                 android:id="@+id/sat_text"
                                 style="?attr/textAppearanceHeadline1"
-                                android:text="сб" />
+                                android:text="@string/sixth_day" />
 
                             <TextView
                                 android:id="@+id/day_6"
@@ -268,11 +268,6 @@
                                 android:layout_height="wrap_content"
                                 app:icon="@drawable/right_button"
                                 style="@style/Widget.Material3.Button.IconButton.Outlined"
-
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintRight_toRightOf="parent"
                                 />
 
 

@@ -1,12 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">Расписание АГЗ</string>
+    <string name="name_param_is_null">Группа не выбрана</string>
+    <string name="BTB_tmenu_tt">Расписание</string>
     <string name="agz_text_button">Нажмите, чтобы перейти на официальный сайт Академии</string>
+    <string name="my_tg_text_button">"Возникили ошибки в работе приложения? "</string>
+    <string name="my_tg_text_button_name">Напишите разработчику в Telegram</string>
+    <string name="agz_button_name">Вопросы и предложения?</string>
+    <string name="agz_bot_telegram_button_name">Telegram-бот</string>
     <string name="agz_bot_telegram_button">Нажмите, чтобы перейти к официальному боту с расписанием</string>
+    <string name="theme_change_lable">Выбор темы</string>
+    <string name="add_group_button">Добавить группу</string>
+    <string name="change_group_lable">Выбор группы</string>
+    <string name="setting_lable">Настройки</string>
     <string name="January">Января</string>
     <string name="February">Февраля</string>
     <string name="March">Марта</string>
     <string name="April">Апреля</string>
     <string name="May">Мая</string>
+    <string name="June">Июня</string>
     <string name="July">Июля</string>
     <string name="August">Августа</string>
     <string name="September">Сентября</string>
@@ -15,9 +27,12 @@
     <string name="December">Декабря</string>
     <string name="set_date">Выберите дату</string>
     <string name="break_45">Перерыв на обед - 45 минут</string>
+    <string name="break_15">Перерыв 15 минут</string>
+    <string name="no_school">В этот день занятий нет</string>
     <string name="pair">пара</string>
     <string name="pairs">пары</string>
     <string name="group_number">"Группа № "</string>
+    <string name="department_number">"Кафедра № "</string>
     <string name="type_subject_pz">Практическое занятие</string>
     <string name="type_subject_practic">Практика</string>
     <string name="type_subject_credit_with_an_assessment">Зачет с оценкой</string>
@@ -32,4 +47,16 @@
     <string name="type_subject_group_lesson">Групповое занятие</string>
     <string name="type_subject_test">Зачет</string>
     <string name="type_subject_lesson">Занятие</string>
+    <string name="theme_system">Системная</string>
+    <string name="theme_night">Темная</string>
+    <string name="theme_light">Светлая</string>
+    <string name="contacts_lable">Контакты</string>
+    <string name="exams_lable">Экзамены</string>
+    <string name="group_not_selected_text">Группа не выбрана</string>
+    <string name="first_day">пн</string>
+    <string name="second_day">вт</string>
+    <string name="third_day">ср</string>
+    <string name="fourth_day">чт</string>
+    <string name="fifth_day">пт</string>
+    <string name="sixth_day">сб</string>
 </resources>

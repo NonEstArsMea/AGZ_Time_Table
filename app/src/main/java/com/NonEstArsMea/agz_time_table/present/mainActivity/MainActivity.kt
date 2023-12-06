@@ -1,7 +1,11 @@
 package com.NonEstArsMea.agz_time_table.present.mainActivity
 
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewTreeObserver
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isGone
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -41,21 +45,21 @@ class MainActivity : AppCompatActivity(),
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        _binding = MainLayoutBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
-
         component.inject(this)
         analytics = Firebase.analytics
-
         mainViewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
         mainViewModel.getDataFromStorage()
-
         mainViewModel.theme.observe(this){
             mainViewModel.setCustomTheme(it)
         }
 
+        super.onCreate(savedInstanceState)
+
+        _binding = MainLayoutBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+
+        mainViewModel.loadDataFromURL()
 
     }
 
@@ -97,7 +101,6 @@ class MainActivity : AppCompatActivity(),
             return@setOnItemSelectedListener true
         }
 
-        mainViewModel.loadDataFromURL()
         mainViewModel.isStartLoad.observe(this) {
             if (mainViewModel.isInternetConnected()) {
                 mainViewModel.loadDataFromURL()

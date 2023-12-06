@@ -41,7 +41,7 @@
                 android:layout_marginLeft="@dimen/margine_all"
                 android:layout_marginTop="@dimen/margine_all"
                 android:gravity="left"
-                android:text="Экзамены"
+                android:text="@string/exams_lable"
                 />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>

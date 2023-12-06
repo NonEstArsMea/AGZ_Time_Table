@@ -114,4 +114,7 @@ dependencies {
     implementation ("com.google.dagger:dagger:2.48.1")
     kapt ("com.google.dagger:dagger-compiler:2.48.1")
 
+    // Splash Screen
+    implementation("androidx.core:core-splashscreen:1.0.0")
+
 }

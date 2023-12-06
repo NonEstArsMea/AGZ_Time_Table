@@ -10,7 +10,6 @@
     //радиус скругления
     <dimen name="radius_card">8dp</dimen>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="BTB_tmenu_tt">Расписание</string>
     <string name="agz_text_button">Нажмите, чтобы перейти на официальный сайт Академии</string>
     <string name="my_tg_text_button">Возникили ошибки в работе приложения? \nНапишите разработчику в Telegram</string>
@@ -56,5 +55,17 @@
     <string name="type_subject_group_lesson">Групповое занятие</string>
     <string name="type_subject_test">Зачет</string>
     <string name="type_subject_lesson">Занятие</string>
+    <string name="theme_system">Системная</string>
+    <string name="theme_night">Темная</string>
+    <string name="theme_light">Светлая</string>
+    <string name="contacts_lable">Контакты</string>
+    <string name="exams_lable">Экзамены</string>
+    <string name="group_not_selected_text">Группа не выбрана</string>
+    <string name="first_day">пн</string>
+    <string name="second_day">вт</string>
+    <string name="third_day">ср</string>
+    <string name="fourth_day">чт</string>
+    <string name="fifth_day">пт</string>
+    <string name="sixth_day">сб</string>
 
 </resources>

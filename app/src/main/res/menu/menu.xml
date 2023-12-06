@@ -7,10 +7,10 @@
     <item
         android:id="@+id/menu_exams"
         android:icon="@drawable/exems_icon"
-        android:title="Экзамены" />
+        android:title="@string/exams_lable" />
     <item
         android:id="@+id/menu_setting"
-        android:title="Параметры"
+        android:title="@string/setting_lable"
         android:icon="@drawable/setting_icon" />
 
 </menu>
