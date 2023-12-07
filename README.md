@@ -34,7 +34,7 @@ Features:
 - Adaptation of the application theme to the user's system theme.
 - Automatic schedule update when the time or date of events changes, or when the schedule changes.
 
-## Что было использовано
+## What was used
  - Kotlin
  - Jetpack Navigation
  - MVVM
