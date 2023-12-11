@@ -1,13 +1,13 @@
-package com.NonEstArsMea.agz_time_table.domain.SettingUseCase
+package com.NonEstArsMea.agz_time_table.present.settingFragment
 
 import com.NonEstArsMea.agz_time_table.R
+import com.NonEstArsMea.agz_time_table.data.TimeTableRepositoryImpl
 import com.NonEstArsMea.agz_time_table.domain.TimeTableUseCase.TimeTableRepository
 import javax.inject.Inject
 
-class GetThemeUseCase @Inject constructor(private val repository: TimeTableRepository) {
-
+class CheckTheme{
     fun execute(): Int{
-        return when (repository.getTheme().value) {
+        return when (TimeTableRepositoryImpl.getTheme().value) {
             1 -> R.id.button1
             2 -> R.id.button2
             3 -> R.id.button3

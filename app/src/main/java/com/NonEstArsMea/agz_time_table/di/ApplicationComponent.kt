@@ -12,9 +12,8 @@ import dagger.BindsInstance
 import dagger.Component
 
 
-@ApplicationScope
 @Component(
-    modules = [DataModule::class, ViewModelModule::class]
+    modules = [DataModule::class, ViewModelModule::class, AppModule::class]
 )
 interface ApplicationComponent {
 
@@ -34,8 +33,8 @@ interface ApplicationComponent {
     interface Factory {
         fun create(
             @BindsInstance application: Application,
-            @BindsInstance context: Context
         ): ApplicationComponent
+
     }
 
 }

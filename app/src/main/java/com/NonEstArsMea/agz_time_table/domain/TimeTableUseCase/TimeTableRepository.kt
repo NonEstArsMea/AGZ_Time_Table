@@ -15,7 +15,7 @@ interface TimeTableRepository {
     suspend fun preparationData(dayOfWeek: String,
                                 mainParam: String,
                                 context: Context): List<CellApi>
-    fun getListOfMainParam()
+    fun getListOfMainParam(context: Context)
     fun getNewListOfMainParam(): MutableLiveData<ArrayList<MainParam>>
 
     fun getMainParam(): MutableLiveData<MainParam>

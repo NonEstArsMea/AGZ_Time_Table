@@ -14,7 +14,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.NonEstArsMea.agz_time_table.R
+import com.NonEstArsMea.agz_time_table.data.TimeTableRepositoryImpl
 import com.NonEstArsMea.agz_time_table.databinding.SettingLayoutBinding
+import com.NonEstArsMea.agz_time_table.domain.MainUseCase.State.ChangeThemeUseCase
 import com.NonEstArsMea.agz_time_table.present.TimeTableApplication
 import com.NonEstArsMea.agz_time_table.present.mainActivity.MainViewModelFactory
 import com.NonEstArsMea.agz_time_table.present.settingFragment.recycleView.SettingRecycleViewAdapter
@@ -32,6 +34,9 @@ class SettingFragment : Fragment() {
     private lateinit var setSystemTheme: setThemeInterface
 
     private val rvSettingViewAdapter = SettingRecycleViewAdapter()
+
+
+    private var themeChecker: CheckTheme = CheckTheme()
 
 
     private val component by lazy {
@@ -62,6 +67,8 @@ class SettingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
         binding.searchBar.setOnClickListener {
             findNavController().navigate(R.id.searchFragment)
         }
@@ -102,9 +109,15 @@ class SettingFragment : Fragment() {
         }
 
         binding.toggleButton.isSingleSelection = true
-        binding.toggleButton.check(vm.getTheme())
+        binding.toggleButton.check(themeChecker.execute())
         binding.toggleButton.addOnButtonCheckedListener { toggleGroup, checkedId, isChecked ->
-            vm.setTheme(isChecked, checkedId)
+            if (isChecked) {
+                when (checkedId) {
+                    R.id.button1 -> TimeTableRepositoryImpl.setTheme(ChangeThemeUseCase.LIGHT_THEME)
+                    R.id.button2 -> TimeTableRepositoryImpl.setTheme(ChangeThemeUseCase.NIGHT_THEME)
+                    R.id.button3 -> TimeTableRepositoryImpl.setTheme(ChangeThemeUseCase.SYSTEM_THEME)
+                }
+            }
         }
 
 

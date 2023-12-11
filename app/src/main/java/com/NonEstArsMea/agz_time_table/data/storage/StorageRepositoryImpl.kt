@@ -1,18 +1,20 @@
-package com.NonEstArsMea.agz_time_table.data
+package com.NonEstArsMea.agz_time_table.data.storage
 
-import android.content.Context
+import android.content.res.Resources
 import com.NonEstArsMea.agz_time_table.R
-import com.NonEstArsMea.agz_time_table.domain.MainUseCase.Storage.StrotageRepository
+import com.NonEstArsMea.agz_time_table.domain.MainUseCase.Storage.StorageRepository
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import javax.inject.Inject
 
-class StorageRepositoryImpl @Inject constructor(private val context: Context) : StrotageRepository {
+class StorageRepositoryImpl @Inject constructor(
+    private val resource: Resources,
+    localStorage: LocalStorage
+) : StorageRepository {
 
-    private val sharedPreferences =
-        context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
+    private val sharedPreferences = localStorage.getSharedPreferences()
 
 
     override fun getMainParamFromStorage(): MainParam {
@@ -23,7 +25,7 @@ class StorageRepositoryImpl @Inject constructor(private val context: Context) : 
                 null
             ),
             token
-        ) ?: MainParam(context.resources.getString(R.string.name_param_is_null))
+        ) ?: MainParam(resource.getString(R.string.name_param_is_null))
     }
 
     override fun getFavoriteMainParamsFromStorage(): ArrayList<MainParam> {
@@ -74,7 +76,6 @@ class StorageRepositoryImpl @Inject constructor(private val context: Context) : 
     }
 
     companion object {
-        private const val SHARED_PREFERENCES_NAME = "SPN"
         private const val MAIN_PARAM_KEY = "mainParam"
         private const val LIST_OF_FAVORITE_MAIN_PARAMS = "LOFMP"
         private const val LAST_WEEK_TIME_TABLE_LIST = "LWTTL"

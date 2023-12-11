@@ -3,33 +3,36 @@ package com.NonEstArsMea.agz_time_table.data
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.os.Build
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.NonEstArsMea.agz_time_table.domain.MainUseCase.LoadData.DataRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.net.URL
+import javax.inject.Inject
 
-object DataRepositoryImpl : DataRepository {
+class DataRepositoryImpl @Inject constructor(private val context: Context) : DataRepository {
 
-    private var dataLiveData = MutableLiveData<String>()
+    private var _dataLiveData = MutableLiveData<String>()
+    private val dataLiveData: LiveData<String>
+        get() = _dataLiveData
 
     private var content = ""
 
-    override suspend fun loadData(): MutableLiveData<String> {
-        if (dataLiveData.value == null) {
+    override suspend fun loadData(): LiveData<String> {
+        if (_dataLiveData.value == null) {
             withContext(Dispatchers.IO) {
                 val connection =
                     URL("http://a0755299.xsph.ru/wp-content/uploads/3-1-1.txt").openConnection()
                 connection.connect()
                 content = connection.getInputStream().bufferedReader().use { it.readText() }
-                dataLiveData.postValue(content)
+                _dataLiveData.postValue(content)
             }
         }
         return dataLiveData
     }
 
-    override fun getData(): MutableLiveData<String> {
+    override fun getData(): LiveData<String> {
         return dataLiveData
     }
 
@@ -37,7 +40,7 @@ object DataRepositoryImpl : DataRepository {
         return content
     }
 
-    override fun isInternetConnected(context: Context): Boolean {
+    override fun isInternetConnected(): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 

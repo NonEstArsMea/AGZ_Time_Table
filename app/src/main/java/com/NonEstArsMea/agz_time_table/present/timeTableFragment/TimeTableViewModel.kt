@@ -38,9 +38,8 @@ class TimeTableViewModel @Inject constructor(
         get() = _timeTableChanged
 
     // хранит список с расписанием
-    private var _dataLiveData = getDataUseCase.execute()
-    val dataLiveData: LiveData<String>
-        get() = _dataLiveData
+    val dataLiveData = getDataUseCase.execute()
+
 
     // хранит состояние загрузки
     private val _loading = MutableLiveData<Boolean>()
@@ -78,7 +77,7 @@ class TimeTableViewModel @Inject constructor(
 
     fun getNewTimeTable(newTime: Int? = null) {
         setNewCalendarUseCase.execute(newTime)
-        if (_dataLiveData.value != null) {
+        if (dataLiveData.value != null) {
             if (job.isActive) {
                 job.cancel()
             }
@@ -93,7 +92,7 @@ class TimeTableViewModel @Inject constructor(
 
     fun checkMainParam() {
         if (lastMainParam != _mainParam.value?.name) {
-            lastMainParam = _mainParam.value?.name!!
+            lastMainParam = _mainParam.value?.name.toString()
             getNewTimeTable()
         }
     }

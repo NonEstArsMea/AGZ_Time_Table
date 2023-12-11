@@ -7,6 +7,7 @@ import com.NonEstArsMea.agz_time_table.domain.Methods
 import com.NonEstArsMea.agz_time_table.domain.TimeTableUseCase.TimeTableRepository
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
+import dagger.Provides
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -14,8 +15,10 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVParser
+import javax.inject.Inject
+import javax.inject.Singleton
 
-
+@Singleton
 object TimeTableRepositoryImpl : TimeTableRepository {
 
     private var weekTimeTable = MutableLiveData<List<List<CellApi>>>()
@@ -30,7 +33,7 @@ object TimeTableRepositoryImpl : TimeTableRepository {
         context: Context
     ): ArrayList<CellApi> = withContext(Dispatchers.Default) {
 
-        val data = DataRepositoryImpl.getContent()
+        val data = DataRepositoryImpl(context).getContent()
         val csvParser = CSVParser(
             data.reader(), CSVFormat.DEFAULT
                 .withFirstRecordAsHeader()
@@ -85,9 +88,9 @@ object TimeTableRepositoryImpl : TimeTableRepository {
                         endTime = getEndTime(number = les + 1)
                         listOfLes.add(les + 1)
                     }else {
-                        if (name !in listTT[les].teacher!!) {
-                            listTT[les].teacher += "\n${name}"
-                        }
+                            if (name !in listTT[les].teacher!!) {
+                                listTT[les].teacher += "\n${name}"
+                            }
                         if (aud !in listTT[les].classroom!!) {
                             listTT[les].classroom += "\n${aud}"
                         }
@@ -225,9 +228,9 @@ object TimeTableRepositoryImpl : TimeTableRepository {
 
     override suspend fun getExams(mainParam: String, context: Context): ArrayList<CellApi> =
         withContext(Dispatchers.Default) {
-            val _data = DataRepositoryImpl.getContent()
+            val data = DataRepositoryImpl(context).getContent()
             val csvParser = CSVParser(
-                _data.reader(), CSVFormat.DEFAULT
+                data.reader(), CSVFormat.DEFAULT
                     .withFirstRecordAsHeader()
                     .withIgnoreHeaderCase()
                     .withTrim()
@@ -304,8 +307,8 @@ object TimeTableRepositoryImpl : TimeTableRepository {
     }
 
 
-    override fun getListOfMainParam() {
-        val data = DataRepositoryImpl.getContent()
+    override fun getListOfMainParam(context: Context) {
+        val data = DataRepositoryImpl(context).getContent()
         val csvParser = CSVParser(
             data.reader(), CSVFormat.DEFAULT
                 .withFirstRecordAsHeader()

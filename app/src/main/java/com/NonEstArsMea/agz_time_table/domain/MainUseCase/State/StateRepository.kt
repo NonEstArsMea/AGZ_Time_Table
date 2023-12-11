@@ -8,7 +8,7 @@ interface StateRepository {
 
     fun setNewMenuItem(newItemId: Int)
 
-    fun stateNow(): Int
+    fun stateNow(): Int?
 
 
 }

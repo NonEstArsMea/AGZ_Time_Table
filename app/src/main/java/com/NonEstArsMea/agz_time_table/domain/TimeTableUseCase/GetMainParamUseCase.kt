@@ -1,15 +1,16 @@
 package com.NonEstArsMea.agz_time_table.domain.TimeTableUseCase
 
 import androidx.lifecycle.MutableLiveData
+import com.NonEstArsMea.agz_time_table.data.TimeTableRepositoryImpl
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
 import javax.inject.Inject
 
-class GetMainParamUseCase @Inject constructor(private val repository: TimeTableRepository) {
+class GetMainParamUseCase @Inject constructor() {
     fun execute():MutableLiveData<MainParam>{
-        return repository.getMainParam()
+        return TimeTableRepositoryImpl.getMainParam()
     }
 
     fun getNameOfMainParam():String{
-        return repository.getMainParam().value!!.name
+        return TimeTableRepositoryImpl.getMainParam().value?.name ?: throw RuntimeException("Unknown mainParam")
     }
 }

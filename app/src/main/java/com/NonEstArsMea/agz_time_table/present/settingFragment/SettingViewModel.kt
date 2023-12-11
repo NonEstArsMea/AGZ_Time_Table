@@ -2,22 +2,14 @@ package com.NonEstArsMea.agz_time_table.present.settingFragment
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.NonEstArsMea.agz_time_table.R
-import com.NonEstArsMea.agz_time_table.data.StateRepositoryImpl
-import com.NonEstArsMea.agz_time_table.data.TimeTableRepositoryImpl
 import com.NonEstArsMea.agz_time_table.domain.MainUseCase.State.SetSettingItemUseCase
 import com.NonEstArsMea.agz_time_table.domain.SettingUseCase.GetArrayOfFavoriteMainParamUseCase
-import com.NonEstArsMea.agz_time_table.domain.SettingUseCase.GetThemeUseCase
 import com.NonEstArsMea.agz_time_table.domain.SettingUseCase.SetMainParamUseCase
-import com.NonEstArsMea.agz_time_table.domain.SettingUseCase.SetThemeUseCase
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
-import com.NonEstArsMea.agz_time_table.present.mainActivity.MainViewModel
 import javax.inject.Inject
 
 class SettingViewModel @Inject constructor(
     getArrayOfFavoriteMainParam: GetArrayOfFavoriteMainParamUseCase,
-    private val getTheme: GetThemeUseCase,
-    private val setTheme: SetThemeUseCase,
     private val setMainParam: SetMainParamUseCase,
     private val setSettingItem: SetSettingItemUseCase
 ) : ViewModel() {
@@ -28,7 +20,7 @@ class SettingViewModel @Inject constructor(
         get() = _listOfFavoriteMainParam
 
     fun moveItemInFavoriteMainParam(param: MainParam) {
-        val list = _listOfFavoriteMainParam.value!!.toList() as ArrayList
+        val list = _listOfFavoriteMainParam.value?.toList() as ArrayList
         with(list) {
             if (this.size != 1) {
                 val itemIndex = this.indexOf(param)
@@ -41,19 +33,15 @@ class SettingViewModel @Inject constructor(
         }
     }
 
-    fun getTheme(): Int {
-        return getTheme.execute()
-    }
 
     fun delParamFromFavoriteMainParam(index: MainParam) {
-        val items = _listOfFavoriteMainParam.value!!
-        items.removeAt(_listOfFavoriteMainParam.value!!.indexOf(index))
+        val items = _listOfFavoriteMainParam.value
+        if (items != null) {
+            _listOfFavoriteMainParam.value?.let { items.removeAt(it.indexOf(index)) }
+        }
         _listOfFavoriteMainParam.value = items
     }
 
-    fun setTheme(isChecked: Boolean, checkedId: Int){
-        setTheme.execute(isChecked, checkedId)
-    }
 
     fun setMainParam(mainParam: MainParam) {
         setMainParam.execute(mainParam)

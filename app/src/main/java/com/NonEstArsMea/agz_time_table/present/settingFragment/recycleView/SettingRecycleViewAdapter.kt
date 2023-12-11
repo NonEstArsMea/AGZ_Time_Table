@@ -39,7 +39,6 @@ class SettingRecycleViewAdapter : ListAdapter<MainParam, FavoriteParamViewHolder
 
         holder.bind(mainParam)
 
-        // Нажатие на объект
         holder.delButton.setOnClickListener {
             onDelClickListener?.invoke(mainParam)
         }

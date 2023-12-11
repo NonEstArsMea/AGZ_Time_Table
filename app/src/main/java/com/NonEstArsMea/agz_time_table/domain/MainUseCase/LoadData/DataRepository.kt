@@ -1,15 +1,16 @@
 package com.NonEstArsMea.agz_time_table.domain.MainUseCase.LoadData
 
 import android.content.Context
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
 interface DataRepository {
 
-    suspend fun loadData(): MutableLiveData<String>
+    suspend fun loadData(): LiveData<String>
 
-    fun getData(): MutableLiveData<String>
+    fun getData(): LiveData<String>
 
     fun getContent(): String
 
-    fun isInternetConnected(context: Context): Boolean
+    fun isInternetConnected(): Boolean
 }

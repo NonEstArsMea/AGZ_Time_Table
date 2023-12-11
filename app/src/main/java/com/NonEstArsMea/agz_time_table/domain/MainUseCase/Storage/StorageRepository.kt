@@ -3,7 +3,7 @@ package com.NonEstArsMea.agz_time_table.domain.MainUseCase.Storage
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
 
-interface StrotageRepository {
+interface StorageRepository {
 
     fun getMainParamFromStorage() :MainParam
 

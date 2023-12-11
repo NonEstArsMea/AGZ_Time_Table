@@ -27,7 +27,7 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity(),
     CustomDateFragment.OnStartAndFinishListener,
     SettingFragment.setThemeInterface,
-    ExamsFragment.OnStartAndFinishListener{
+    ExamsFragment.OnStartAndFinishListener {
 
     private lateinit var mainViewModel: MainViewModel
 
@@ -45,15 +45,16 @@ class MainActivity : AppCompatActivity(),
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        component.inject(this)
+        super.onCreate(savedInstanceState)
         analytics = Firebase.analytics
+
+        component.inject(this)
+
         mainViewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
         mainViewModel.getDataFromStorage()
-        mainViewModel.theme.observe(this){
+        mainViewModel.theme.observe(this) {
             mainViewModel.setCustomTheme(it)
         }
-
-        super.onCreate(savedInstanceState)
 
         _binding = MainLayoutBinding.inflate(layoutInflater)
         val view = binding.root
@@ -66,7 +67,7 @@ class MainActivity : AppCompatActivity(),
     override fun onStart() {
         super.onStart()
         val menu = binding.bottomInfo.menu
-        mainViewModel.selectedItem.observe(this){
+        mainViewModel.selectedItem.observe(this) {
             menu.getItem(it).isChecked = true
 
         }
@@ -83,14 +84,15 @@ class MainActivity : AppCompatActivity(),
 
                 R.id.menu_exams -> {
                     findNavController(R.id.fragmentContainerView)
-                        .navigate(NavGraphDirections.actionGlobalExamsFragment(
+                        .navigate(
+                            NavGraphDirections.actionGlobalExamsFragment(
                                 mainViewModel.getMainParam()
                             )
                         )
                 }
 
                 R.id.menu_setting -> {
-                    if(mainViewModel.itemControl()){
+                    if (mainViewModel.itemControl()) {
                         findNavController(R.id.fragmentContainerView)
                             .navigate(R.id.settingFragment)
                     }
@@ -138,7 +140,6 @@ class MainActivity : AppCompatActivity(),
     override fun setSystemTheme() {
         mainViewModel.setCustomTheme(ChangeThemeUseCase.SYSTEM_THEME)
     }
-
 
 
 }

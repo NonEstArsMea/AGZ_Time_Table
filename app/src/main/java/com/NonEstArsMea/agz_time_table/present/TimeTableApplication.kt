@@ -6,7 +6,7 @@ import com.NonEstArsMea.agz_time_table.di.DaggerApplicationComponent
 class TimeTableApplication: Application() {
 
     val component by lazy {
-        DaggerApplicationComponent.factory().create(this, this)
+        DaggerApplicationComponent.factory().create(this)
     }
 
 }

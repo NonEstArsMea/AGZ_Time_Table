@@ -18,8 +18,8 @@ object StateRepositoryImpl: StateRepository {
         menuItem.value = newItemId
     }
 
-    override fun stateNow(): Int{
-        return menuItem.value!!
+    override fun stateNow(): Int? {
+        return menuItem.value
     }
 
     const val TIME_TABLE_ITEM = 0

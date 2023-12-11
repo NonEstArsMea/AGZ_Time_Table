@@ -1,36 +1,26 @@
 package com.NonEstArsMea.agz_time_table.present.mainActivity
 
-import android.util.Log
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.NonEstArsMea.agz_time_table.R
-import com.NonEstArsMea.agz_time_table.data.DataRepositoryImpl
+import androidx.lifecycle.viewModelScope
 import com.NonEstArsMea.agz_time_table.data.StateRepositoryImpl
 import com.NonEstArsMea.agz_time_table.data.TimeTableRepositoryImpl
+import com.NonEstArsMea.agz_time_table.domain.MainUseCase.LoadData.DataRepository
 import com.NonEstArsMea.agz_time_table.domain.MainUseCase.LoadData.IsInternetConnected
-import com.NonEstArsMea.agz_time_table.domain.MainUseCase.LoadData.LoadDataUseCase
 import com.NonEstArsMea.agz_time_table.domain.MainUseCase.State.ChangeThemeUseCase
 import com.NonEstArsMea.agz_time_table.domain.MainUseCase.Storage.GetDataFromStorageUseCase
-import com.NonEstArsMea.agz_time_table.domain.MainUseCase.Storage.GetFavoriteMainParamsFromStorageUseCase
-import com.NonEstArsMea.agz_time_table.domain.MainUseCase.Storage.GetLastWeekFromeStorageUseCase
-import com.NonEstArsMea.agz_time_table.domain.MainUseCase.Storage.GetMainParamFromStorageUseCase
-import com.NonEstArsMea.agz_time_table.domain.MainUseCase.Storage.GetThemeFromStorage
 import com.NonEstArsMea.agz_time_table.domain.MainUseCase.Storage.SetDataInStorageUseCase
 import com.NonEstArsMea.agz_time_table.domain.SettingUseCase.GetArrayOfFavoriteMainParamUseCase
 import com.NonEstArsMea.agz_time_table.domain.TimeTableUseCase.GetMainParamUseCase
 import com.NonEstArsMea.agz_time_table.domain.TimeTableUseCase.GetWeekTimeTableListUseCase
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
     private val setDataInStorage: SetDataInStorageUseCase,
-    private val loadData: LoadDataUseCase,
+    private val loadData: DataRepository,
     private val getNameParam: GetMainParamUseCase,
     private val getArrayOfFavoriteMainParam : GetArrayOfFavoriteMainParamUseCase,
     private val getArrayOfWeekTimeTable: GetWeekTimeTableListUseCase,
@@ -40,8 +30,7 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
 
 
-    private var jobVM = SupervisorJob()
-    private val uiScope = CoroutineScope(Dispatchers.Main + jobVM)
+    private val uiScope = viewModelScope
 
     private var _isStartLoad = MutableLiveData<Unit>()
     val isStartLoad: LiveData<Unit>
@@ -61,7 +50,7 @@ class MainViewModel @Inject constructor(
     fun loadDataFromURL() {
         uiScope.launch(Dispatchers.IO) {
             try {
-                loadData.execute()
+                loadData.loadData()
                 isReady = true
             } catch (e: Exception) {
                 _isStartLoad.postValue(Unit)

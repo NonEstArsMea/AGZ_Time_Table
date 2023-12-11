@@ -3,9 +3,9 @@ package com.NonEstArsMea.agz_time_table.domain.MainUseCase.State
 import com.NonEstArsMea.agz_time_table.data.StateRepositoryImpl
 import javax.inject.Inject
 
-class SetSettingItemUseCase @Inject constructor(private val repository: StateRepository) {
+class SetSettingItemUseCase @Inject constructor() {
 
     fun execute(){
-        repository.setNewMenuItem(StateRepositoryImpl.SETTING_ITEM)
+        StateRepositoryImpl.setNewMenuItem(StateRepositoryImpl.SETTING_ITEM)
     }
 }

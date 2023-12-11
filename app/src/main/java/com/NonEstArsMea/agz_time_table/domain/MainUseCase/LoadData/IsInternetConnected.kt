@@ -5,11 +5,10 @@ import javax.inject.Inject
 
 class IsInternetConnected @Inject constructor(
     private val repository: DataRepository,
-    private val context: Context
 ) {
 
     fun execute(): Boolean {
-        return repository.isInternetConnected(context)
+        return repository.isInternetConnected()
     }
 
 }

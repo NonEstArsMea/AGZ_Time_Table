@@ -3,7 +3,7 @@ package com.NonEstArsMea.agz_time_table.domain.MainUseCase.Storage
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
 import javax.inject.Inject
 
-class GetMainParamFromStorageUseCase @Inject constructor(private val repository: StrotageRepository) {
+class GetMainParamFromStorageUseCase @Inject constructor(private val repository: StorageRepository) {
     fun execute():MainParam{
         return repository.getMainParamFromStorage()
     }
