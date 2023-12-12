@@ -8,7 +8,7 @@
 Основные функции:
 - Вывод персонализированных расписаний для работы, учебы и дополнительных занятий.
 - Просмотр ежедневного, еженедельного и ежемесячного расписания.
--  Возможность просмотр расписания в конкретный день.
+- Возможность просмотр расписания в конкретный день.
 - Синхронизация с календарем устройства для автоматического выбора расписания.
 - Поддержка различных цветовых меток для разделения сложности занятий по категориям.
 - Возможность просмотра загруженности аудиторий.
@@ -34,25 +34,19 @@ Features:
 - Adaptation of the application theme to the user's system theme.
 - Automatic schedule update when the time or date of events changes, or when the schedule changes.
 
-## Что было использовано
+## What was used
  - Kotlin
  - Jetpack Navigation
  - MVVM
  - Coroutines
  - Material 3
  - commons-csv
+ - dagger2
 
 
 Приложение:
 
 <img width="800" alt="2023-04-09_122409" src="https://github.com/NonEstArsMea/AGZ_Time_Table/blob/master/Screenshot_20231109_125630.png">
-
-#### Старые версии)
-<img width="600" alt="2023-04-09_122409" src="https://github.com/NonEstArsMea/AGZ_Time_Table/blob/master/Screenshot_20230915_135236.png">
-
-##### Самое начало
-<img width="600" alt="2023-04-09_122409" src="https://github.com/NonEstArsMea/AGZ_Time_Table/blob/master/Безымянный.png">
-
 
 Установка приложения: Доступно для загрузки в Google Play - [по ссылке](https://play.google.com/store/apps/details?id=com.NonEstArsMea.agz_time_table&pcampaignid=web_share)
 
