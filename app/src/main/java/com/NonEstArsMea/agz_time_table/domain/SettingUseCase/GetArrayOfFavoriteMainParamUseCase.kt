@@ -6,9 +6,11 @@ import com.NonEstArsMea.agz_time_table.domain.TimeTableUseCase.TimeTableReposito
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
 import javax.inject.Inject
 
-class GetArrayOfFavoriteMainParamUseCase @Inject constructor() {
+class GetArrayOfFavoriteMainParamUseCase @Inject constructor(
+    private val timeTableRepositoryImpl: TimeTableRepository
+) {
 
     fun execute(): MutableLiveData<ArrayList<MainParam>> {
-        return TimeTableRepositoryImpl.getArrayOfFavoriteMainParam()
+        return timeTableRepositoryImpl.getArrayOfFavoriteMainParam()
     }
 }

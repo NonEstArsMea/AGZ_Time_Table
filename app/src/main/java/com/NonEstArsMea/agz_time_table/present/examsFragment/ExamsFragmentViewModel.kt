@@ -1,19 +1,12 @@
 package com.NonEstArsMea.agz_time_table.present.examsFragment
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.NonEstArsMea.agz_time_table.data.DataRepositoryImpl
-import com.NonEstArsMea.agz_time_table.data.StateRepositoryImpl
-import com.NonEstArsMea.agz_time_table.data.TimeTableRepositoryImpl
 import com.NonEstArsMea.agz_time_table.domain.TimeTableUseCase.GetExamsUseCase
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

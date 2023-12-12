@@ -24,8 +24,8 @@ class CustomDateFragmentViewModel @Inject constructor(
     private var job: Job = uiScope.launch {  }
 
 
-    private var _timeTableChanged = MutableLiveData<ArrayList<CellApi>>()
-    val timeTableChanged: LiveData<ArrayList<CellApi>>
+    private var _timeTableChanged = MutableLiveData<List<CellApi>>()
+    val timeTableChanged: LiveData<List<CellApi>>
         get() = _timeTableChanged
 
 

@@ -1,13 +1,14 @@
 package com.NonEstArsMea.agz_time_table.data
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.NonEstArsMea.agz_time_table.R
+import com.NonEstArsMea.agz_time_table.data.net.DataRepositoryImpl
 import com.NonEstArsMea.agz_time_table.domain.Methods
 import com.NonEstArsMea.agz_time_table.domain.TimeTableUseCase.TimeTableRepository
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
-import dagger.Provides
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -16,10 +17,11 @@ import kotlinx.coroutines.withContext
 import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVParser
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-object TimeTableRepositoryImpl : TimeTableRepository {
+
+class TimeTableRepositoryImpl @Inject constructor(
+    private val dataRepositoryImpl: DataRepositoryImpl
+) : TimeTableRepository {
 
     private var weekTimeTable = MutableLiveData<List<List<CellApi>>>()
     private var mainParam = MutableLiveData<MainParam>()
@@ -33,7 +35,7 @@ object TimeTableRepositoryImpl : TimeTableRepository {
         context: Context
     ): ArrayList<CellApi> = withContext(Dispatchers.Default) {
 
-        val data = DataRepositoryImpl(context).getContent()
+        val data = dataRepositoryImpl.getContent()
         val csvParser = CSVParser(
             data.reader(), CSVFormat.DEFAULT
                 .withFirstRecordAsHeader()
@@ -79,7 +81,11 @@ object TimeTableRepositoryImpl : TimeTableRepository {
                         classroom = aud
                         subject = _subject
                         subjectNumber = les + 1
-                        subjectType = "$themas ${context.getString(Methods.returnFullNameOfTheItemType(subj_type))}"
+                        subjectType = "$themas ${
+                            context.getString(
+                                Methods.returnFullNameOfTheItemType(subj_type)
+                            )
+                        }"
                         color = Methods.setColor(subj_type)
                         noEmpty = true
                         date = _date
@@ -87,10 +93,10 @@ object TimeTableRepositoryImpl : TimeTableRepository {
                         startTime = getStartTime(number = les + 1)
                         endTime = getEndTime(number = les + 1)
                         listOfLes.add(les + 1)
-                    }else {
-                            if (name !in listTT[les].teacher!!) {
-                                listTT[les].teacher += "\n${name}"
-                            }
+                    } else {
+                        if (name !in listTT[les].teacher!!) {
+                            listTT[les].teacher += "\n${name}"
+                        }
                         if (aud !in listTT[les].classroom!!) {
                             listTT[les].classroom += "\n${aud}"
                         }
@@ -190,7 +196,6 @@ object TimeTableRepositoryImpl : TimeTableRepository {
     }
 
 
-
     override fun getMainParam(): MutableLiveData<MainParam> {
         return mainParam
     }
@@ -228,7 +233,7 @@ object TimeTableRepositoryImpl : TimeTableRepository {
 
     override suspend fun getExams(mainParam: String, context: Context): ArrayList<CellApi> =
         withContext(Dispatchers.Default) {
-            val data = DataRepositoryImpl(context).getContent()
+            val data = dataRepositoryImpl.getContent()
             val csvParser = CSVParser(
                 data.reader(), CSVFormat.DEFAULT
                     .withFirstRecordAsHeader()
@@ -263,7 +268,11 @@ object TimeTableRepositoryImpl : TimeTableRepository {
                             classroom = aud
                             this.subject = subject
                             subjectNumber = listTT.size
-                            subjectType = "$themas ${context.getString(Methods.returnFullNameOfTheItemType(subj_type))}"
+                            subjectType = "$themas ${
+                                context.getString(
+                                    Methods.returnFullNameOfTheItemType(subj_type)
+                                )
+                            }"
                             color = Methods.setColor(subj_type)
                             noEmpty = true
                             this.date = date
@@ -308,7 +317,9 @@ object TimeTableRepositoryImpl : TimeTableRepository {
 
 
     override fun getListOfMainParam(context: Context) {
-        val data = DataRepositoryImpl(context).getContent()
+        Log.e("fin", "getContent")
+        val data = dataRepositoryImpl.getContent()
+        Log.e("fin", data.length.toString())
         val csvParser = CSVParser(
             data.reader(), CSVFormat.DEFAULT
                 .withFirstRecordAsHeader()
@@ -397,7 +408,8 @@ object TimeTableRepositoryImpl : TimeTableRepository {
     }
 
     override fun updateFavoriteParamList(newMainParam: MainParam) {
-        val list = (listOfFavoriteMainParam.value?.toMutableList() ?: mutableListOf()) as ArrayList<MainParam>
+        val list = (listOfFavoriteMainParam.value?.toMutableList()
+            ?: mutableListOf()) as ArrayList<MainParam>
 
         with(list) {
 

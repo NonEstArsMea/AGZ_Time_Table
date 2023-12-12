@@ -3,6 +3,7 @@ package com.NonEstArsMea.agz_time_table.present.timeTableFragment
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -77,6 +78,8 @@ class TimeTableFragment : Fragment() {
 
 
         vm.dataLiveData.observe(viewLifecycleOwner) {
+            Log.e("fin", "getTT")
+            Log.e("fin", vm.dataLiveData.value?.length.toString())
             vm.getTimeTable()
         }
 
@@ -94,10 +97,11 @@ class TimeTableFragment : Fragment() {
             @SuppressLint("UseCompatLoadingForDrawables")
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                context?.let{ context ->
+                context?.let { context ->
                     days.toList().forEach {
                         it.setTextAppearance(R.style.MainTextViewStyle_WeekNumber)
-                        it.background = resources.getDrawable(R.drawable.main_surface, context.theme)
+                        it.background =
+                            resources.getDrawable(R.drawable.main_surface, context.theme)
                     }
                     with(days[position]) {
                         this.setTextAppearance(R.style.MainTextViewStyle_DayNowWeekNumber)
@@ -133,10 +137,10 @@ class TimeTableFragment : Fragment() {
 
 
         vm.timeTableChanged.observe(viewLifecycleOwner) { updatedList ->
-                viewPager.adapter = viewPagerAdapter
-                viewPagerAdapter.setData(updatedList)
-                binding.viewPagerTimeTableFragment.currentItem = vm.getCurrentItem()
-            }
+            viewPager.adapter = viewPagerAdapter
+            viewPagerAdapter.setData(updatedList)
+            binding.viewPagerTimeTableFragment.currentItem = vm.getCurrentItem()
+        }
 
 
         vm.loading.observe(viewLifecycleOwner) {
@@ -162,13 +166,16 @@ class TimeTableFragment : Fragment() {
             val year = calender.get(Calendar.YEAR)
             val mainParam = vm.getMainParam()
             try {
-                findNavController().navigate(TimeTableFragmentDirections
-                    .actionTimeTableFragmentToCustomDateFragment(
-                        day = day,
-                        month = month,
-                        year = year,
-                        mainParam = mainParam))
-            }catch (_: Exception){
+                findNavController().navigate(
+                    TimeTableFragmentDirections
+                        .actionTimeTableFragmentToCustomDateFragment(
+                            day = day,
+                            month = month,
+                            year = year,
+                            mainParam = mainParam
+                        )
+                )
+            } catch (_: Exception) {
 
             }
         }

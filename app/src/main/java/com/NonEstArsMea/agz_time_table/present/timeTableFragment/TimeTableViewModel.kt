@@ -1,5 +1,6 @@
 package com.NonEstArsMea.agz_time_table.present.timeTableFragment
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -40,7 +41,6 @@ class TimeTableViewModel @Inject constructor(
     // хранит список с расписанием
     val dataLiveData = getDataUseCase.execute()
 
-
     // хранит состояние загрузки
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean>
@@ -54,7 +54,6 @@ class TimeTableViewModel @Inject constructor(
     private var lastMainParam: String = ""
 
 
-    // Хранит параметр поиска
     private val _mainParam = getMainParamUseCase.execute()
     val mainParam: LiveData<MainParam>
         get() = _mainParam
@@ -64,15 +63,14 @@ class TimeTableViewModel @Inject constructor(
         return getMainParamUseCase.getNameOfMainParam()
     }
 
-    // создание массивов с расписанием
     fun getTimeTable() {
-        if (!dataIsLoad) {
-            getNewTimeTable()
-            viewModelScope.launch {
-                getListOfMainParamUseCase.execute()
-            }
-            dataIsLoad = true
+        Log.e("fin", "getNTT")
+        getNewTimeTable()
+        viewModelScope.launch {
+            Log.e("fin", "getLOFMP")
+            getListOfMainParamUseCase.execute()
         }
+        dataIsLoad = true
     }
 
     fun getNewTimeTable(newTime: Int? = null) {

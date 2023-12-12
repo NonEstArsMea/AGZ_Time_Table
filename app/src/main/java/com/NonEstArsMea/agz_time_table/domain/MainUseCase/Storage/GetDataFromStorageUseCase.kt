@@ -9,13 +9,14 @@ class GetDataFromStorageUseCase @Inject constructor(
     private val getLastWeekTimeTableFromStorage: GetLastWeekFromeStorageUseCase,
     private val getFavoriteMainParamsFromStorageUseCase: GetFavoriteMainParamsFromStorageUseCase,
     private val getThemeFromStorage: GetThemeFromStorage,
+    private val timeTableRepositoryImpl: TimeTableRepository
 ) {
 
     fun execute(){
-        TimeTableRepositoryImpl.setMainParam(getMainParamFromStorage.execute())
-        TimeTableRepositoryImpl.setWeekTimeTable(getLastWeekTimeTableFromStorage.execute())
-        TimeTableRepositoryImpl.setListOfFavoriteMainParam(getFavoriteMainParamsFromStorageUseCase.execute())
-        TimeTableRepositoryImpl.setTheme(getThemeFromStorage.execute())
+        timeTableRepositoryImpl.setMainParam(getMainParamFromStorage.execute())
+        timeTableRepositoryImpl.setWeekTimeTable(getLastWeekTimeTableFromStorage.execute())
+        timeTableRepositoryImpl.setListOfFavoriteMainParam(getFavoriteMainParamsFromStorageUseCase.execute())
+        timeTableRepositoryImpl.setTheme(getThemeFromStorage.execute())
     }
 
 }

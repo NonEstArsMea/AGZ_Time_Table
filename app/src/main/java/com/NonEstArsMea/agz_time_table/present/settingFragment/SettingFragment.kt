@@ -26,7 +26,8 @@ class SettingFragment : Fragment() {
     private var _binding: SettingLayoutBinding? = null
     private val binding get() = _binding!!
 
-    @Inject lateinit var vm: SettingViewModel
+    @Inject
+    lateinit var vm: SettingViewModel
 
     @Inject
     lateinit var viewModelFactory: MainViewModelFactory
@@ -35,8 +36,8 @@ class SettingFragment : Fragment() {
 
     private val rvSettingViewAdapter = SettingRecycleViewAdapter()
 
-
-    private var themeChecker: CheckTheme = CheckTheme()
+    @Inject
+    lateinit var themeChecker: ThemeController
 
 
     private val component by lazy {
@@ -109,15 +110,9 @@ class SettingFragment : Fragment() {
         }
 
         binding.toggleButton.isSingleSelection = true
-        binding.toggleButton.check(themeChecker.execute())
+        binding.toggleButton.check(themeChecker.checkTheme())
         binding.toggleButton.addOnButtonCheckedListener { toggleGroup, checkedId, isChecked ->
-            if (isChecked) {
-                when (checkedId) {
-                    R.id.button1 -> TimeTableRepositoryImpl.setTheme(ChangeThemeUseCase.LIGHT_THEME)
-                    R.id.button2 -> TimeTableRepositoryImpl.setTheme(ChangeThemeUseCase.NIGHT_THEME)
-                    R.id.button3 -> TimeTableRepositoryImpl.setTheme(ChangeThemeUseCase.SYSTEM_THEME)
-                }
-            }
+            themeChecker.setTheme(isChecked, checkedId)
         }
 
 

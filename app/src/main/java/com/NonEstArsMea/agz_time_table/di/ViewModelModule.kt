@@ -10,6 +10,7 @@ import com.NonEstArsMea.agz_time_table.present.timeTableFragment.TimeTableViewMo
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
+import javax.inject.Singleton
 
 
 @Module

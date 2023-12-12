@@ -7,13 +7,14 @@ import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
 import javax.inject.Inject
 
 class GetWeekTimeTableListUseCase @Inject constructor(
-    private val context: Context
+    private val context: Context,
+    private val timeTableRepositoryImpl: TimeTableRepository
 ) {
     suspend fun execute(): List<List<CellApi>> {
-        return TimeTableRepositoryImpl.getWeekTimeTable(context)
+        return timeTableRepositoryImpl.getWeekTimeTable(context)
     }
 
-    fun getArrayOfWeekTimeTable():MutableLiveData<List<List<CellApi>>>{
-        return TimeTableRepositoryImpl.getArrayOfWeekTimeTable()
+    fun getArrayOfWeekTimeTable(): MutableLiveData<List<List<CellApi>>> {
+        return timeTableRepositoryImpl.getArrayOfWeekTimeTable()
     }
 }

@@ -21,9 +21,7 @@ class TimeTableRecycleViewAdapter : ListAdapter<CellApi, RecyclerView.ViewHolder
         return when (viewType) {
             LESSON_TIME_TABLE_TYPE -> TimeTableLessonViewHolder(
                 inflater.inflate(
-                    R.layout.one_lesson_card,
-                    parent,
-                    false
+                    R.layout.one_lesson_card, parent, false
                 )
             )
 
@@ -37,10 +35,11 @@ class TimeTableRecycleViewAdapter : ListAdapter<CellApi, RecyclerView.ViewHolder
         when (holder) {
             is TimeTableLessonViewHolder -> {
                 holder.bind(getItem(position), holder.view.context)
-                holder.view.setOnClickListener{
+                holder.view.setOnClickListener {
                     setAnimation(holder)
                 }
             }
+
             is BreakCellViewHolder -> holder.bind(getItem(position))
         }
 
@@ -55,7 +54,7 @@ class TimeTableRecycleViewAdapter : ListAdapter<CellApi, RecyclerView.ViewHolder
         }
     }
 
-    private fun setAnimation(holder: TimeTableLessonViewHolder){
+    private fun setAnimation(holder: TimeTableLessonViewHolder) {
         if (holder.add_info.visibility == View.GONE) {
             // Раскрытие дополнительного контента с анимацией
             holder.add_info.visibility = View.VISIBLE

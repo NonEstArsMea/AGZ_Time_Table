@@ -10,8 +10,9 @@ import com.NonEstArsMea.agz_time_table.present.settingFragment.SettingFragment
 import com.NonEstArsMea.agz_time_table.present.timeTableFragment.TimeTableFragment
 import dagger.BindsInstance
 import dagger.Component
+import javax.inject.Singleton
 
-
+@Singleton
 @Component(
     modules = [DataModule::class, ViewModelModule::class, AppModule::class]
 )

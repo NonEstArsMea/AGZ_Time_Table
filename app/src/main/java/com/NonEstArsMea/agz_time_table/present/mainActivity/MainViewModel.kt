@@ -26,7 +26,8 @@ class MainViewModel @Inject constructor(
     private val getArrayOfWeekTimeTable: GetWeekTimeTableListUseCase,
     private val changeTheme: ChangeThemeUseCase,
     private val getDataFromStorage: GetDataFromStorageUseCase,
-    private val isInternetConnected: IsInternetConnected
+    private val isInternetConnected: IsInternetConnected,
+    private val timeTableRepositoryImpl: TimeTableRepositoryImpl
 ) : ViewModel() {
 
 
@@ -36,7 +37,7 @@ class MainViewModel @Inject constructor(
     val isStartLoad: LiveData<Unit>
         get() = _isStartLoad
 
-    private var _theme = TimeTableRepositoryImpl.getTheme()
+    private var _theme = timeTableRepositoryImpl.getTheme()
     val theme: LiveData<Int>
         get() = _theme
 
@@ -46,14 +47,20 @@ class MainViewModel @Inject constructor(
 
     var isReady = false
 
+    init {
+        loadDataFromURL()
+    }
+
     // закгрузка данных и сохраниение
     fun loadDataFromURL() {
-        uiScope.launch(Dispatchers.IO) {
-            try {
-                loadData.loadData()
-                isReady = true
-            } catch (e: Exception) {
-                _isStartLoad.postValue(Unit)
+        if(!isReady){
+            uiScope.launch(Dispatchers.IO) {
+                try {
+                    loadData.loadData()
+                    isReady = true
+                } catch (e: Exception) {
+                    _isStartLoad.postValue(Unit)
+                }
             }
         }
     }
@@ -88,3 +95,4 @@ class MainViewModel @Inject constructor(
     }
 
 }
+

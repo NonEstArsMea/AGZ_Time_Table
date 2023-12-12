@@ -1,7 +1,5 @@
 package com.NonEstArsMea.agz_time_table.present.timeTableFragment
 
-import android.annotation.SuppressLint
-import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -10,13 +8,13 @@ import com.NonEstArsMea.agz_time_table.present.timeTableFragment.recycleView.Rec
 
 class ViewPagerAdapter(
     fm: Fragment,
-):FragmentStateAdapter(fm) {
+) : FragmentStateAdapter(fm) {
 
-    // массив расписания на неделю
-    private val weekSchedule : ArrayList<List<CellApi>> = ArrayList()
+    private val weekSchedule: ArrayList<List<CellApi>> = ArrayList()
 
-    fun setData(newWeekSchedule: List<List<CellApi>>){
-        val diffResult = DiffUtil.calculateDiff(WeekScheduleDiffUtilCallback(weekSchedule, newWeekSchedule))
+    fun setData(newWeekSchedule: List<List<CellApi>>) {
+        val diffResult =
+            DiffUtil.calculateDiff(WeekScheduleDiffUtilCallback(weekSchedule, newWeekSchedule))
         weekSchedule.clear()
         weekSchedule.addAll(newWeekSchedule)
         diffResult.dispatchUpdatesTo(this)
