@@ -6,14 +6,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.NonEstArsMea.agz_time_table.data.StateRepositoryImpl
 import com.NonEstArsMea.agz_time_table.data.TimeTableRepositoryImpl
-import com.NonEstArsMea.agz_time_table.domain.MainUseCase.LoadData.DataRepository
-import com.NonEstArsMea.agz_time_table.domain.MainUseCase.LoadData.IsInternetConnected
-import com.NonEstArsMea.agz_time_table.domain.MainUseCase.State.ChangeThemeUseCase
-import com.NonEstArsMea.agz_time_table.domain.MainUseCase.Storage.GetDataFromStorageUseCase
-import com.NonEstArsMea.agz_time_table.domain.MainUseCase.Storage.SetDataInStorageUseCase
-import com.NonEstArsMea.agz_time_table.domain.SettingUseCase.GetArrayOfFavoriteMainParamUseCase
-import com.NonEstArsMea.agz_time_table.domain.TimeTableUseCase.GetMainParamUseCase
-import com.NonEstArsMea.agz_time_table.domain.TimeTableUseCase.GetWeekTimeTableListUseCase
+import com.NonEstArsMea.agz_time_table.domain.mainUseCase.LoadData.DataRepository
+import com.NonEstArsMea.agz_time_table.domain.mainUseCase.LoadData.IsInternetConnected
+import com.NonEstArsMea.agz_time_table.domain.mainUseCase.State.ChangeThemeUseCase
+import com.NonEstArsMea.agz_time_table.domain.mainUseCase.Storage.GetDataFromStorageUseCase
+import com.NonEstArsMea.agz_time_table.domain.mainUseCase.Storage.SetDataInStorageUseCase
+import com.NonEstArsMea.agz_time_table.domain.settingUseCase.GetArrayOfFavoriteMainParamUseCase
+import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.GetMainParamUseCase
+import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.GetWeekTimeTableListUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -22,7 +22,7 @@ class MainViewModel @Inject constructor(
     private val setDataInStorage: SetDataInStorageUseCase,
     private val loadData: DataRepository,
     private val getNameParam: GetMainParamUseCase,
-    private val getArrayOfFavoriteMainParam : GetArrayOfFavoriteMainParamUseCase,
+    private val getArrayOfFavoriteMainParam: GetArrayOfFavoriteMainParamUseCase,
     private val getArrayOfWeekTimeTable: GetWeekTimeTableListUseCase,
     private val changeTheme: ChangeThemeUseCase,
     private val getDataFromStorage: GetDataFromStorageUseCase,
@@ -53,7 +53,7 @@ class MainViewModel @Inject constructor(
 
     // закгрузка данных и сохраниение
     fun loadDataFromURL() {
-        if(!isReady){
+        if (!isReady) {
             uiScope.launch(Dispatchers.IO) {
                 try {
                     loadData.loadData()
@@ -65,7 +65,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun getMainParam():String{
+    fun getMainParam(): String {
         return getNameParam.getNameOfMainParam()
     }
 
@@ -82,15 +82,15 @@ class MainViewModel @Inject constructor(
         )
     }
 
-    fun setCustomTheme(themeNumber: Int){
+    fun setCustomTheme(themeNumber: Int) {
         changeTheme.execute(themeNumber)
     }
 
-    fun itemControl():Boolean{
-        return  StateRepositoryImpl.stateNow() != StateRepositoryImpl.SETTING_ITEM
+    fun itemControl(): Boolean {
+        return StateRepositoryImpl.stateNow() != StateRepositoryImpl.SETTING_ITEM
     }
 
-    fun isInternetConnected(): Boolean{
+    fun isInternetConnected(): Boolean {
         return isInternetConnected.execute()
     }
 

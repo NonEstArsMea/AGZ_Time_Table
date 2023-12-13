@@ -2,9 +2,9 @@ package com.NonEstArsMea.agz_time_table.present.settingFragment
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.NonEstArsMea.agz_time_table.domain.MainUseCase.State.SetSettingItemUseCase
-import com.NonEstArsMea.agz_time_table.domain.SettingUseCase.GetArrayOfFavoriteMainParamUseCase
-import com.NonEstArsMea.agz_time_table.domain.SettingUseCase.SetMainParamUseCase
+import com.NonEstArsMea.agz_time_table.domain.mainUseCase.State.SetSettingItemUseCase
+import com.NonEstArsMea.agz_time_table.domain.settingUseCase.GetArrayOfFavoriteMainParamUseCase
+import com.NonEstArsMea.agz_time_table.domain.settingUseCase.SetMainParamUseCase
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
 import javax.inject.Inject
 

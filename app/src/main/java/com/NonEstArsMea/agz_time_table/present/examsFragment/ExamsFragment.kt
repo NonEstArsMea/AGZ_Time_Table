@@ -18,7 +18,7 @@ import com.NonEstArsMea.agz_time_table.present.mainActivity.MainViewModelFactory
 import com.NonEstArsMea.agz_time_table.present.timeTableFragment.recycleView.TimeTableRecycleViewAdapter
 import javax.inject.Inject
 
-class ExamsFragment: Fragment() {
+class ExamsFragment : Fragment() {
 
     private lateinit var mainParam: String
 
@@ -45,12 +45,12 @@ class ExamsFragment: Fragment() {
         component.inject(this)
 
         vm = ViewModelProvider(this, viewModelFactory)[ExamsFragmentViewModel::class.java]
-        if(context is CustomDateFragment.OnStartAndFinishListener){
+        if (context is CustomDateFragment.OnStartAndFinishListener) {
             onStartAndFinishListener = context
-        }else throw RuntimeException( "$context is empty")
+        } else throw RuntimeException("$context is empty")
 
 
-        val callback = object : OnBackPressedCallback( true){
+        val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 findNavController().popBackStack()
                 onStartAndFinishListener.closeFragment()
@@ -60,6 +60,7 @@ class ExamsFragment: Fragment() {
 
 
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         args.let {
@@ -83,7 +84,7 @@ class ExamsFragment: Fragment() {
         recycleView.adapter = adapter
         recycleView.layoutManager = LinearLayoutManager(context)
 
-        vm.timeTableChanged.observe(viewLifecycleOwner){
+        vm.timeTableChanged.observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
 
@@ -95,9 +96,7 @@ class ExamsFragment: Fragment() {
     }
 
 
-
-
-    interface OnStartAndFinishListener{
+    interface OnStartAndFinishListener {
         fun startFragment()
         fun closeFragment()
     }

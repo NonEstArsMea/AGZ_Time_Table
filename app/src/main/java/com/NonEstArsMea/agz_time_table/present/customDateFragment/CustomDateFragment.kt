@@ -26,16 +26,14 @@ class CustomDateFragment : Fragment() {
     private val args by navArgs<CustomDateFragmentArgs>()
 
     private lateinit var onStartAndFinishListener: OnStartAndFinishListener
-
-    private val adapter = TimeTableRecycleViewAdapter()
-    private var _binding: CastomDateFragmentBinding? = null
-
     lateinit var vm: CustomDateFragmentViewModel
+    private val adapter = TimeTableRecycleViewAdapter()
+
+    private var _binding: CastomDateFragmentBinding? = null
     private val binding get() = _binding!!
 
     @Inject
     lateinit var customDateFragmentViewModelFactory: MainViewModelFactory
-
     private val component by lazy {
         (requireActivity().application as TimeTableApplication).component
     }

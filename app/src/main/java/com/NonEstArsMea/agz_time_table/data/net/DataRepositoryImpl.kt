@@ -6,7 +6,7 @@ import android.net.NetworkCapabilities
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.NonEstArsMea.agz_time_table.domain.MainUseCase.LoadData.DataRepository
+import com.NonEstArsMea.agz_time_table.domain.mainUseCase.LoadData.DataRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.net.URL

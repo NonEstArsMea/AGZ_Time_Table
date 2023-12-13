@@ -2,7 +2,7 @@ package com.NonEstArsMea.agz_time_table.data.storage
 
 import android.content.res.Resources
 import com.NonEstArsMea.agz_time_table.R
-import com.NonEstArsMea.agz_time_table.domain.MainUseCase.Storage.StorageRepository
+import com.NonEstArsMea.agz_time_table.domain.mainUseCase.Storage.StorageRepository
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
 import com.google.gson.Gson

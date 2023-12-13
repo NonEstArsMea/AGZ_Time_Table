@@ -1,12 +1,12 @@
 package com.NonEstArsMea.agz_time_table.data
 
-import android.content.Context
+import android.content.res.Resources
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.data.net.DataRepositoryImpl
 import com.NonEstArsMea.agz_time_table.domain.Methods
-import com.NonEstArsMea.agz_time_table.domain.TimeTableUseCase.TimeTableRepository
+import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.TimeTableRepository
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
 import kotlinx.coroutines.Dispatchers
@@ -20,7 +20,8 @@ import javax.inject.Inject
 
 
 class TimeTableRepositoryImpl @Inject constructor(
-    private val dataRepositoryImpl: DataRepositoryImpl
+    private val dataRepositoryImpl: DataRepositoryImpl,
+    private val resources: Resources
 ) : TimeTableRepository {
 
     private var weekTimeTable = MutableLiveData<List<List<CellApi>>>()
@@ -32,7 +33,6 @@ class TimeTableRepositoryImpl @Inject constructor(
     override suspend fun preparationData(
         dayOfWeek: String,
         mainParam: String,
-        context: Context
     ): ArrayList<CellApi> = withContext(Dispatchers.Default) {
 
         val data = dataRepositoryImpl.getContent()
@@ -82,7 +82,7 @@ class TimeTableRepositoryImpl @Inject constructor(
                         subject = _subject
                         subjectNumber = les + 1
                         subjectType = "$themas ${
-                            context.getString(
+                            resources.getString(
                                 Methods.returnFullNameOfTheItemType(subj_type)
                             )
                         }"
@@ -110,13 +110,12 @@ class TimeTableRepositoryImpl @Inject constructor(
             it.noEmpty
         } as ArrayList<CellApi>
 
-        return@withContext setBreakCell(listOfLes, listTT, context)
+        return@withContext setBreakCell(listOfLes, listTT)
     }
 
     private fun setBreakCell(
         listOfLes: MutableList<Int>,
         listTT: ArrayList<CellApi>,
-        context: Context
     ): ArrayList<CellApi> {
         var listOfLes1 = listOfLes
         listOfLes1 = listOfLes1.sorted().toMutableList()
@@ -126,7 +125,7 @@ class TimeTableRepositoryImpl @Inject constructor(
             if (listTT[0].subjectNumber != 1) {
                 val endTime = getStartTime(listTT[0].subjectNumber!!)
                 val countOfPairs = listTT[0].subjectNumber!! - 1
-                val wordEnd = wordEnding(listTT[0].subjectNumber!! - 1, context)
+                val wordEnd = wordEnding(listTT[0].subjectNumber!! - 1)
                 listTT.add(
                     0,
                     CellApi(
@@ -149,7 +148,7 @@ class TimeTableRepositoryImpl @Inject constructor(
                             getEndTime(listTT[a + lessonOffset].subjectNumber!!)
                         val startTime =
                             getStartTime(listTT[a + lessonOffset + 1].subjectNumber!!)
-                        val wordEnd = wordEnding(diff - 1, context)
+                        val wordEnd = wordEnding(diff - 1)
                         listTT.add(
                             index = a + lessonOffset + 1,
                             element = CellApi(
@@ -163,7 +162,7 @@ class TimeTableRepositoryImpl @Inject constructor(
                         listTT.add(
                             index = a + lessonOffset + 1,
                             element = CellApi(
-                                text = context.getString(R.string.break_45),
+                                text = resources.getString(R.string.break_45),
                                 noEmpty = true,
                                 viewSize = 50
                             )
@@ -173,7 +172,7 @@ class TimeTableRepositoryImpl @Inject constructor(
                         listTT.add(
                             index = a + lessonOffset + 1,
                             element = CellApi(
-                                text = context.getString(R.string.break_15),
+                                text = resources.getString(R.string.break_15),
                                 noEmpty = true,
                                 viewSize = 16
                             )
@@ -185,7 +184,7 @@ class TimeTableRepositoryImpl @Inject constructor(
         } else {
             listTT.add(
                 CellApi(
-                    text = context.getString(R.string.no_school),
+                    text = resources.getString(R.string.no_school),
                     noEmpty = true,
                     viewSize = 20
                 )
@@ -231,7 +230,7 @@ class TimeTableRepositoryImpl @Inject constructor(
         theme.value = newTheme
     }
 
-    override suspend fun getExams(mainParam: String, context: Context): ArrayList<CellApi> =
+    override suspend fun getExams(mainParam: String): ArrayList<CellApi> =
         withContext(Dispatchers.Default) {
             val data = dataRepositoryImpl.getContent()
             val csvParser = CSVParser(
@@ -269,7 +268,7 @@ class TimeTableRepositoryImpl @Inject constructor(
                             this.subject = subject
                             subjectNumber = listTT.size
                             subjectType = "$themas ${
-                                context.getString(
+                                resources.getString(
                                     Methods.returnFullNameOfTheItemType(subj_type)
                                 )
                             }"
@@ -298,14 +297,14 @@ class TimeTableRepositoryImpl @Inject constructor(
         }
 
 
-    override suspend fun getWeekTimeTable(context: Context): List<List<CellApi>> {
+    override suspend fun getWeekTimeTable(): List<List<CellApi>> {
         val dayOfWeek = DateRepositoryImpl.getArrayOfWeekDate()
         return mainParam.value?.let { mainParamValue ->
             try {
                 coroutineScope {
                     dayOfWeek.map { day ->
                         async {
-                            preparationData(day, mainParamValue.name, context)
+                            preparationData(day, mainParamValue.name)
                         }
                     }.awaitAll()
                 }
@@ -316,7 +315,7 @@ class TimeTableRepositoryImpl @Inject constructor(
     }
 
 
-    override fun getListOfMainParam(context: Context) {
+    override fun getListOfMainParam() {
         Log.e("fin", "getContent")
         val data = dataRepositoryImpl.getContent()
         Log.e("fin", data.length.toString())
@@ -397,10 +396,10 @@ class TimeTableRepositoryImpl @Inject constructor(
         }
     }
 
-    private fun wordEnding(number: Int, context: Context): String {
+    private fun wordEnding(number: Int): String {
         return when (number) {
-            1 -> context.getString(R.string.pair)
-            2, 3, 4 -> context.getString(R.string.pairs)
+            1 -> resources.getString(R.string.pair)
+            2, 3, 4 -> resources.getString(R.string.pairs)
             else -> {
                 throw Exception("Unknown Number - $number")
             }

@@ -1,9 +1,9 @@
 package com.NonEstArsMea.agz_time_table.present.settingFragment
 
+import android.util.Log
 import com.NonEstArsMea.agz_time_table.R
-import com.NonEstArsMea.agz_time_table.data.TimeTableRepositoryImpl
-import com.NonEstArsMea.agz_time_table.domain.MainUseCase.State.ChangeThemeUseCase
-import com.NonEstArsMea.agz_time_table.domain.TimeTableUseCase.TimeTableRepository
+import com.NonEstArsMea.agz_time_table.domain.mainUseCase.State.ChangeThemeUseCase
+import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.TimeTableRepository
 import javax.inject.Inject
 
 class ThemeController @Inject constructor(
@@ -22,6 +22,7 @@ class ThemeController @Inject constructor(
 
     fun setTheme(isChecked: Boolean, checkedId: Int){
         if (isChecked) {
+            Log.e("fin", "theme")
             when (checkedId) {
                 R.id.button1 -> timeTableRepositoryImpl.setTheme(ChangeThemeUseCase.LIGHT_THEME)
                 R.id.button2 -> timeTableRepositoryImpl.setTheme(ChangeThemeUseCase.NIGHT_THEME)
