@@ -117,9 +117,8 @@ dependencies {
     // Splash Screen
     implementation("androidx.core:core-splashscreen:1.0.0")
 
-    val room_version = "2.6.1"
+    val room_version = "2.5.0"
     implementation("androidx.room:room-runtime:$room_version")
-    annotationProcessor("androidx.room:room-compiler:$room_version")
     implementation("androidx.room:room-ktx:$room_version")
 
 }

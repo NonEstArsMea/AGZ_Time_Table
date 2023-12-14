@@ -8,6 +8,8 @@ import androidx.room.RoomDatabase
 @Database(entities = [CellClassDbModel::class], version = 1, exportSchema = false)
 abstract class DataBase: RoomDatabase() {
 
+    abstract fun cellClassDao(): CellClassDao
+
     companion object{
         private var INSTANCE: DataBase? = null
         private val LOCK = Any()
