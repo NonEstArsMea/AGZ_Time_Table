@@ -1,6 +1,7 @@
 package com.NonEstArsMea.agz_time_table.data.storage
 
 import android.content.res.Resources
+import android.util.Log
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.domain.mainUseCase.Storage.StorageRepository
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
@@ -61,6 +62,7 @@ class StorageRepositoryImpl @Inject constructor(
         lastWeekTimeTable: List<List<CellApi>>?,
         theme: Int?
     ) {
+        Log.e("fin", "save theme")
         sharedPreferences.edit().apply {
             if (favMainParamList != null)
                 putString(LIST_OF_FAVORITE_MAIN_PARAMS, GsonInstance.gson.toJson(favMainParamList))
@@ -68,8 +70,9 @@ class StorageRepositoryImpl @Inject constructor(
                 putString(MAIN_PARAM_KEY, GsonInstance.gson.toJson(mainParam))
             if (lastWeekTimeTable != null)
                 putString(LAST_WEEK_TIME_TABLE_LIST, GsonInstance.gson.toJson(lastWeekTimeTable))
-            if (theme != null)
+            if (theme != null) {
                 putInt(THEME, theme)
+            }
 
         }.apply()
 

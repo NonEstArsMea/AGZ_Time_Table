@@ -14,6 +14,7 @@ import com.NonEstArsMea.agz_time_table.present.TimeTableApplication
 import com.NonEstArsMea.agz_time_table.present.customDateFragment.CustomDateFragment
 import com.NonEstArsMea.agz_time_table.present.examsFragment.ExamsFragment
 import com.NonEstArsMea.agz_time_table.present.settingFragment.SettingFragment
+import com.NonEstArsMea.agz_time_table.present.settingFragment.ThemeController
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
@@ -36,6 +37,9 @@ class MainActivity : AppCompatActivity(),
     private val component by lazy {
         (application as TimeTableApplication).component
     }
+
+    @Inject
+    lateinit var themeController: ThemeController
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -122,15 +126,15 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun setLightTheme() {
-        mainViewModel.setCustomTheme(ChangeThemeUseCase.LIGHT_THEME)
+        themeController.setTheme(true, ThemeController.LIGHT_THEME)
     }
 
     override fun setDarkTheme() {
-        mainViewModel.setCustomTheme(ChangeThemeUseCase.NIGHT_THEME)
+        themeController.setTheme(true, ThemeController.NIGHT_THEME)
     }
 
     override fun setSystemTheme() {
-        mainViewModel.setCustomTheme(ChangeThemeUseCase.SYSTEM_THEME)
+        themeController.setTheme(true, ThemeController.SYSTEM_THEME)
     }
 
 

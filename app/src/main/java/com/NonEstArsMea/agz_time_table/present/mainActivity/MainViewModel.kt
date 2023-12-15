@@ -1,5 +1,6 @@
 package com.NonEstArsMea.agz_time_table.present.mainActivity
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -74,6 +75,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun setDataInStorage() {
+        Log.e("fin_1", _theme.value.toString())
         setDataInStorage.execute(
             getNameParam.execute().value,
             getArrayOfFavoriteMainParam.execute().value,

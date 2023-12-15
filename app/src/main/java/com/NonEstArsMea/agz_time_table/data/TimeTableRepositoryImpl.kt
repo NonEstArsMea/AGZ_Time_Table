@@ -226,8 +226,9 @@ class TimeTableRepositoryImpl @Inject constructor(
     }
 
     override fun setTheme(newTheme: Int) {
-
+        Log.e("fin", "new theme")
         theme.value = newTheme
+        Log.e("fin", theme.value.toString())
     }
 
     override suspend fun getExams(mainParam: String): ArrayList<CellApi> =
