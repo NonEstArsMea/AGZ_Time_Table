@@ -28,7 +28,6 @@ class TimeTableRepositoryImpl @Inject constructor(
     private var mainParam = MutableLiveData<MainParam>()
     private var listOfMainParam = MutableLiveData<ArrayList<MainParam>>()
     private var listOfFavoriteMainParam = MutableLiveData<ArrayList<MainParam>>()
-    private var theme = MutableLiveData<Int>()
 
     override suspend fun preparationData(
         dayOfWeek: String,
@@ -207,9 +206,6 @@ class TimeTableRepositoryImpl @Inject constructor(
         return weekTimeTable
     }
 
-    override fun getTheme(): MutableLiveData<Int> {
-        return theme
-    }
 
     override fun setMainParam(newMainParam: MainParam) {
         if (mainParam.value != newMainParam) {
@@ -225,11 +221,6 @@ class TimeTableRepositoryImpl @Inject constructor(
         weekTimeTable.value = list
     }
 
-    override fun setTheme(newTheme: Int) {
-        Log.e("fin", "new theme")
-        theme.value = newTheme
-        Log.e("fin", theme.value.toString())
-    }
 
     override suspend fun getExams(mainParam: String): ArrayList<CellApi> =
         withContext(Dispatchers.Default) {

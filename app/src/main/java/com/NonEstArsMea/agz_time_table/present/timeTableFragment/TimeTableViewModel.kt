@@ -47,9 +47,7 @@ class TimeTableViewModel @Inject constructor(
         get() = _loading
 
 
-    private var dataIsLoad: Boolean = false
-
-    private var dataWasChanged: Boolean = true
+    private var dataWasChanged: Boolean = false
 
     private var lastMainParam: String = ""
 
@@ -59,18 +57,28 @@ class TimeTableViewModel @Inject constructor(
         get() = _mainParam
 
 
+    init {
+        getTimeTable()
+    }
+
     fun getMainParam(): String {
         return getMainParamUseCase.getNameOfMainParam()
     }
 
-    fun getTimeTable() {
-        Log.e("fin", "getNTT")
+    private fun getTimeTable() {
+        Log.e("fin", "init")
         getNewTimeTable()
         viewModelScope.launch {
-            Log.e("fin", "getLOFMP")
             getListOfMainParamUseCase.execute()
         }
-        dataIsLoad = true
+    }
+
+    fun dataIsLoad(){
+        Log.e("fin_LD", dataWasChanged.toString())
+        if(!dataWasChanged){
+            getNewTimeTable()
+            dataWasChanged = true
+        }
     }
 
     fun getNewTimeTable(newTime: Int? = null) {
@@ -79,7 +87,6 @@ class TimeTableViewModel @Inject constructor(
             if (job.isActive) {
                 job.cancel()
             }
-            dataWasChanged = true
             job = viewModelScope.launch {
                 setConditionLoading(true)
                 _timeTableChanged.value = getWeekTimeTableListUseCase.execute()
@@ -107,7 +114,8 @@ class TimeTableViewModel @Inject constructor(
     /**
     Установка состояние загрузки
      */
-    fun setConditionLoading(condition: Boolean) {
+    private fun setConditionLoading(condition: Boolean) {
+        Log.e("fin_sCL", condition.toString())
         _loading.value = condition
     }
 

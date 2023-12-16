@@ -28,9 +28,6 @@ interface TimeTableRepository {
     fun setListOfFavoriteMainParam(list: ArrayList<MainParam>)
     fun updateFavoriteParamList(newMainParam: MainParam)
 
-    fun getTheme(): MutableLiveData<Int>
-    fun setTheme(newTheme: Int)
-
     suspend fun getExams(mainParam: String): ArrayList<CellApi>
 
 

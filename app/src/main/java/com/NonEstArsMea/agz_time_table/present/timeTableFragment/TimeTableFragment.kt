@@ -77,10 +77,9 @@ class TimeTableFragment : Fragment() {
         ).toMutableList()
 
 
-        vm.dataLiveData.observe(viewLifecycleOwner) {
-            Log.e("fin", "getTT")
-            Log.e("fin", vm.dataLiveData.value?.length.toString())
-            vm.getTimeTable()
+
+        binding.mainParam.setOnClickListener {
+            findNavController().navigate(R.id.searchFragment)
         }
 
         return binding.root
@@ -113,9 +112,8 @@ class TimeTableFragment : Fragment() {
             }
         })
 
-
-        binding.mainParam.setOnClickListener {
-            findNavController().navigate(R.id.searchFragment)
+        vm.dataLiveData.observe(viewLifecycleOwner) {
+            vm.dataIsLoad()
         }
 
         // Слушатель на дни

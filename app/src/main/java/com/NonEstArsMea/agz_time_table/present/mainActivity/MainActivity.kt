@@ -1,6 +1,7 @@
 package com.NonEstArsMea.agz_time_table.present.mainActivity
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import androidx.lifecycle.ViewModelProvider
@@ -9,7 +10,6 @@ import com.NonEstArsMea.agz_time_table.NavGraphDirections
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.data.DateRepositoryImpl
 import com.NonEstArsMea.agz_time_table.databinding.MainLayoutBinding
-import com.NonEstArsMea.agz_time_table.domain.mainUseCase.State.ChangeThemeUseCase
 import com.NonEstArsMea.agz_time_table.present.TimeTableApplication
 import com.NonEstArsMea.agz_time_table.present.customDateFragment.CustomDateFragment
 import com.NonEstArsMea.agz_time_table.present.examsFragment.ExamsFragment
@@ -47,12 +47,9 @@ class MainActivity : AppCompatActivity(),
         analytics = Firebase.analytics
 
         component.inject(this)
-
+        Log.e("fin", "onCreate")
         mainViewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
-        mainViewModel.getDataFromStorage()
-        mainViewModel.theme.observe(this) {
-            mainViewModel.setCustomTheme(it)
-        }
+
 
         _binding = MainLayoutBinding.inflate(layoutInflater)
         val view = binding.root
