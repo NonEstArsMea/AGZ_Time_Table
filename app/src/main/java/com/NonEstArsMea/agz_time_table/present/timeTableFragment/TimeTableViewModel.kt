@@ -56,6 +56,7 @@ class TimeTableViewModel @Inject constructor(
     val mainParam: LiveData<MainParam>
         get() = _mainParam
 
+    private var currentItem = getDayOfWeekUseCase.execute()
 
     init {
         getTimeTable()
@@ -73,9 +74,9 @@ class TimeTableViewModel @Inject constructor(
         }
     }
 
-    fun dataIsLoad(){
+    fun dataIsLoad() {
         Log.e("fin_LD", dataWasChanged.toString())
-        if(!dataWasChanged){
+        if (!dataWasChanged) {
             getNewTimeTable()
             dataWasChanged = true
         }
@@ -83,6 +84,20 @@ class TimeTableViewModel @Inject constructor(
 
     fun getNewTimeTable(newTime: Int? = null) {
         setNewCalendarUseCase.execute(newTime)
+        currentItem = (when (newTime) {
+            NEXT_WEEK -> {
+                LAST_DAY
+            }
+
+            PREVIOUS_WEEK -> {
+                FIRST_DAY
+            }
+
+            else -> {
+                null
+            }
+        }) ?: getDayOfWeekUseCase.execute()
+
         if (dataLiveData.value != null) {
             if (job.isActive) {
                 job.cancel()
@@ -125,11 +140,19 @@ class TimeTableViewModel @Inject constructor(
     }
 
     fun getCurrentItem(): Int {
-        return getDayOfWeekUseCase.execute()
+        return currentItem
     }
 
     fun getMonth(): String {
         return getMonthUseCase.execute()
+    }
+
+    companion object {
+        private const val PREVIOUS_WEEK = -7
+        private const val NEXT_WEEK = 7
+
+        private const val LAST_DAY = 5
+        private const val FIRST_DAY = 0
     }
 
 

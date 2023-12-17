@@ -137,6 +137,7 @@ class TimeTableFragment : Fragment() {
         vm.timeTableChanged.observe(viewLifecycleOwner) { updatedList ->
             viewPager.adapter = viewPagerAdapter
             viewPagerAdapter.setData(updatedList)
+            Log.e("current_2", vm.getCurrentItem().toString())
             binding.viewPagerTimeTableFragment.currentItem = vm.getCurrentItem()
         }
 
