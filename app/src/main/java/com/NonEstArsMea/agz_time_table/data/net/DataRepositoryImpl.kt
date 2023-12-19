@@ -14,11 +14,13 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class DataRepositoryImpl @Inject constructor(private val context: Context) : DataRepository {
+class DataRepositoryImpl @Inject constructor(
+    private val context: Context
+) : DataRepository {
 
     private var _dataLiveData = MutableLiveData<String>()
-
     private var content = ""
+    private var dataIsLoad =  MutableLiveData<Boolean>()
 
     override suspend fun loadData(): LiveData<String> {
         if (_dataLiveData.value == null) {
@@ -28,10 +30,14 @@ class DataRepositoryImpl @Inject constructor(private val context: Context) : Dat
                 connection.connect()
                 content = connection.getInputStream().bufferedReader().use { it.readText() }
                 _dataLiveData.postValue(content)
-                Log.e("fin", "end")
+                dataIsLoad.postValue(true)
             }
         }
         return _dataLiveData
+    }
+
+    override fun dataIsLoad(): LiveData<Boolean> {
+        return dataIsLoad
     }
 
     override fun getData(): LiveData<String> {

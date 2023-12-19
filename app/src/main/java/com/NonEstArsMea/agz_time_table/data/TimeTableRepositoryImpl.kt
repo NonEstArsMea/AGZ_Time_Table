@@ -17,8 +17,9 @@ import kotlinx.coroutines.withContext
 import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVParser
 import javax.inject.Inject
+import javax.inject.Singleton
 
-
+@Singleton
 class TimeTableRepositoryImpl @Inject constructor(
     private val dataRepositoryImpl: DataRepositoryImpl,
     private val resources: Resources
@@ -218,6 +219,7 @@ class TimeTableRepositoryImpl @Inject constructor(
     }
 
     override fun setWeekTimeTable(list: ArrayList<ArrayList<CellApi>>) {
+        Log.e("tagTTRI", list.toString())
         weekTimeTable.value = list
     }
 
@@ -291,6 +293,7 @@ class TimeTableRepositoryImpl @Inject constructor(
 
     override suspend fun getWeekTimeTable(): List<List<CellApi>> {
         val dayOfWeek = DateRepositoryImpl.getArrayOfWeekDate()
+
         return mainParam.value?.let { mainParamValue ->
             try {
                 coroutineScope {
@@ -356,6 +359,8 @@ class TimeTableRepositoryImpl @Inject constructor(
             addAll(listAud)
             addAll(listName)
         }
+
+        Log.e("fin_2", "end  ${listOfMainParam.value!!.size}")
     }
 
     override fun getNewListOfMainParam(): MutableLiveData<ArrayList<MainParam>> {

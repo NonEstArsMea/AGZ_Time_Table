@@ -11,4 +11,6 @@ interface DataRepository {
     fun getContent(): String
 
     fun isInternetConnected(): Boolean
+
+    fun dataIsLoad(): LiveData<Boolean>
 }

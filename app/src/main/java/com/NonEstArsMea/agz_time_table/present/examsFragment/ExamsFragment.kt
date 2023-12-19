@@ -66,7 +66,7 @@ class ExamsFragment : Fragment() {
         args.let {
             mainParam = it.nameParam
         }
-        vm.getTimeTable(mainParam)
+        vm.setMainParam(mainParam)
     }
 
     override fun onCreateView(

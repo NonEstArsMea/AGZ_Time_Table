@@ -11,6 +11,7 @@ import com.NonEstArsMea.agz_time_table.domain.mainUseCase.LoadData.IsInternetCon
 import com.NonEstArsMea.agz_time_table.domain.mainUseCase.Storage.GetDataFromStorageUseCase
 import com.NonEstArsMea.agz_time_table.domain.mainUseCase.Storage.SetDataInStorageUseCase
 import com.NonEstArsMea.agz_time_table.domain.settingUseCase.GetArrayOfFavoriteMainParamUseCase
+import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.GetListOfMainParamUseCase
 import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.GetMainParamUseCase
 import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.GetWeekTimeTableListUseCase
 import com.NonEstArsMea.agz_time_table.present.settingFragment.ThemeController
@@ -26,6 +27,7 @@ class MainViewModel @Inject constructor(
     private val getArrayOfWeekTimeTable: GetWeekTimeTableListUseCase,
     private val getDataFromStorage: GetDataFromStorageUseCase,
     private val isInternetConnected: IsInternetConnected,
+    private val getListOfMainParamUseCase: GetListOfMainParamUseCase,
     themeController: ThemeController
 ) : ViewModel() {
 
@@ -46,9 +48,13 @@ class MainViewModel @Inject constructor(
 
     private var isReady = false
 
+    val dataIsLoad: LiveData<Boolean> = loadData.dataIsLoad()
+
 
     init {
-        loadDataFromURL()
+        if(isInternetConnected()){
+            loadDataFromURL()
+        }
         getDataFromStorage.execute()
     }
 
@@ -60,7 +66,7 @@ class MainViewModel @Inject constructor(
                     loadData.loadData()
                     isReady = true
                 } catch (e: Exception) {
-                    _isStartLoad.postValue(Unit)
+                    loadDataFromURL()
                 }
             }
         }
@@ -86,7 +92,14 @@ class MainViewModel @Inject constructor(
     }
 
     fun isInternetConnected(): Boolean {
+        Log.e("vool", isInternetConnected.execute().toString())
         return isInternetConnected.execute()
+    }
+
+    fun getListOfMainParam() {
+        viewModelScope.launch {
+            getListOfMainParamUseCase.execute()
+        }
     }
 
 }

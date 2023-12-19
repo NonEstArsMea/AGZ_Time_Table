@@ -1,5 +1,6 @@
 package com.NonEstArsMea.agz_time_table.present.timeTableFragment
 
+import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -16,6 +17,7 @@ class ViewPagerAdapter(
         val diffResult =
             DiffUtil.calculateDiff(WeekScheduleDiffUtilCallback(weekSchedule, newWeekSchedule))
         weekSchedule.clear()
+        Log.e("tag2", "$newWeekSchedule")
         weekSchedule.addAll(newWeekSchedule)
         diffResult.dispatchUpdatesTo(this)
     }

@@ -59,10 +59,15 @@ class MainActivity : AppCompatActivity(),
 
     override fun onStart() {
         super.onStart()
+
         val menu = binding.bottomInfo.menu
         mainViewModel.selectedItem.observe(this) {
             menu.getItem(it).isChecked = true
 
+        }
+
+        mainViewModel.dataIsLoad.observe(this){
+            mainViewModel.getListOfMainParam()
         }
 
         binding.bottomInfo.setOnItemSelectedListener {
@@ -96,11 +101,6 @@ class MainActivity : AppCompatActivity(),
             return@setOnItemSelectedListener true
         }
 
-        mainViewModel.isStartLoad.observe(this) {
-            if (mainViewModel.isInternetConnected()) {
-                mainViewModel.loadDataFromURL()
-            }
-        }
     }
 
     override fun startFragment() {

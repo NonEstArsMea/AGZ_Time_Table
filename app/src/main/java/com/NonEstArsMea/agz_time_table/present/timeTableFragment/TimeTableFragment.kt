@@ -112,9 +112,6 @@ class TimeTableFragment : Fragment() {
             }
         })
 
-        vm.dataLiveData.observe(viewLifecycleOwner) {
-            vm.dataIsLoad()
-        }
 
         // Слушатель на дни
         days.toList().forEachIndexed { index, textView ->
@@ -123,7 +120,6 @@ class TimeTableFragment : Fragment() {
             }
         }
 
-        // Слушатель на left_buttom
         binding.buttomLeft.setOnClickListener {
             updateData(PREVIOUS_WEEK)
         }
@@ -135,9 +131,9 @@ class TimeTableFragment : Fragment() {
 
 
         vm.timeTableChanged.observe(viewLifecycleOwner) { updatedList ->
+            Log.e("tag1", "$updatedList")
             viewPager.adapter = viewPagerAdapter
             viewPagerAdapter.setData(updatedList)
-            Log.e("current_2", vm.getCurrentItem().toString())
             binding.viewPagerTimeTableFragment.currentItem = vm.getCurrentItem()
         }
 
@@ -153,7 +149,9 @@ class TimeTableFragment : Fragment() {
 
 
         binding.setDateButton.setOnClickListener {
-            datePicker.show(requireActivity().supportFragmentManager, datePicker.toString())
+            binding.viewPagerTimeTableFragment.currentItem = vm.getMainCurrentItem()
+            updateData(NOW_WEEK)
+            //datePicker.show(requireActivity().supportFragmentManager, datePicker.toString())
         }
         datePicker.clearOnPositiveButtonClickListeners()
         datePicker.addOnPositiveButtonClickListener {
@@ -180,6 +178,8 @@ class TimeTableFragment : Fragment() {
         }
         binding.monthDate.text = vm.getMonth()
         setButtonNumbers()
+
+        viewPager.adapter = viewPagerAdapter
     }
 
     override fun onStart() {
@@ -208,6 +208,7 @@ class TimeTableFragment : Fragment() {
     companion object {
         private const val PREVIOUS_WEEK = -7
         private const val NEXT_WEEK = 7
+        private const val NOW_WEEK = 0
     }
 
 }
