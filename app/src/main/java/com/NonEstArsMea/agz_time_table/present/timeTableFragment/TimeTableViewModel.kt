@@ -137,6 +137,10 @@ class TimeTableViewModel @Inject constructor(
         return currentItem
     }
 
+    fun setCurrentItem(newCurrentItem: Int){
+        currentItem = newCurrentItem
+    }
+
     fun getMainCurrentItem(): Int {
         return getDayOfWeekUseCase.execute()
     }
@@ -146,8 +150,9 @@ class TimeTableViewModel @Inject constructor(
     }
 
     companion object {
-        private const val PREVIOUS_WEEK = -7
-        private const val NEXT_WEEK = 7
+        const val PREVIOUS_WEEK = -7
+        const val NEXT_WEEK = 7
+        const val NOW_WEEK = 0
 
         private const val LAST_DAY = 5
         private const val FIRST_DAY = 0

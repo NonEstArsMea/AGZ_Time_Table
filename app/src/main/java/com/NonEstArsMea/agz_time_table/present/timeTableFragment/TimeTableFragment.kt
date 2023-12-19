@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.view.doOnLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -117,6 +118,7 @@ class TimeTableFragment : Fragment() {
         days.toList().forEachIndexed { index, textView ->
             textView.setOnClickListener {
                 viewPager.setCurrentItem(index, true)
+                vm.setCurrentItem(index)
             }
         }
 
@@ -131,10 +133,11 @@ class TimeTableFragment : Fragment() {
 
 
         vm.timeTableChanged.observe(viewLifecycleOwner) { updatedList ->
-            Log.e("tag1", "$updatedList")
             viewPager.adapter = viewPagerAdapter
             viewPagerAdapter.setData(updatedList)
-            binding.viewPagerTimeTableFragment.currentItem = vm.getCurrentItem()
+            viewPager.doOnLayout {
+                viewPager.currentItem = vm.getCurrentItem()
+            }
         }
 
 
@@ -147,12 +150,12 @@ class TimeTableFragment : Fragment() {
             vm.checkMainParam()
         }
 
-
         binding.setDateButton.setOnClickListener {
-            binding.viewPagerTimeTableFragment.currentItem = vm.getMainCurrentItem()
+            viewPager.currentItem = vm.getMainCurrentItem()
             updateData(NOW_WEEK)
             //datePicker.show(requireActivity().supportFragmentManager, datePicker.toString())
         }
+
         datePicker.clearOnPositiveButtonClickListeners()
         datePicker.addOnPositiveButtonClickListener {
 
