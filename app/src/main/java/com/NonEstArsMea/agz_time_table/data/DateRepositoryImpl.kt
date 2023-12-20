@@ -11,12 +11,11 @@ object DateRepositoryImpl: DateRepository {
 
     private var calendar:Calendar = Calendar.getInstance()
 
-    private val constCalendar:Calendar = Calendar.getInstance()
 
     private val calendarLiveData = MutableLiveData<Calendar>()
 
     override fun setDayNow(){
-        calendar = constCalendar
+        calendar = Calendar.getInstance()
         updateCalendar()
     }
 

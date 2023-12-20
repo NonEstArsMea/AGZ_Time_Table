@@ -39,7 +39,7 @@
                 android:layout_marginRight="@dimen/margine_all"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:icon="@drawable/set_date_icon"
+                app:icon="@drawable/home_icon"
                 android:id="@+id/set_date_button"
                 style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
                 app:layout_constraintTop_toTopOf="parent"

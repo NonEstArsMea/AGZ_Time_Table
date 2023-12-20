@@ -34,12 +34,6 @@ class TimeTableFragment : Fragment() {
     var days = mutableListOf<TextView>()
     private lateinit var viewPagerAdapter: ViewPagerAdapter
 
-    private val datePicker by lazy {
-        MaterialDatePicker.Builder.datePicker()
-            .setTitleText(getString(R.string.set_date))
-            .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-            .build()
-    }
 
     private lateinit var viewPager: ViewPager2
 
@@ -131,7 +125,6 @@ class TimeTableFragment : Fragment() {
         }
 
 
-
         vm.timeTableChanged.observe(viewLifecycleOwner) { updatedList ->
             viewPager.adapter = viewPagerAdapter
             viewPagerAdapter.setData(updatedList)
@@ -151,34 +144,12 @@ class TimeTableFragment : Fragment() {
         }
 
         binding.setDateButton.setOnClickListener {
-            viewPager.currentItem = vm.getMainCurrentItem()
-            updateData(NOW_WEEK)
-            //datePicker.show(requireActivity().supportFragmentManager, datePicker.toString())
-        }
-
-        datePicker.clearOnPositiveButtonClickListeners()
-        datePicker.addOnPositiveButtonClickListener {
-
-            val calender = Calendar.getInstance()
-            calender.timeInMillis = it
-            val day = calender.get(Calendar.DAY_OF_MONTH)
-            val month = calender.get(Calendar.MONTH)
-            val year = calender.get(Calendar.YEAR)
-            val mainParam = vm.getMainParam()
-            try {
-                findNavController().navigate(
-                    TimeTableFragmentDirections
-                        .actionTimeTableFragmentToCustomDateFragment(
-                            day = day,
-                            month = month,
-                            year = year,
-                            mainParam = mainParam
-                        )
-                )
-            } catch (_: Exception) {
-
+            viewPager.doOnLayout {
+                viewPager.currentItem = vm.getMainCurrentItem()
             }
+            updateData(NOW_WEEK)
         }
+
         binding.monthDate.text = vm.getMonth()
         setButtonNumbers()
 
