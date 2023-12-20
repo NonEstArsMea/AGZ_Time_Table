@@ -32,23 +32,31 @@ class ExamsFragmentViewModel @Inject constructor(
         }
     }
 
+
     private fun getTimeTable(){
 
         if (job.isActive) {
             job.cancel()
         }
         if(mainParam!= null){
-            job = viewModelScope.launch {
-                _timeTableChanged.postValue(
-                    getExams.execute(mainParam!!)
-                )
+            try {
+                job = viewModelScope.launch {
+                    Log.e("exams", mainParam.toString())
+                    _timeTableChanged.postValue(
+                        getExams.execute(mainParam!!)
+                    )
+                }
+            }catch (_:Exception){
+
             }
+
         }
 
     }
 
     fun setMainParam(_mainParam: String){
         mainParam = _mainParam
+        getTimeTable()
     }
 
 }
