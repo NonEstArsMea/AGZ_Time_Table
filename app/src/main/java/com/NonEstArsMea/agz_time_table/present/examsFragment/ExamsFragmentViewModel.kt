@@ -6,9 +6,9 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.GetExamsUseCase
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
 import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.GetDataUseCase
+import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.GetExamsUseCase
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -16,9 +16,9 @@ import javax.inject.Inject
 class ExamsFragmentViewModel @Inject constructor(
     private val getExams: GetExamsUseCase,
     getDataUseCase: GetDataUseCase,
-): ViewModel() {
+) : ViewModel() {
 
-    private var job: Job = viewModelScope.launch {  }
+    private var job: Job = viewModelScope.launch { }
 
     private var mainParam: String? = null
 
@@ -27,35 +27,32 @@ class ExamsFragmentViewModel @Inject constructor(
         get() = _timeTableChanged
 
     val dataLiveData = MediatorLiveData<String>().apply {
-        addSource(getDataUseCase.execute()){
+        addSource(getDataUseCase.execute()) {
             getTimeTable()
         }
     }
 
 
-    private fun getTimeTable(){
+
+    private fun getTimeTable() {
 
         if (job.isActive) {
             job.cancel()
         }
-        if(mainParam!= null){
-            try {
-                job = viewModelScope.launch {
-                    Log.e("exams", mainParam.toString())
-                    _timeTableChanged.postValue(
-                        getExams.execute(mainParam!!)
-                    )
-                }
-            }catch (_:Exception){
-
+        if (mainParam != null) {
+            job = viewModelScope.launch {
+                Log.e("exams", mainParam.toString())
+                _timeTableChanged.postValue(
+                    getExams.execute(mainParam!!)
+                )
             }
 
         }
 
     }
 
-    fun setMainParam(_mainParam: String){
-        mainParam = _mainParam
+    fun setMainParam(newMainParam: String) {
+        mainParam = newMainParam
         getTimeTable()
     }
 

@@ -285,9 +285,15 @@ class TimeTableRepositoryImpl @Inject constructor(
                 }
 
             }
-            listTT.removeAt(0)
-            listTT.add(currentExam)
-            return@withContext listTT
+            Log.e("exams", listTT.toString())
+            if (listTT.isEmpty()){
+                return@withContext listTT
+            }else{
+                listTT.removeAt(0)
+                listTT.add(currentExam)
+                return@withContext listTT
+            }
+
         }
 
 

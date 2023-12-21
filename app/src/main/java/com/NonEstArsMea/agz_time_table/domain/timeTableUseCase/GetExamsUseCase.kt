@@ -14,11 +14,6 @@ class GetExamsUseCase @Inject constructor(
 ) {
 
     suspend fun execute(mainParam: String): List<CellApi> {
-        Log.e("exams", dataRepositoryImpl.getContent().isNotEmpty().toString())
-        return if(dataRepositoryImpl.getContent().isNotEmpty() or
-            (mainParam != context.getString(R.string.name_param_is_null)))
-            timeTableRepositoryImpl.getExams(mainParam)
-        else
-            listOf()
+        return timeTableRepositoryImpl.getExams(mainParam)
     }
 }
