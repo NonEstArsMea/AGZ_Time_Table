@@ -85,7 +85,6 @@ class TimeTableFragment : Fragment() {
 
         viewPager = binding.viewPagerTimeTableFragment
         viewPagerAdapter = ViewPagerAdapter(this)
-        viewPager.isSaveEnabled = false
         viewPager.adapter = viewPagerAdapter
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             @SuppressLint("UseCompatLoadingForDrawables")
@@ -124,25 +123,6 @@ class TimeTableFragment : Fragment() {
             updateData(NEXT_WEEK)
         }
 
-
-        vm.timeTableChanged.observe(viewLifecycleOwner) { updatedList ->
-            viewPager.adapter = viewPagerAdapter
-            viewPagerAdapter.setData(updatedList)
-            viewPager.doOnLayout {
-                viewPager.currentItem = vm.getCurrentItem()
-            }
-        }
-
-
-        vm.loading.observe(viewLifecycleOwner) {
-            binding.progressBar.isVisible = it
-        }
-
-        vm.mainParam.observe(viewLifecycleOwner) {
-            binding.mainParam.text = it.name
-            vm.checkMainParam()
-        }
-
         binding.setDateButton.setOnClickListener {
             viewPager.doOnLayout {
                 viewPager.currentItem = vm.getMainCurrentItem()
@@ -150,10 +130,43 @@ class TimeTableFragment : Fragment() {
             updateData(NOW_WEEK)
         }
 
+        observeViewModel()
+
         binding.monthDate.text = vm.getMonth()
         setButtonNumbers()
 
-        viewPager.adapter = viewPagerAdapter
+    }
+
+    private fun observeViewModel() {
+        vm.state.observe(viewLifecycleOwner) {
+
+            when (it) {
+                is initialFragment -> {
+                    binding.mainParam.text = it.mainParam
+                }
+
+                is ConnectionError -> {
+                    binding.progressBar.isVisible = false
+                }
+                is LoadTimeTable -> {
+                    binding.progressBar.isVisible = true
+                    viewPagerAdapter.setData(listOf())
+                }
+                is timeTableIsLoad -> {
+                    binding.progressBar.isVisible = false
+                    viewPagerAdapter.setData(it.list)
+                }
+            }
+
+            viewPager.doOnLayout {
+                viewPager.currentItem = vm.getCurrentItem()
+            }
+        }
+
+        vm.mainParam.observe(viewLifecycleOwner) {
+            binding.mainParam.text = it.name
+            vm.checkMainParam()
+        }
     }
 
     override fun onStart() {

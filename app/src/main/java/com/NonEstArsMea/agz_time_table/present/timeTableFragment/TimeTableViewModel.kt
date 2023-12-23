@@ -37,9 +37,6 @@ class TimeTableViewModel @Inject constructor(
 
     private var job: Job = viewModelScope.launch { }
 
-    private var _timeTableChanged = timeTableRepositoryImpl.getArrayOfWeekTimeTable()
-    val timeTableChanged: LiveData<List<List<CellApi>>>
-        get() = _timeTableChanged
 
     // хранит список с расписанием
     val dataLiveData: LiveData<String> = MediatorLiveData<String>().apply {
@@ -48,10 +45,10 @@ class TimeTableViewModel @Inject constructor(
         }
     }
 
-    // хранит состояние загрузки
-    private val _loading = MutableLiveData<Boolean>()
-    val loading: LiveData<Boolean>
-        get() = _loading
+    private var _state: MutableLiveData<State> = MutableLiveData()
+    val state: LiveData<State>
+        get() = _state
+
 
     private var lastMainParam: String = ""
 
@@ -62,47 +59,23 @@ class TimeTableViewModel @Inject constructor(
     private var currentItem = getDayOfWeekUseCase.execute()
 
     init {
-        getTimeTable()
-    }
-
-    fun getMainParam(): String {
-        return getMainParamUseCase.getNameOfMainParam()
-    }
-
-    private fun getTimeTable() {
         getNewTimeTable()
     }
 
 
     @SuppressLint("SuspiciousIndentation")
     fun getNewTimeTable(newTime: Int? = null) {
+        _state.value = LoadTimeTable
         setNewCalendarUseCase.execute(newTime)
         if (newTime == 0) {
             DateRepositoryImpl.setDayNow()
         }
-        currentItem = (when (newTime) {
-            NEXT_WEEK -> {
-                FIRST_DAY
-            }
-
-            PREVIOUS_WEEK -> {
-                LAST_DAY
-            }
-
-            else -> {
-                null
-            }
-        }) ?: getDayOfWeekUseCase.execute()
+        currentItem = getCurrenItem(newTime)
 
         if (job.isActive) {
             job.cancel()
         }
-        job = viewModelScope.launch {
-            setConditionLoading(true)
-            _timeTableChanged.value = getWeekTimeTableListUseCase.execute()
-            Log.e("taggggggg", getWeekTimeTableListUseCase.execute().toString())
-            setConditionLoading(false)
-        }
+
     }
 
     fun checkMainParam() {
@@ -121,12 +94,6 @@ class TimeTableViewModel @Inject constructor(
         job.cancel()
     }
 
-    /**
-    Установка состояние загрузки
-     */
-    private fun setConditionLoading(condition: Boolean) {
-        _loading.value = condition
-    }
 
 
     fun startFragment() {
@@ -148,6 +115,20 @@ class TimeTableViewModel @Inject constructor(
     fun getMonth(): String {
         return getMonthUseCase.execute()
     }
+
+    private fun getCurrenItem(newTime: Int? = null) = (when (newTime) {
+        NEXT_WEEK -> {
+            FIRST_DAY
+        }
+
+        PREVIOUS_WEEK -> {
+            LAST_DAY
+        }
+
+        else -> {
+            null
+        }
+    }) ?: getDayOfWeekUseCase.execute()
 
     companion object {
         const val PREVIOUS_WEEK = -7
