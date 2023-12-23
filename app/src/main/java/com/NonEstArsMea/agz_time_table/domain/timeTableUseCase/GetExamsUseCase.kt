@@ -9,8 +9,6 @@ import javax.inject.Inject
 
 class GetExamsUseCase @Inject constructor(
     private val timeTableRepositoryImpl: TimeTableRepository,
-    private val dataRepositoryImpl: DataRepositoryImpl,
-    private val context: Context
 ) {
 
     suspend fun execute(mainParam: String): List<CellApi> {
