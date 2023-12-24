@@ -19,6 +19,7 @@ interface TimeTableRepository {
     fun getNewListOfMainParam(): MutableLiveData<ArrayList<MainParam>>
 
     fun getMainParam(): MutableLiveData<MainParam>
+    fun getStringMainParam(): String
     fun setMainParam(newMainParam: MainParam)
 
     fun setWeekTimeTable(list: ArrayList<ArrayList<CellApi>>)

@@ -62,7 +62,6 @@ class StorageRepositoryImpl @Inject constructor(
         lastWeekTimeTable: List<List<CellApi>>?,
         theme: Int?
     ) {
-        Log.e("fin", "save theme")
         sharedPreferences.edit().apply {
             if (favMainParamList != null)
                 putString(LIST_OF_FAVORITE_MAIN_PARAMS, GsonInstance.gson.toJson(favMainParamList))

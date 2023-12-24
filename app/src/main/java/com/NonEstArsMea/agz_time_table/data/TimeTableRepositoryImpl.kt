@@ -199,6 +199,14 @@ class TimeTableRepositoryImpl @Inject constructor(
         return mainParam
     }
 
+    override fun getStringMainParam(): String {
+        return if (mainParam.value != null) {
+            mainParam.value!!.name
+        } else {
+            resources.getString(R.string.name_param_is_null)
+        }
+    }
+
     override fun getArrayOfFavoriteMainParam(): MutableLiveData<ArrayList<MainParam>> {
         return listOfFavoriteMainParam
     }
@@ -286,9 +294,9 @@ class TimeTableRepositoryImpl @Inject constructor(
 
             }
             Log.e("exams", listTT.toString())
-            if (listTT.isEmpty()){
+            if (listTT.isEmpty()) {
                 return@withContext listTT
-            }else{
+            } else {
                 listTT.removeAt(0)
                 listTT.add(currentExam)
                 return@withContext listTT
