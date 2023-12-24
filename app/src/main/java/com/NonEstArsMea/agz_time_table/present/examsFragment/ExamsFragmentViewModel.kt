@@ -26,11 +26,11 @@ class ExamsFragmentViewModel @Inject constructor(
     val timeTableChanged: LiveData<List<CellApi>>
         get() = _timeTableChanged
 
-    val dataLiveData = MediatorLiveData<String>().apply {
-        addSource(getDataUseCase.execute()) {
-            getTimeTable()
-        }
-    }
+//    val dataLiveData = MediatorLiveData<String>().apply {
+//        addSource(getDataUseCase.execute()) {
+//            getTimeTable()
+//        }
+//    }
 
 
 
