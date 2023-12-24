@@ -19,6 +19,7 @@ import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.SetNewCalendarUse
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
 import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.TimeTableRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -52,19 +53,22 @@ class TimeTableViewModel @Inject constructor(
 
     private var lastMainParam: String = ""
 
-    private val _mainParam = getMainParamUseCase.execute()
-    val mainParam: LiveData<MainParam>
-        get() = _mainParam
-
     private var currentItem = getDayOfWeekUseCase.execute()
 
     init {
+        _state.value = InitialFragment(getMainParamUseCase.getNameOfMainParam())
         getNewTimeTable()
     }
 
 
     @SuppressLint("SuspiciousIndentation")
-    fun getNewTimeTable(newTime: Int? = null) {
+    fun getNewTimeTable(newTime: Int? = null, newMainParam: String? = null) {
+
+        Log.e("NMParam", "$newTime  $newMainParam")
+        if(newMainParam != null){
+            _state.value = InitialFragment(newMainParam)
+        }
+
         _state.value = LoadTimeTable
         setNewCalendarUseCase.execute(newTime)
         if (newTime == 0) {
@@ -75,13 +79,19 @@ class TimeTableViewModel @Inject constructor(
         if (job.isActive) {
             job.cancel()
         }
-
+        viewModelScope.launch(Dispatchers.Default) {
+            val list = timeTableRepositoryImpl.getWeekTimeTable()
+            launch(Dispatchers.Main) {
+                _state.value = TimeTableIsLoad(list)
+            }
+        }
     }
 
     fun checkMainParam() {
-        if (lastMainParam != _mainParam.value?.name) {
-            lastMainParam = _mainParam.value?.name.toString()
-            getNewTimeTable()
+        val newMainParam = timeTableRepositoryImpl.getMainParam().value?.name ?: "null"
+        if (lastMainParam != newMainParam) {
+            lastMainParam = newMainParam
+            getNewTimeTable(newMainParam = newMainParam)
         }
     }
 

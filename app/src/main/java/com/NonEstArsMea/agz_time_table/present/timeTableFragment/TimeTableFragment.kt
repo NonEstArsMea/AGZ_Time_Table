@@ -82,7 +82,6 @@ class TimeTableFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         viewPager = binding.viewPagerTimeTableFragment
         viewPagerAdapter = ViewPagerAdapter(this)
         viewPager.adapter = viewPagerAdapter
@@ -130,6 +129,8 @@ class TimeTableFragment : Fragment() {
             updateData(NOW_WEEK)
         }
 
+        vm.checkMainParam()
+
         observeViewModel()
 
         binding.monthDate.text = vm.getMonth()
@@ -139,34 +140,31 @@ class TimeTableFragment : Fragment() {
 
     private fun observeViewModel() {
         vm.state.observe(viewLifecycleOwner) {
+            viewPager.doOnLayout { _ ->
+                when (it) {
+                    is InitialFragment -> {
+                        binding.mainParam.text = it.mainParam
+                    }
 
-            when (it) {
-                is initialFragment -> {
-                    binding.mainParam.text = it.mainParam
+                    is ConnectionError -> {
+                        binding.progressBar.isVisible = false
+                    }
+
+                    is LoadTimeTable -> {
+                        binding.progressBar.isVisible = true
+                        viewPagerAdapter.setData(listOf())
+                    }
+
+                    is TimeTableIsLoad -> {
+                        binding.progressBar.isVisible = false
+                        viewPagerAdapter.setData(it.list)
+                    }
                 }
 
-                is ConnectionError -> {
-                    binding.progressBar.isVisible = false
-                }
-                is LoadTimeTable -> {
-                    binding.progressBar.isVisible = true
-                    viewPagerAdapter.setData(listOf())
-                }
-                is timeTableIsLoad -> {
-                    binding.progressBar.isVisible = false
-                    viewPagerAdapter.setData(it.list)
-                }
-            }
-
-            viewPager.doOnLayout {
                 viewPager.currentItem = vm.getCurrentItem()
             }
         }
 
-        vm.mainParam.observe(viewLifecycleOwner) {
-            binding.mainParam.text = it.name
-            vm.checkMainParam()
-        }
     }
 
     override fun onStart() {
