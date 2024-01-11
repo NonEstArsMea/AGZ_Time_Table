@@ -13,7 +13,6 @@ class GetWeekTimeTableListUseCase @Inject constructor(
     }
 
     fun getArrayOfWeekTimeTable(): MutableLiveData<List<List<CellApi>>> {
-        Log.e("tag_uc", timeTableRepositoryImpl.getArrayOfWeekTimeTable().value.toString())
         return timeTableRepositoryImpl.getArrayOfWeekTimeTable()
     }
 }

@@ -1,24 +1,23 @@
 package com.NonEstArsMea.agz_time_table.data
 
 import androidx.lifecycle.MutableLiveData
-import com.NonEstArsMea.agz_time_table.domain.mainUseCase.State.StateRepository
 
-object StateRepositoryImpl: StateRepository {
+object StateManager{
 
     private val menuItem = MutableLiveData<Int>().apply {
         this.value = TIME_TABLE_ITEM
     }
 
 
-    override fun getMenuItem(): MutableLiveData<Int>{
+    fun getMenuItem(): MutableLiveData<Int>{
         return menuItem
     }
 
-    override fun setNewMenuItem(newItemId: Int){
+    fun setNewMenuItem(newItemId: Int){
         menuItem.value = newItemId
     }
 
-    override fun stateNow(): Int? {
+    fun stateNow(): Int? {
         return menuItem.value
     }
 

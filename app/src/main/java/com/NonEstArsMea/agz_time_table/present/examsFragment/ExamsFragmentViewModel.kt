@@ -2,20 +2,17 @@ package com.NonEstArsMea.agz_time_table.present.examsFragment
 
 import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
-import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.GetDataUseCase
-import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.GetExamsUseCase
+import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.TimeTableRepository
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ExamsFragmentViewModel @Inject constructor(
-    private val getExams: GetExamsUseCase,
-    getDataUseCase: GetDataUseCase,
+    private val timeTableRepositoryImpl: TimeTableRepository,
 ) : ViewModel() {
 
     private var job: Job = viewModelScope.launch { }
@@ -25,13 +22,6 @@ class ExamsFragmentViewModel @Inject constructor(
     private var _timeTableChanged = MutableLiveData<List<CellApi>>()
     val timeTableChanged: LiveData<List<CellApi>>
         get() = _timeTableChanged
-
-    val dataLiveData = MediatorLiveData<String>().apply {
-        addSource(getDataUseCase.execute()) {
-            getTimeTable()
-        }
-    }
-
 
 
     private fun getTimeTable() {
@@ -43,7 +33,7 @@ class ExamsFragmentViewModel @Inject constructor(
             job = viewModelScope.launch {
                 Log.e("exams", mainParam.toString())
                 _timeTableChanged.postValue(
-                    getExams.execute(mainParam!!)
+                    timeTableRepositoryImpl.getExams(mainParam!!)
                 )
             }
 

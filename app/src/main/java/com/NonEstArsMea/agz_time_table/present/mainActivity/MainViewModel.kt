@@ -1,19 +1,17 @@
 package com.NonEstArsMea.agz_time_table.present.mainActivity
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.NonEstArsMea.agz_time_table.data.StateRepositoryImpl
+import com.NonEstArsMea.agz_time_table.data.StateManager
 import com.NonEstArsMea.agz_time_table.domain.mainUseCase.LoadData.DataRepository
 import com.NonEstArsMea.agz_time_table.domain.mainUseCase.LoadData.IsInternetConnected
 import com.NonEstArsMea.agz_time_table.domain.mainUseCase.Storage.GetDataFromStorageUseCase
 import com.NonEstArsMea.agz_time_table.domain.mainUseCase.Storage.SetDataInStorageUseCase
-import com.NonEstArsMea.agz_time_table.domain.settingUseCase.GetArrayOfFavoriteMainParamUseCase
-import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.GetListOfMainParamUseCase
 import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.GetMainParamUseCase
 import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.GetWeekTimeTableListUseCase
+import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.TimeTableRepository
 import com.NonEstArsMea.agz_time_table.present.settingFragment.ThemeController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -27,8 +25,8 @@ class MainViewModel @Inject constructor(
     private val getArrayOfWeekTimeTable: GetWeekTimeTableListUseCase,
     private val getDataFromStorage: GetDataFromStorageUseCase,
     private val isInternetConnected: IsInternetConnected,
-    private val getListOfMainParamUseCase: GetListOfMainParamUseCase,
-    themeController: ThemeController
+    themeController: ThemeController,
+    private val timeTableRepositoryImpl: TimeTableRepository
 ) : ViewModel() {
 
 
@@ -42,7 +40,7 @@ class MainViewModel @Inject constructor(
     val theme: LiveData<Int>
         get() = _theme
 
-    private var _selectedItem: MutableLiveData<Int> = StateRepositoryImpl.getMenuItem()
+    private var _selectedItem: MutableLiveData<Int> = StateManager.getMenuItem()
     val selectedItem: LiveData<Int>
         get() = _selectedItem
 
@@ -73,14 +71,14 @@ class MainViewModel @Inject constructor(
     }
 
     fun getMainParam(): String {
-        return getNameParam.getNameOfMainParam()
+        return getNameParam.getNameOfMainParamFromStorage()
     }
 
 
     fun setDataInStorage() {
         setDataInStorage.execute(
-            getNameParam.execute().value,
-            getArrayOfFavoriteMainParam.execute().value,
+            getNameParam.getLiveData().value,
+            timeTableRepositoryImpl.getArrayOfFavoriteMainParam().value,
             getArrayOfWeekTimeTable.getArrayOfWeekTimeTable().value,
             _theme.value
         )
@@ -88,17 +86,16 @@ class MainViewModel @Inject constructor(
 
 
     fun itemControl(): Boolean {
-        return StateRepositoryImpl.stateNow() != StateRepositoryImpl.SETTING_ITEM
+        return StateManager.stateNow() != StateManager.SETTING_ITEM
     }
 
     fun isInternetConnected(): Boolean {
-        Log.e("vool", isInternetConnected.execute().toString())
         return isInternetConnected.execute()
     }
 
     fun getListOfMainParam() {
         viewModelScope.launch {
-            getListOfMainParamUseCase.execute()
+            timeTableRepositoryImpl.getListOfMainParam()
         }
     }
 

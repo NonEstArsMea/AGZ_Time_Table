@@ -1,25 +1,23 @@
-package com.NonEstArsMea.agz_time_table.data
+package com.NonEstArsMea.agz_time_table.util
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.NonEstArsMea.agz_time_table.R
-import com.NonEstArsMea.agz_time_table.domain.DateRepository
 import java.util.Calendar
 
-object DateRepositoryImpl: DateRepository {
+object DateManager{
 
     private var calendar:Calendar = Calendar.getInstance()
 
 
     private val calendarLiveData = MutableLiveData<Calendar>()
 
-    override fun setDayNow(){
+    fun setDayNow(){
         calendar = Calendar.getInstance()
         updateCalendar()
     }
 
-    override fun getMonth(number: Int): Int {
+    fun getMonth(number: Int): Int {
         val month = arrayOf(
             R.string.January, R.string.February,
             R.string.March, R.string.April, R.string.May, R.string.June,
@@ -29,7 +27,7 @@ object DateRepositoryImpl: DateRepository {
         return month[number]
     }
 
-    override fun dayNumberOnButton(): List<String> {
+    fun dayNumberOnButton(): List<String> {
         val days = mutableListOf<String>()
 
         val razn = (calendar.get(Calendar.DAY_OF_WEEK) + 5) % 7
@@ -44,7 +42,7 @@ object DateRepositoryImpl: DateRepository {
         return days
     }
 
-    override fun monthAndDayNow(context: Context): String {
+    fun monthAndDayNow(context: Context): String {
 
         val dayNow = calendar.get(Calendar.DAY_OF_MONTH).toString()
         val monthNow  = calendar.get(Calendar.MONTH)
@@ -55,7 +53,7 @@ object DateRepositoryImpl: DateRepository {
     }
 
 
-    override fun setNewCalendar(newTime: Int){
+    fun setNewCalendar(newTime: Int){
         calendar.add(Calendar.DAY_OF_MONTH, newTime)
         updateCalendar()
     }
@@ -64,7 +62,7 @@ object DateRepositoryImpl: DateRepository {
     }
 
 
-    override fun engToRusDayOfWeekNumbers(time: Int): Int {
+    fun engToRusDayOfWeekNumbers(time: Int): Int {
         return if(time == 1){
             SUNDAY
         }else{
@@ -72,7 +70,7 @@ object DateRepositoryImpl: DateRepository {
         }
     }
 
-    override fun getArrayOfWeekDate(): ArrayList<String> {
+    fun getArrayOfWeekDate(): ArrayList<String> {
         val days = ArrayList<String>()
 
         val razn = (calendar.get(Calendar.DAY_OF_WEEK) + 5) % 7
@@ -98,10 +96,10 @@ object DateRepositoryImpl: DateRepository {
         return days
     }
 
-    override fun getDayOfWeek(): Int {
+    fun getDayOfWeek(): Int {
         val dayOfWeek = (calendar.get(Calendar.DAY_OF_WEEK) + 5) % 7
         if(dayOfWeek == SUNDAY){
-            calendar.add(Calendar.DAY_OF_MONTH, 1)
+            calendar.add(Calendar.DAY_OF_YEAR, 1)
             return 1
         }
         return dayOfWeek

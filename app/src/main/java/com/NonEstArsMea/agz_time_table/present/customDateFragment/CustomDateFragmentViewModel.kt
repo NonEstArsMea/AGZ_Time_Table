@@ -1,19 +1,20 @@
 package com.NonEstArsMea.agz_time_table.present.customDateFragment
 
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.GetDateUseCase
-import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.GetTimeTableUseCase
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
+import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.TimeTableRepository
+import com.NonEstArsMea.agz_time_table.util.DateManager
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class CustomDateFragmentViewModel @Inject constructor(
-    private val getTimeTableUseCase: GetTimeTableUseCase,
-    private val getDateUseCase: GetDateUseCase
+    private val timeTableRepositoryImpl: TimeTableRepository,
+    private val application: Application,
 ) : ViewModel() {
 
     private val uiScope = viewModelScope
@@ -32,12 +33,17 @@ class CustomDateFragmentViewModel @Inject constructor(
             job.cancel()
         }
         job = uiScope.launch {
-            _timeTableChanged.postValue(getTimeTableUseCase.execute(dayOfWeek, mainParam))
+            _timeTableChanged.postValue(
+                timeTableRepositoryImpl.preparationData(
+                    dayOfWeek,
+                    mainParam
+                )
+            )
         }
     }
 
     fun getDate(day: Int, month: Int, year: Int): String {
-        return getDateUseCase.execute(day, month, year)
+        return "$day ${application.applicationContext.getString(DateManager.getMonth(month))} - $year"
     }
 
 

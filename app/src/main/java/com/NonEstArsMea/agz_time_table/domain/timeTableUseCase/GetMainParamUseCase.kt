@@ -9,11 +9,15 @@ class GetMainParamUseCase @Inject constructor(
     private val timeTableRepositoryImpl: TimeTableRepository,
     private val storageRepository: StorageRepository
 ) {
-    fun execute(): LiveData<MainParam> {
+    fun getLiveData(): LiveData<MainParam> {
         return timeTableRepositoryImpl.getMainParam()
     }
 
-    fun getNameOfMainParam():String{
+    fun getNameOfMainParamFromRepo(): String? {
+        return timeTableRepositoryImpl.getMainParam().value?.name
+    }
+
+    fun getNameOfMainParamFromStorage():String{
         return storageRepository.getMainParamFromStorage().name
     }
 }

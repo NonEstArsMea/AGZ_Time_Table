@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.NonEstArsMea.agz_time_table.NavGraphDirections
 import com.NonEstArsMea.agz_time_table.R
-import com.NonEstArsMea.agz_time_table.data.DateRepositoryImpl
+import com.NonEstArsMea.agz_time_table.util.DateManager
 import com.NonEstArsMea.agz_time_table.databinding.MainLayoutBinding
 import com.NonEstArsMea.agz_time_table.present.TimeTableApplication
 import com.NonEstArsMea.agz_time_table.present.customDateFragment.CustomDateFragment
@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity(),
         binding.bottomInfo.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.menu_tt -> {
-                    DateRepositoryImpl.setDayNow()
+                    DateManager.setDayNow()
                     findNavController(R.id.fragmentContainerView).popBackStack(
                         R.id.timeTableFragment,
                         inclusive = false
