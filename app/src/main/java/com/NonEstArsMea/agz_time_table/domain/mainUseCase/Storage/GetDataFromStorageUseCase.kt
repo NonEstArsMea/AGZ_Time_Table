@@ -6,19 +6,16 @@ import com.NonEstArsMea.agz_time_table.present.settingFragment.ThemeController
 import javax.inject.Inject
 
 class GetDataFromStorageUseCase @Inject constructor(
-    private val getMainParamFromStorage: GetMainParamFromStorageUseCase,
-    private val getLastWeekTimeTableFromStorage: GetLastWeekFromeStorageUseCase,
-    private val getFavoriteMainParamsFromStorageUseCase: GetFavoriteMainParamsFromStorageUseCase,
-    private val getThemeFromStorage: GetThemeFromStorage,
     private val timeTableRepositoryImpl: TimeTableRepository,
-    private val themeController: ThemeController
+    private val themeController: ThemeController,
+    private val repository: StorageRepository
 ) {
 
     fun execute(){
-        timeTableRepositoryImpl.setMainParam(getMainParamFromStorage.execute())
-        timeTableRepositoryImpl.setWeekTimeTable(getLastWeekTimeTableFromStorage.execute())
-        timeTableRepositoryImpl.setListOfFavoriteMainParam(getFavoriteMainParamsFromStorageUseCase.execute())
-        themeController.setTheme(getThemeFromStorage.execute())
+        timeTableRepositoryImpl.setMainParam(repository.getMainParamFromStorage())
+        timeTableRepositoryImpl.setWeekTimeTable(repository.getLastWeekFromStorage())
+        timeTableRepositoryImpl.setListOfFavoriteMainParam(repository.getFavoriteMainParamsFromStorage())
+        themeController.setTheme(repository.getThemeFromStorage())
     }
 
 }

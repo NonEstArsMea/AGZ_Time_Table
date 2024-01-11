@@ -15,12 +15,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.NonEstArsMea.agz_time_table.R
-import com.NonEstArsMea.agz_time_table.data.DateRepositoryImpl
+import com.NonEstArsMea.agz_time_table.util.DateManager
 import com.NonEstArsMea.agz_time_table.databinding.TimeTableFragmentBinding
 import com.NonEstArsMea.agz_time_table.present.TimeTableApplication
 import com.NonEstArsMea.agz_time_table.present.mainActivity.MainViewModelFactory
-import com.google.android.material.datepicker.MaterialDatePicker
-import java.util.Calendar
 import javax.inject.Inject
 
 
@@ -55,6 +53,7 @@ class TimeTableFragment : Fragment() {
         )[TimeTableViewModel::class.java]
     }
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -82,6 +81,8 @@ class TimeTableFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
         viewPager = binding.viewPagerTimeTableFragment
         viewPagerAdapter = ViewPagerAdapter(this)
         viewPager.adapter = viewPagerAdapter
@@ -110,7 +111,6 @@ class TimeTableFragment : Fragment() {
         days.toList().forEachIndexed { index, textView ->
             textView.setOnClickListener {
                 viewPager.setCurrentItem(index, true)
-                vm.setCurrentItem(index)
             }
         }
 
@@ -123,53 +123,57 @@ class TimeTableFragment : Fragment() {
         }
 
         binding.setDateButton.setOnClickListener {
-            viewPager.doOnLayout {
-                viewPager.currentItem = vm.getMainCurrentItem()
-            }
             updateData(NOW_WEEK)
         }
 
         vm.checkMainParam()
 
-        observeViewModel()
-
         binding.monthDate.text = vm.getMonth()
         setButtonNumbers()
 
+        observeViewModel()
+
+
+    }
+
+
+    override fun onStart() {
+        super.onStart()
+        vm.startFragment()
     }
 
     private fun observeViewModel() {
+
+        vm.mainParam.observe(viewLifecycleOwner) {
+            binding.mainParam.text = it.name
+        }
+
         vm.state.observe(viewLifecycleOwner) {
             viewPager.doOnLayout { _ ->
                 when (it) {
-                    is InitialFragment -> {
-                        binding.mainParam.text = it.mainParam
+                    is LoadData -> {
+                        binding.progressBar.isVisible = true
+                        viewPagerAdapter.setData(listOf())
                     }
 
                     is ConnectionError -> {
                         binding.progressBar.isVisible = false
                     }
 
-                    is LoadTimeTable -> {
-                        binding.progressBar.isVisible = true
-                        viewPagerAdapter.setData(listOf())
-                    }
-
                     is TimeTableIsLoad -> {
                         binding.progressBar.isVisible = false
                         viewPagerAdapter.setData(it.list)
+                        Log.e("carrIt", vm.getCurrentItem().toString())
+                        viewPager.post {
+                            viewPager.currentItem = vm.getCurrentItem()
+                        }
                     }
                 }
-
-                viewPager.currentItem = vm.getCurrentItem()
             }
+
+
         }
 
-    }
-
-    override fun onStart() {
-        super.onStart()
-        vm.startFragment()
     }
 
 
@@ -179,7 +183,7 @@ class TimeTableFragment : Fragment() {
     }
 
     private fun setButtonNumbers() {
-        DateRepositoryImpl.dayNumberOnButton().forEachIndexed { index, s ->
+        DateManager.dayNumberOnButton().forEachIndexed { index, s ->
             days[index].text = s
         }
     }

@@ -17,10 +17,9 @@ class StorageRepositoryImpl @Inject constructor(
 
     private val sharedPreferences = localStorage.getSharedPreferences()
 
-
     override fun getMainParamFromStorage(): MainParam {
         val token = object : TypeToken<MainParam>() {}.type
-        return GsonInstance.gson.fromJson(
+        return gson.fromJson(
             sharedPreferences.getString(
                 MAIN_PARAM_KEY,
                 null
@@ -31,7 +30,7 @@ class StorageRepositoryImpl @Inject constructor(
 
     override fun getFavoriteMainParamsFromStorage(): ArrayList<MainParam> {
         val token = object : TypeToken<ArrayList<MainParam>>() {}.type
-        return GsonInstance.gson.fromJson(
+        return gson.fromJson(
             sharedPreferences.getString(
                 LIST_OF_FAVORITE_MAIN_PARAMS,
                 null
@@ -43,7 +42,7 @@ class StorageRepositoryImpl @Inject constructor(
     override fun getLastWeekFromStorage(): ArrayList<ArrayList<CellApi>> {
         val token = object : TypeToken<ArrayList<ArrayList<CellApi>>>() {}.type
 
-        return GsonInstance.gson.fromJson(
+        return gson.fromJson(
             sharedPreferences.getString(
                 LAST_WEEK_TIME_TABLE_LIST,
                 null
@@ -64,11 +63,11 @@ class StorageRepositoryImpl @Inject constructor(
     ) {
         sharedPreferences.edit().apply {
             if (favMainParamList != null)
-                putString(LIST_OF_FAVORITE_MAIN_PARAMS, GsonInstance.gson.toJson(favMainParamList))
+                putString(LIST_OF_FAVORITE_MAIN_PARAMS, gson.toJson(favMainParamList))
             if (mainParam != null)
-                putString(MAIN_PARAM_KEY, GsonInstance.gson.toJson(mainParam))
+                putString(MAIN_PARAM_KEY, gson.toJson(mainParam))
             if (lastWeekTimeTable != null)
-                putString(LAST_WEEK_TIME_TABLE_LIST, GsonInstance.gson.toJson(lastWeekTimeTable))
+                putString(LAST_WEEK_TIME_TABLE_LIST, gson.toJson(lastWeekTimeTable))
             if (theme != null) {
                 putInt(THEME, theme)
             }
@@ -83,9 +82,7 @@ class StorageRepositoryImpl @Inject constructor(
         private const val LAST_WEEK_TIME_TABLE_LIST = "LWTTL"
         private const val THEME = "T"
         private const val SYSTEM_THEME = 1
-    }
-}
 
-object GsonInstance {
-    val gson: Gson = Gson()
+        private val gson: Gson = Gson()
+    }
 }

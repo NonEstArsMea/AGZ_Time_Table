@@ -1,15 +1,11 @@
 package com.NonEstArsMea.agz_time_table.present.timeTableFragment.recycleView
 
 import android.content.Context
-import android.util.Log
 import android.view.View
-import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.view.isGone
 import androidx.recyclerview.widget.RecyclerView
 import com.NonEstArsMea.agz_time_table.R
-import com.NonEstArsMea.agz_time_table.domain.Methods
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
 
 class TimeTableLessonViewHolder(val view: View) : RecyclerView.ViewHolder(view) {

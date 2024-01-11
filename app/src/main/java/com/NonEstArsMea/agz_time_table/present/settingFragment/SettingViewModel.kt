@@ -2,20 +2,17 @@ package com.NonEstArsMea.agz_time_table.present.settingFragment
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.NonEstArsMea.agz_time_table.domain.mainUseCase.State.SetSettingItemUseCase
-import com.NonEstArsMea.agz_time_table.domain.settingUseCase.GetArrayOfFavoriteMainParamUseCase
-import com.NonEstArsMea.agz_time_table.domain.settingUseCase.SetMainParamUseCase
+import com.NonEstArsMea.agz_time_table.data.StateManager
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
+import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.TimeTableRepository
 import javax.inject.Inject
 
 class SettingViewModel @Inject constructor(
-    getArrayOfFavoriteMainParam: GetArrayOfFavoriteMainParamUseCase,
-    private val setMainParam: SetMainParamUseCase,
-    private val setSettingItem: SetSettingItemUseCase
+    private val timeTableRepositoryImpl: TimeTableRepository
 ) : ViewModel() {
 
     // хранит список с главными параметрами
-    private val _listOfFavoriteMainParam = getArrayOfFavoriteMainParam.execute()
+    private val _listOfFavoriteMainParam = timeTableRepositoryImpl.getArrayOfFavoriteMainParam()
     val listOfFavoriteMainParam: LiveData<ArrayList<MainParam>>
         get() = _listOfFavoriteMainParam
 
@@ -44,10 +41,10 @@ class SettingViewModel @Inject constructor(
 
 
     fun setMainParam(mainParam: MainParam) {
-        setMainParam.execute(mainParam)
+        timeTableRepositoryImpl.setMainParam(mainParam)
     }
 
-    fun startFragment(){
-        setSettingItem.execute()
+    fun startFragment() {
+        StateManager.setNewMenuItem(StateManager.SETTING_ITEM)
     }
 }

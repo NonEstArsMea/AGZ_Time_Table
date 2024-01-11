@@ -5,7 +5,8 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.data.net.DataRepositoryImpl
-import com.NonEstArsMea.agz_time_table.domain.Methods
+import com.NonEstArsMea.agz_time_table.util.DateManager
+import com.NonEstArsMea.agz_time_table.util.Methods
 import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.TimeTableRepository
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
@@ -306,7 +307,7 @@ class TimeTableRepositoryImpl @Inject constructor(
 
 
     override suspend fun getWeekTimeTable(): List<List<CellApi>> {
-        val dayOfWeek = DateRepositoryImpl.getArrayOfWeekDate()
+        val dayOfWeek = DateManager.getArrayOfWeekDate()
 
         return mainParam.value?.let { mainParamValue ->
             try {

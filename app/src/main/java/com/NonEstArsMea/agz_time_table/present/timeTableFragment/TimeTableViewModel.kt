@@ -1,23 +1,17 @@
 package com.NonEstArsMea.agz_time_table.present.timeTableFragment
 
 import android.annotation.SuppressLint
-import android.util.Log
+import android.app.Application
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.NonEstArsMea.agz_time_table.data.DateRepositoryImpl
-import com.NonEstArsMea.agz_time_table.domain.mainUseCase.State.SetTimeTableItemUseCase
-import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.GetDataUseCase
-import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.GetDayOfWeekUseCase
-import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.GetListOfMainParamUseCase
-import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.GetMainParamUseCase
-import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.GetMonthUseCase
-import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.GetWeekTimeTableListUseCase
-import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.SetNewCalendarUseCase
+import com.NonEstArsMea.agz_time_table.data.StateManager
+import com.NonEstArsMea.agz_time_table.util.DateManager
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
+import com.NonEstArsMea.agz_time_table.domain.mainUseCase.LoadData.DataRepository
+import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.GetMainParamUseCase
 import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.TimeTableRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -25,62 +19,58 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class TimeTableViewModel @Inject constructor(
-    private val getWeekTimeTableListUseCase: GetWeekTimeTableListUseCase,
-    private val getMonthUseCase: GetMonthUseCase,
-    private val getDayOfWeekUseCase: GetDayOfWeekUseCase,
-    private val setNewCalendarUseCase: SetNewCalendarUseCase,
     private val getMainParamUseCase: GetMainParamUseCase,
-    getDataUseCase: GetDataUseCase,
-    private val setTimeTableItem: SetTimeTableItemUseCase,
-    private val timeTableRepositoryImpl: TimeTableRepository
+    private val timeTableRepositoryImpl: TimeTableRepository,
+    private val repository: DataRepository,
+    private val application: Application
 ) : ViewModel() {
 
 
     private var job: Job = viewModelScope.launch { }
 
 
-    // хранит список с расписанием
-    val dataLiveData: LiveData<String> = MediatorLiveData<String>().apply {
-        addSource(getDataUseCase.execute()) {
-            getNewTimeTable()
-        }
+    private var _state: MutableLiveData<State> = MutableLiveData<State>().apply {
+        this.value = LoadData
     }
-
-    private var _state: MutableLiveData<State> = MutableLiveData()
     val state: LiveData<State>
         get() = _state
 
+    var mainParam: LiveData<MainParam> = getMainParamUseCase.getLiveData()
 
-    private var lastMainParam: String = ""
+    private var lastMainParam: String = EMPTY_STRING
 
-    private var currentItem = getDayOfWeekUseCase.execute()
+    private var list: List<List<CellApi>> = listOf()
+
+    private val data = repository.getData()
+
+    private var currentItem: Int? = 0
 
     init {
-        _state.value = InitialFragment(getMainParamUseCase.getNameOfMainParam())
-        getNewTimeTable()
+        _state.value = LoadData
+        data.observeForever {
+            if (data.value?.isNotEmpty() == true) {
+                getNewTimeTable()
+            }
+        }
     }
 
-
     @SuppressLint("SuspiciousIndentation")
-    fun getNewTimeTable(newTime: Int? = null, newMainParam: String? = null) {
-
-        Log.e("NMParam", "$newTime  $newMainParam")
-        if(newMainParam != null){
-            _state.value = InitialFragment(newMainParam)
-        }
-
-        _state.value = LoadTimeTable
-        setNewCalendarUseCase.execute(newTime)
+    fun getNewTimeTable(newTime: Int? = null) {
+        currentItem = newTime
+        _state.postValue(LoadData)
         if (newTime == 0) {
-            DateRepositoryImpl.setDayNow()
+            DateManager.setDayNow()
+        }else{
+            if(newTime != null){
+                DateManager.setNewCalendar(newTime)
+            }
         }
-        currentItem = getCurrenItem(newTime)
 
         if (job.isActive) {
             job.cancel()
         }
         viewModelScope.launch(Dispatchers.Default) {
-            val list = timeTableRepositoryImpl.getWeekTimeTable()
+            list = timeTableRepositoryImpl.getWeekTimeTable()
             launch(Dispatchers.Main) {
                 _state.value = TimeTableIsLoad(list)
             }
@@ -88,13 +78,13 @@ class TimeTableViewModel @Inject constructor(
     }
 
     fun checkMainParam() {
-        val newMainParam = timeTableRepositoryImpl.getMainParam().value?.name ?: "null"
+        val newMainParam = getMainParamUseCase.getNameOfMainParamFromRepo()
+            ?: getMainParamUseCase.getNameOfMainParamFromStorage()
         if (lastMainParam != newMainParam) {
             lastMainParam = newMainParam
-            getNewTimeTable(newMainParam = newMainParam)
+            getNewTimeTable()
         }
     }
-
 
     /**
      * Остановка корутины после завершения работы
@@ -104,29 +94,15 @@ class TimeTableViewModel @Inject constructor(
         job.cancel()
     }
 
-
-
     fun startFragment() {
-        setTimeTableItem.execute()
-    }
-
-    fun getCurrentItem(): Int {
-        return currentItem
-    }
-
-    fun setCurrentItem(newCurrentItem: Int){
-        currentItem = newCurrentItem
-    }
-
-    fun getMainCurrentItem(): Int {
-        return getDayOfWeekUseCase.execute()
+        StateManager.setNewMenuItem(StateManager.SETTING_ITEM)
     }
 
     fun getMonth(): String {
-        return getMonthUseCase.execute()
+        return DateManager.monthAndDayNow(application.applicationContext)
     }
 
-    private fun getCurrenItem(newTime: Int? = null) = (when (newTime) {
+    fun getCurrentItem() = (when (currentItem) {
         NEXT_WEEK -> {
             FIRST_DAY
         }
@@ -138,12 +114,12 @@ class TimeTableViewModel @Inject constructor(
         else -> {
             null
         }
-    }) ?: getDayOfWeekUseCase.execute()
+    }) ?: DateManager.getDayOfWeek()
 
     companion object {
         const val PREVIOUS_WEEK = -7
         const val NEXT_WEEK = 7
-        const val NOW_WEEK = 0
+        const val EMPTY_STRING = ""
 
         private const val LAST_DAY = 5
         private const val FIRST_DAY = 0

@@ -1,4 +1,4 @@
-package com.NonEstArsMea.agz_time_table.domain
+package com.NonEstArsMea.agz_time_table.util
 
 import com.NonEstArsMea.agz_time_table.R
 

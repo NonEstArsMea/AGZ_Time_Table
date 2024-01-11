@@ -11,12 +11,17 @@ import dagger.Provides
 class AppModule {
 
     @Provides
-    fun provideApplication(application: Application): Context{
+    fun provideApplicationContext(application: Application): Context {
         return application.applicationContext
     }
 
     @Provides
-    fun provideResources(context: Context): Resources{
+    fun provideApplication(application: Application): Application {
+        return application
+    }
+
+    @Provides
+    fun provideResources(context: Context): Resources {
         return context.resources
     }
 
