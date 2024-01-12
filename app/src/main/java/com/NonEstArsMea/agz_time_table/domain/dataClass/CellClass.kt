@@ -2,7 +2,7 @@ package com.NonEstArsMea.agz_time_table.domain.dataClass
 
 import com.NonEstArsMea.agz_time_table.R
 
-data class CellApi(
+data class CellClass(
     var subject: String? = null,
     var teacher: String?= null,
     var classroom: String?= null,

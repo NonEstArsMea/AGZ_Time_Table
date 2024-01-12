@@ -1,19 +1,22 @@
 package com.NonEstArsMea.agz_time_table.domain.mainUseCase.Storage
 
-import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
+import androidx.lifecycle.LiveData
+import com.NonEstArsMea.agz_time_table.data.dataBase.CellClassDbModel
+import com.NonEstArsMea.agz_time_table.domain.dataClass.CellClass
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
 
 interface StorageRepository {
 
-    fun getMainParamFromStorage() :MainParam
+    fun getMainParamFromStorage(): MainParam
 
-    fun getFavoriteMainParamsFromStorage():ArrayList<MainParam>
+    fun getFavoriteMainParamsFromStorage(): ArrayList<MainParam>
 
-    fun getLastWeekFromStorage():ArrayList<ArrayList<CellApi>>
+    fun getLastWeekFromDataBase(): LiveData<List<List<CellClassDbModel>>>
 
-    fun getThemeFromStorage():Int
-    fun setDataInStorage(mainParam: MainParam?,
-                         favMainParamList: ArrayList<MainParam>?,
-                         lastWeekTimeTable: List<List<CellApi>>?,
-                         theme: Int?)
+    fun getThemeFromStorage(): Int
+    fun setDataInStorage(
+        mainParam: MainParam?,
+        favMainParamList: ArrayList<MainParam>?,
+        theme: Int?
+    )
 }

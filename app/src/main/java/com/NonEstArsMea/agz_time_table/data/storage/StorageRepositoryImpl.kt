@@ -1,20 +1,24 @@
 package com.NonEstArsMea.agz_time_table.data.storage
 
+import android.app.Application
 import android.content.res.Resources
-import android.util.Log
+import androidx.lifecycle.LiveData
 import com.NonEstArsMea.agz_time_table.R
-import com.NonEstArsMea.agz_time_table.domain.mainUseCase.Storage.StorageRepository
-import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
+import com.NonEstArsMea.agz_time_table.data.dataBase.CellClassDbModel
+import com.NonEstArsMea.agz_time_table.data.dataBase.DataBase
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
+import com.NonEstArsMea.agz_time_table.domain.mainUseCase.Storage.StorageRepository
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import javax.inject.Inject
 
 class StorageRepositoryImpl @Inject constructor(
     private val resource: Resources,
-    localStorage: LocalStorage
+    localStorage: LocalStorage,
+    application: Application,
 ) : StorageRepository {
 
+    private val dataBase = DataBase.getInstance(application).cellClassDao()
     private val sharedPreferences = localStorage.getSharedPreferences()
 
     override fun getMainParamFromStorage(): MainParam {
@@ -39,17 +43,8 @@ class StorageRepositoryImpl @Inject constructor(
         ) ?: arrayListOf()
     }
 
-    override fun getLastWeekFromStorage(): ArrayList<ArrayList<CellApi>> {
-        val token = object : TypeToken<ArrayList<ArrayList<CellApi>>>() {}.type
+    override fun getLastWeekFromDataBase(): LiveData<List<List<CellClassDbModel>>> = dataBase.getCellClass()
 
-        return gson.fromJson(
-            sharedPreferences.getString(
-                LAST_WEEK_TIME_TABLE_LIST,
-                null
-            ),
-            token
-        ) ?: arrayListOf()
-    }
 
     override fun getThemeFromStorage(): Int {
         return sharedPreferences.getInt(THEME, SYSTEM_THEME)
@@ -58,7 +53,6 @@ class StorageRepositoryImpl @Inject constructor(
     override fun setDataInStorage(
         mainParam: MainParam?,
         favMainParamList: ArrayList<MainParam>?,
-        lastWeekTimeTable: List<List<CellApi>>?,
         theme: Int?
     ) {
         sharedPreferences.edit().apply {
@@ -66,8 +60,6 @@ class StorageRepositoryImpl @Inject constructor(
                 putString(LIST_OF_FAVORITE_MAIN_PARAMS, gson.toJson(favMainParamList))
             if (mainParam != null)
                 putString(MAIN_PARAM_KEY, gson.toJson(mainParam))
-            if (lastWeekTimeTable != null)
-                putString(LAST_WEEK_TIME_TABLE_LIST, gson.toJson(lastWeekTimeTable))
             if (theme != null) {
                 putInt(THEME, theme)
             }
