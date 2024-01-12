@@ -1,12 +1,12 @@
 package com.NonEstArsMea.agz_time_table.present.timeTableFragment
 
 import androidx.recyclerview.widget.DiffUtil
-import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
+import com.NonEstArsMea.agz_time_table.domain.dataClass.CellClass
 
 
 class WeekScheduleDiffUtilCallback(
-    private val oldList: List<List<CellApi>>,
-    private val newList: List<List<CellApi>>
+    private val oldList: List<List<CellClass>>,
+    private val newList: List<List<CellClass>>
 ) : DiffUtil.Callback() {
 
     override fun getOldListSize(): Int = oldList.size

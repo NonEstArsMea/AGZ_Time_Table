@@ -6,7 +6,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.NonEstArsMea.agz_time_table.R
-import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
+import com.NonEstArsMea.agz_time_table.domain.dataClass.CellClass
 
 class TimeTableLessonViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
     val vhSubject = view.findViewById<TextView>(R.id.subject)
@@ -22,7 +22,7 @@ class TimeTableLessonViewHolder(val view: View) : RecyclerView.ViewHolder(view) 
     val dateNumber = view.findViewById<TextView>(R.id.add_date)
     val department = view.findViewById<TextView>(R.id.add_department)
 
-    fun bind(dayTimeTable: CellApi, context: Context) {
+    fun bind(dayTimeTable: CellClass, context: Context) {
 
         if (dayTimeTable.noEmpty) {
             vhSubject.text = dayTimeTable.subject

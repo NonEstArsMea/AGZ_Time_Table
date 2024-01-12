@@ -90,10 +90,8 @@ class MainActivity : AppCompatActivity(),
                 }
 
                 R.id.menu_setting -> {
-                    if (mainViewModel.itemControl()) {
-                        findNavController(R.id.fragmentContainerView)
-                            .navigate(R.id.settingFragment)
-                    }
+                    findNavController(R.id.fragmentContainerView)
+                        .navigate(R.id.settingFragment)
                 }
 
 

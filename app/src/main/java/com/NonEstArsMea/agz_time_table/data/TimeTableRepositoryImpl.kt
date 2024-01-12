@@ -2,6 +2,7 @@ package com.NonEstArsMea.agz_time_table.data
 
 import android.content.res.Resources
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.data.net.DataRepositoryImpl
@@ -227,9 +228,8 @@ class TimeTableRepositoryImpl @Inject constructor(
         listOfFavoriteMainParam.value = list
     }
 
-    override fun setWeekTimeTable(list: ArrayList<ArrayList<CellClass>>) {
-        Log.e("tagTTRI", list.toString())
-        weekTimeTable.value = list
+    override fun setWeekTimeTable(list: LiveData<List<List<CellClass>>>) {
+        weekTimeTable = list as MutableLiveData<List<List<CellClass>>>
     }
 
 

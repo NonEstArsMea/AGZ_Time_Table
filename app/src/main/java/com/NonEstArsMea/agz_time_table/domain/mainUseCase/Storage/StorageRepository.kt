@@ -11,7 +11,9 @@ interface StorageRepository {
 
     fun getFavoriteMainParamsFromStorage(): ArrayList<MainParam>
 
-    fun getLastWeekFromDataBase(): LiveData<List<List<CellClassDbModel>>>
+    fun getLastWeekFromDataBase(): List<List<CellClass>>
+
+    suspend fun insertLastWeek(list: List<List<CellClassDbModel>>)
 
     fun getThemeFromStorage(): Int
     fun setDataInStorage(

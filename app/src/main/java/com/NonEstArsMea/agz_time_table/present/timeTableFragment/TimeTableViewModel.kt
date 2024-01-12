@@ -7,12 +7,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.NonEstArsMea.agz_time_table.data.StateManager
-import com.NonEstArsMea.agz_time_table.util.DateManager
-import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
+import com.NonEstArsMea.agz_time_table.domain.dataClass.CellClass
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
 import com.NonEstArsMea.agz_time_table.domain.mainUseCase.LoadData.DataRepository
 import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.GetMainParamUseCase
 import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.TimeTableRepository
+import com.NonEstArsMea.agz_time_table.util.DateManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -39,7 +39,7 @@ class TimeTableViewModel @Inject constructor(
 
     private var lastMainParam: String = EMPTY_STRING
 
-    private var list: List<List<CellApi>> = listOf()
+    private var list: List<List<CellClass>> = listOf()
 
     private val data = repository.getData()
 
@@ -60,8 +60,8 @@ class TimeTableViewModel @Inject constructor(
         _state.postValue(LoadData)
         if (newTime == 0) {
             DateManager.setDayNow()
-        }else{
-            if(newTime != null){
+        } else {
+            if (newTime != null) {
                 DateManager.setNewCalendar(newTime)
             }
         }

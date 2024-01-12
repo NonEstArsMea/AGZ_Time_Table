@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
+import com.NonEstArsMea.agz_time_table.domain.dataClass.CellClass
 import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.TimeTableRepository
 import com.NonEstArsMea.agz_time_table.util.DateManager
 import kotlinx.coroutines.Job
@@ -21,8 +21,8 @@ class CustomDateFragmentViewModel @Inject constructor(
 
     private var job: Job = uiScope.launch { }
 
-    private var _timeTableChanged = MutableLiveData<List<CellApi>>()
-    val timeTableChanged: LiveData<List<CellApi>>
+    private var _timeTableChanged = MutableLiveData<List<CellClass>>()
+    val timeTableChanged: LiveData<List<CellClass>>
         get() = _timeTableChanged
 
 

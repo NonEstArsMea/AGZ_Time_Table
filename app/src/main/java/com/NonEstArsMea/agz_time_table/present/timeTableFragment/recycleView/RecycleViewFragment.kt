@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.NonEstArsMea.agz_time_table.R
-import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
+import com.NonEstArsMea.agz_time_table.domain.dataClass.CellClass
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
@@ -17,7 +17,7 @@ import java.lang.reflect.Type
 class RecycleViewFragment : Fragment() {
 
     private val adapter = TimeTableRecycleViewAdapter()
-    lateinit var timeTableDay: List<CellApi>
+    lateinit var timeTableDay: List<CellClass>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,7 +28,7 @@ class RecycleViewFragment : Fragment() {
         val rvTimeTable = view.findViewById<RecyclerView>(R.id.view_pager_recycler)
         rvTimeTable.adapter = adapter
         arguments?.let {
-            val type: Type = object : TypeToken<List<CellApi>>() {}.type
+            val type: Type = object : TypeToken<List<CellClass>>() {}.type
             timeTableDay = Gson().fromJson(it.getString(ARGUMENTS), type)
             rvTimeTable.layoutManager = LinearLayoutManager(context)
             adapter.submitList(timeTableDay)
@@ -41,7 +41,7 @@ class RecycleViewFragment : Fragment() {
 
         const val ARGUMENTS = "ttw"
 
-        fun newInstance(ttw: List<CellApi>): RecycleViewFragment {
+        fun newInstance(ttw: List<CellClass>): RecycleViewFragment {
             return RecycleViewFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARGUMENTS, Gson().toJson(ttw))

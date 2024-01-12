@@ -10,9 +10,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.NonEstArsMea.agz_time_table.R
-import com.NonEstArsMea.agz_time_table.domain.dataClass.CellApi
+import com.NonEstArsMea.agz_time_table.domain.dataClass.CellClass
 
-class TimeTableRecycleViewAdapter : ListAdapter<CellApi, RecyclerView.ViewHolder>(
+class TimeTableRecycleViewAdapter : ListAdapter<CellClass, RecyclerView.ViewHolder>(
     TimeTableItemDiffCallback()
 ) {
 

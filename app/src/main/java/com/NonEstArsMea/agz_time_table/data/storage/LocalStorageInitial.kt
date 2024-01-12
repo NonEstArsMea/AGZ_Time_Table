@@ -3,7 +3,9 @@ package com.NonEstArsMea.agz_time_table.data.storage
 import android.content.Context
 import android.content.SharedPreferences
 
-class LocalStorage(context: Context) {
+class LocalStorageInitial(
+    context: Context
+) {
 
     private val sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
 

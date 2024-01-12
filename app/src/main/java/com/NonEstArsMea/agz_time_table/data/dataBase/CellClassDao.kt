@@ -10,11 +10,9 @@ import androidx.room.Query
 interface CellClassDao {
 
     @Query("SELECT * FROM cell_classes")
-    fun getCellClass():LiveData<List<List<CellClassDbModel>>>
+    fun getCellClass(): LiveData<List<CellClassDbModel>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addCellClass(cellClassDbModel: CellClassDbModel)
+    fun insertCellClass(list: List<CellClassDbModel>)
 
-    @Query("DELETE FROM cell_classes WHERE id=:_id")
-    fun deleteCellClass(_id: Int)
 }

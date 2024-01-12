@@ -21,8 +21,6 @@ class MainViewModel @Inject constructor(
     private val setDataInStorage: SetDataInStorageUseCase,
     private val loadData: DataRepository,
     private val getNameParam: GetMainParamUseCase,
-    private val getArrayOfFavoriteMainParam: GetArrayOfFavoriteMainParamUseCase,
-    private val getArrayOfWeekTimeTable: GetWeekTimeTableListUseCase,
     private val getDataFromStorage: GetDataFromStorageUseCase,
     private val isInternetConnected: IsInternetConnected,
     themeController: ThemeController,
@@ -79,11 +77,9 @@ class MainViewModel @Inject constructor(
         setDataInStorage.execute(
             getNameParam.getLiveData().value,
             timeTableRepositoryImpl.getArrayOfFavoriteMainParam().value,
-            getArrayOfWeekTimeTable.getArrayOfWeekTimeTable().value,
             _theme.value
         )
     }
-
 
     fun itemControl(): Boolean {
         return StateManager.stateNow() != StateManager.SETTING_ITEM

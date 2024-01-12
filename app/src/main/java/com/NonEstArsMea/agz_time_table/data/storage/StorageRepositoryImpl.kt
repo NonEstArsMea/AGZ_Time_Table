@@ -1,11 +1,12 @@
 package com.NonEstArsMea.agz_time_table.data.storage
 
-import android.app.Application
 import android.content.res.Resources
 import androidx.lifecycle.LiveData
 import com.NonEstArsMea.agz_time_table.R
+import com.NonEstArsMea.agz_time_table.data.dataBase.CellClassDao
 import com.NonEstArsMea.agz_time_table.data.dataBase.CellClassDbModel
-import com.NonEstArsMea.agz_time_table.data.dataBase.DataBase
+import com.NonEstArsMea.agz_time_table.data.dataBase.TimeTableMapper
+import com.NonEstArsMea.agz_time_table.domain.dataClass.CellClass
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
 import com.NonEstArsMea.agz_time_table.domain.mainUseCase.Storage.StorageRepository
 import com.google.gson.Gson
@@ -14,11 +15,11 @@ import javax.inject.Inject
 
 class StorageRepositoryImpl @Inject constructor(
     private val resource: Resources,
-    localStorage: LocalStorage,
-    application: Application,
+    localStorage: LocalStorageInitial,
+    dataBaseInit: DataBaseInitial,
 ) : StorageRepository {
 
-    private val dataBase = DataBase.getInstance(application).cellClassDao()
+    //private val dataBaseDao = dataBaseInit.getDataBase()
     private val sharedPreferences = localStorage.getSharedPreferences()
 
     override fun getMainParamFromStorage(): MainParam {
@@ -43,8 +44,18 @@ class StorageRepositoryImpl @Inject constructor(
         ) ?: arrayListOf()
     }
 
-    override fun getLastWeekFromDataBase(): LiveData<List<List<CellClassDbModel>>> = dataBase.getCellClass()
+    override fun getLastWeekFromDataBase(): List<List<CellClass>>{
+//        val list = dataBaseDao.getCellClass().value?.let {
+//            TimeTableMapper().mapTimeTableDbModelToEntity(
+//                it
+//            )
+//        }
+        return listOf()
+    }
 
+    override suspend fun insertLastWeek(list: List<List<CellClassDbModel>>) {
+        //dataBaseDao.insertCellClass(list)
+    }
 
     override fun getThemeFromStorage(): Int {
         return sharedPreferences.getInt(THEME, SYSTEM_THEME)
