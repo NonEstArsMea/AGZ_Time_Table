@@ -2,11 +2,13 @@ package com.NonEstArsMea.agz_time_table.present.timeTableFragment
 
 import android.annotation.SuppressLint
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.NonEstArsMea.agz_time_table.data.StateManager
+import com.NonEstArsMea.agz_time_table.data.storage.StorageRepositoryImpl
+import com.NonEstArsMea.agz_time_table.util.BottomMenuItemStateManager
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellClass
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
 import com.NonEstArsMea.agz_time_table.domain.mainUseCase.LoadData.DataRepository
@@ -22,7 +24,8 @@ class TimeTableViewModel @Inject constructor(
     private val getMainParamUseCase: GetMainParamUseCase,
     private val timeTableRepositoryImpl: TimeTableRepository,
     private val repository: DataRepository,
-    private val application: Application
+    private val application: Application,
+    private val storageRepositoryImpl: StorageRepositoryImpl,
 ) : ViewModel() {
 
 
@@ -36,6 +39,8 @@ class TimeTableViewModel @Inject constructor(
         get() = _state
 
     var mainParam: LiveData<MainParam> = getMainParamUseCase.getLiveData()
+
+    val lll = storageRepositoryImpl.getLastWeekFromDataBase()
 
     private var lastMainParam: String = EMPTY_STRING
 
@@ -71,6 +76,8 @@ class TimeTableViewModel @Inject constructor(
         }
         viewModelScope.launch(Dispatchers.Default) {
             list = timeTableRepositoryImpl.getWeekTimeTable()
+            storageRepositoryImpl.insertLastWeek(list)
+            Log.e("storrage", list.toString())
             launch(Dispatchers.Main) {
                 _state.value = TimeTableIsLoad(list)
             }
@@ -86,6 +93,11 @@ class TimeTableViewModel @Inject constructor(
         }
     }
 
+    fun timeTableFromStorage(): List<List<CellClass>>? {
+        Log.e("storrage_4", storageRepositoryImpl.getLastWeekFromDataBase().value.toString())
+        return storageRepositoryImpl.getLastWeekFromDataBase().value
+    }
+
     /**
      * Остановка корутины после завершения работы
      */
@@ -95,7 +107,7 @@ class TimeTableViewModel @Inject constructor(
     }
 
     fun startFragment() {
-        StateManager.setNewMenuItem(StateManager.SETTING_ITEM)
+        BottomMenuItemStateManager.setNewMenuItem(BottomMenuItemStateManager.TIME_TABLE_ITEM)
     }
 
     fun getMonth(): String {

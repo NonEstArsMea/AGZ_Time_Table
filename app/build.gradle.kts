@@ -87,6 +87,7 @@ dependencies {
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
 
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.4.1")
 
     val nav_version = "2.6.0"
     // Kotlin

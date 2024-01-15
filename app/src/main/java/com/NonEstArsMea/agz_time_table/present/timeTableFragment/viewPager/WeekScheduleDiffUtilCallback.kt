@@ -1,4 +1,4 @@
-package com.NonEstArsMea.agz_time_table.present.timeTableFragment
+package com.NonEstArsMea.agz_time_table.present.timeTableFragment.viewPager
 
 import androidx.recyclerview.widget.DiffUtil
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellClass

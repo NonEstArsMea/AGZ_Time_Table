@@ -57,13 +57,17 @@ class TimeTableRecycleViewAdapter : ListAdapter<CellClass, RecyclerView.ViewHold
     private fun setAnimation(holder: TimeTableLessonViewHolder) {
         if (holder.add_info.visibility == View.GONE) {
             // Раскрытие дополнительного контента с анимацией
-            holder.add_info.visibility = View.VISIBLE
             val expandAnimation = ObjectAnimator.ofPropertyValuesHolder(
                 holder.add_info,
                 PropertyValuesHolder.ofFloat(View.ALPHA, 1f),
                 PropertyValuesHolder.ofFloat(View.SCALE_X, 1f),
                 PropertyValuesHolder.ofFloat(View.SCALE_Y, 1f)
             )
+            expandAnimation.addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    holder.add_info.visibility = View.VISIBLE
+                }
+            })
             expandAnimation.duration = 400
             expandAnimation.start()
         } else {

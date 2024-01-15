@@ -59,4 +59,5 @@
     <string name="fourth_day">чт</string>
     <string name="fifth_day">пт</string>
     <string name="sixth_day">сб</string>
+    <string name="network_error_message">Ошибка подключения</string>
 </resources>

@@ -2,7 +2,7 @@ package com.NonEstArsMea.agz_time_table.present.settingFragment
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.NonEstArsMea.agz_time_table.data.StateManager
+import com.NonEstArsMea.agz_time_table.util.BottomMenuItemStateManager
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
 import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.TimeTableRepository
 import javax.inject.Inject
@@ -45,6 +45,6 @@ class SettingViewModel @Inject constructor(
     }
 
     fun startFragment() {
-        StateManager.setNewMenuItem(StateManager.SETTING_ITEM)
+        BottomMenuItemStateManager.setNewMenuItem(BottomMenuItemStateManager.SETTING_ITEM)
     }
 }

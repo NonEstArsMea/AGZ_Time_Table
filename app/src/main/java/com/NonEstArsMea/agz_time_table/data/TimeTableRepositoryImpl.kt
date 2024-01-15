@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.data.net.DataRepositoryImpl
+import com.NonEstArsMea.agz_time_table.data.storage.StorageRepositoryImpl
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellClass
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
 import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.TimeTableRepository
@@ -24,10 +25,11 @@ import javax.inject.Singleton
 @Singleton
 class TimeTableRepositoryImpl @Inject constructor(
     private val dataRepositoryImpl: DataRepositoryImpl,
-    private val resources: Resources
+    private val resources: Resources,
+    private val storageRepositoryImpl: StorageRepositoryImpl,
 ) : TimeTableRepository {
 
-    private var weekTimeTable = MutableLiveData<List<List<CellClass>>>()
+    private var weekTimeTable = storageRepositoryImpl.getLastWeekFromDataBase()
     private var mainParam = MutableLiveData<MainParam>()
     private var listOfMainParam = MutableLiveData<ArrayList<MainParam>>()
     private var listOfFavoriteMainParam = MutableLiveData<ArrayList<MainParam>>()
@@ -214,7 +216,8 @@ class TimeTableRepositoryImpl @Inject constructor(
     }
 
     override fun getArrayOfWeekTimeTable(): MutableLiveData<List<List<CellClass>>> {
-        return weekTimeTable
+        Log.e("storrage_4", weekTimeTable.value.toString())
+        return weekTimeTable as MutableLiveData<List<List<CellClass>>>
     }
 
 

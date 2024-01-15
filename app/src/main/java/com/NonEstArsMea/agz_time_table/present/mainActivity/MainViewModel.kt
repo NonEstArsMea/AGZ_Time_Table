@@ -4,13 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.NonEstArsMea.agz_time_table.data.StateManager
+import com.NonEstArsMea.agz_time_table.util.BottomMenuItemStateManager
 import com.NonEstArsMea.agz_time_table.domain.mainUseCase.LoadData.DataRepository
 import com.NonEstArsMea.agz_time_table.domain.mainUseCase.LoadData.IsInternetConnected
 import com.NonEstArsMea.agz_time_table.domain.mainUseCase.Storage.GetDataFromStorageUseCase
 import com.NonEstArsMea.agz_time_table.domain.mainUseCase.Storage.SetDataInStorageUseCase
 import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.GetMainParamUseCase
-import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.GetWeekTimeTableListUseCase
 import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.TimeTableRepository
 import com.NonEstArsMea.agz_time_table.present.settingFragment.ThemeController
 import kotlinx.coroutines.Dispatchers
@@ -30,15 +29,15 @@ class MainViewModel @Inject constructor(
 
     private val uiScope = viewModelScope
 
-    private var _isStartLoad = MutableLiveData<Unit>()
-    val isStartLoad: LiveData<Unit>
-        get() = _isStartLoad
+    private var _isConnected = MutableLiveData<Boolean>()
+    val isConnected: LiveData<Boolean>
+        get() = _isConnected
 
     private var _theme = themeController.getTheme()
     val theme: LiveData<Int>
         get() = _theme
 
-    private var _selectedItem: MutableLiveData<Int> = StateManager.getMenuItem()
+    private var _selectedItem: MutableLiveData<Int> = BottomMenuItemStateManager.getMenuItem()
     val selectedItem: LiveData<Int>
         get() = _selectedItem
 
@@ -48,9 +47,6 @@ class MainViewModel @Inject constructor(
 
 
     init {
-        if(isInternetConnected()){
-            loadDataFromURL()
-        }
         getDataFromStorage.execute()
     }
 
@@ -82,7 +78,14 @@ class MainViewModel @Inject constructor(
     }
 
     fun itemControl(): Boolean {
-        return StateManager.stateNow() != StateManager.SETTING_ITEM
+        return BottomMenuItemStateManager.stateNow() != BottomMenuItemStateManager.SETTING_ITEM
+    }
+
+    fun checkNetConnection(){
+        _isConnected.value = isInternetConnected()
+        if(isInternetConnected()){
+            loadDataFromURL()
+        }
     }
 
     fun isInternetConnected(): Boolean {

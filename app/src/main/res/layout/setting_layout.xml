@@ -1,269 +1,287 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/iop"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorSurfaceContainer"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".present.mainActivity.MainActivity"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    tools:context=".present.mainActivity.MainActivity">
+
+    <TextView
+        android:id="@+id/setting_layout_header"
+        style="?attr/textAppearanceHeadline2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:layout_marginTop="10dp"
+        android:paddingBottom="@dimen/margine_all"
+        android:text="@string/setting_lable"
+        android:textSize="23sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_scrollFlags="noScroll" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/margine_all"
+        android:layout_marginEnd="@dimen/margine_all"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:scrollbars="none"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/setting_layout_header">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="15dp"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/margine_all">
+
             <TextView
+                android:id="@+id/search_button"
+                style="?attr/textAppearanceHeadline2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:paddingBottom="@dimen/margine_all"
-                android:id="@+id/setting_layout_header"
-                android:text="@string/setting_lable"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                style="?attr/textAppearanceHeadline2"
-                android:textSize="23sp"
-                app:layout_scrollFlags="noScroll"
-                android:layout_marginTop="10dp" />
-            <ScrollView
-                android:layout_marginStart="@dimen/margine_all"
-                android:layout_marginEnd="@dimen/margine_all"
-                android:paddingStart="5dp"
-                android:paddingEnd="5dp"
-                android:scrollbars="none"
+                android:padding="10dp"
+                android:text="@string/change_group_lable" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_setting_view"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never"
+                android:padding="3dp"
 
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/setting_layout_header"
-                app:layout_constraintBottom_toBottomOf="parent">
-                <LinearLayout
+                tools:itemCount="3"
+                tools:listitem="@layout/favorite_param_card" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/search_bar"
+                style="@style/Widget.Material3.Button.IconButton.Outlined"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margine_all"
+                android:text="@string/add_group_button"
+                app:icon="@drawable/plus"
+                app:iconGravity="textStart" />
+
+            <TextView
+                android:id="@+id/theme_change"
+                style="@style/MainTextViewStyle.Header1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:paddingStart="@dimen/margine_all"
+                android:text="@string/theme_change_lable" />
+
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/toggleButton"
+                style="?attr/materialButtonToggleGroupStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:gravity="center_horizontal">
+
+                <Button
+                    android:id="@+id/button1"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+
+                    android:text="@string/theme_system" />
+
+                <Button
+                    android:id="@+id/button2"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/theme_night" />
+
+                <Button
+                    android:id="@+id/button3"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/theme_light" />
+            </com.google.android.material.button.MaterialButtonToggleGroup>
+
+            <TextView
+                android:id="@+id/contacts"
+                style="@style/MainTextViewStyle.Header1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:paddingStart="@dimen/margine_all"
+                android:text="@string/contacts_lable" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/bot_button"
+                style="@style/MyCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="@dimen/margine_all">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="15dp"
-                    android:paddingBottom="@dimen/margine_all"
-                    android:orientation="vertical">
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/change_group_lable"
-                            style="?attr/textAppearanceHeadline2"
-                            android:padding="10dp"
-                            android:id="@+id/search_button"
-                            />
+                    android:layout_height="match_parent"
+                    android:padding="@dimen/margine_all">
 
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rv_setting_view"
-                            android:padding="3dp"
-                            android:nestedScrollingEnabled="false"
-                            android:overScrollMode="never"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-
-                            tools:listitem="@layout/favorite_param_card"
-                            tools:itemCount="3"/>
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/search_bar"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/add_group_button"
-                            android:layout_margin="@dimen/margine_all"
-                            app:icon="@drawable/plus"
-                            app:iconGravity="textStart"
-                            style="@style/Widget.Material3.Button.IconButton.Outlined" />
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/theme_change_lable"
-                        android:paddingStart="@dimen/margine_all"
-                        android:layout_marginTop="15dp"
-                        android:id="@+id/theme_change"
+                        android:id="@+id/bot_text"
                         style="@style/MainTextViewStyle.Header1"
-                        />
-                    <com.google.android.material.button.MaterialButtonToggleGroup
-                        android:id="@+id/toggleButton"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
+                        android:layout_margin="8dp"
+                        android:text="@string/agz_bot_telegram_button_name"
+                        android:textSize="14sp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                        style="?attr/materialButtonToggleGroupStyle">
-                        <Button
-                            style="?attr/materialButtonOutlinedStyle"
-                            android:id="@+id/button1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/theme_system"
+                    <TextView
+                        style="@style/MainTextViewStyle.Header1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginRight="@dimen/margine_all"
+                        android:text="@string/agz_bot_telegram_button"
+                        android:textColor="@color/gray_400"
+                        android:textSize="14sp"
 
-                            android:layout_weight="1"
-                            />
-                        <Button
-                            style="?attr/materialButtonOutlinedStyle"
-                            android:id="@+id/button2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/theme_night"
-                            android:layout_weight="1"
-                            />
-                        <Button
-                            style="?attr/materialButtonOutlinedStyle"
-                            android:id="@+id/button3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/theme_light"
-                            android:layout_weight="1"
-                            />
-                    </com.google.android.material.button.MaterialButtonToggleGroup>
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/telegram_icon"
+                        app:layout_constraintTop_toBottomOf="@id/bot_text" />
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/contacts_lable"
-                            android:paddingStart="@dimen/margine_all"
-                            android:layout_marginTop="15dp"
-                            android:id="@+id/contacts"
-                            style="@style/MainTextViewStyle.Header1" />
-                        <com.google.android.material.card.MaterialCardView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/bot_button"
-                            android:layout_marginTop="10dp"
-                            android:padding="@dimen/margine_all"
-                            style="@style/MyCard">
-                            <androidx.constraintlayout.widget.ConstraintLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:padding="@dimen/margine_all">
-                                <TextView
-                                    android:id="@+id/bot_text"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="8dp"
-                                    style="@style/MainTextViewStyle.Header1"
-                                    android:textSize="14sp"
-                                    android:text="@string/agz_bot_telegram_button_name"
-                                    app:layout_constraintLeft_toLeftOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent"/>
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    style="@style/MainTextViewStyle.Header1"
-                                    android:layout_marginStart="8dp"
-                                    android:layout_marginRight="@dimen/margine_all"
-                                    android:textSize="14sp"
-                                    android:textColor="@color/gray_400"
-                                    android:text="@string/agz_bot_telegram_button"
+                    <Button
+                        android:id="@+id/telegram_icon"
+                        style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:icon="@drawable/telegram_icon"
 
-                                    app:layout_constraintRight_toLeftOf="@id/telegram_icon"
-                                    app:layout_constraintLeft_toLeftOf="parent"
-                                    app:layout_constraintTop_toBottomOf="@id/bot_text"/>
-                                <Button
-                                    android:id="@+id/telegram_icon"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    app:icon="@drawable/telegram_icon"
-                                    style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                                    app:layout_constraintRight_toRightOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent"
-                                    app:layout_constraintBottom_toBottomOf="parent"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-                            </androidx.constraintlayout.widget.ConstraintLayout>
-                        </com.google.android.material.card.MaterialCardView>
-                        <com.google.android.material.card.MaterialCardView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/agz_button"
-                            android:layout_marginTop="10dp"
-                            android:padding="@dimen/margine_all"
-                            style="@style/MyCard">
-                            <androidx.constraintlayout.widget.ConstraintLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:padding="@dimen/margine_all">
-                                <TextView
-                                    android:id="@+id/agz_text"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="8dp"
-                                    style="@style/MainTextViewStyle.Header1"
-                                    android:textSize="14sp"
-                                    android:text="@string/agz_button_name"
-                                    app:layout_constraintLeft_toLeftOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent"/>
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    style="@style/MainTextViewStyle.Header1"
-                                    android:layout_marginStart="8dp"
-                                    android:layout_marginRight="@dimen/margine_all"
-                                    android:textSize="14sp"
-                                    android:textColor="@color/gray_400"
-                                    android:text="@string/agz_text_button"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/agz_button"
+                style="@style/MyCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="@dimen/margine_all">
 
-                                    app:layout_constraintRight_toLeftOf="@id/agz_icon"
-                                    app:layout_constraintLeft_toLeftOf="parent"
-                                    app:layout_constraintTop_toBottomOf="@id/agz_text"/>
-                                <Button
-                                    android:id="@+id/agz_icon"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    app:icon="@drawable/link_external"
-                                    style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="@dimen/margine_all">
 
-                                    app:layout_constraintRight_toRightOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent"
-                                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    <TextView
+                        android:id="@+id/agz_text"
+                        style="@style/MainTextViewStyle.Header1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:text="@string/agz_button_name"
+                        android:textSize="14sp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                            </androidx.constraintlayout.widget.ConstraintLayout>
-                        </com.google.android.material.card.MaterialCardView>
-                        <com.google.android.material.card.MaterialCardView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/my_telegram_button"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="25dp"
-                            android:padding="@dimen/margine_all"
-                            style="@style/MyCard">
-                            <androidx.constraintlayout.widget.ConstraintLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:padding="@dimen/margine_all">
-                                <TextView
-                                    android:id="@+id/my_tg_text"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="8dp"
-                                    style="@style/MainTextViewStyle.Header1"
-                                    android:textSize="14sp"
-                                    android:text="@string/my_tg_text_button_name"
-                                    app:layout_constraintLeft_toLeftOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent"/>
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    style="@style/MainTextViewStyle.Header1"
-                                    android:layout_marginStart="8dp"
-                                    android:layout_marginRight="@dimen/margine_all"
-                                    android:textSize="14sp"
-                                    android:textColor="@color/gray_400"
-                                    android:text="@string/my_tg_text_button"
+                    <TextView
+                        style="@style/MainTextViewStyle.Header1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginRight="@dimen/margine_all"
+                        android:text="@string/agz_text_button"
+                        android:textColor="@color/gray_400"
+                        android:textSize="14sp"
 
-                                    app:layout_constraintRight_toLeftOf="@id/my_tg_icon"
-                                    app:layout_constraintLeft_toLeftOf="parent"
-                                    app:layout_constraintTop_toBottomOf="@id/my_tg_text"/>
-                                <Button
-                                    android:id="@+id/my_tg_icon"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    app:icon="@drawable/telegram_icon"
-                                    style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/agz_icon"
+                        app:layout_constraintTop_toBottomOf="@id/agz_text" />
 
-                                    app:layout_constraintRight_toRightOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent"
-                                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    <Button
+                        android:id="@+id/agz_icon"
+                        style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:icon="@drawable/link_external"
 
-                            </androidx.constraintlayout.widget.ConstraintLayout>
-                        </com.google.android.material.card.MaterialCardView>
-                </LinearLayout>
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-            </ScrollView>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/my_telegram_button"
+                style="@style/MyCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="25dp"
+                android:padding="@dimen/margine_all">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="@dimen/margine_all">
+
+                    <TextView
+                        android:id="@+id/my_tg_text"
+                        style="@style/MainTextViewStyle.Header1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:text="@string/my_tg_text_button_name"
+                        android:textSize="14sp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        style="@style/MainTextViewStyle.Header1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginRight="@dimen/margine_all"
+                        android:text="@string/my_tg_text_button"
+                        android:textColor="@color/gray_400"
+                        android:textSize="14sp"
+
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/my_tg_icon"
+                        app:layout_constraintTop_toBottomOf="@id/my_tg_text" />
+
+                    <Button
+                        android:id="@+id/my_tg_icon"
+                        style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:icon="@drawable/telegram_icon"
+
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+
+    </ScrollView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,6 +19,7 @@ import com.NonEstArsMea.agz_time_table.util.DateManager
 import com.NonEstArsMea.agz_time_table.databinding.TimeTableFragmentBinding
 import com.NonEstArsMea.agz_time_table.present.TimeTableApplication
 import com.NonEstArsMea.agz_time_table.present.mainActivity.MainViewModelFactory
+import com.NonEstArsMea.agz_time_table.present.timeTableFragment.viewPager.ViewPagerAdapter
 import javax.inject.Inject
 
 
@@ -144,6 +145,10 @@ class TimeTableFragment : Fragment() {
 
     private fun observeViewModel() {
 
+        vm.lll.observe(viewLifecycleOwner){
+            Log.e("storrage_5", it.toString())
+        }
+
         vm.mainParam.observe(viewLifecycleOwner) {
             binding.mainParam.text = it.name
         }
@@ -153,7 +158,9 @@ class TimeTableFragment : Fragment() {
                 when (it) {
                     is LoadData -> {
                         binding.progressBar.isVisible = true
-                        viewPagerAdapter.setData(listOf())
+                        val list = vm.timeTableFromStorage() ?: emptyList()
+                        Log.e("storrage_2", list.toString())
+                        viewPagerAdapter.setData(list)
                     }
 
                     is ConnectionError -> {
@@ -163,7 +170,6 @@ class TimeTableFragment : Fragment() {
                     is TimeTableIsLoad -> {
                         binding.progressBar.isVisible = false
                         viewPagerAdapter.setData(it.list)
-                        Log.e("carrIt", vm.getCurrentItem().toString())
                         viewPager.post {
                             viewPager.currentItem = vm.getCurrentItem()
                         }

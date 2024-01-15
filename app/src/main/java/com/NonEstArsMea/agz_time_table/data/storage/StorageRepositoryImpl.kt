@@ -1,11 +1,13 @@
 package com.NonEstArsMea.agz_time_table.data.storage
 
 import android.content.res.Resources
+import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.map
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.data.dataBase.CellClassDao
 import com.NonEstArsMea.agz_time_table.data.dataBase.CellClassDbModel
-import com.NonEstArsMea.agz_time_table.data.dataBase.TimeTableMapper
+import com.NonEstArsMea.agz_time_table.data.dataBase.CellClassListConverter
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellClass
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
 import com.NonEstArsMea.agz_time_table.domain.mainUseCase.Storage.StorageRepository
@@ -19,7 +21,7 @@ class StorageRepositoryImpl @Inject constructor(
     dataBaseInit: DataBaseInitial,
 ) : StorageRepository {
 
-    //private val dataBaseDao = dataBaseInit.getDataBase()
+    private val dataBaseDao = dataBaseInit.getDataBase()
     private val sharedPreferences = localStorage.getSharedPreferences()
 
     override fun getMainParamFromStorage(): MainParam {
@@ -44,17 +46,23 @@ class StorageRepositoryImpl @Inject constructor(
         ) ?: arrayListOf()
     }
 
-    override fun getLastWeekFromDataBase(): List<List<CellClass>>{
-//        val list = dataBaseDao.getCellClass().value?.let {
-//            TimeTableMapper().mapTimeTableDbModelToEntity(
-//                it
-//            )
-//        }
-        return listOf()
+    override fun getLastWeekFromDataBase(): LiveData<List<List<CellClass>>> {
+        val list: LiveData<List<List<CellClass>>> = dataBaseDao.getCellClass().map { list ->
+            list.map {
+                CellClassListConverter().convertFromString(it.listOfCellClass)
+            }
+        }
+        return list
     }
 
-    override suspend fun insertLastWeek(list: List<List<CellClassDbModel>>) {
-        //dataBaseDao.insertCellClass(list)
+    override suspend fun insertLastWeek(list: List<List<CellClass>>) {
+        val mappedList = list.map {
+            CellClassDbModel(
+                CellClassListConverter().convertToString(it),
+                0)
+        }
+        Log.e("storrage_3", mappedList.toString())
+        dataBaseDao.insertCellClass(mappedList)
     }
 
     override fun getThemeFromStorage(): Int {

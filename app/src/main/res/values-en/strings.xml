@@ -59,4 +59,5 @@
     <string name="fourth_day">Th</string>
     <string name="fifth_day">F</string>
     <string name="sixth_day">Sa</string>
+    <string name="network_error_message">Network Error</string>
 </resources>

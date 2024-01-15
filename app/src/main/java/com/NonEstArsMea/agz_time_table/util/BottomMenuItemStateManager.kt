@@ -1,8 +1,8 @@
-package com.NonEstArsMea.agz_time_table.data
+package com.NonEstArsMea.agz_time_table.util
 
 import androidx.lifecycle.MutableLiveData
 
-object StateManager{
+object BottomMenuItemStateManager{
 
     private val menuItem = MutableLiveData<Int>().apply {
         this.value = TIME_TABLE_ITEM

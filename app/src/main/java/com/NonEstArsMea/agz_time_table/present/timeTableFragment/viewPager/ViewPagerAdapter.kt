@@ -1,4 +1,4 @@
-package com.NonEstArsMea.agz_time_table.present.timeTableFragment
+package com.NonEstArsMea.agz_time_table.present.timeTableFragment.viewPager
 
 import android.util.Log
 import androidx.fragment.app.Fragment

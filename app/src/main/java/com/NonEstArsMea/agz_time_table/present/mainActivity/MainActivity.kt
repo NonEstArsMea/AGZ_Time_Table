@@ -1,7 +1,12 @@
 package com.NonEstArsMea.agz_time_table.present.mainActivity
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import androidx.lifecycle.ViewModelProvider
@@ -15,6 +20,7 @@ import com.NonEstArsMea.agz_time_table.present.customDateFragment.CustomDateFrag
 import com.NonEstArsMea.agz_time_table.present.examsFragment.ExamsFragment
 import com.NonEstArsMea.agz_time_table.present.settingFragment.SettingFragment
 import com.NonEstArsMea.agz_time_table.present.settingFragment.ThemeController
+import com.NonEstArsMea.agz_time_table.util.BottomMenuItemStateManager
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
@@ -59,6 +65,43 @@ class MainActivity : AppCompatActivity(),
 
     override fun onStart() {
         super.onStart()
+        mainViewModel.checkNetConnection()
+        mainViewModel.isConnected.observe(this){
+            if (!it){
+//                val expandAnimation = ObjectAnimator.ofPropertyValuesHolder(
+//                    binding.errorNetLayout.root,
+//                    PropertyValuesHolder.ofFloat(View.ALPHA, 1f),
+//                    PropertyValuesHolder.ofFloat(View.SCALE_X, 1f),
+//                    PropertyValuesHolder.ofFloat(View.SCALE_Y, 1f)
+//                )
+//                expandAnimation.addListener(object : AnimatorListenerAdapter() {
+//                    override fun onAnimationEnd(animation: Animator) {
+                        binding.errorNetLayout.root.visibility = View.VISIBLE
+//                    }
+//                })
+//                expandAnimation.duration = 400
+//                expandAnimation.start()
+            }else{
+//                val collapseAnimation = ObjectAnimator.ofPropertyValuesHolder(
+//                    binding.errorNetLayout.root,
+//                    PropertyValuesHolder.ofFloat(View.ALPHA, 0f),
+//                    PropertyValuesHolder.ofFloat(View.SCALE_X, 0f),
+//                    PropertyValuesHolder.ofFloat(View.SCALE_Y, 0f)
+//                )
+//                collapseAnimation.duration = 300
+//                collapseAnimation.addListener(object : AnimatorListenerAdapter() {
+//                    override fun onAnimationEnd(animation: Animator) {
+                        binding.errorNetLayout.root.visibility = View.GONE
+//                    }
+//                })
+//                collapseAnimation.start()
+            }
+
+        }
+
+        binding.errorNetLayout.errorNetLayoutButton.setOnClickListener {
+            mainViewModel.checkNetConnection()
+        }
 
         val menu = binding.bottomInfo.menu
         mainViewModel.selectedItem.observe(this) {
@@ -90,8 +133,11 @@ class MainActivity : AppCompatActivity(),
                 }
 
                 R.id.menu_setting -> {
-                    findNavController(R.id.fragmentContainerView)
-                        .navigate(R.id.settingFragment)
+                    if(mainViewModel.selectedItem.value != BottomMenuItemStateManager.SETTING_ITEM){
+                        findNavController(R.id.fragmentContainerView)
+                            .navigate(R.id.settingFragment)
+                    }
+
                 }
 
 
