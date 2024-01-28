@@ -10,14 +10,14 @@ interface StorageRepository {
 
     fun getFavoriteMainParamsFromStorage(): ArrayList<MainParam>
 
-    fun getLastWeekFromDataBase(): LiveData<List<List<CellClass>>>
+    fun getLastWeekFromStorage(): List<List<CellClass>>
 
-    suspend fun insertLastWeek(list: List<List<CellClass>>)
+    fun setTimeTableInStorage(list: List<List<CellClass>>?)
 
     fun getThemeFromStorage(): Int
     fun setDataInStorage(
         mainParam: MainParam?,
         favMainParamList: ArrayList<MainParam>?,
-        theme: Int?
+        theme: Int?,
     )
 }

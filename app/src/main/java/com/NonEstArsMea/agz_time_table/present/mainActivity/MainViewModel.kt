@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.NonEstArsMea.agz_time_table.data.storage.StorageRepositoryImpl
 import com.NonEstArsMea.agz_time_table.util.BottomMenuItemStateManager
 import com.NonEstArsMea.agz_time_table.domain.mainUseCase.LoadData.DataRepository
 import com.NonEstArsMea.agz_time_table.domain.mainUseCase.LoadData.IsInternetConnected
@@ -23,7 +24,7 @@ class MainViewModel @Inject constructor(
     private val getDataFromStorage: GetDataFromStorageUseCase,
     private val isInternetConnected: IsInternetConnected,
     themeController: ThemeController,
-    private val timeTableRepositoryImpl: TimeTableRepository
+    private val timeTableRepositoryImpl: TimeTableRepository,
 ) : ViewModel() {
 
 
@@ -73,8 +74,11 @@ class MainViewModel @Inject constructor(
         setDataInStorage.execute(
             getNameParam.getLiveData().value,
             timeTableRepositoryImpl.getArrayOfFavoriteMainParam().value,
-            _theme.value
+            _theme.value,
+            timeTableRepositoryImpl.getArrayOfWeekTimeTable().value
         )
+
+
     }
 
     fun itemControl(): Boolean {
@@ -88,14 +92,14 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun isInternetConnected(): Boolean {
-        return isInternetConnected.execute()
-    }
-
     fun getListOfMainParam() {
         viewModelScope.launch {
             timeTableRepositoryImpl.getListOfMainParam()
         }
+    }
+
+    private fun isInternetConnected(): Boolean {
+        return isInternetConnected.execute()
     }
 
 }

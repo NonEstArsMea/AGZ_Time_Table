@@ -40,8 +40,6 @@ class TimeTableViewModel @Inject constructor(
 
     var mainParam: LiveData<MainParam> = getMainParamUseCase.getLiveData()
 
-    val lll = storageRepositoryImpl.getLastWeekFromDataBase()
-
     private var lastMainParam: String = EMPTY_STRING
 
     private var list: List<List<CellClass>> = listOf()
@@ -76,7 +74,6 @@ class TimeTableViewModel @Inject constructor(
         }
         viewModelScope.launch(Dispatchers.Default) {
             list = timeTableRepositoryImpl.getWeekTimeTable()
-            storageRepositoryImpl.insertLastWeek(list)
             Log.e("storrage", list.toString())
             launch(Dispatchers.Main) {
                 _state.value = TimeTableIsLoad(list)
@@ -93,9 +90,9 @@ class TimeTableViewModel @Inject constructor(
         }
     }
 
-    fun timeTableFromStorage(): List<List<CellClass>>? {
-        Log.e("storrage_4", storageRepositoryImpl.getLastWeekFromDataBase().value.toString())
-        return storageRepositoryImpl.getLastWeekFromDataBase().value
+    fun timeTableFromStorage(): List<List<CellClass>> {
+        Log.e("storrage_4", storageRepositoryImpl.getLastWeekFromStorage().toString())
+        return storageRepositoryImpl.getLastWeekFromStorage()
     }
 
     /**

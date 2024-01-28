@@ -26,10 +26,9 @@ import javax.inject.Singleton
 class TimeTableRepositoryImpl @Inject constructor(
     private val dataRepositoryImpl: DataRepositoryImpl,
     private val resources: Resources,
-    private val storageRepositoryImpl: StorageRepositoryImpl,
 ) : TimeTableRepository {
 
-    private var weekTimeTable = storageRepositoryImpl.getLastWeekFromDataBase()
+    private var weekTimeTable = MutableLiveData<List<List<CellClass>>>()
     private var mainParam = MutableLiveData<MainParam>()
     private var listOfMainParam = MutableLiveData<ArrayList<MainParam>>()
     private var listOfFavoriteMainParam = MutableLiveData<ArrayList<MainParam>>()
@@ -216,8 +215,7 @@ class TimeTableRepositoryImpl @Inject constructor(
     }
 
     override fun getArrayOfWeekTimeTable(): MutableLiveData<List<List<CellClass>>> {
-        Log.e("storrage_4", weekTimeTable.value.toString())
-        return weekTimeTable as MutableLiveData<List<List<CellClass>>>
+        return weekTimeTable
     }
 
 
@@ -297,7 +295,6 @@ class TimeTableRepositoryImpl @Inject constructor(
                 }
 
             }
-            Log.e("exams", listTT.toString())
             if (listTT.isEmpty()) {
                 return@withContext listTT
             } else {
@@ -329,9 +326,7 @@ class TimeTableRepositoryImpl @Inject constructor(
 
 
     override fun getListOfMainParam() {
-        Log.e("fin", "getContent")
         val data = dataRepositoryImpl.getContent()
-        Log.e("fin", data.length.toString())
         val csvParser = CSVParser(
             data.reader(), CSVFormat.DEFAULT
                 .withFirstRecordAsHeader()

@@ -145,9 +145,6 @@ class TimeTableFragment : Fragment() {
 
     private fun observeViewModel() {
 
-        vm.lll.observe(viewLifecycleOwner){
-            Log.e("storrage_5", it.toString())
-        }
 
         vm.mainParam.observe(viewLifecycleOwner) {
             binding.mainParam.text = it.name
@@ -158,7 +155,7 @@ class TimeTableFragment : Fragment() {
                 when (it) {
                     is LoadData -> {
                         binding.progressBar.isVisible = true
-                        val list = vm.timeTableFromStorage() ?: emptyList()
+                        val list = vm.timeTableFromStorage()
                         Log.e("storrage_2", list.toString())
                         viewPagerAdapter.setData(list)
                     }

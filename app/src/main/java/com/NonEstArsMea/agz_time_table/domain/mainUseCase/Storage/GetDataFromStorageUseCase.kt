@@ -1,5 +1,8 @@
 package com.NonEstArsMea.agz_time_table.domain.mainUseCase.Storage
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.NonEstArsMea.agz_time_table.domain.dataClass.CellClass
 import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.TimeTableRepository
 import com.NonEstArsMea.agz_time_table.present.settingFragment.ThemeController
 import javax.inject.Inject
@@ -13,7 +16,8 @@ class GetDataFromStorageUseCase @Inject constructor(
 
     fun execute(){
         timeTableRepositoryImpl.setMainParam(repository.getMainParamFromStorage())
-        //timeTableRepositoryImpl.setWeekTimeTable(mapper.repository.getLastWeekFromDataBase())
+        val list: MutableLiveData<List<List<CellClass>>> = MutableLiveData(repository.getLastWeekFromStorage())
+        timeTableRepositoryImpl.setWeekTimeTable(list)
         timeTableRepositoryImpl.setListOfFavoriteMainParam(repository.getFavoriteMainParamsFromStorage())
         themeController.setTheme(repository.getThemeFromStorage())
     }

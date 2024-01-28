@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import com.NonEstArsMea.agz_time_table.R
-import com.NonEstArsMea.agz_time_table.data.dataBase.CellClassDao
 import com.NonEstArsMea.agz_time_table.data.dataBase.CellClassDbModel
 import com.NonEstArsMea.agz_time_table.data.dataBase.CellClassListConverter
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellClass
@@ -18,10 +17,9 @@ import javax.inject.Inject
 class StorageRepositoryImpl @Inject constructor(
     private val resource: Resources,
     localStorage: LocalStorageInitial,
-    dataBaseInit: DataBaseInitial,
+    private val dataStorageManager: DataStorageManager,
 ) : StorageRepository {
 
-    private val dataBaseDao = dataBaseInit.getDataBase()
     private val sharedPreferences = localStorage.getSharedPreferences()
 
     override fun getMainParamFromStorage(): MainParam {
@@ -46,23 +44,13 @@ class StorageRepositoryImpl @Inject constructor(
         ) ?: arrayListOf()
     }
 
-    override fun getLastWeekFromDataBase(): LiveData<List<List<CellClass>>> {
-        val list: LiveData<List<List<CellClass>>> = dataBaseDao.getCellClass().map { list ->
-            list.map {
-                CellClassListConverter().convertFromString(it.listOfCellClass)
-            }
-        }
+    override fun getLastWeekFromStorage(): List<List<CellClass>> {
+       val list = dataStorageManager.loadData()
         return list
     }
 
-    override suspend fun insertLastWeek(list: List<List<CellClass>>) {
-        val mappedList = list.map {
-            CellClassDbModel(
-                CellClassListConverter().convertToString(it),
-                0)
-        }
-        Log.e("storrage_3", mappedList.toString())
-        dataBaseDao.insertCellClass(mappedList)
+    override fun setTimeTableInStorage(list: List<List<CellClass>>?) {
+        dataStorageManager.saveData(list)
     }
 
     override fun getThemeFromStorage(): Int {
