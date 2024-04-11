@@ -68,33 +68,20 @@ class MainActivity : AppCompatActivity(),
         mainViewModel.checkNetConnection()
         mainViewModel.isConnected.observe(this){
             if (!it){
-//                val expandAnimation = ObjectAnimator.ofPropertyValuesHolder(
-//                    binding.errorNetLayout.root,
-//                    PropertyValuesHolder.ofFloat(View.ALPHA, 1f),
-//                    PropertyValuesHolder.ofFloat(View.SCALE_X, 1f),
-//                    PropertyValuesHolder.ofFloat(View.SCALE_Y, 1f)
-//                )
-//                expandAnimation.addListener(object : AnimatorListenerAdapter() {
-//                    override fun onAnimationEnd(animation: Animator) {
                         binding.errorNetLayout.root.visibility = View.VISIBLE
-//                    }
-//                })
-//                expandAnimation.duration = 400
-//                expandAnimation.start()
             }else{
-//                val collapseAnimation = ObjectAnimator.ofPropertyValuesHolder(
-//                    binding.errorNetLayout.root,
-//                    PropertyValuesHolder.ofFloat(View.ALPHA, 0f),
-//                    PropertyValuesHolder.ofFloat(View.SCALE_X, 0f),
-//                    PropertyValuesHolder.ofFloat(View.SCALE_Y, 0f)
-//                )
-//                collapseAnimation.duration = 300
-//                collapseAnimation.addListener(object : AnimatorListenerAdapter() {
-//                    override fun onAnimationEnd(animation: Animator) {
+                val collapseAnimation = ObjectAnimator.ofPropertyValuesHolder(
+                    binding.errorNetLayout.root,
+                    PropertyValuesHolder.ofFloat(View.ALPHA, 0f),
+                    PropertyValuesHolder.ofFloat(View.SCALE_Y, 0f)
+                )
+                collapseAnimation.duration = 300
+                collapseAnimation.addListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator) {
                         binding.errorNetLayout.root.visibility = View.GONE
-//                    }
-//                })
-//                collapseAnimation.start()
+                    }
+                })
+                collapseAnimation.start()
             }
 
         }

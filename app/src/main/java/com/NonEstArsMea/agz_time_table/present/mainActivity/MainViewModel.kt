@@ -72,10 +72,10 @@ class MainViewModel @Inject constructor(
 
     fun setDataInStorage() {
         setDataInStorage.execute(
-            getNameParam.getLiveData().value,
-            timeTableRepositoryImpl.getArrayOfFavoriteMainParam().value,
-            _theme.value,
-            timeTableRepositoryImpl.getArrayOfWeekTimeTable().value
+            mainParam = getNameParam.getLiveData().value,
+            favMainParamList = timeTableRepositoryImpl.getArrayOfFavoriteMainParam().value,
+            theme = _theme.value,
+            list = timeTableRepositoryImpl.getArrayOfWeekTimeTable().value
         )
 
 

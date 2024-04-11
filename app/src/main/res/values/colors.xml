@@ -15,13 +15,13 @@
     <color name="red_themes_100">#655A4E</color>
 
     <!-- Light Theme Colors -->
-    <color name="orange_light">#FFA500</color>
+    <color name="orange_light">#FFC75F</color>
     <color name="red_light">#FF0000</color>
     <color name="gray_400">#A9A9A9</color>
     <color name="red_light_500">#FF6347</color>
 
     <!-- Dark Theme Colors -->
-    <color name="orange_dark">#FF8C00</color>
+    <color name="orange_dark">#C66D00</color>
     <color name="red_dark">#8B0000</color>
 
     <color name="gray_fo_card">#565882</color>

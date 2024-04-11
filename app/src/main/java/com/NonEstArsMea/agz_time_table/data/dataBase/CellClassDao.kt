@@ -10,7 +10,7 @@ import androidx.room.Query
 interface CellClassDao {
 
     @Query("SELECT * FROM cell_classes")
-    fun getCellClass(): LiveData<List<CellClassDbModel>>
+    fun getCellClass(): List<CellClassDbModel>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertCellClass(list: List<CellClassDbModel>)
