@@ -67,6 +67,7 @@ class MainActivity : AppCompatActivity(),
         super.onStart()
         mainViewModel.checkNetConnection()
         mainViewModel.isConnected.observe(this){
+            // появление кнопки об отсутсвии интернета
             if (!it){
                         binding.errorNetLayout.root.visibility = View.VISIBLE
             }else{
