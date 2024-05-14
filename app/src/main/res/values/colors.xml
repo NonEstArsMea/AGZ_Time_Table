@@ -14,6 +14,8 @@
     <color name="red_themes_500">#FADDC1</color>
     <color name="red_themes_100">#655A4E</color>
 
+    <color name="grey_500">#9E9E9E</color>
+
     <!-- Light Theme Colors -->
     <color name="orange_light">#FFC75F</color>
     <color name="red_light">#FF0000</color>

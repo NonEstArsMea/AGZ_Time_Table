@@ -1,41 +1,567 @@
 package com.NonEstArsMea.agz_time_table.present.customView
 
+import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Typeface
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Path
+import android.graphics.PointF
+import android.graphics.Rect
+import android.graphics.RectF
+import android.text.Layout
+import android.text.StaticLayout
+import android.text.TextPaint
 import android.util.AttributeSet
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import android.widget.TableLayout
-import android.widget.TableRow
-import android.widget.TextView
+import android.util.Log
+import android.view.MotionEvent
+import android.view.ScaleGestureDetector
+import android.view.View
+import androidx.core.content.ContextCompat
 import com.NonEstArsMea.agz_time_table.R
+import com.NonEstArsMea.agz_time_table.domain.dataClass.CellClass
+import java.lang.Integer.max
 
-class CustomTableView(context: Context, attrs: AttributeSet) : ViewGroup(context, attrs) {
+class NewView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : View(context, attrs, defStyleAttr) {
 
-    private val headerTextView: TextView
+    // Основная информация об строках и колонках
+    private val minRowHight = 250
+    private val namesRowHight = 170
+    private val columnWidth = 400f
 
-    init {
-        headerTextView = TextView(context)
-        headerTextView.text = "Header"
-        headerTextView.setTypeface(null, Typeface.BOLD)
-        addView(headerTextView)
+    private var dateTextSize = 200f
+
+    private val contentWidth: Int
+        get() = max(width, (columnWidth * 6 + dateTextSize).toInt())
+    private var contentHeight = 500
+
+
+    // Отвечает за зум и сдвиги
+    private val transformations = Transformations()
+
+    // Радиус скругления углов таски
+    private val taskCornerRadius = resources.getDimension(R.dimen.gant_task_corner_radius)
+
+    // Вертикальный отступ таски внутри строки
+    private val taskVerticalMargin = resources.getDimension(R.dimen.gant_task_vertical_margin)
+
+    // Для фигур тасок
+    private val taskShapePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.FILL
+        color = Color.GRAY
     }
 
-    override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
-        // Размещение дочерних элементов (здесь можно добавить строки с данными)
-        headerTextView.layout(0, 0, measuredWidth, headerTextView.measuredHeight)
+    // Значения последнего эвента
+    private val lastPoint = PointF()
+    private var lastPointerId = 0
+
+    private val timeStartOfLessonsList = listOf(
+        "9:00", "10:30",
+        "10:45", "12:15",
+        "12:30", "14:00",
+        "14:15", "16:15",
+        "16:25", "17:55",
+    )
+
+
+    private val rowPaint = Paint().apply {
+        style = Paint.Style.FILL
+        color = Color.RED
     }
+
+    private val separatorsPaint = Paint().apply {
+        strokeWidth = 0f
+        color = Color.GRAY
+    }
+
+    private val mainSeparatorsPaint = Paint().apply {
+        strokeWidth = 2f
+        color = Color.BLACK
+    }
+
+
+    private val periodNamePaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
+        textSize = resources.getDimension(R.dimen.gant_period_name_text_size)
+        color = ContextCompat.getColor(context, R.color.grey_500)
+    }
+
+    private val dateNamePaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
+        textSize = resources.getDimension(R.dimen.gant_period_name_text_size)
+        isFakeBoldText = true
+        color = ContextCompat.getColor(context, R.color.grey_500)
+    }
+
+    // Rect для рисования строк
+    private val rowRect = Rect()
+
+    // Чередующиеся цвета строк
+    private val rowColors = listOf(
+        ContextCompat.getColor(context, R.color.red_themes_500),
+        Color.WHITE
+    )
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        measureChild(headerTextView, widthMeasureSpec, heightMeasureSpec)
+        val width = if (MeasureSpec.getMode(widthMeasureSpec) == MeasureSpec.UNSPECIFIED) {
+            6 * 100
+        } else {
+            // Даже если AT_MOST занимаем все доступное место, т.к. может быть зум
+            MeasureSpec.getSize(widthMeasureSpec)
+        }
 
-        // Вычисление размеров для всего представления
-        val desiredWidth = headerTextView.measuredWidth
-        val desiredHeight = headerTextView.measuredHeight
+        val heightSpecSize = MeasureSpec.getSize(heightMeasureSpec)
+        val height = when (MeasureSpec.getMode(heightMeasureSpec)) {
+            // Нас никто не ограничивает - занимаем размер контента
+            MeasureSpec.UNSPECIFIED -> heightSpecSize
+            // Ограничение "не больше, не меньше" - занимаем столько, сколько пришло в спеке
+            MeasureSpec.EXACTLY -> heightSpecSize
+            // Можно занять меньше места, чем пришло в спеке, но не больше
+            MeasureSpec.AT_MOST -> heightSpecSize.coerceAtMost(heightSpecSize)
+            // Успокаиваем компилятор, сюда не попадем
+            else -> error("Unreachable")
+        }
 
-        setMeasuredDimension(
-            resolveSize(desiredWidth, widthMeasureSpec),
-            resolveSize(desiredHeight, heightMeasureSpec)
+        setMeasuredDimension(width, height)
+    }
+
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        // Размер изменился, надо пересчитать ширину строки
+        rowRect.set(
+            /* left = */ 0,
+            /* top = */0,
+            /* right = */w,
+            /* bottom = */ minRowHight
         )
+
+    }
+
+    private fun Canvas.drawTimeAndDateLine() {
+        // Линия для отделения времени
+        drawLine(
+            dateTextSize * transformations.scaleFactor + transformations.translationX,
+            0f,
+            dateTextSize * transformations.scaleFactor + transformations.translationX,
+            contentHeight.toFloat() + transformations.translationY,
+            mainSeparatorsPaint
+        )
+
+        // Линия для отделения даты
+        drawLine(
+            0f,
+            namesRowHight * transformations.scaleFactor + transformations.translationY,
+            width.toFloat(),
+            namesRowHight * transformations.scaleFactor + transformations.translationY,
+            mainSeparatorsPaint
+        )
+
+        // Нижняя линия конца таблицы
+        drawLine(
+            0f,
+            contentHeight.toFloat() + transformations.translationY,
+            width.toFloat(),
+            contentHeight.toFloat() + transformations.translationY,
+            mainSeparatorsPaint
+        )
+    }
+
+
+    private fun Canvas.drawRowsAndDates() {
+
+
+        var lastY = namesRowHight.toFloat() * transformations.scaleFactor
+        val lastX = transformations.translationX
+
+        var rowHeight: Int
+        val paddingLeftAndRight = 5
+        var textY: Float
+        var textX: Float
+
+
+        val texts = listOf(
+            "Текст \n12345678910112\n1314151617181920212223242526",
+            "Текст 2",
+            "Текст 3",
+            "Текст \n" +
+                    "12345678910112\n" +
+                    "1314151617181920212223242526",
+            "Текст 2",
+            "Текст 3",
+            "Текст 4"
+        )
+
+        repeat(COUNT_OF_LESSONS) { index ->
+            var maxHeightOfRow = minRowHight
+
+            val nameOfROwStaticLayout =
+                getStaticLayout(
+                    texts[index],
+                    dateTextSize.toInt() - 2 * paddingLeftAndRight,
+                    dateNamePaint
+                )
+            // Получаем ячейки с парами и измеряем их
+            for (a in timeTable) {
+                a.subjectNumber?.let {
+                    if (it == index) {
+                        val lesson = LessonsRect(
+                            text = a.subject!! + "\n" + a.subject+ "\n" + a.subject+ "\n" + a.subject+ "\n" + a.subject,
+                            dayOfLesson = a.subjectNumber!!,
+                            lastY = lastY.toInt(),
+                            hightOfRow = maxHeightOfRow
+                        )
+                        maxHeightOfRow = max(lesson.height.toInt(), maxHeightOfRow)
+                    }
+                }
+            }
+            // Разбираемся с высотой
+            maxHeightOfRow = max(nameOfROwStaticLayout.height, maxHeightOfRow)
+
+
+
+            rowRect.set(
+                /* left = */ 0,
+                /* top = */(lastY + transformations.translationY).toInt(),
+                /* right = */width,
+                /* bottom = */(lastY + (maxHeightOfRow * transformations.scaleFactor) + transformations.translationY).toInt()
+            )
+
+            rowPaint.color = rowColors[index % 2]
+            drawRect(rowRect, rowPaint)
+
+            // Получаем ячейки с парами и измеряем их
+            for (a in timeTable) {
+                a.subjectNumber?.let {
+                    if (it == index) {
+                        val lesson = LessonsRect(
+                            text = a.subject!! + "\n" + a.subject+ "\n" + a.subject+ "\n" + a.subject+ "\n" + a.subject,
+                            dayOfLesson = a.subjectNumber!!,
+                            lastY = lastY.toInt(),
+                            hightOfRow = maxHeightOfRow
+                        )
+                        if (lesson.isRectVisible) {
+                            lesson.updateInitialRect()
+                            lesson.draw(this)
+                        }
+                    }
+                }
+            }
+
+
+
+            textY =
+                (lastY + (maxHeightOfRow - nameOfROwStaticLayout.height) * transformations.scaleFactor / 2) + transformations.translationY
+            textX = paddingLeftAndRight.toFloat() + lastX
+
+            this.save()
+            this.translate(textX, textY)
+            this.scale(transformations.scaleFactor, transformations.scaleFactor)
+            nameOfROwStaticLayout.draw(this)
+            this.restore()
+
+            lastY += (maxHeightOfRow * transformations.scaleFactor)
+
+        }
+        contentHeight = lastY.toInt()
+
+    }
+
+
+    private fun Canvas.drawPeriods() {
+        val currentPeriods = listOf(
+            "17\n" + "ПН",
+            "18\n" + "ВТ",
+            "19\n" + "СР",
+            "20\n" + "ЧТ",
+            "21\n" + "ПТ",
+            "22\n" + "СБ"
+        )
+        var textY: Float
+        var textX: Float
+
+        var lastX = dateTextSize * transformations.scaleFactor + transformations.translationX
+
+        val layoutColumnWidth = columnWidth * transformations.scaleFactor
+
+        currentPeriods.forEachIndexed { index, periodName ->
+            // По X текст рисуется относительно его начала
+            val staticLayout = StaticLayout.Builder.obtain(
+                periodName, 0, periodName.length, dateNamePaint,
+                layoutColumnWidth.toInt()
+            )
+                .setAlignment(Layout.Alignment.ALIGN_CENTER)
+                .setLineSpacing(0f, 1f)
+                .setIncludePad(true)
+                .build()
+
+            textY =
+                ((namesRowHight - staticLayout.height) / 2 * transformations.scaleFactor) + transformations.translationY
+            textX = lastX + (columnWidth - staticLayout.width) / 2 * transformations.scaleFactor
+
+            this.save()
+            this.translate(textX, textY)
+            this.scale(transformations.scaleFactor, transformations.scaleFactor)
+            staticLayout.draw(this)
+            this.restore()
+
+            lastX += (columnWidth * transformations.scaleFactor)
+
+
+            // Разделитель
+            drawLine(
+                /* startX = */ lastX,
+                /* startY = */ 0f,
+                /* stopX = */ lastX,
+                /* stopY = */ contentHeight.toFloat() + transformations.translationY,
+                /* paint = */ separatorsPaint
+            )
+        }
+    }
+
+    private fun Paint.getTextBaselineByCenter() = (descent() + ascent()) / 2
+
+    override fun onDraw(canvas: Canvas) = with(canvas) {
+        drawRowsAndDates()
+        drawPeriods()
+        drawTimeAndDateLine()
+    }
+
+
+    private var timeTable: List<CellClass> = emptyList()
+
+
+    fun setTimeTable(timeTable: List<CellClass>) {
+        if (timeTable != this.timeTable) {
+            this.timeTable = timeTable
+            requestLayout()
+            invalidate()
+        }
+    }
+
+
+    @SuppressLint("ClickableViewAccessibility")
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        event ?: return false
+        return if (event.pointerCount > 1) scaleDetector.onTouchEvent(event) else processMove(event)
+    }
+
+    private val scaleDetector = ScaleGestureDetector(
+        context,
+        object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
+            override fun onScale(detector: ScaleGestureDetector): Boolean {
+                return run {
+                    transformations.addScale(detector.scaleFactor)
+                    true
+                }
+            }
+        })
+
+
+    private fun processMove(event: MotionEvent): Boolean {
+        return when (event.action) {
+            MotionEvent.ACTION_DOWN -> {
+                lastPoint.set(event.x, event.y)
+                lastPointerId = event.getPointerId(0)
+                true
+            }
+
+            MotionEvent.ACTION_MOVE -> {
+
+                // Если размер контента меньше размера View - сдвиг недоступен
+                if (width < contentWidth) {
+                    val pointerId = event.getPointerId(0)
+                    // Чтобы избежать скачков - сдвигаем, только если поинтер(палец) тот же, что и раньше
+                    if (lastPointerId == pointerId) {
+                        transformations.addTranslation(event.x - lastPoint.x, event.y - lastPoint.y)
+                    }
+
+                    // Запоминаем поинтер и последнюю точку в любом случае
+                    lastPoint.set(event.x, event.y)
+                    lastPointerId = event.getPointerId(0)
+
+                    true
+                } else {
+                    false
+                }
+            }
+
+            else -> false
+        }
+    }
+
+
+    companion object {
+        const val COUNT_OF_LESSONS = 6
+    }
+
+    private inner class Transformations {
+
+        var scaleFactor = 1.0f
+        private val minScaleFactor = 0.5f
+        private val maxScaleFactor = 2.0f
+
+        var translationX = 0f
+            private set
+        var translationY = 0f
+            private set
+
+        // На сколько максимально можно сдвинуть диаграмму
+        private val minTranslationX: Float
+            get() = (width - contentWidth * scaleFactor).coerceAtMost(0f).toFloat()
+        private val minTranslationY: Float
+            get() = (height - contentHeight * scaleFactor).coerceAtMost(0f).toFloat()
+
+        fun addTranslation(dx: Float, dy: Float) {
+            translationX = (translationX + dx).coerceIn(minTranslationX, 0f)
+            translationY = (translationY + dy).coerceIn(minTranslationY, 0f)
+            invalidate()
+        }
+
+        fun addScale(sx: Float) {
+            scaleFactor = (scaleFactor * sx).coerceIn(minScaleFactor, maxScaleFactor)
+            if (scaleFactor > minScaleFactor && scaleFactor < maxScaleFactor) {
+                translationX = (translationX * sx).coerceIn(minTranslationX, 0f)
+                translationY = (translationY * sx).coerceIn(minTranslationY, 0f)
+                invalidate()
+            }
+
+        }
+
+
+    }
+
+    private inner class LessonsRect(
+        val text: String,
+        val dayOfLesson: Int,
+        val lastY: Int,
+        var hightOfRow: Int
+    ) {
+
+        var rect = RectF()
+
+        var rectRadius = 20f * transformations.scaleFactor
+        private var verticalLineSize = 15f * transformations.scaleFactor
+
+
+        private val paint = Paint().apply {
+            style = Paint.Style.FILL
+            color = Color.BLACK
+            strokeWidth = 1f
+            setBackgroundColor(Color.WHITE)
+        }
+
+        private val strokePaint = Paint().apply {
+            style = Paint.Style.STROKE
+            strokeWidth = strokeWidth
+            color = Color.BLACK
+        }
+        private val strokeWidth = 1f
+        val paddingX = 5f
+        val paddingY = 5f
+        private val path = Path()
+        private val path2 = Path()
+
+        // Начальный Rect для текущих размеров View
+        private val untransformedRect = RectF()
+
+        // Если false, таск рисовать не нужно
+        val isRectVisible: Boolean
+            get() = ((rect.top < height) or (rect.bottom > 0)) and ((rect.right < width) or (rect.left > 0))
+
+        private val staticLayout = getStaticLayout(text, columnWidth.toInt() - paddingX.toInt() - paddingX.toInt(), dateNamePaint, true)
+        val height = max(staticLayout.height, hightOfRow) + paddingY
+
+
+
+        fun updateInitialRect() {
+
+
+            fun getX(index: Int): Float {
+                return (index * columnWidth) + dateTextSize
+            }
+
+            fun getEndX(index: Int): Float {
+                return ((index + 1) * columnWidth) + dateTextSize
+            }
+
+            untransformedRect.set(
+                getX(dayOfLesson) * transformations.scaleFactor + transformations.translationX + paddingX,
+                lastY.toFloat() + transformations.translationY + paddingY,
+                getEndX(dayOfLesson) * transformations.scaleFactor + transformations.translationX - paddingX,
+                (lastY + height * transformations.scaleFactor) + transformations.translationY - paddingY,
+            )
+            rect.set(untransformedRect)
+        }
+
+        fun draw(canvas: Canvas) {
+            // Draw rounded rectangle
+
+            paint.color = Color.WHITE
+            val strokeRect = RectF(
+                rect.left - strokeWidth,
+                rect.top - strokeWidth,
+                rect.right + strokeWidth,
+                rect.bottom + strokeWidth
+            )
+            // Отрисовка самого прямоугольника
+            path.addRoundRect(rect, rectRadius, rectRadius, Path.Direction.CW)
+            canvas.drawPath(path, paint)
+
+            paint.color = resources.getColor(R.color.teal_700)
+            // Отрисовка боковой части
+            with(path) {
+                reset()
+                addRoundRect(
+                    rect.left,
+                    rect.top,
+                    rect.left + 100f,
+                    rect.bottom,
+                    rectRadius,
+                    rectRadius,
+                    Path.Direction.CW
+                )
+            }
+
+            with(path2) {
+                reset()
+                addRect(
+                    rect.left + verticalLineSize,
+                    rect.top,
+                    rect.right,
+                    rect.bottom, Path.Direction.CW
+                )
+                op(path, Path.Op.REVERSE_DIFFERENCE)
+            }
+
+            canvas.drawPath(path2, paint)
+            canvas.drawRoundRect(strokeRect, rectRadius, verticalLineSize, strokePaint)
+
+            canvas.save()
+            canvas.translate(rect.left + verticalLineSize + paddingX , rect.top + paddingY)
+            canvas.scale(transformations.scaleFactor, transformations.scaleFactor)
+            staticLayout.draw(canvas)
+            canvas.restore()
+        }
+
+    }
+
+    fun getStaticLayout(text: String, width: Int, paint: TextPaint, alignLeft: Boolean = false): StaticLayout {
+        var align = if(alignLeft){
+            Layout.Alignment.ALIGN_NORMAL
+        }else{
+            Layout.Alignment.ALIGN_CENTER
+        }
+        return StaticLayout.Builder.obtain(
+            /* source = */ text,
+            /* start = */  0,
+            /* end = */    text.length,
+            /* paint = */  paint,
+            /* width = */  width
+        )
+            .setAlignment(align)
+            .setLineSpacing(0f, 1f)
+            .setIncludePad(true)
+            .build()
     }
 }
