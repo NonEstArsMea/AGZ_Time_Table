@@ -84,28 +84,7 @@ class TimeTableFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        viewPager = binding.viewPagerTimeTableFragment
-        viewPagerAdapter = ViewPagerAdapter(this)
-        viewPager.adapter = viewPagerAdapter
-        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            @SuppressLint("UseCompatLoadingForDrawables")
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                context?.let { context ->
-                    days.toList().forEach {
-                        it.setTextAppearance(R.style.MainTextViewStyle_WeekNumber)
-                        it.background =
-                            resources.getDrawable(R.drawable.main_surface, context.theme)
-                    }
-                    with(days[position]) {
-                        this.setTextAppearance(R.style.MainTextViewStyle_DayNowWeekNumber)
-                        this.background =
-                            resources.getDrawable(R.drawable.break_cell_background, context.theme)
-                    }
-                }
 
-            }
-        })
 
 
         // Слушатель на дни
@@ -127,6 +106,10 @@ class TimeTableFragment : Fragment() {
             updateData(NOW_WEEK)
         }
 
+        binding.changeViewMod.setOnClickListener {
+            updateViewMode()
+        }
+
         vm.checkMainParam()
 
         binding.monthDate.text = vm.getMonth()
@@ -135,6 +118,11 @@ class TimeTableFragment : Fragment() {
         observeViewModel()
 
 
+    }
+
+    private fun updateViewMode() {
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.view_pager_and_table_container, TableFragment.newInstance())
     }
 
 

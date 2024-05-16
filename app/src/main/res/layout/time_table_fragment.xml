@@ -1,99 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/time_table_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:theme="@style/Theme.AGZ_Time_Table"
-    android:background="?attr/colorSurfaceContainer">
+    android:background="?attr/colorSurfaceContainer"
+    android:theme="@style/Theme.AGZ_Time_Table">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/top_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
 
         >
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/top_card"
+            style="@style/Widget.Material3.CardView.Filled"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="-10dp"
             android:layout_marginStart="-1dp"
+            android:layout_marginTop="-10dp"
             android:layout_marginEnd="-1dp"
+            android:padding="@dimen/margine_all"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:padding="@dimen/margine_all"
-            style="@style/Widget.Material3.CardView.Filled"
-            android:id="@+id/top_card">
-            <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/user_info"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="?attr/colorPrimary"
-
             app:layout_constraintTop_toTopOf="parent">
-            <Button
-                android:layout_marginTop="15dp"
-                android:layout_marginRight="@dimen/margine_all"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:icon="@drawable/home_icon"
-                android:id="@+id/set_date_button"
-                style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintRight_toRightOf="parent"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
 
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                android:gravity="left|bottom"
-
-                style="@style/MainTextViewStyle.HeaderText"
-                android:text="@string/group_not_selected_text"
-                android:paddingLeft="15dp"
-                android:id="@+id/main_param"/>
-
-            <TextView
-                android:id="@+id/month_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="15dp"
-                android:paddingBottom="@dimen/margine_all"
-                android:text="Month, Year"
-                android:textSize="14sp"
-                style="@style/MainTextViewStyle.HeaderText"
-
-                app:layout_constraintBottom_toTopOf="@id/card"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/main_param" />
-
-            <com.google.android.material.card.MaterialCardView
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/user_info"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_margin="@dimen/margine_all"
-                android:id="@+id/card"
-                app:layout_constraintTop_toBottomOf="@id/month_date"
-                style="@style/Widget.Material3.CardView.Elevated">
+                android:layout_height="match_parent"
+                android:background="?attr/colorPrimary"
+
+                app:layout_constraintTop_toTopOf="parent">
+
+                <Button
+                    android:id="@+id/set_date_button"
+                    style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="@dimen/margine_all"
+                    app:icon="@drawable/home_icon"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/change_view_mod"
+                    style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="@dimen/margine_all"
+                    app:icon="@drawable/home_icon"
+                    app:layout_constraintRight_toLeftOf="@id/set_date_button"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/main_param"
+                    style="@style/MainTextViewStyle.HeaderText"
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:gravity="left|bottom"
+
+                    android:paddingLeft="15dp"
+                    android:text="@string/group_not_selected_text"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/month_date"
+                    style="@style/MainTextViewStyle.HeaderText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="15dp"
+                    android:paddingBottom="@dimen/margine_all"
+                    android:text="Month, Year"
+                    android:textSize="14sp"
+
+                    app:layout_constraintBottom_toTopOf="@id/card"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/main_param" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card"
+                    style="@style/Widget.Material3.CardView.Elevated"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margine_all"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/month_date">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/panel"
+                        style="@style/Widget.Material3.CardView.Filled"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:id="@+id/panel"
                         android:orientation="horizontal"
-                        android:weightSum="8"
-                        android:paddingBottom="@dimen/margine_all"
                         android:paddingTop="@dimen/margine_all"
-                        style="@style/Widget.Material3.CardView.Filled"
+                        android:paddingBottom="@dimen/margine_all"
+                        android:weightSum="8"
 
-                        app:layout_constraintHorizontal_chainStyle="spread"
                         app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintHorizontal_chainStyle="spread"
                         app:layout_constraintTop_toTopOf="parent">
 
 
@@ -110,16 +125,15 @@
 
                             <Button
                                 android:id="@+id/buttom_left"
+                                style="@style/Widget.Material3.Button.IconButton.Outlined"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 app:icon="@drawable/left_button"
-                                style="@style/Widget.Material3.Button.IconButton.Outlined"
 
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
                                 app:layout_constraintRight_toRightOf="parent"
-                                />
+                                app:layout_constraintTop_toTopOf="parent" />
 
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -146,8 +160,8 @@
 
                             <TextView
                                 android:id="@+id/day_1"
-                                android:text="1"
-                                style="?attr/textAppearanceHeadline3"/>
+                                style="?attr/textAppearanceHeadline3"
+                                android:text="1" />
 
 
                         </LinearLayout>
@@ -157,18 +171,20 @@
                             android:layout_width="30dp"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            app:layout_constraintRight_toLeftOf="@id/constraintLayout5"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintLeft_toRightOf="@id/constraintLayout7"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent">
+                            app:layout_constraintRight_toLeftOf="@id/constraintLayout5"
+                            app:layout_constraintTop_toTopOf="parent">
+
                             <TextView
                                 android:id="@+id/tue_text"
                                 style="?attr/textAppearanceHeadline1"
                                 android:text="@string/second_day" />
+
                             <TextView
                                 android:id="@+id/day_2"
-                                android:text="2"
-                                style="?attr/textAppearanceHeadline3"/>
+                                style="?attr/textAppearanceHeadline3"
+                                android:text="2" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -197,14 +213,16 @@
                             android:layout_width="30dp"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            app:layout_constraintRight_toLeftOf="@id/constraintLayout3"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintLeft_toRightOf="@id/constraintLayout5"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent">
+                            app:layout_constraintRight_toLeftOf="@id/constraintLayout3"
+                            app:layout_constraintTop_toTopOf="parent">
+
                             <TextView
                                 android:id="@+id/thu_text"
                                 style="?attr/textAppearanceHeadline1"
                                 android:text="@string/fourth_day" />
+
                             <TextView
                                 android:id="@+id/day_4"
                                 style="?attr/textAppearanceHeadline3"
@@ -216,14 +234,16 @@
                             android:layout_width="30dp"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            app:layout_constraintRight_toLeftOf="@id/constraintLayout2"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintLeft_toRightOf="@id/constraintLayout4"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent">
+                            app:layout_constraintRight_toLeftOf="@id/constraintLayout2"
+                            app:layout_constraintTop_toTopOf="parent">
+
                             <TextView
                                 android:id="@+id/fri_text"
                                 style="?attr/textAppearanceHeadline1"
                                 android:text="@string/fifth_day" />
+
                             <TextView
                                 android:id="@+id/day_5"
                                 style="?attr/textAppearanceHeadline3"
@@ -258,17 +278,16 @@
                             android:orientation="vertical"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintHorizontal_chainStyle="spread"
-                            app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintLeft_toRightOf="@id/constraintLayout2"
+                            app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toTopOf="parent">
 
                             <Button
                                 android:id="@+id/buttom_right"
+                                style="@style/Widget.Material3.Button.IconButton.Outlined"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                app:icon="@drawable/right_button"
-                                style="@style/Widget.Material3.Button.IconButton.Outlined"
-                                />
+                                app:icon="@drawable/right_button" />
 
 
                         </LinearLayout>
@@ -276,25 +295,25 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/view_pager_time_table_fragment"
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/view_pager_and_table_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="?attr/colorSurface"
-        android:paddingLeft="@dimen/margine_all"
-        android:paddingRight="@dimen/margine_all"
 
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/top_info"
-        app:layout_constraintLeft_toLeftOf="parent"/>
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/top_info" />
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progressBar"
+        style="@style/Widget.Material3.LinearProgressIndicator"
         android:layout_width="match_parent"
         android:layout_height="15dp"
+        android:layout_marginTop="2dp"
         android:indeterminate="true"
         android:indeterminateBehavior="cycle"
         android:indeterminateOnly="true"
@@ -302,10 +321,8 @@
         android:indeterminateTintMode="src_in"
         android:visibility="visible"
         app:indicatorColor="@color/red_themes"
-        style="@style/Widget.Material3.LinearProgressIndicator"
-        android:layout_marginTop="2dp"
-        app:layout_constraintTop_toBottomOf="@id/top_info"
-        app:layout_constraintLeft_toLeftOf="parent"/>
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/top_info" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
