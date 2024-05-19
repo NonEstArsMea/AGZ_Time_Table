@@ -30,11 +30,7 @@ class TimeTableFragment : Fragment() {
     private var _binding: TimeTableFragmentBinding? = null
     private val binding get() = _binding!!
 
-    var days = mutableListOf<TextView>()
-    private lateinit var viewPagerAdapter: ViewPagerAdapter
-
-
-    private lateinit var viewPager: ViewPager2
+    private var viewModeIsPager = true
 
 
     @Inject
@@ -62,16 +58,6 @@ class TimeTableFragment : Fragment() {
     ): View {
         _binding = TimeTableFragmentBinding.inflate(inflater, container, false)
 
-        days = listOf(
-            binding.day1,
-            binding.day2,
-            binding.day3,
-            binding.day4,
-            binding.day5,
-            binding.day6,
-        ).toMutableList()
-
-
 
         binding.mainParam.setOnClickListener {
             findNavController().navigate(R.id.searchFragment)
@@ -84,26 +70,8 @@ class TimeTableFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-
-
-
-        // Слушатель на дни
-        days.toList().forEachIndexed { index, textView ->
-            textView.setOnClickListener {
-                viewPager.setCurrentItem(index, true)
-            }
-        }
-
-        binding.buttomLeft.setOnClickListener {
-            updateData(PREVIOUS_WEEK)
-        }
-
-        binding.buttomRight.setOnClickListener {
-            updateData(NEXT_WEEK)
-        }
-
         binding.setDateButton.setOnClickListener {
-            updateData(NOW_WEEK)
+            vm.getNewTimeTable(0)
         }
 
         binding.changeViewMod.setOnClickListener {
@@ -113,16 +81,22 @@ class TimeTableFragment : Fragment() {
         vm.checkMainParam()
 
         binding.monthDate.text = vm.getMonth()
-        setButtonNumbers()
 
         observeViewModel()
-
-
+        updateViewMode()
     }
 
     private fun updateViewMode() {
-        requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.view_pager_and_table_container, TableFragment.newInstance())
+        if (!viewModeIsPager) {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.view_pager_and_table_container, TableFragment.newInstance()).commit()
+        } else {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.view_pager_and_table_container, ViewPagerFragment.newInstance())
+                .commit()
+        }
+        viewModeIsPager = !viewModeIsPager
+
     }
 
 
@@ -139,32 +113,23 @@ class TimeTableFragment : Fragment() {
         }
 
         vm.state.observe(viewLifecycleOwner) {
-            viewPager.doOnLayout { _ ->
-                when (it) {
-                    is LoadData -> {
-                        binding.progressBar.isVisible = true
-                        val list = vm.timeTableFromStorage()
-                        Log.e("storrage_2", list.toString())
-                        viewPagerAdapter.setData(list)
-                    }
+            when (it) {
+                is LoadData -> {
+                    binding.progressBar.isVisible = true
+                }
 
-                    is ConnectionError -> {
-                        binding.progressBar.isVisible = false
-                    }
+                is ConnectionError -> {
+                    binding.progressBar.isVisible = false
+                }
 
-                    is TimeTableIsLoad -> {
-                        binding.progressBar.isVisible = false
-                        viewPagerAdapter.setData(it.list)
-                        viewPager.post {
-                            viewPager.currentItem = vm.getCurrentItem()
-                        }
-                    }
+                is TimeTableIsLoad -> {
+                    binding.progressBar.isVisible = false
+
                 }
             }
 
 
         }
-
     }
 
 
@@ -173,22 +138,5 @@ class TimeTableFragment : Fragment() {
         _binding = null
     }
 
-    private fun setButtonNumbers() {
-        DateManager.dayNumberOnButton().forEachIndexed { index, s ->
-            days[index].text = s
-        }
-    }
-
-    private fun updateData(newTime: Int? = null) {
-        vm.getNewTimeTable(newTime)
-        binding.monthDate.text = vm.getMonth()
-        setButtonNumbers()
-    }
-
-    companion object {
-        private const val PREVIOUS_WEEK = -7
-        private const val NEXT_WEEK = 7
-        private const val NOW_WEEK = 0
-    }
 
 }

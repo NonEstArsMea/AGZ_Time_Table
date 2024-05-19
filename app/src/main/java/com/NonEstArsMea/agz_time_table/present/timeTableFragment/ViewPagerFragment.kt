@@ -1,38 +1,88 @@
 package com.NonEstArsMea.agz_time_table.present.timeTableFragment
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.core.view.doOnLayout
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.NonEstArsMea.agz_time_table.R
+import com.NonEstArsMea.agz_time_table.databinding.ViewPagerBinding
+import com.NonEstArsMea.agz_time_table.present.TimeTableApplication
+import com.NonEstArsMea.agz_time_table.present.mainActivity.MainViewModelFactory
 import com.NonEstArsMea.agz_time_table.present.timeTableFragment.viewPager.ViewPagerAdapter
+import com.NonEstArsMea.agz_time_table.util.DateManager
+import javax.inject.Inject
 
-
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 class ViewPagerFragment : Fragment() {
 
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+    private lateinit var vm: TimeTableViewModel
+
+    private var days = mutableListOf<TextView>()
+
+    @Inject
+    lateinit var timeTableViewModelFactory: MainViewModelFactory
+
+
+    private var _binding: ViewPagerBinding? = null
+    private val binding get() = _binding!!
+
+    private val component by lazy {
+        (requireActivity().application as TimeTableApplication).component
     }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        component.inject(this)
+
+        Log.e("VPF", "attach")
+
+        vm = ViewModelProvider(
+            this,
+            timeTableViewModelFactory
+        )[TimeTableViewModel::class.java]
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
+        _binding = ViewPagerBinding.inflate(layoutInflater)
 
-        val viewPager: ViewPager2 = requireActivity().findViewById(R.id.view_pager_time_table_fragment)
+        days = listOf(
+            binding.day1,
+            binding.day2,
+            binding.day3,
+            binding.day4,
+            binding.day5,
+            binding.day6,
+        ).toMutableList()
+
+        // Слушатель на дни
+        days.toList().forEachIndexed { index, textView ->
+            textView.setOnClickListener {
+                // viewPager.setCurrentItem(index, true)
+            }
+        }
+
+        binding.buttomLeft.setOnClickListener {
+            updateData(PREVIOUS_WEEK)
+        }
+
+        binding.buttomRight.setOnClickListener {
+            updateData(NEXT_WEEK)
+        }
+
+        val viewPager: ViewPager2 = binding.viewPagerTimeTableFragment
         val viewPagerAdapter = ViewPagerAdapter(this)
         viewPager.adapter = viewPagerAdapter
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -46,27 +96,63 @@ class ViewPagerFragment : Fragment() {
                             resources.getDrawable(R.drawable.main_surface, context.theme)
                     }
                     with(days[position]) {
-                        this.setTextAppearance(com.NonEstArsMea.agz_time_table.R.style.MainTextViewStyle_DayNowWeekNumber)
+                        this.setTextAppearance(R.style.MainTextViewStyle_DayNowWeekNumber)
                         this.background =
-                            resources.getDrawable(com.NonEstArsMea.agz_time_table.R.drawable.break_cell_background, context.theme)
+                            resources.getDrawable(R.drawable.break_cell_background, context.theme)
                     }
                 }
 
             }
         })
 
-        return inflater.inflate(R.layout.view_pager, container, false)
+        setButtonNumbers()
+        observeViewModel(viewPager, viewPagerAdapter)
+
+        return binding.root
+    }
+
+    private fun observeViewModel(viewPager: ViewPager2, viewPagerAdapter: ViewPagerAdapter) {
+        vm.state.observe(viewLifecycleOwner) {
+            viewPager.doOnLayout { _ ->
+                when (it) {
+                    is LoadData -> {
+                        val list = vm.timeTableFromStorage()
+                        viewPagerAdapter.setData(list)
+                    }
+
+                    is ConnectionError -> {}
+
+                    is TimeTableIsLoad -> {
+                        viewPagerAdapter.setData(it.list)
+                        viewPager.post {
+                            viewPager.currentItem = vm.getCurrentItem()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    private fun setButtonNumbers() {
+        DateManager.dayNumberOnButton().forEachIndexed { index, s ->
+            days[index].text = s
+        }
+    }
+
+    private fun updateData(newTime: Int? = null) {
+        vm.getNewTimeTable(newTime)
+        setButtonNumbers()
     }
 
     companion object {
 
+        private const val PREVIOUS_WEEK = -7
+        private const val NEXT_WEEK = 7
+        private const val NOW_WEEK = 0
+
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ViewPagerFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        fun newInstance() = ViewPagerFragment()
+
     }
 }

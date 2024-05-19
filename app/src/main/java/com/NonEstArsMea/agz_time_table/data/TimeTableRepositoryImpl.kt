@@ -66,7 +66,6 @@ class TimeTableRepositoryImpl @Inject constructor(
         var themas: String
 
         for (line in csvParser) {
-
             group = line.get(0)
             les = line.get(2).toInt() - 1
             aud = line.get(3)

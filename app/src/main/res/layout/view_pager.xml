@@ -1,10 +1,224 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.viewpager2.widget.ViewPager2 xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/view_pager_time_table_fragment"
-    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorSurface"
-    android:paddingLeft="@dimen/margine_all"
-    android:paddingRight="@dimen/margine_all"
-    />
+     android:layout_width="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card"
+        style="@style/Widget.Material3.CardView.Elevated"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margine_all"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/month_date">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/panel"
+            style="@style/Widget.Material3.CardView.Filled"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/margine_all"
+            android:paddingBottom="@dimen/margine_all"
+            android:weightSum="8"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_buttom_left"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/constraintLayout7"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <Button
+                    android:id="@+id/buttom_left"
+                    style="@style/Widget.Material3.Button.IconButton.Outlined"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:icon="@drawable/left_button"
+
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <LinearLayout
+                android:id="@+id/constraintLayout7"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintLeft_toRightOf="@id/cl_buttom_left"
+                app:layout_constraintRight_toLeftOf="@id/constraintLayout6"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/mon_text"
+                    style="?attr/textAppearanceHeadline1"
+                    android:text="@string/first_day"
+
+                    />
+
+                <TextView
+                    android:id="@+id/day_1"
+                    style="?attr/textAppearanceHeadline3"
+                    android:text="1" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/constraintLayout6"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/constraintLayout7"
+                app:layout_constraintRight_toLeftOf="@id/constraintLayout5"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/tue_text"
+                    style="?attr/textAppearanceHeadline1"
+                    android:text="@string/second_day" />
+
+                <TextView
+                    android:id="@+id/day_2"
+                    style="?attr/textAppearanceHeadline3"
+                    android:text="2" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/constraintLayout5"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/constraintLayout6"
+                app:layout_constraintRight_toLeftOf="@id/constraintLayout4"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/wed_text"
+                    style="?attr/textAppearanceHeadline1"
+                    android:text="@string/third_day" />
+
+                <TextView
+                    android:id="@+id/day_3"
+                    style="?attr/textAppearanceHeadline3"
+                    android:text="3" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/constraintLayout4"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/constraintLayout5"
+                app:layout_constraintRight_toLeftOf="@id/constraintLayout3"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/thu_text"
+                    style="?attr/textAppearanceHeadline1"
+                    android:text="@string/fourth_day" />
+
+                <TextView
+                    android:id="@+id/day_4"
+                    style="?attr/textAppearanceHeadline3"
+                    android:text="4" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/constraintLayout3"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/constraintLayout4"
+                app:layout_constraintRight_toLeftOf="@id/constraintLayout2"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/fri_text"
+                    style="?attr/textAppearanceHeadline1"
+                    android:text="@string/fifth_day" />
+
+                <TextView
+                    android:id="@+id/day_5"
+                    style="?attr/textAppearanceHeadline3"
+                    android:text="5" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/constraintLayout2"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/constraintLayout3"
+                app:layout_constraintRight_toLeftOf="@id/cl_buttom_right"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/sat_text"
+                    style="?attr/textAppearanceHeadline1"
+                    android:text="@string/sixth_day" />
+
+                <TextView
+                    android:id="@+id/day_6"
+                    style="?attr/textAppearanceHeadline3"
+                    android:text="6" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/cl_buttom_right"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintLeft_toRightOf="@id/constraintLayout2"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <Button
+                    android:id="@+id/buttom_right"
+                    style="@style/Widget.Material3.Button.IconButton.Outlined"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:icon="@drawable/right_button" />
+
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager_time_table_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/colorSurface"
+        android:paddingLeft="@dimen/margine_all"
+        android:paddingRight="@dimen/margine_all" />
+</LinearLayout>

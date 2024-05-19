@@ -8,6 +8,7 @@ import com.NonEstArsMea.agz_time_table.present.mainActivity.MainActivity
 import com.NonEstArsMea.agz_time_table.present.searchFragment.SearchFragment
 import com.NonEstArsMea.agz_time_table.present.settingFragment.SettingFragment
 import com.NonEstArsMea.agz_time_table.present.timeTableFragment.TimeTableFragment
+import com.NonEstArsMea.agz_time_table.present.timeTableFragment.ViewPagerFragment
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -29,6 +30,8 @@ interface ApplicationComponent {
     fun inject(fragment: ExamsFragment)
 
     fun inject(fragment: CustomDateFragment)
+
+    fun inject(fragment: ViewPagerFragment)
 
     @Component.Factory
     interface Factory {
