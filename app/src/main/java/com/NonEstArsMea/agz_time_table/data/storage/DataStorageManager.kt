@@ -29,11 +29,15 @@ class DataStorageManager @Inject constructor(
     fun loadData(): List<List<CellClass>> {
         var yourList: List<List<CellClass>>? = null
 
+        try {
             val fis = context.openFileInput(FILE_NAME)
             val ois = ObjectInputStream(fis)
             yourList = ois.readObject() as List<List<CellClass>>?
             ois.close()
             fis.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
 
         Log.e("storrage_load", yourList.toString())
         return yourList ?: emptyList()

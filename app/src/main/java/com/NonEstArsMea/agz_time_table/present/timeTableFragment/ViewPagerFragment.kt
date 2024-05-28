@@ -67,12 +67,6 @@ class ViewPagerFragment : Fragment() {
             binding.day6,
         ).toMutableList()
 
-        // Слушатель на дни
-        days.toList().forEachIndexed { index, textView ->
-            textView.setOnClickListener {
-                // viewPager.setCurrentItem(index, true)
-            }
-        }
 
         binding.buttomLeft.setOnClickListener {
             updateData(PREVIOUS_WEEK)
@@ -84,6 +78,14 @@ class ViewPagerFragment : Fragment() {
 
         val viewPager: ViewPager2 = binding.viewPagerTimeTableFragment
         val viewPagerAdapter = ViewPagerAdapter(this)
+
+        // Слушатель на дни
+        days.toList().forEachIndexed { index, textView ->
+            textView.setOnClickListener {
+                viewPager.setCurrentItem(index, true)
+            }
+        }
+
         viewPager.adapter = viewPagerAdapter
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             @SuppressLint("UseCompatLoadingForDrawables")
@@ -105,6 +107,7 @@ class ViewPagerFragment : Fragment() {
             }
         })
 
+        updateData(NOW_WEEK)
         setButtonNumbers()
         observeViewModel(viewPager, viewPagerAdapter)
 
