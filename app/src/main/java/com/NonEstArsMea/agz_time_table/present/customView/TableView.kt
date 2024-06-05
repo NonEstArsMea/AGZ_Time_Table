@@ -29,7 +29,7 @@ class NewView @JvmOverloads constructor(
 ) : View(context, attrs, defStyleAttr) {
 
     // Основная информация об строках и колонках
-    private val minRowHight = 250
+    private val minRowHight = 50
     private val namesRowHight = 170
     private val columnWidth = 600f
 
@@ -181,15 +181,11 @@ class NewView @JvmOverloads constructor(
 
 
         val texts = listOf(
-            "Текст \n12345678910112\n1314151617181920212223242526",
-            "Текст 2",
-            "Текст 3",
-            "Текст \n" +
-                    "12345678910112\n" +
-                    "1314151617181920212223242526",
-            "Текст 2",
-            "Текст 3",
-            "Текст 4"
+            "1 Пара",
+            "2 Пара",
+            "3 Пара",
+            "4 Пара",
+            "5 Пара",
         )
 
         repeat(COUNT_OF_LESSONS) { index ->
@@ -202,12 +198,13 @@ class NewView @JvmOverloads constructor(
                     dateNamePaint
                 )
             // Получаем ячейки с парами и измеряем их
-            for (day in timeTable) {
-                for (lessonOfDay in day) {
-                    lessonOfDay.subjectNumber?.let {
+            for (day in timeTable.indices) {
+                for (lessonOfDay in timeTable[day].indices) {
+                    timeTable[day][lessonOfDay].subjectNumber?.let {
                         val lesson = LessonsRect(
-                            text = lessonOfDay.subject!! + "\n" + lessonOfDay.subject + "\n" + lessonOfDay.subject + "\n" + lessonOfDay.subject + "\n" + lessonOfDay.subject,
-                            dayOfLesson = lessonOfDay.subjectNumber!!,
+                            text = timeTable[day][lessonOfDay].subject!!,
+                            dayOfLesson = day,
+                            subjectNumber = timeTable[day][lessonOfDay].subjectNumber!!,
                             lastY = lastY.toInt(),
                             hightOfRow = maxHeightOfRow
                         )
@@ -222,24 +219,24 @@ class NewView @JvmOverloads constructor(
 
             rowRect.set(
                 /* left = */ 0,
-                /* top = */
-                (lastY + transformations.translationY).toInt(),
-                /* right = */
-                width,
-                /* bottom = */
-                (lastY + (maxHeightOfRow * transformations.scaleFactor) + transformations.translationY).toInt()
+                /* top = */(lastY + transformations.translationY).toInt(),
+                /* right = */width,
+                /* bottom = */(lastY + (maxHeightOfRow * transformations.scaleFactor) + transformations.translationY).toInt()
             )
 
             rowPaint.color = rowColors[index % 2]
             drawRect(rowRect, rowPaint)
 
             // Получаем ячейки с парами и измеряем их
-            for (day in timeTable) {
-                for (lessonOfDay in day) {
-                    lessonOfDay.subjectNumber?.let {
+            for (day in timeTable.indices) {
+                Log.e("rectOfLesson", timeTable[day].toString())
+                for (lessonOfDay in timeTable[day].indices) {
+                    Log.e("rectOfLesson", timeTable[day][lessonOfDay].toString())
+                    timeTable[day][lessonOfDay].subjectNumber?.let {
                         val lesson = LessonsRect(
-                            text = lessonOfDay.subject!! + "\n" + lessonOfDay.subject + "\n" + lessonOfDay.subject + "\n" + lessonOfDay.subject + "\n" + lessonOfDay.subject,
-                            dayOfLesson = lessonOfDay.subjectNumber!!,
+                            text = timeTable[day][lessonOfDay].subject!!,
+                            dayOfLesson = day,
+                            subjectNumber = timeTable[day][lessonOfDay].subjectNumber!!,
                             lastY = lastY.toInt(),
                             hightOfRow = maxHeightOfRow
                         )
@@ -290,15 +287,19 @@ class NewView @JvmOverloads constructor(
         currentPeriods.forEachIndexed { index, periodName ->
             // По X текст рисуется относительно его начала
             val staticLayout = StaticLayout.Builder.obtain(
-                periodName, 0, periodName.length, dateNamePaint,
-                layoutColumnWidth.toInt()
+                /* source = */ periodName,
+                /* start = */0,
+                /* end = */periodName.length,
+                /* paint = */dateNamePaint,
+                /* width = */layoutColumnWidth.toInt()
             )
                 .setAlignment(Layout.Alignment.ALIGN_CENTER)
                 .setLineSpacing(0f, 1f)
                 .setIncludePad(true)
                 .build()
 
-            textY = ((namesRowHight - staticLayout.height) / 2 * transformations.scaleFactor) + transformations.translationY
+            textY =
+                ((namesRowHight - staticLayout.height) / 2 * transformations.scaleFactor) + transformations.translationY
             textX = lastX + (columnWidth - staticLayout.width) / 2 * transformations.scaleFactor
 
             this.save()
@@ -394,13 +395,13 @@ class NewView @JvmOverloads constructor(
 
 
     companion object {
-        const val COUNT_OF_LESSONS = 6
+        const val COUNT_OF_LESSONS = 5
     }
 
     private inner class Transformations {
 
         var scaleFactor = 1.0f
-        private var minScaleFactor = 0.5f
+        private var minScaleFactor = 0.1f
         private var maxScaleFactor = 20.0f
 
         var translationX = 0f
@@ -412,7 +413,7 @@ class NewView @JvmOverloads constructor(
         private val minTranslationX: Float
             get() = (width - contentWidth * scaleFactor).coerceAtMost(0f).toFloat()
         private val minTranslationY: Float
-            get() = (height - contentHeight * scaleFactor).coerceAtMost(0f).toFloat()
+            get() = (height - contentHeight).coerceAtMost(0).toFloat()
 
         fun addTranslation(dx: Float, dy: Float) {
             translationX = (translationX + dx).coerceIn(minTranslationX, 0f)
@@ -422,9 +423,10 @@ class NewView @JvmOverloads constructor(
 
         fun addScale(sx: Float) {
             Log.e("scale", sx.toString())
-            scaleFactor = (scaleFactor * sx).coerceIn(minScaleFactor, maxScaleFactor)
-            if (scaleFactor > 1) {
+            Log.e("scale", scaleFactor.toString())
+            if (sx > 1) {
                 if (scaleFactor < maxScaleFactor) {
+                    scaleFactor = (scaleFactor * sx).coerceIn(minScaleFactor, maxScaleFactor)
                     translationX = (translationX * sx).coerceIn(minTranslationX, 0f)
                     translationY = (translationY * sx).coerceIn(minTranslationY, 0f)
                     invalidate()
@@ -432,6 +434,7 @@ class NewView @JvmOverloads constructor(
 
             } else {
                 if (scaleFactor > minScaleFactor && (height < contentHeight)) {
+                    scaleFactor = (scaleFactor * sx).coerceIn(minScaleFactor, maxScaleFactor)
                     translationX = (translationX * sx).coerceIn(minTranslationX, 0f)
                     translationY = (translationY * sx).coerceIn(minTranslationY, 0f)
                     invalidate()
@@ -445,6 +448,7 @@ class NewView @JvmOverloads constructor(
         val text: String,
         val dayOfLesson: Int,
         val lastY: Int,
+        val subjectNumber: Int,
         var hightOfRow: Int
     ) {
 
@@ -486,7 +490,7 @@ class NewView @JvmOverloads constructor(
             dateNamePaint,
             true
         )
-        val height = max(staticLayout.height, hightOfRow) + paddingY
+        val height = staticLayout.height + paddingY
 
 
         fun updateInitialRect() {
@@ -523,7 +527,7 @@ class NewView @JvmOverloads constructor(
             path.addRoundRect(rect, rectRadius, rectRadius, Path.Direction.CW)
             canvas.drawPath(path, paint)
 
-            paint.color = resources.getColor(R.color.teal_700)
+            paint.color = resources.getColor(R.color.gray_light)
             // Отрисовка боковой части
             with(path) {
                 reset()

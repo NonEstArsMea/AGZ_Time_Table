@@ -83,17 +83,19 @@ class TimeTableFragment : Fragment() {
         binding.monthDate.text = vm.getMonth()
 
         observeViewModel()
-        updateViewMode()
+
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.view_pager_and_table_container, ViewPagerFragment.newInstance()).commit()
     }
 
     private fun updateViewMode() {
-        if (!viewModeIsPager) {
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.view_pager_and_table_container, TableFragment.newInstance()).commit()
-        } else {
+        if (viewModeIsPager) {
             parentFragmentManager.beginTransaction()
                 .replace(R.id.view_pager_and_table_container, ViewPagerFragment.newInstance())
                 .commit()
+        } else {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.view_pager_and_table_container, TableFragment.newInstance()).commit()
         }
         viewModeIsPager = !viewModeIsPager
 
@@ -119,7 +121,7 @@ class TimeTableFragment : Fragment() {
                 }
 
                 is ConnectionError -> {
-                    binding.progressBar.isVisible = false
+                    binding.progressBar.isVisible = true
                 }
 
                 is TimeTableIsLoad -> {
