@@ -198,6 +198,25 @@ class NewView @JvmOverloads constructor(
                     dateNamePaint
                 )
             // Получаем ячейки с парами и измеряем их
+
+            (0..4).forEach { numberOfLesson ->
+                for (day in timeTable) {
+                    if (day.size - 1 >= numberOfLesson) {
+                        Log.e("lessons", "${day.size}   $numberOfLesson")
+                        val lesson = LessonsRect(
+                            text = day[numberOfLesson].subject!!,
+                            dayOfLesson = numberOfLesson + 1,
+                            subjectNumber = day[numberOfLesson].subjectNumber!!,
+                            lastY = lastY.toInt(),
+                            hightOfRow = maxHeightOfRow
+                        )
+                        maxHeightOfRow = max(lesson.height.toInt(), maxHeightOfRow)
+                    }
+                }
+            }
+
+            Log.e("flag", "------------------------------- $timeTable")
+
             for (day in timeTable.indices) {
                 for (lessonOfDay in timeTable[day].indices) {
                     timeTable[day][lessonOfDay].subjectNumber?.let {
@@ -219,24 +238,26 @@ class NewView @JvmOverloads constructor(
 
             rowRect.set(
                 /* left = */ 0,
-                /* top = */(lastY + transformations.translationY).toInt(),
-                /* right = */width,
-                /* bottom = */(lastY + (maxHeightOfRow * transformations.scaleFactor) + transformations.translationY).toInt()
+                /* top = */
+                (lastY + transformations.translationY).toInt(),
+                /* right = */
+                width,
+                /* bottom = */
+                (lastY + (maxHeightOfRow * transformations.scaleFactor) + transformations.translationY).toInt()
             )
 
             rowPaint.color = rowColors[index % 2]
             drawRect(rowRect, rowPaint)
 
             // Получаем ячейки с парами и измеряем их
-            for (day in timeTable.indices) {
-                Log.e("rectOfLesson", timeTable[day].toString())
-                for (lessonOfDay in timeTable[day].indices) {
-                    Log.e("rectOfLesson", timeTable[day][lessonOfDay].toString())
-                    timeTable[day][lessonOfDay].subjectNumber?.let {
+            (0..4).forEach { numberOfLesson ->
+                for (day in timeTable) {
+                    if (day.size - 1 >= numberOfLesson) {
+                        Log.e("lessons", "${day.size}   $numberOfLesson")
                         val lesson = LessonsRect(
-                            text = timeTable[day][lessonOfDay].subject!!,
-                            dayOfLesson = day,
-                            subjectNumber = timeTable[day][lessonOfDay].subjectNumber!!,
+                            text = day[numberOfLesson].subject!!,
+                            dayOfLesson = numberOfLesson + 1,
+                            subjectNumber = day[numberOfLesson].subjectNumber!!,
                             lastY = lastY.toInt(),
                             hightOfRow = maxHeightOfRow
                         )
@@ -336,7 +357,12 @@ class NewView @JvmOverloads constructor(
 
     fun setTimeTable(timeTable: List<List<CellClass>>) {
         if (timeTable != this.timeTable) {
-            this.timeTable = timeTable
+            val list = timeTable.map { listOfCell ->
+                listOfCell.filter {
+                    it.subjectNumber != null
+                }
+            }
+            this.timeTable = list
             requestLayout()
             invalidate()
         }
