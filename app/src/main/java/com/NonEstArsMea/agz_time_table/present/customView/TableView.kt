@@ -29,9 +29,9 @@ class NewView @JvmOverloads constructor(
 ) : View(context, attrs, defStyleAttr) {
 
     // Основная информация об строках и колонках
-    private val minRowHight = 50
+    private val minRowHight = 170
     private val namesRowHight = 170
-    private val columnWidth = 600f
+    private val columnWidth = 350f
 
     private var dateTextSize = 200f
 
@@ -43,17 +43,6 @@ class NewView @JvmOverloads constructor(
     // Отвечает за зум и сдвиги
     private val transformations = Transformations()
 
-    // Радиус скругления углов таски
-    private val taskCornerRadius = resources.getDimension(R.dimen.gant_task_corner_radius)
-
-    // Вертикальный отступ таски внутри строки
-    private val taskVerticalMargin = resources.getDimension(R.dimen.gant_task_vertical_margin)
-
-    // Для фигур тасок
-    private val taskShapePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        style = Paint.Style.FILL
-        color = Color.GRAY
-    }
 
     // Значения последнего эвента
     private val lastPoint = PointF()
@@ -70,39 +59,29 @@ class NewView @JvmOverloads constructor(
 
     private val rowPaint = Paint().apply {
         style = Paint.Style.FILL
-        color = Color.RED
+        color = Color.TRANSPARENT
     }
 
     private val separatorsPaint = Paint().apply {
-        strokeWidth = 0f
+        strokeWidth = 2f
         color = Color.GRAY
     }
 
     private val mainSeparatorsPaint = Paint().apply {
         strokeWidth = 2f
-        color = Color.BLACK
+        color = context.getColor(R.color.gray_400)
     }
 
-
-    private val periodNamePaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
-        textSize = resources.getDimension(R.dimen.gant_period_name_text_size)
-        color = ContextCompat.getColor(context, R.color.grey_500)
-    }
 
     private val dateNamePaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
         textSize = resources.getDimension(R.dimen.gant_period_name_text_size)
         isFakeBoldText = true
-        color = ContextCompat.getColor(context, R.color.grey_500)
+        color = ContextCompat.getColor(context, R.color.black)
     }
 
     // Rect для рисования строк
     private val rowRect = Rect()
 
-    // Чередующиеся цвета строк
-    private val rowColors = listOf(
-        ContextCompat.getColor(context, R.color.red_themes_500),
-        Color.WHITE
-    )
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val width = if (MeasureSpec.getMode(widthMeasureSpec) == MeasureSpec.UNSPECIFIED) {
@@ -174,7 +153,6 @@ class NewView @JvmOverloads constructor(
         var lastY = namesRowHight.toFloat() * transformations.scaleFactor
         val lastX = transformations.translationX
 
-        var rowHeight: Int
         val paddingLeftAndRight = 5
         var textY: Float
         var textX: Float
@@ -215,6 +193,7 @@ class NewView @JvmOverloads constructor(
                 }
             }
 
+
             Log.e("flag", "------------------------------- $timeTable")
 
             for (day in timeTable.indices) {
@@ -235,7 +214,6 @@ class NewView @JvmOverloads constructor(
             maxHeightOfRow = max(nameOfROwStaticLayout.height, maxHeightOfRow)
 
 
-
             rowRect.set(
                 /* left = */ 0,
                 /* top = */
@@ -246,14 +224,13 @@ class NewView @JvmOverloads constructor(
                 (lastY + (maxHeightOfRow * transformations.scaleFactor) + transformations.translationY).toInt()
             )
 
-            rowPaint.color = rowColors[index % 2]
+
             drawRect(rowRect, rowPaint)
 
             // Получаем ячейки с парами и измеряем их
             (0..4).forEach { numberOfLesson ->
                 for (day in timeTable) {
                     if (day.size - 1 >= numberOfLesson) {
-                        Log.e("lessons", "${day.size}   $numberOfLesson")
                         val lesson = LessonsRect(
                             text = day[numberOfLesson].subject!!,
                             dayOfLesson = numberOfLesson + 1,
@@ -271,6 +248,7 @@ class NewView @JvmOverloads constructor(
 
 
 
+
             textY =
                 (lastY + (maxHeightOfRow - nameOfROwStaticLayout.height) * transformations.scaleFactor / 2) + transformations.translationY
             textX = paddingLeftAndRight.toFloat() + lastX
@@ -282,6 +260,15 @@ class NewView @JvmOverloads constructor(
             this.restore()
 
             lastY += (maxHeightOfRow * transformations.scaleFactor)
+
+            // Разделитель
+            drawLine(
+                /* startX = */ 0f,
+                /* startY = */ (lastY  + transformations.translationY - 5f),
+                /* stopX = */ width.toFloat(),
+                /* stopY = */ (lastY  + transformations.translationY - 5f),
+                /* paint = */ separatorsPaint
+            )
 
         }
         contentHeight = lastY.toInt()
@@ -349,6 +336,89 @@ class NewView @JvmOverloads constructor(
         drawRowsAndDates()
         drawPeriods()
         drawTimeAndDateLine()
+
+        setTimeTable(
+            listOf(
+                listOf(
+                    CellClass(
+                        subject = "Автомобильная подготовка",
+                        teacher = "Кузнецов Е . В .",
+                        classroom = "1 / 220",
+                        studyGroup = "213",
+                        date = "4 - 03 - 2024",
+                        subjectType = "6.4 Групповое занятие",
+                        startTime = "09:00",
+                        endTime = "10:30",
+                        subjectNumber = 1,
+                        noEmpty = true,
+                        text = null,
+                        lessonTheme = null,
+                        color = 2131231033,
+                        viewType = null,
+                        viewSize = null,
+                        isGone = true,
+                        department = "34"
+                    ),
+                    CellClass(
+                        subject = "Автомобильная подготовка",
+                        teacher = "Кузнецов Е . В .",
+                        classroom = "1 / 220",
+                        studyGroup = "213",
+                        date = "4 - 03 - 2024",
+                        subjectType = "6.4 Групповое занятие",
+                        startTime = "09:00",
+                        endTime = "10:30",
+                        subjectNumber = 1,
+                        noEmpty = true,
+                        text = null,
+                        lessonTheme = null,
+                        color = 2131231033,
+                        viewType = null,
+                        viewSize = null,
+                        isGone = true,
+                        department = "34"
+                    ),
+                    CellClass(
+                        subject = "Автомобильная подготовка",
+                        teacher = "Кузнецов Е . В .",
+                        classroom = "1 / 220",
+                        studyGroup = "213",
+                        date = "4 - 03 - 2024",
+                        subjectType = "6.4 Групповое занятие",
+                        startTime = "09:00",
+                        endTime = "10:30",
+                        subjectNumber = 2,
+                        noEmpty = true,
+                        text = null,
+                        lessonTheme = null,
+                        color = 2131231033,
+                        viewType = null,
+                        viewSize = null,
+                        isGone = true,
+                        department = "34"
+                    ),
+                    CellClass(
+                        subject = "Автомобильная подготовка",
+                        teacher = "Кузнецов Е . В .",
+                        classroom = "1 / 220",
+                        studyGroup = "213",
+                        date = "4 - 03 - 2024",
+                        subjectType = "6.4 Групповое занятие",
+                        startTime = "09:00",
+                        endTime = "10:30",
+                        subjectNumber = 2,
+                        noEmpty = true,
+                        text = null,
+                        lessonTheme = null,
+                        color = 2131231033,
+                        viewType = null,
+                        viewSize = null,
+                        isGone = true,
+                        department = "34"
+                    )
+                )
+            )
+        )
     }
 
 
@@ -448,8 +518,6 @@ class NewView @JvmOverloads constructor(
         }
 
         fun addScale(sx: Float) {
-            Log.e("scale", sx.toString())
-            Log.e("scale", scaleFactor.toString())
             if (sx > 1) {
                 if (scaleFactor < maxScaleFactor) {
                     scaleFactor = (scaleFactor * sx).coerceIn(minScaleFactor, maxScaleFactor)
@@ -492,14 +560,16 @@ class NewView @JvmOverloads constructor(
         }
 
         private val strokePaint = Paint().apply {
+            isAntiAlias = true
             style = Paint.Style.STROKE
             strokeWidth = strokeWidth
             color = Color.BLACK
         }
 
         private val strokeWidth = 1f
-        val paddingX = 5f
-        val paddingY = 5f
+        val paddingX = 10f
+        val paddingY = 10f
+        val margin = 15f
         private val path = Path()
         private val path2 = Path()
 
@@ -512,12 +582,11 @@ class NewView @JvmOverloads constructor(
 
         private val staticLayout = getStaticLayout(
             text,
-            columnWidth.toInt() - paddingX.toInt() - paddingX.toInt(),
+            columnWidth.toInt() - paddingX.toInt() - paddingX.toInt()- margin.toInt() - margin.toInt(),
             dateNamePaint,
             true
         )
-        val height = staticLayout.height + paddingY
-
+        val height = staticLayout.height + paddingY + paddingY + margin + margin
 
         fun updateInitialRect() {
 
@@ -531,10 +600,10 @@ class NewView @JvmOverloads constructor(
             }
 
             untransformedRect.set(
-                getX(dayOfLesson) * transformations.scaleFactor + transformations.translationX + paddingX,
-                lastY.toFloat() + transformations.translationY + paddingY,
-                getEndX(dayOfLesson) * transformations.scaleFactor + transformations.translationX - paddingX,
-                (lastY + height * transformations.scaleFactor) + transformations.translationY - paddingY,
+                getX(dayOfLesson) * transformations.scaleFactor + transformations.translationX + margin,
+                lastY.toFloat() + transformations.translationY + margin,
+                getEndX(dayOfLesson) * transformations.scaleFactor + transformations.translationX - margin,
+                (lastY + height * transformations.scaleFactor) + transformations.translationY - margin - paddingY,
             )
             rect.set(untransformedRect)
         }
@@ -583,7 +652,7 @@ class NewView @JvmOverloads constructor(
             canvas.drawRoundRect(strokeRect, rectRadius, verticalLineSize, strokePaint)
 
             canvas.save()
-            canvas.translate(rect.left + verticalLineSize + paddingX, rect.top + paddingY)
+            canvas.translate(rect.left + verticalLineSize + paddingX, rect.top + (rect.bottom - rect.top - staticLayout.height) / 2 )
             canvas.scale(transformations.scaleFactor, transformations.scaleFactor)
             staticLayout.draw(canvas)
             canvas.restore()
