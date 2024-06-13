@@ -20,6 +20,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellClass
+import com.NonEstArsMea.agz_time_table.util.getStaticLayout
 import java.lang.Integer.max
 
 class NewView @JvmOverloads constructor(
@@ -660,27 +661,4 @@ class NewView @JvmOverloads constructor(
 
     }
 
-    fun getStaticLayout(
-        text: String,
-        width: Int,
-        paint: TextPaint,
-        alignLeft: Boolean = false
-    ): StaticLayout {
-        val align = if (alignLeft) {
-            Layout.Alignment.ALIGN_NORMAL
-        } else {
-            Layout.Alignment.ALIGN_CENTER
-        }
-        return StaticLayout.Builder.obtain(
-            /* source = */ text,
-            /* start = */  0,
-            /* end = */    text.length,
-            /* paint = */  paint,
-            /* width = */  width - 10
-        )
-            .setAlignment(align)
-            .setLineSpacing(0f, 1f)
-            .setIncludePad(true)
-            .build()
-    }
 }
