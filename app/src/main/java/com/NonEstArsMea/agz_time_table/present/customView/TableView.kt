@@ -40,10 +40,8 @@ class NewView @JvmOverloads constructor(
         get() = max(width, (columnWidth * 6 + dateTextSize).toInt())
     private var contentHeight = 500
 
-
     // Отвечает за зум и сдвиги
     private val transformations = Transformations()
-
 
     // Значения последнего эвента
     private val lastPoint = PointF()
@@ -72,7 +70,6 @@ class NewView @JvmOverloads constructor(
         strokeWidth = 2f
         color = context.getColor(R.color.gray_400)
     }
-
 
     private val dateNamePaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
         textSize = resources.getDimension(R.dimen.gant_period_name_text_size)
@@ -118,6 +115,7 @@ class NewView @JvmOverloads constructor(
 
     }
 
+    // Отрисовка просто линии
     private fun Canvas.drawTimeAndDateLine() {
         // Линия для отделения времени
         drawLine(
@@ -147,7 +145,7 @@ class NewView @JvmOverloads constructor(
         )
     }
 
-
+    // Отрисовка конкретных данных в строках
     private fun Canvas.drawRowsAndDates() {
 
 
@@ -185,7 +183,6 @@ class NewView @JvmOverloads constructor(
                         val lesson = LessonsRect(
                             text = day[numberOfLesson].subject!!,
                             dayOfLesson = numberOfLesson + 1,
-                            subjectNumber = day[numberOfLesson].subjectNumber!!,
                             lastY = lastY.toInt(),
                             hightOfRow = maxHeightOfRow
                         )
@@ -203,7 +200,6 @@ class NewView @JvmOverloads constructor(
                         val lesson = LessonsRect(
                             text = timeTable[day][lessonOfDay].subject!!,
                             dayOfLesson = day,
-                            subjectNumber = timeTable[day][lessonOfDay].subjectNumber!!,
                             lastY = lastY.toInt(),
                             hightOfRow = maxHeightOfRow
                         )
@@ -235,7 +231,6 @@ class NewView @JvmOverloads constructor(
                         val lesson = LessonsRect(
                             text = day[numberOfLesson].subject!!,
                             dayOfLesson = numberOfLesson + 1,
-                            subjectNumber = day[numberOfLesson].subjectNumber!!,
                             lastY = lastY.toInt(),
                             hightOfRow = maxHeightOfRow
                         )
@@ -265,9 +260,9 @@ class NewView @JvmOverloads constructor(
             // Разделитель
             drawLine(
                 /* startX = */ 0f,
-                /* startY = */ (lastY  + transformations.translationY - 5f),
+                /* startY = */ (lastY + transformations.translationY - 5f),
                 /* stopX = */ width.toFloat(),
-                /* stopY = */ (lastY  + transformations.translationY - 5f),
+                /* stopY = */ (lastY + transformations.translationY - 5f),
                 /* paint = */ separatorsPaint
             )
 
@@ -276,7 +271,7 @@ class NewView @JvmOverloads constructor(
 
     }
 
-
+    // Отрисовка линий колонн и названия колонн
     private fun Canvas.drawPeriods() {
         val currentPeriods = listOf(
             "17\n" + "ПН",
@@ -491,10 +486,6 @@ class NewView @JvmOverloads constructor(
     }
 
 
-    companion object {
-        const val COUNT_OF_LESSONS = 5
-    }
-
     private inner class Transformations {
 
         var scaleFactor = 1.0f
@@ -543,31 +534,31 @@ class NewView @JvmOverloads constructor(
         val text: String,
         val dayOfLesson: Int,
         val lastY: Int,
-        val subjectNumber: Int,
         var hightOfRow: Int
     ) {
 
+        // Создание прямоуголька и задание радиуса и размера боковой линии
         var rect = RectF()
-
-        var rectRadius = 20f * transformations.scaleFactor
+        var rectRadius = 10f * transformations.scaleFactor
         private var verticalLineSize = 15f * transformations.scaleFactor
+        private val rectStrokeWidth = 4f
 
-
+        // пэйнт для линии и для фона
         private val paint = Paint().apply {
             style = Paint.Style.FILL
-            color = Color.BLACK
+            color = Color.WHITE
             strokeWidth = 1f
+            isAntiAlias = true
             setBackgroundColor(Color.WHITE)
         }
 
         private val strokePaint = Paint().apply {
             isAntiAlias = true
             style = Paint.Style.STROKE
-            strokeWidth = strokeWidth
-            color = Color.BLACK
+            strokeWidth = rectStrokeWidth
+            color = resources.getColor(R.color.gray_light)
         }
 
-        private val strokeWidth = 1f
         val paddingX = 10f
         val paddingY = 10f
         val margin = 15f
@@ -581,9 +572,10 @@ class NewView @JvmOverloads constructor(
         val isRectVisible: Boolean
             get() = ((rect.top < height) or (rect.bottom > 0)) and ((rect.right < width) or (rect.left > 0))
 
+        // Создаем статик лэйаут
         private val staticLayout = getStaticLayout(
             text,
-            columnWidth.toInt() - paddingX.toInt() - paddingX.toInt()- margin.toInt() - margin.toInt(),
+            columnWidth.toInt() - paddingX.toInt() - paddingX.toInt() - margin.toInt() - margin.toInt(),
             dateNamePaint,
             true
         )
@@ -593,18 +585,23 @@ class NewView @JvmOverloads constructor(
 
 
             fun getX(index: Int): Float {
-                return (index * columnWidth) + dateTextSize
+                return ((index * columnWidth) + dateTextSize) * transformations.scaleFactor + transformations.translationX + margin
             }
 
             fun getEndX(index: Int): Float {
-                return ((index + 1) * columnWidth) + dateTextSize
+                return (((index + 1) * columnWidth) + dateTextSize) * transformations.scaleFactor + transformations.translationX - margin
             }
 
+            fun getY(): Float {
+                return (lastY.toFloat() + hightOfRow / 2 - height / 2) + transformations.translationY
+            }
+
+            // Создание самой формы прямоугольника
             untransformedRect.set(
-                getX(dayOfLesson) * transformations.scaleFactor + transformations.translationX + margin,
-                lastY.toFloat() + transformations.translationY + margin,
-                getEndX(dayOfLesson) * transformations.scaleFactor + transformations.translationX - margin,
-                (lastY + height * transformations.scaleFactor) + transformations.translationY - margin - paddingY,
+                getX(dayOfLesson),
+                getY(),
+                getEndX(dayOfLesson),
+                getY() + height,
             )
             rect.set(untransformedRect)
         }
@@ -613,11 +610,12 @@ class NewView @JvmOverloads constructor(
             // Draw rounded rectangle
 
             paint.color = Color.WHITE
+            // создаем обводку для
             val strokeRect = RectF(
-                rect.left - strokeWidth,
-                rect.top - strokeWidth,
-                rect.right + strokeWidth,
-                rect.bottom + strokeWidth
+                rect.left,
+                rect.top,
+                rect.right,
+                rect.bottom
             )
             // Отрисовка самого прямоугольника
             path.addRoundRect(rect, rectRadius, rectRadius, Path.Direction.CW)
@@ -630,7 +628,7 @@ class NewView @JvmOverloads constructor(
                 addRoundRect(
                     rect.left,
                     rect.top,
-                    rect.left + 100f,
+                    rect.right,
                     rect.bottom,
                     rectRadius,
                     rectRadius,
@@ -653,12 +651,20 @@ class NewView @JvmOverloads constructor(
             canvas.drawRoundRect(strokeRect, rectRadius, verticalLineSize, strokePaint)
 
             canvas.save()
-            canvas.translate(rect.left + verticalLineSize + paddingX, rect.top + (rect.bottom - rect.top - staticLayout.height) / 2 )
+            canvas.translate(
+                rect.left + verticalLineSize + paddingX,
+                rect.top + (rect.bottom - rect.top - staticLayout.height * transformations.scaleFactor) / 2
+            )
             canvas.scale(transformations.scaleFactor, transformations.scaleFactor)
             staticLayout.draw(canvas)
             canvas.restore()
         }
 
+    }
+
+
+    companion object {
+        const val COUNT_OF_LESSONS = 5
     }
 
 }

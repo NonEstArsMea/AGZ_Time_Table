@@ -20,7 +20,7 @@ fun getStaticLayout(
         /* start = */  0,
         /* end = */    text.length,
         /* paint = */  paint,
-        /* width = */  width - 10
+        /* width = */  width
     )
         .setAlignment(align)
         .setLineSpacing(0f, 1f)
