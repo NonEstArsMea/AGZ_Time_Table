@@ -165,48 +165,45 @@ class NewView @JvmOverloads constructor(
             "5 Пара",
         )
 
-        repeat(COUNT_OF_LESSONS) { index ->
+        repeat(COUNT_OF_LESSONS) { numberOfLesson ->
+            Log.e("rep", numberOfLesson.toString())
             var maxHeightOfRow = minRowHight
 
             val nameOfROwStaticLayout =
                 getStaticLayout(
-                    texts[index],
+                    texts[numberOfLesson],
                     dateTextSize.toInt() - 2 * paddingLeftAndRight,
                     dateNamePaint
                 )
             // Получаем ячейки с парами и измеряем их
 
-            (0..4).forEach { numberOfLesson ->
-                for (day in timeTable) {
-                    if (day.size - 1 >= numberOfLesson) {
-                        Log.e("lessons", "${day.size}   $numberOfLesson")
-                        val lesson = LessonsRect(
-                            text = day[numberOfLesson].subject!!,
-                            dayOfLesson = numberOfLesson + 1,
-                            lastY = lastY.toInt(),
-                            hightOfRow = maxHeightOfRow
-                        )
-                        maxHeightOfRow = max(lesson.height.toInt(), maxHeightOfRow)
-                    }
-                }
-            }
-
-
-            Log.e("flag", "------------------------------- $timeTable")
-
             for (day in timeTable.indices) {
-                for (lessonOfDay in timeTable[day].indices) {
-                    timeTable[day][lessonOfDay].subjectNumber?.let {
-                        val lesson = LessonsRect(
-                            text = timeTable[day][lessonOfDay].subject!!,
-                            dayOfLesson = day,
-                            lastY = lastY.toInt(),
-                            hightOfRow = maxHeightOfRow
-                        )
-                        maxHeightOfRow = max(lesson.height.toInt(), maxHeightOfRow)
+                Log.e(
+                    "tableView",
+                    "--$numberOfLesson --- $day -${timeTable[day].size} - first start"
+                )
+                if (timeTable[day].size >= 1) {
+                    for (a in timeTable[day]) {
+                        if (a.subjectNumber == numberOfLesson + 1) {
+                            Log.e(
+                                "tableView",
+                                "--true - first start"
+                            )
+                            val lesson = LessonsRect(
+                                text = a.subject!!,
+                                dayOfLesson = day,
+                                lastY = lastY.toInt(),
+                                heightOfRow = maxHeightOfRow
+                            )
+                            maxHeightOfRow = max(lesson.height.toInt(), maxHeightOfRow)
+                        }
                     }
+
                 }
+                Log.e("tableView", "--$numberOfLesson --- $day -- first exit")
             }
+
+
             // Разбираемся с высотой
             maxHeightOfRow = max(nameOfROwStaticLayout.height, maxHeightOfRow)
 
@@ -225,21 +222,26 @@ class NewView @JvmOverloads constructor(
             drawRect(rowRect, rowPaint)
 
             // Получаем ячейки с парами и измеряем их
-            (0..4).forEach { numberOfLesson ->
-                for (day in timeTable) {
-                    if (day.size - 1 >= numberOfLesson) {
-                        val lesson = LessonsRect(
-                            text = day[numberOfLesson].subject!!,
-                            dayOfLesson = numberOfLesson + 1,
-                            lastY = lastY.toInt(),
-                            hightOfRow = maxHeightOfRow
-                        )
-                        if (lesson.isRectVisible) {
-                            lesson.updateInitialRect()
-                            lesson.draw(this)
+            for (day in timeTable.indices) {
+                Log.e("tableView", "--$numberOfLesson --- $day -- second start")
+                if (timeTable[day].size >= 1) {
+                    for (a in timeTable[day]) {
+                        if (a.subjectNumber == numberOfLesson + 1) {
+                            val lesson = LessonsRect(
+                                text = a.subject!!,
+                                dayOfLesson = day,
+                                lastY = lastY.toInt(),
+                                heightOfRow = maxHeightOfRow
+                            )
+                            if (lesson.isRectVisible) {
+                                lesson.updateInitialRect()
+                                lesson.draw(this)
+                            }
                         }
                     }
+
                 }
+                Log.e("tableView", "--$numberOfLesson --- $day -- second exit")
             }
 
 
@@ -260,9 +262,9 @@ class NewView @JvmOverloads constructor(
             // Разделитель
             drawLine(
                 /* startX = */ 0f,
-                /* startY = */ (lastY + transformations.translationY - 5f),
+                /* startY = */ (lastY + transformations.translationY),
                 /* stopX = */ width.toFloat(),
-                /* stopY = */ (lastY + transformations.translationY - 5f),
+                /* stopY = */ (lastY + transformations.translationY),
                 /* paint = */ separatorsPaint
             )
 
@@ -345,6 +347,27 @@ class NewView @JvmOverloads constructor(
                         subjectType = "6.4 Групповое занятие",
                         startTime = "09:00",
                         endTime = "10:30",
+                        subjectNumber = 3,
+                        noEmpty = true,
+                        text = null,
+                        lessonTheme = null,
+                        color = 2131231033,
+                        viewType = null,
+                        viewSize = null,
+                        isGone = true,
+                        department = "34"
+                    )
+                ),
+                listOf(
+                    CellClass(
+                        subject = "Автомобильная подготовка",
+                        teacher = "Кузнецов Е . В .",
+                        classroom = "1 / 220",
+                        studyGroup = "213",
+                        date = "4 - 03 - 2024",
+                        subjectType = "6.4 Групповое занятие",
+                        startTime = "09:00",
+                        endTime = "10:30",
                         subjectNumber = 1,
                         noEmpty = true,
                         text = null,
@@ -412,7 +435,28 @@ class NewView @JvmOverloads constructor(
                         isGone = true,
                         department = "34"
                     )
-                )
+                ),
+                listOf(
+                    CellClass(
+                        subject = "Автомобильная подготовка",
+                        teacher = "Кузнецов Е . В .",
+                        classroom = "1 / 220",
+                        studyGroup = "213",
+                        date = "4 - 03 - 2024",
+                        subjectType = "6.4 Групповое занятие",
+                        startTime = "09:00",
+                        endTime = "10:30",
+                        subjectNumber = 3,
+                        noEmpty = true,
+                        text = null,
+                        lessonTheme = null,
+                        color = 2131231033,
+                        viewType = null,
+                        viewSize = null,
+                        isGone = true,
+                        department = "34"
+                    )
+                ),
             )
         )
     }
@@ -534,7 +578,7 @@ class NewView @JvmOverloads constructor(
         val text: String,
         val dayOfLesson: Int,
         val lastY: Int,
-        var hightOfRow: Int
+        var heightOfRow: Int
     ) {
 
         // Создание прямоуголька и задание радиуса и размера боковой линии
@@ -593,7 +637,7 @@ class NewView @JvmOverloads constructor(
             }
 
             fun getY(): Float {
-                return (lastY.toFloat() + hightOfRow / 2 - height / 2) + transformations.translationY
+                return lastY.toFloat() + (heightOfRow - height) * transformations.scaleFactor / 2 + transformations.translationY
             }
 
             // Создание самой формы прямоугольника
@@ -601,13 +645,12 @@ class NewView @JvmOverloads constructor(
                 getX(dayOfLesson),
                 getY(),
                 getEndX(dayOfLesson),
-                getY() + height,
+                getY() + height * transformations.scaleFactor,
             )
             rect.set(untransformedRect)
         }
 
         fun draw(canvas: Canvas) {
-            // Draw rounded rectangle
 
             paint.color = Color.WHITE
             // создаем обводку для
