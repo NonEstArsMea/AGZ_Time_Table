@@ -34,22 +34,22 @@ object Methods {
 
     fun setColor(text: String): Int{
         return when(text){
-            "э" -> R.drawable.red_color
-            "эк" -> R.drawable.red_color
-            "экз" -> R.drawable.red_color
-            "ЗаО" -> R.drawable.red_color
-            "Контр.р" -> R.drawable.red_color
-            "экз." ->  R.drawable.red_color
-            "ПЗ" -> R.drawable.yellow_color
-            "П" -> R.drawable.yellow_color
-            "СРПП" -> R.drawable.yellow_color
-            "Курс.р" -> R.drawable.yellow_color
-            "ГЗ" -> R.drawable.yellow_color
-            "с" -> R.drawable.yellow_color
-            "см" -> R.drawable.yellow_color
-            "Зачет" -> R.drawable.yellow_color
+            "э" -> R.color.red_fo_lessons_card
+            "эк" -> R.color.red_fo_lessons_card
+            "экз" -> R.color.red_fo_lessons_card
+            "ЗаО" -> R.color.red_fo_lessons_card
+            "Контр.р" -> R.color.red_fo_lessons_card
+            "экз." ->  R.color.red_fo_lessons_card
+            "ПЗ" -> R.color.yellow_fo_lessons_card
+            "П" -> R.color.yellow_fo_lessons_card
+            "СРПП" -> R.color.yellow_fo_lessons_card
+            "Курс.р" -> R.color.yellow_fo_lessons_card
+            "ГЗ" -> R.color.yellow_fo_lessons_card
+            "с" -> R.color.yellow_fo_lessons_card
+            "см" -> R.color.yellow_fo_lessons_card
+            "Зачет" -> R.color.yellow_fo_lessons_card
             else -> {
-                R.drawable.green_color
+                R.color.green_fo_lessons_card
             }
         }
     }

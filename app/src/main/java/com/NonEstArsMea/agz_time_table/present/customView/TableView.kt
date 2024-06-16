@@ -32,7 +32,7 @@ class NewView @JvmOverloads constructor(
     // Основная информация об строках и колонках
     private val minRowHight = 170
     private val namesRowHight = 170
-    private val columnWidth = 350f
+    private val columnWidth = 250f
 
     private var dateTextSize = 200f
 
@@ -176,29 +176,31 @@ class NewView @JvmOverloads constructor(
                 )
             // Получаем ячейки с парами и измеряем их
 
+            // Получаем ячейки с парами и измеряем их
+            // Получаем элемент массива, в нашем случае это расписание на день
             for (day in timeTable.indices) {
-                if (timeTable[day].size >= 1) {
+                // Если не пустой
+                if (timeTable[day].isNotEmpty()) {
                     for (a in timeTable[day]) {
                         if (a.subjectNumber == numberOfLesson + 1) {
                             val lesson = LessonsRect(
                                 text = a.subject!!,
                                 dayOfLesson = day,
                                 lastY = lastY.toInt(),
-                                heightOfRow = maxHeightOfRow
+                                heightOfRow = maxHeightOfRow,
+                                newColor = a.color
                             )
                             maxHeightOfRow = max(lesson.height.toInt(), maxHeightOfRow)
                         }
                     }
 
                 }
-                Log.e("tableView", "--$numberOfLesson --- $day -- first exit")
             }
-
 
             // Разбираемся с высотой
             maxHeightOfRow = max(nameOfROwStaticLayout.height, maxHeightOfRow)
 
-
+            // Отрисовка строки, можно изменять фон
             rowRect.set(
                 /* left = */ 0,
                 /* top = */
@@ -208,20 +210,22 @@ class NewView @JvmOverloads constructor(
                 /* bottom = */
                 (lastY + (maxHeightOfRow * transformations.scaleFactor) + transformations.translationY).toInt()
             )
-
-
             drawRect(rowRect, rowPaint)
 
+
             // Получаем ячейки с парами и измеряем их
+            // Получаем элемент массива, в нашем случае это расписание на день
             for (day in timeTable.indices) {
-                if (timeTable[day].size >= 1) {
+                // Если не пустой
+                if (timeTable[day].isNotEmpty()) {
                     for (a in timeTable[day]) {
                         if (a.subjectNumber == numberOfLesson + 1) {
                             val lesson = LessonsRect(
                                 text = a.subject!!,
                                 dayOfLesson = day,
                                 lastY = lastY.toInt(),
-                                heightOfRow = maxHeightOfRow
+                                heightOfRow = maxHeightOfRow,
+                                newColor = a.color
                             )
                             if (lesson.isRectVisible) {
                                 lesson.updateInitialRect()
@@ -231,7 +235,6 @@ class NewView @JvmOverloads constructor(
                     }
 
                 }
-                Log.e("tableView", "--$numberOfLesson --- $day -- second exit")
             }
 
 
@@ -324,131 +327,6 @@ class NewView @JvmOverloads constructor(
         drawRowsAndDates()
         drawPeriods()
         drawTimeAndDateLine()
-
-//        setTimeTable(
-//            listOf(
-//                listOf(
-//                    CellClass(
-//                        subject = "Автомобильная подготовка",
-//                        teacher = "Кузнецов Е . В .",
-//                        classroom = "1 / 220",
-//                        studyGroup = "213",
-//                        date = "4 - 03 - 2024",
-//                        subjectType = "6.4 Групповое занятие",
-//                        startTime = "09:00",
-//                        endTime = "10:30",
-//                        subjectNumber = 3,
-//                        noEmpty = true,
-//                        text = null,
-//                        lessonTheme = null,
-//                        color = 2131231033,
-//                        viewType = null,
-//                        viewSize = null,
-//                        isGone = true,
-//                        department = "34"
-//                    )
-//                ),
-//                listOf(
-//                    CellClass(
-//                        subject = "Автомобильная подготовка",
-//                        teacher = "Кузнецов Е . В .",
-//                        classroom = "1 / 220",
-//                        studyGroup = "213",
-//                        date = "4 - 03 - 2024",
-//                        subjectType = "6.4 Групповое занятие",
-//                        startTime = "09:00",
-//                        endTime = "10:30",
-//                        subjectNumber = 1,
-//                        noEmpty = true,
-//                        text = null,
-//                        lessonTheme = null,
-//                        color = 2131231033,
-//                        viewType = null,
-//                        viewSize = null,
-//                        isGone = true,
-//                        department = "34"
-//                    ),
-//                    CellClass(
-//                        subject = "Автомобильная подготовка",
-//                        teacher = "Кузнецов Е . В .",
-//                        classroom = "1 / 220",
-//                        studyGroup = "213",
-//                        date = "4 - 03 - 2024",
-//                        subjectType = "6.4 Групповое занятие",
-//                        startTime = "09:00",
-//                        endTime = "10:30",
-//                        subjectNumber = 1,
-//                        noEmpty = true,
-//                        text = null,
-//                        lessonTheme = null,
-//                        color = 2131231033,
-//                        viewType = null,
-//                        viewSize = null,
-//                        isGone = true,
-//                        department = "34"
-//                    ),
-//                    CellClass(
-//                        subject = "Автомобильная подготовка",
-//                        teacher = "Кузнецов Е . В .",
-//                        classroom = "1 / 220",
-//                        studyGroup = "213",
-//                        date = "4 - 03 - 2024",
-//                        subjectType = "6.4 Групповое занятие",
-//                        startTime = "09:00",
-//                        endTime = "10:30",
-//                        subjectNumber = 2,
-//                        noEmpty = true,
-//                        text = null,
-//                        lessonTheme = null,
-//                        color = 2131231033,
-//                        viewType = null,
-//                        viewSize = null,
-//                        isGone = true,
-//                        department = "34"
-//                    ),
-//                    CellClass(
-//                        subject = "Автомобильная подготовка",
-//                        teacher = "Кузнецов Е . В .",
-//                        classroom = "1 / 220",
-//                        studyGroup = "213",
-//                        date = "4 - 03 - 2024",
-//                        subjectType = "6.4 Групповое занятие",
-//                        startTime = "09:00",
-//                        endTime = "10:30",
-//                        subjectNumber = 2,
-//                        noEmpty = true,
-//                        text = null,
-//                        lessonTheme = null,
-//                        color = 2131231033,
-//                        viewType = null,
-//                        viewSize = null,
-//                        isGone = true,
-//                        department = "34"
-//                    )
-//                ),
-//                listOf(
-//                    CellClass(
-//                        subject = "Автомобильная подготовка",
-//                        teacher = "Кузнецов Е . В .",
-//                        classroom = "1 / 220",
-//                        studyGroup = "213",
-//                        date = "4 - 03 - 2024",
-//                        subjectType = "6.4 Групповое занятие",
-//                        startTime = "09:00",
-//                        endTime = "10:30",
-//                        subjectNumber = 3,
-//                        noEmpty = true,
-//                        text = null,
-//                        lessonTheme = null,
-//                        color = 2131231033,
-//                        viewType = null,
-//                        viewSize = null,
-//                        isGone = true,
-//                        department = "34"
-//                    )
-//                ),
-//            )
-//        )
     }
 
 
@@ -568,7 +446,8 @@ class NewView @JvmOverloads constructor(
         val text: String,
         val dayOfLesson: Int,
         val lastY: Int,
-        var heightOfRow: Int
+        var heightOfRow: Int,
+        val newColor: Int,
     ) {
 
         // Создание прямоуголька и задание радиуса и размера боковой линии
@@ -586,11 +465,12 @@ class NewView @JvmOverloads constructor(
             setBackgroundColor(Color.WHITE)
         }
 
+        @SuppressLint("ResourceType")
         private val strokePaint = Paint().apply {
             isAntiAlias = true
             style = Paint.Style.STROKE
             strokeWidth = rectStrokeWidth
-            color = resources.getColor(R.color.gray_light)
+            color = resources.getColor(newColor, null)
         }
 
         val paddingX = 10f
@@ -648,7 +528,7 @@ class NewView @JvmOverloads constructor(
 
         fun draw(canvas: Canvas) {
 
-            paint.color = Color.WHITE
+            //paint.color = Color.WHITE
             // создаем обводку для
             val strokeRect = RectF(
                 rect.left,
@@ -660,7 +540,7 @@ class NewView @JvmOverloads constructor(
             path.addRoundRect(rect, rectRadius, rectRadius, Path.Direction.CW)
             canvas.drawPath(path, paint)
 
-            paint.color = resources.getColor(R.color.gray_light)
+            paint.color = resources.getColor(newColor, null)
             // Отрисовка боковой части
             with(path) {
                 reset()
@@ -687,6 +567,7 @@ class NewView @JvmOverloads constructor(
             }
 
             canvas.drawPath(path2, paint)
+
             canvas.drawRoundRect(strokeRect, rectRadius, verticalLineSize, strokePaint)
 
             canvas.save()
