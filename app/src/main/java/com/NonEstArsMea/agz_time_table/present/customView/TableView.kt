@@ -42,7 +42,6 @@ class NewView @JvmOverloads constructor(
 
     // Отвечает за зум и сдвиги
     private val transformations = Transformations()
-
     // Значения последнего эвента
     private val lastPoint = PointF()
     private var lastPointerId = 0
@@ -178,17 +177,9 @@ class NewView @JvmOverloads constructor(
             // Получаем ячейки с парами и измеряем их
 
             for (day in timeTable.indices) {
-                Log.e(
-                    "tableView",
-                    "--$numberOfLesson --- $day -${timeTable[day].size} - first start"
-                )
                 if (timeTable[day].size >= 1) {
                     for (a in timeTable[day]) {
                         if (a.subjectNumber == numberOfLesson + 1) {
-                            Log.e(
-                                "tableView",
-                                "--true - first start"
-                            )
                             val lesson = LessonsRect(
                                 text = a.subject!!,
                                 dayOfLesson = day,
@@ -223,7 +214,6 @@ class NewView @JvmOverloads constructor(
 
             // Получаем ячейки с парами и измеряем их
             for (day in timeTable.indices) {
-                Log.e("tableView", "--$numberOfLesson --- $day -- second start")
                 if (timeTable[day].size >= 1) {
                     for (a in timeTable[day]) {
                         if (a.subjectNumber == numberOfLesson + 1) {
@@ -335,130 +325,130 @@ class NewView @JvmOverloads constructor(
         drawPeriods()
         drawTimeAndDateLine()
 
-        setTimeTable(
-            listOf(
-                listOf(
-                    CellClass(
-                        subject = "Автомобильная подготовка",
-                        teacher = "Кузнецов Е . В .",
-                        classroom = "1 / 220",
-                        studyGroup = "213",
-                        date = "4 - 03 - 2024",
-                        subjectType = "6.4 Групповое занятие",
-                        startTime = "09:00",
-                        endTime = "10:30",
-                        subjectNumber = 3,
-                        noEmpty = true,
-                        text = null,
-                        lessonTheme = null,
-                        color = 2131231033,
-                        viewType = null,
-                        viewSize = null,
-                        isGone = true,
-                        department = "34"
-                    )
-                ),
-                listOf(
-                    CellClass(
-                        subject = "Автомобильная подготовка",
-                        teacher = "Кузнецов Е . В .",
-                        classroom = "1 / 220",
-                        studyGroup = "213",
-                        date = "4 - 03 - 2024",
-                        subjectType = "6.4 Групповое занятие",
-                        startTime = "09:00",
-                        endTime = "10:30",
-                        subjectNumber = 1,
-                        noEmpty = true,
-                        text = null,
-                        lessonTheme = null,
-                        color = 2131231033,
-                        viewType = null,
-                        viewSize = null,
-                        isGone = true,
-                        department = "34"
-                    ),
-                    CellClass(
-                        subject = "Автомобильная подготовка",
-                        teacher = "Кузнецов Е . В .",
-                        classroom = "1 / 220",
-                        studyGroup = "213",
-                        date = "4 - 03 - 2024",
-                        subjectType = "6.4 Групповое занятие",
-                        startTime = "09:00",
-                        endTime = "10:30",
-                        subjectNumber = 1,
-                        noEmpty = true,
-                        text = null,
-                        lessonTheme = null,
-                        color = 2131231033,
-                        viewType = null,
-                        viewSize = null,
-                        isGone = true,
-                        department = "34"
-                    ),
-                    CellClass(
-                        subject = "Автомобильная подготовка",
-                        teacher = "Кузнецов Е . В .",
-                        classroom = "1 / 220",
-                        studyGroup = "213",
-                        date = "4 - 03 - 2024",
-                        subjectType = "6.4 Групповое занятие",
-                        startTime = "09:00",
-                        endTime = "10:30",
-                        subjectNumber = 2,
-                        noEmpty = true,
-                        text = null,
-                        lessonTheme = null,
-                        color = 2131231033,
-                        viewType = null,
-                        viewSize = null,
-                        isGone = true,
-                        department = "34"
-                    ),
-                    CellClass(
-                        subject = "Автомобильная подготовка",
-                        teacher = "Кузнецов Е . В .",
-                        classroom = "1 / 220",
-                        studyGroup = "213",
-                        date = "4 - 03 - 2024",
-                        subjectType = "6.4 Групповое занятие",
-                        startTime = "09:00",
-                        endTime = "10:30",
-                        subjectNumber = 2,
-                        noEmpty = true,
-                        text = null,
-                        lessonTheme = null,
-                        color = 2131231033,
-                        viewType = null,
-                        viewSize = null,
-                        isGone = true,
-                        department = "34"
-                    )
-                ),
-                listOf(
-                    CellClass(
-                        subject = "Автомобильная подготовка",
-                        teacher = "Кузнецов Е . В .",
-                        classroom = "1 / 220",
-                        studyGroup = "213",
-                        date = "4 - 03 - 2024",
-                        subjectType = "6.4 Групповое занятие",
-                        startTime = "09:00",
-                        endTime = "10:30",
-                        subjectNumber = 3,
-                        noEmpty = true,
-                        text = null,
-                        lessonTheme = null,
-                        color = 2131231033,
-                        viewType = null,
-                        viewSize = null,
-                        isGone = true,
-                        department = "34"
-                    )
-                ),
-            )
-        )
+//        setTimeTable(
+//            listOf(
+//                listOf(
+//                    CellClass(
+//                        subject = "Автомобильная подготовка",
+//                        teacher = "Кузнецов Е . В .",
+//                        classroom = "1 / 220",
+//                        studyGroup = "213",
+//                        date = "4 - 03 - 2024",
+//                        subjectType = "6.4 Групповое занятие",
+//                        startTime = "09:00",
+//                        endTime = "10:30",
+//                        subjectNumber = 3,
+//                        noEmpty = true,
+//                        text = null,
+//                        lessonTheme = null,
+//                        color = 2131231033,
+//                        viewType = null,
+//                        viewSize = null,
+//                        isGone = true,
+//                        department = "34"
+//                    )
+//                ),
+//                listOf(
+//                    CellClass(
+//                        subject = "Автомобильная подготовка",
+//                        teacher = "Кузнецов Е . В .",
+//                        classroom = "1 / 220",
+//                        studyGroup = "213",
+//                        date = "4 - 03 - 2024",
+//                        subjectType = "6.4 Групповое занятие",
+//                        startTime = "09:00",
+//                        endTime = "10:30",
+//                        subjectNumber = 1,
+//                        noEmpty = true,
+//                        text = null,
+//                        lessonTheme = null,
+//                        color = 2131231033,
+//                        viewType = null,
+//                        viewSize = null,
+//                        isGone = true,
+//                        department = "34"
+//                    ),
+//                    CellClass(
+//                        subject = "Автомобильная подготовка",
+//                        teacher = "Кузнецов Е . В .",
+//                        classroom = "1 / 220",
+//                        studyGroup = "213",
+//                        date = "4 - 03 - 2024",
+//                        subjectType = "6.4 Групповое занятие",
+//                        startTime = "09:00",
+//                        endTime = "10:30",
+//                        subjectNumber = 1,
+//                        noEmpty = true,
+//                        text = null,
+//                        lessonTheme = null,
+//                        color = 2131231033,
+//                        viewType = null,
+//                        viewSize = null,
+//                        isGone = true,
+//                        department = "34"
+//                    ),
+//                    CellClass(
+//                        subject = "Автомобильная подготовка",
+//                        teacher = "Кузнецов Е . В .",
+//                        classroom = "1 / 220",
+//                        studyGroup = "213",
+//                        date = "4 - 03 - 2024",
+//                        subjectType = "6.4 Групповое занятие",
+//                        startTime = "09:00",
+//                        endTime = "10:30",
+//                        subjectNumber = 2,
+//                        noEmpty = true,
+//                        text = null,
+//                        lessonTheme = null,
+//                        color = 2131231033,
+//                        viewType = null,
+//                        viewSize = null,
+//                        isGone = true,
+//                        department = "34"
+//                    ),
+//                    CellClass(
+//                        subject = "Автомобильная подготовка",
+//                        teacher = "Кузнецов Е . В .",
+//                        classroom = "1 / 220",
+//                        studyGroup = "213",
+//                        date = "4 - 03 - 2024",
+//                        subjectType = "6.4 Групповое занятие",
+//                        startTime = "09:00",
+//                        endTime = "10:30",
+//                        subjectNumber = 2,
+//                        noEmpty = true,
+//                        text = null,
+//                        lessonTheme = null,
+//                        color = 2131231033,
+//                        viewType = null,
+//                        viewSize = null,
+//                        isGone = true,
+//                        department = "34"
+//                    )
+//                ),
+//                listOf(
+//                    CellClass(
+//                        subject = "Автомобильная подготовка",
+//                        teacher = "Кузнецов Е . В .",
+//                        classroom = "1 / 220",
+//                        studyGroup = "213",
+//                        date = "4 - 03 - 2024",
+//                        subjectType = "6.4 Групповое занятие",
+//                        startTime = "09:00",
+//                        endTime = "10:30",
+//                        subjectNumber = 3,
+//                        noEmpty = true,
+//                        text = null,
+//                        lessonTheme = null,
+//                        color = 2131231033,
+//                        viewType = null,
+//                        viewSize = null,
+//                        isGone = true,
+//                        department = "34"
+//                    )
+//                ),
+//            )
+//        )
     }
 
 
@@ -619,7 +609,13 @@ class NewView @JvmOverloads constructor(
         // Создаем статик лэйаут
         private val staticLayout = getStaticLayout(
             text,
-            columnWidth.toInt() - paddingX.toInt() - paddingX.toInt() - margin.toInt() - margin.toInt(),
+            columnWidth.toInt() - paddingX.toInt()
+                    - paddingX.toInt()
+                    - margin.toInt()
+                    - margin.toInt()
+                    - rectStrokeWidth.toInt()
+                    - rectStrokeWidth.toInt()
+                    - verticalLineSize.toInt(),
             dateNamePaint,
             true
         )
@@ -637,7 +633,7 @@ class NewView @JvmOverloads constructor(
             }
 
             fun getY(): Float {
-                return lastY.toFloat() + (heightOfRow - height) * transformations.scaleFactor / 2 + transformations.translationY
+                return lastY.toFloat() + (heightOfRow - height + margin + margin) * transformations.scaleFactor / 2 + transformations.translationY
             }
 
             // Создание самой формы прямоугольника
@@ -645,7 +641,7 @@ class NewView @JvmOverloads constructor(
                 getX(dayOfLesson),
                 getY(),
                 getEndX(dayOfLesson),
-                getY() + height * transformations.scaleFactor,
+                getY() + (height - 2 * margin) * transformations.scaleFactor,
             )
             rect.set(untransformedRect)
         }
