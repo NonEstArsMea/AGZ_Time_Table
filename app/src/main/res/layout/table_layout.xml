@@ -5,9 +5,30 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.google.android.material.card.MaterialCardView
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp"/>
+        android:layout_height="40dp">
+
+        <Button
+            style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            app:icon="@drawable/left_button"/>
+
+        <Button
+            style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            app:icon="@drawable/right_button"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="17 июня - 22 июня"
+            android:layout_gravity="center"/>
+    </FrameLayout>
 
     <com.NonEstArsMea.agz_time_table.present.customView.NewView
         android:id="@+id/tab_view"
