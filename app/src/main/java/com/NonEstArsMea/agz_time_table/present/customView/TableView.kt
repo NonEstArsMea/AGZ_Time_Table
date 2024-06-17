@@ -18,6 +18,7 @@ import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.alpha
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellClass
 import com.NonEstArsMea.agz_time_table.util.getStaticLayout
@@ -32,7 +33,9 @@ class NewView @JvmOverloads constructor(
     // Основная информация об строках и колонках
     private val minRowHight = 170
     private val namesRowHight = 170
-    private val columnWidth = 250f
+    private val columnWidth = 200f
+
+    private var startScaleFactor: Float? = null
 
     private var dateTextSize = 200f
 
@@ -42,6 +45,7 @@ class NewView @JvmOverloads constructor(
 
     // Отвечает за зум и сдвиги
     private val transformations = Transformations()
+
     // Значения последнего эвента
     private val lastPoint = PointF()
     private var lastPointerId = 0
@@ -62,7 +66,7 @@ class NewView @JvmOverloads constructor(
 
     private val separatorsPaint = Paint().apply {
         strokeWidth = 2f
-        color = Color.GRAY
+        color = context.getColor(R.color.gray_400)
     }
 
     private val mainSeparatorsPaint = Paint().apply {
@@ -264,6 +268,16 @@ class NewView @JvmOverloads constructor(
         }
         contentHeight = lastY.toInt()
 
+        //Проверка на выполнение один раз
+
+        if(startScaleFactor == null){
+            startScaleFactor = height.toFloat() / contentHeight.toFloat()
+            Log.e("start", startScaleFactor.toString())
+            transformations.scaleFactor = startScaleFactor!!
+            transformations.minScaleFactor = startScaleFactor!!
+            invalidate()
+        }
+
     }
 
     // Отрисовка линий колонн и названия колонн
@@ -401,7 +415,7 @@ class NewView @JvmOverloads constructor(
     private inner class Transformations {
 
         var scaleFactor = 1.0f
-        private var minScaleFactor = 0.1f
+        var minScaleFactor = 0.1f
         private var maxScaleFactor = 20.0f
 
         var translationX = 0f
@@ -453,14 +467,14 @@ class NewView @JvmOverloads constructor(
         // Создание прямоуголька и задание радиуса и размера боковой линии
         var rect = RectF()
         var rectRadius = 10f * transformations.scaleFactor
-        private var verticalLineSize = 15f * transformations.scaleFactor
-        private val rectStrokeWidth = 4f
+        private var verticalLineSize = 10f * transformations.scaleFactor
+        private val rectStrokeWidth = 2f
 
         // пэйнт для линии и для фона
         private val paint = Paint().apply {
             style = Paint.Style.FILL
             color = Color.WHITE
-            strokeWidth = 1f
+            strokeWidth = 0.5f
             isAntiAlias = true
             setBackgroundColor(Color.WHITE)
         }
@@ -486,16 +500,13 @@ class NewView @JvmOverloads constructor(
         val isRectVisible: Boolean
             get() = ((rect.top < height) or (rect.bottom > 0)) and ((rect.right < width) or (rect.left > 0))
 
+        val staticLayoutWidth =
+            (columnWidth * transformations.scaleFactor - 2 * margin - 2 * paddingX - verticalLineSize - rectStrokeWidth) / transformations.scaleFactor
+
         // Создаем статик лэйаут
         private val staticLayout = getStaticLayout(
             text,
-            columnWidth.toInt() - paddingX.toInt()
-                    - paddingX.toInt()
-                    - margin.toInt()
-                    - margin.toInt()
-                    - rectStrokeWidth.toInt()
-                    - rectStrokeWidth.toInt()
-                    - verticalLineSize.toInt(),
+            staticLayoutWidth.toInt(),
             dateNamePaint,
             true
         )
@@ -528,7 +539,8 @@ class NewView @JvmOverloads constructor(
 
         fun draw(canvas: Canvas) {
 
-            //paint.color = Color.WHITE
+
+            paint.color = resources.getColor(changeColor(newColor),null)
             // создаем обводку для
             val strokeRect = RectF(
                 rect.left,
@@ -572,12 +584,22 @@ class NewView @JvmOverloads constructor(
 
             canvas.save()
             canvas.translate(
-                rect.left + verticalLineSize + paddingX,
+                rect.left + verticalLineSize + paddingX + rectStrokeWidth,
                 rect.top + (rect.bottom - rect.top - staticLayout.height * transformations.scaleFactor) / 2
             )
             canvas.scale(transformations.scaleFactor, transformations.scaleFactor)
             staticLayout.draw(canvas)
             canvas.restore()
+        }
+
+        private fun changeColor(newColor: Int): Int {
+            return when(newColor){
+                R.color.red_fo_lessons_card -> R.color.red_fo_lessons_card_alpha
+                R.color.yellow_fo_lessons_card -> R.color.yellow_fo_lessons_card_alpha
+                R.color.green_fo_lessons_card -> R.color.green_fo_lessons_card_alpha
+                else -> {R.color.white}
+            }
+
         }
 
     }

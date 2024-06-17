@@ -7,9 +7,12 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#252525</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="yellow_fo_lessons_card">#f9a824</color>
+    <color name="yellow_fo_lessons_card">#F9A824</color>
+    <color name="yellow_fo_lessons_card_alpha">#4DF9A824</color>
     <color name="green_fo_lessons_card">#4CAF50</color>
+    <color name="green_fo_lessons_card_alpha">#4D4CAF50</color>
     <color name="red_fo_lessons_card">#c16368</color>
+    <color name="red_fo_lessons_card_alpha">#4DC16368</color>
     <color name="red_themes">#F8A34B</color>
     <color name="red_themes_500">#FADDC1</color>
     <color name="red_themes_100">#655A4E</color>
@@ -19,7 +22,7 @@
     <!-- Light Theme Colors -->
     <color name="orange_light">#FFC75F</color>
     <color name="red_light">#FF0000</color>
-    <color name="gray_400">#A9A9A9</color>
+    <color name="gray_400">#DCDCDC</color>
     <color name="red_light_500">#FF6347</color>
 
     <!-- Dark Theme Colors -->
