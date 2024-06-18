@@ -68,14 +68,14 @@ class TimeTableViewModel @Inject constructor(
                 DateManager.setNewCalendar(newTime)
             }
         }
-
         if (job.isActive) {
             job.cancel()
         }
+
         viewModelScope.launch(Dispatchers.Default) {
             list = timeTableRepositoryImpl.getWeekTimeTable()
-            Log.e("storrage", list.toString())
             launch(Dispatchers.Main) {
+                Log.e("tag", list.size.toString())
                 _state.value = TimeTableIsLoad(list)
             }
         }

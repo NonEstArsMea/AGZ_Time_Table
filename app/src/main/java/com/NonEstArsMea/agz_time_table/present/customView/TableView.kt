@@ -169,7 +169,6 @@ class NewView @JvmOverloads constructor(
         )
 
         repeat(COUNT_OF_LESSONS) { numberOfLesson ->
-            Log.e("rep", numberOfLesson.toString())
             var maxHeightOfRow = minRowHight
 
             val nameOfROwStaticLayout =
@@ -270,7 +269,7 @@ class NewView @JvmOverloads constructor(
 
         //Проверка на выполнение один раз
 
-        if(startScaleFactor == null){
+        if (startScaleFactor == null) {
             startScaleFactor = height.toFloat() / contentHeight.toFloat()
             Log.e("start", startScaleFactor.toString())
             transformations.scaleFactor = startScaleFactor!!
@@ -348,16 +347,18 @@ class NewView @JvmOverloads constructor(
 
 
     fun setTimeTable(timeTable: List<List<CellClass>>) {
-        if (timeTable != this.timeTable) {
-            val list = timeTable.map { listOfCell ->
-                listOfCell.filter {
-                    it.subjectNumber != null
-                }
+        Log.e("table", timeTable.toString())
+        Log.e("table", this.timeTable.toString())
+
+        val list = timeTable.map { listOfCell ->
+            listOfCell.filter {
+                it.subjectNumber != null
             }
-            this.timeTable = list
-            requestLayout()
-            invalidate()
         }
+        this.timeTable = list
+        requestLayout()
+        invalidate()
+
     }
 
 
@@ -540,7 +541,7 @@ class NewView @JvmOverloads constructor(
         fun draw(canvas: Canvas) {
 
 
-            paint.color = resources.getColor(changeColor(newColor),null)
+            paint.color = resources.getColor(changeColor(newColor), null)
             // создаем обводку для
             val strokeRect = RectF(
                 rect.left,
@@ -593,11 +594,13 @@ class NewView @JvmOverloads constructor(
         }
 
         private fun changeColor(newColor: Int): Int {
-            return when(newColor){
+            return when (newColor) {
                 R.color.red_fo_lessons_card -> R.color.red_fo_lessons_card_alpha
                 R.color.yellow_fo_lessons_card -> R.color.yellow_fo_lessons_card_alpha
                 R.color.green_fo_lessons_card -> R.color.green_fo_lessons_card_alpha
-                else -> {R.color.white}
+                else -> {
+                    R.color.white
+                }
             }
 
         }

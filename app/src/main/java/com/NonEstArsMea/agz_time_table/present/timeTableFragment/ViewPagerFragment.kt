@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.doOnLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.NonEstArsMea.agz_time_table.R
@@ -28,12 +29,12 @@ class ViewPagerFragment : Fragment() {
 
     private var days = mutableListOf<TextView>()
 
-    @Inject
-    lateinit var timeTableViewModelFactory: MainViewModelFactory
-
 
     private var _binding: ViewPagerBinding? = null
     private val binding get() = _binding!!
+
+    @Inject
+    lateinit var timeTableViewModelFactory: MainViewModelFactory
 
     private val component by lazy {
         (requireActivity().application as TimeTableApplication).component
@@ -41,12 +42,11 @@ class ViewPagerFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+
         component.inject(this)
 
-        Log.e("VPF", "attach")
-
         vm = ViewModelProvider(
-            this,
+            requireParentFragment(),
             timeTableViewModelFactory
         )[TimeTableViewModel::class.java]
     }

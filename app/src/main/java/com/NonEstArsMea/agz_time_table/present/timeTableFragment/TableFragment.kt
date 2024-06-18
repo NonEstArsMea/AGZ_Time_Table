@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.doOnLayout
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.NonEstArsMea.agz_time_table.R
@@ -36,10 +37,8 @@ class TableFragment : Fragment() {
         super.onAttach(context)
         component.inject(this)
 
-        Log.e("VPF", "attach")
-
         vm = ViewModelProvider(
-            this,
+            requireParentFragment(),
             timeTableViewModelFactory
         )[TimeTableViewModel::class.java]
     }
@@ -56,6 +55,14 @@ class TableFragment : Fragment() {
         super.onStart()
 
         observeViewModel()
+
+        binding.buttonLeft.setOnClickListener {
+            updateData(PREVIOUS_WEEK)
+        }
+
+        binding.buttonRight.setOnClickListener {
+            updateData(NEXT_WEEK)
+        }
     }
 
     private fun observeViewModel() {
@@ -69,13 +76,21 @@ class TableFragment : Fragment() {
                     is ConnectionError -> {}
 
                     is TimeTableIsLoad -> {
+                        Log.e("tag", it.toString())
                         binding.tabView.setTimeTable(it.list)
                     }
                 }
         }
     }
 
+    private fun updateData(newTime: Int? = null) {
+        vm.getNewTimeTable(newTime)
+    }
+
     companion object {
+        private const val PREVIOUS_WEEK = -7
+        private const val NEXT_WEEK = 7
+
         @JvmStatic fun newInstance() = TableFragment()
     }
 }
