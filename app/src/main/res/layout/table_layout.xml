@@ -26,6 +26,7 @@
             app:icon="@drawable/right_button"/>
 
         <TextView
+            android:id="@+id/week_date_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="17 июня - 22 июня"

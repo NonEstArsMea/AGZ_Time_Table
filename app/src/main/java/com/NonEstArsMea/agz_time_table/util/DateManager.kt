@@ -105,6 +105,20 @@ object DateManager{
         return dayOfWeek
     }
 
+    // Возвращает строку с датой конца и начала
+    fun getWeekDateText(context: Context): String {
+        var text = ""
+        val razn = (calendar.get(Calendar.DAY_OF_WEEK) + 5) % 7
+        calendar.add(Calendar.DAY_OF_MONTH,-razn)
+
+        text += calendar.get(Calendar.DAY_OF_MONTH).toString() + " " + context.getString(getMonth(calendar.get(Calendar.MONTH))) + " - "
+        calendar.add(Calendar.DAY_OF_MONTH, 5)
+        text += calendar.get(Calendar.DAY_OF_MONTH).toString() + " " + context.getString(getMonth(calendar.get(Calendar.MONTH)))
+
+        calendar.add(Calendar.DAY_OF_WEEK, razn - 5)
+        return text
+    }
+
     private const val SUNDAY = 7
 
 

@@ -56,6 +56,8 @@ class TableFragment : Fragment() {
 
         observeViewModel()
 
+        binding.weekDateText.text = vm.getWeekDateText()
+
         binding.buttonLeft.setOnClickListener {
             updateData(PREVIOUS_WEEK)
         }
@@ -78,6 +80,7 @@ class TableFragment : Fragment() {
                     is TimeTableIsLoad -> {
                         Log.e("tag", it.toString())
                         binding.tabView.setTimeTable(it.list)
+                        binding.weekDateText.text = vm.getWeekDateText()
                     }
                 }
         }

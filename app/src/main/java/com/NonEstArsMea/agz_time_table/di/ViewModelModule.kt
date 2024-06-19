@@ -18,6 +18,7 @@ interface ViewModelModule {
 
     @Binds
     @IntoMap
+    @Singleton
     @ViewModelKey(TimeTableViewModel::class)
     fun bindTimeTableViewModel(viewModel: TimeTableViewModel): ViewModel
 
