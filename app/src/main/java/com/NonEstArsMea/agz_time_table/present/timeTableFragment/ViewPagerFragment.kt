@@ -129,6 +129,7 @@ class ViewPagerFragment : Fragment() {
                         viewPager.post {
                             viewPager.currentItem = vm.getCurrentItem()
                         }
+                        setButtonNumbers()
                     }
                 }
             }
@@ -144,7 +145,6 @@ class ViewPagerFragment : Fragment() {
 
     private fun updateData(newTime: Int? = null) {
         vm.getNewTimeTable(newTime)
-        setButtonNumbers()
     }
 
     companion object {
