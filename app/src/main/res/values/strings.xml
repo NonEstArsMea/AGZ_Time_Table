@@ -11,6 +11,7 @@
     <dimen name="gant_task_text_horizontal_margin">4dp</dimen>
 
     <dimen name="gant_period_name_text_size">7sp</dimen>
+    <dimen name="info_name_text_size">6sp</dimen>
     <dimen name="gant_task_name_text_size">12sp</dimen>
 
     <dimen name="card_time_text_size">20dp</dimen>

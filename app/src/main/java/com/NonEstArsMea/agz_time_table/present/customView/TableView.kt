@@ -18,7 +18,6 @@ import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.alpha
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellClass
 import com.NonEstArsMea.agz_time_table.util.getStaticLayout
@@ -188,6 +187,7 @@ class NewView @JvmOverloads constructor(
                         if (a.subjectNumber == numberOfLesson + 1) {
                             val lesson = LessonsRect(
                                 text = a.subject!!,
+                                infoText = "\n${a.classroom!!}",
                                 dayOfLesson = day,
                                 lastY = lastY.toInt(),
                                 heightOfRow = maxHeightOfRow,
@@ -225,6 +225,7 @@ class NewView @JvmOverloads constructor(
                         if (a.subjectNumber == numberOfLesson + 1) {
                             val lesson = LessonsRect(
                                 text = a.subject!!,
+                                infoText = "\n${a.classroom!!}",
                                 dayOfLesson = day,
                                 lastY = lastY.toInt(),
                                 heightOfRow = maxHeightOfRow,
@@ -412,7 +413,6 @@ class NewView @JvmOverloads constructor(
         }
     }
 
-
     private inner class Transformations {
 
         var scaleFactor = 1.0f
@@ -459,11 +459,24 @@ class NewView @JvmOverloads constructor(
 
     private inner class LessonsRect(
         val text: String,
+        val infoText: String,
         val dayOfLesson: Int,
         val lastY: Int,
         var heightOfRow: Int,
         val newColor: Int,
     ) {
+
+        private val nameTextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
+            textSize = resources.getDimension(R.dimen.gant_period_name_text_size)
+            isFakeBoldText = true
+            color = ContextCompat.getColor(context, R.color.black)
+        }
+
+        private val infoTextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
+            textSize = resources.getDimension(R.dimen.gant_period_name_text_size)
+            isFakeBoldText = false
+            color = ContextCompat.getColor(context, R.color.grey_500)
+        }
 
         // Создание прямоуголька и задание радиуса и размера боковой линии
         var rect = RectF()
@@ -505,13 +518,21 @@ class NewView @JvmOverloads constructor(
             (columnWidth * transformations.scaleFactor - 2 * margin - 2 * paddingX - verticalLineSize - rectStrokeWidth) / transformations.scaleFactor
 
         // Создаем статик лэйаут
-        private val staticLayout = getStaticLayout(
+        private val nameStaticLayout = getStaticLayout(
             text,
             staticLayoutWidth.toInt(),
-            dateNamePaint,
+            nameTextPaint,
             true
         )
-        val height = staticLayout.height + paddingY + paddingY + margin + margin
+
+        private val infoStaticLayout = getStaticLayout(
+                infoText,
+                staticLayoutWidth.toInt(),
+                infoTextPaint,
+                true
+            )
+
+        val height = nameStaticLayout.height + infoStaticLayout.height + paddingY + paddingY + margin + margin
 
         fun updateInitialRect() {
 
@@ -586,11 +607,21 @@ class NewView @JvmOverloads constructor(
             canvas.save()
             canvas.translate(
                 rect.left + verticalLineSize + paddingX + rectStrokeWidth,
-                rect.top + (rect.bottom - rect.top - staticLayout.height * transformations.scaleFactor) / 2
+                rect.top + (rect.bottom - rect.top - (nameStaticLayout.height + infoStaticLayout.height) * transformations.scaleFactor) / 2
             )
             canvas.scale(transformations.scaleFactor, transformations.scaleFactor)
-            staticLayout.draw(canvas)
+            nameStaticLayout.draw(canvas)
             canvas.restore()
+
+            canvas.save()
+            canvas.translate(
+                rect.left + verticalLineSize + paddingX + rectStrokeWidth,
+                rect.top + (rect.bottom - rect.top - (infoStaticLayout.height - nameStaticLayout.height) * transformations.scaleFactor) / 2
+            )
+            canvas.scale(transformations.scaleFactor, transformations.scaleFactor)
+            infoStaticLayout.draw(canvas)
+            canvas.restore()
+
         }
 
         private fun changeColor(newColor: Int): Int {
