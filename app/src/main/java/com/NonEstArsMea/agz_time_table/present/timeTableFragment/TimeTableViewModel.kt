@@ -129,6 +129,10 @@ class TimeTableViewModel @Inject constructor(
         return DateManager.getWeekDateText(application.applicationContext)
     }
 
+    fun getDateList(): List<String> {
+        return DateManager.getDateList()
+    }
+
     companion object {
         const val PREVIOUS_WEEK = -7
         const val NEXT_WEEK = 7

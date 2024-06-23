@@ -72,14 +72,16 @@ class TableFragment : Fragment() {
                 when (it) {
                     is LoadData -> {
                         val list = vm.timeTableFromStorage()
-                        binding.tabView.setTimeTable(list)
+                        val dateList = vm.getDateList()
+                        binding.tabView.setTimeTable(list, dateList)
                     }
 
                     is ConnectionError -> {}
 
                     is TimeTableIsLoad -> {
                         Log.e("tag", it.toString())
-                        binding.tabView.setTimeTable(it.list)
+                        val dateList = vm.getDateList()
+                        binding.tabView.setTimeTable(it.list, dateList)
                         binding.weekDateText.text = vm.getWeekDateText()
                     }
                 }

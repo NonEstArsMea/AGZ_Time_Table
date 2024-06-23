@@ -57,6 +57,8 @@ class NewView @JvmOverloads constructor(
         "16:25", "17:55",
     )
 
+    private var dateList = listOf<String>()
+
 
     private val rowPaint = Paint().apply {
         style = Paint.Style.FILL
@@ -74,7 +76,7 @@ class NewView @JvmOverloads constructor(
     }
 
     private val dateNamePaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
-        textSize = resources.getDimension(R.dimen.gant_period_name_text_size)
+        textSize = resources.getDimension(R.dimen.name_text_size)
         isFakeBoldText = true
         color = ContextCompat.getColor(context, R.color.black)
     }
@@ -152,31 +154,17 @@ class NewView @JvmOverloads constructor(
 
 
         var lastY = namesRowHight.toFloat() * transformations.scaleFactor
-        val lastX = transformations.translationX
-
-        val paddingLeftAndRight = 5
-        var textY: Float
-        var textX: Float
-
-
-        val texts = listOf(
-            "1 Пара",
-            "2 Пара",
-            "3 Пара",
-            "4 Пара",
-            "5 Пара",
-        )
 
         repeat(COUNT_OF_LESSONS) { numberOfLesson ->
             var maxHeightOfRow = minRowHight
 
-            val nameOfROwStaticLayout =
-                getStaticLayout(
-                    texts[numberOfLesson],
-                    dateTextSize.toInt() - 2 * paddingLeftAndRight,
-                    dateNamePaint
-                )
-            // Получаем ячейки с парами и измеряем их
+            val nameOfROwStaticLayout = NamesRect(
+                text = timeStartOfLessonsList[numberOfLesson * 2],
+                infoText = timeStartOfLessonsList[numberOfLesson * 2 + 1],
+                ZERO_COLUMN,
+                lastY.toInt(),
+                minRowHight
+            )
 
             // Получаем ячейки с парами и измеряем их
             // Получаем элемент массива, в нашем случае это расписание на день
@@ -201,7 +189,7 @@ class NewView @JvmOverloads constructor(
             }
 
             // Разбираемся с высотой
-            maxHeightOfRow = max(nameOfROwStaticLayout.height, maxHeightOfRow)
+            maxHeightOfRow = max(nameOfROwStaticLayout.height.toInt(), maxHeightOfRow)
 
             // Отрисовка строки, можно изменять фон
             rowRect.set(
@@ -242,17 +230,10 @@ class NewView @JvmOverloads constructor(
             }
 
 
-
-
-            textY =
-                (lastY + (maxHeightOfRow - nameOfROwStaticLayout.height) * transformations.scaleFactor / 2) + transformations.translationY
-            textX = paddingLeftAndRight.toFloat() + lastX
-
-            this.save()
-            this.translate(textX, textY)
-            this.scale(transformations.scaleFactor, transformations.scaleFactor)
-            nameOfROwStaticLayout.draw(this)
-            this.restore()
+            if (nameOfROwStaticLayout.isRectVisible) {
+                nameOfROwStaticLayout.updateInitialRect()
+                nameOfROwStaticLayout.draw(this)
+            }
 
             lastY += (maxHeightOfRow * transformations.scaleFactor)
 
@@ -272,7 +253,6 @@ class NewView @JvmOverloads constructor(
 
         if (startScaleFactor == null) {
             startScaleFactor = height.toFloat() / contentHeight.toFloat()
-            Log.e("start", startScaleFactor.toString())
             transformations.scaleFactor = startScaleFactor!!
             transformations.minScaleFactor = startScaleFactor!!
             invalidate()
@@ -283,43 +263,32 @@ class NewView @JvmOverloads constructor(
     // Отрисовка линий колонн и названия колонн
     private fun Canvas.drawPeriods() {
         val currentPeriods = listOf(
-            "17\n" + "ПН",
-            "18\n" + "ВТ",
-            "19\n" + "СР",
-            "20\n" + "ЧТ",
-            "21\n" + "ПТ",
-            "22\n" + "СБ"
+            "ПН",
+            "ВТ",
+            "СР",
+            "ЧТ",
+            "ПТ",
+            "СБ"
         )
-        var textY: Float
-        var textX: Float
 
         var lastX = dateTextSize * transformations.scaleFactor + transformations.translationX
 
-        val layoutColumnWidth = columnWidth * transformations.scaleFactor
 
         currentPeriods.forEachIndexed { index, periodName ->
             // По X текст рисуется относительно его начала
-            val staticLayout = StaticLayout.Builder.obtain(
-                /* source = */ periodName,
-                /* start = */0,
-                /* end = */periodName.length,
-                /* paint = */dateNamePaint,
-                /* width = */layoutColumnWidth.toInt()
+            val periodName = NamesRect(
+                text = periodName,
+                infoText = dateList[index],
+                numberOfColumn = index,
+                lastY = 0,
+                heightOfRow = namesRowHight
             )
-                .setAlignment(Layout.Alignment.ALIGN_CENTER)
-                .setLineSpacing(0f, 1f)
-                .setIncludePad(true)
-                .build()
 
-            textY =
-                ((namesRowHight - staticLayout.height) / 2 * transformations.scaleFactor) + transformations.translationY
-            textX = lastX + (columnWidth - staticLayout.width) / 2 * transformations.scaleFactor
+            if (periodName.isRectVisible) {
+                periodName.updateInitialRect()
+                periodName.draw(this)
+            }
 
-            this.save()
-            this.translate(textX, textY)
-            this.scale(transformations.scaleFactor, transformations.scaleFactor)
-            staticLayout.draw(this)
-            this.restore()
 
             lastX += (columnWidth * transformations.scaleFactor)
 
@@ -347,7 +316,7 @@ class NewView @JvmOverloads constructor(
     private var timeTable: List<List<CellClass>> = emptyList()
 
 
-    fun setTimeTable(timeTable: List<List<CellClass>>) {
+    fun setTimeTable(timeTable: List<List<CellClass>>, dateList: List<String>) {
         Log.e("table", timeTable.toString())
         Log.e("table", this.timeTable.toString())
 
@@ -356,7 +325,10 @@ class NewView @JvmOverloads constructor(
                 it.subjectNumber != null
             }
         }
+
+
         this.timeTable = list
+        this.dateList = dateList
         requestLayout()
         invalidate()
 
@@ -416,7 +388,7 @@ class NewView @JvmOverloads constructor(
     private inner class Transformations {
 
         var scaleFactor = 1.0f
-        var minScaleFactor = 0.1f
+        var minScaleFactor = 0.05f
         private var maxScaleFactor = 20.0f
 
         var translationX = 0f
@@ -458,29 +430,29 @@ class NewView @JvmOverloads constructor(
     }
 
     private inner class LessonsRect(
-        val text: String,
-        val infoText: String,
-        val dayOfLesson: Int,
-        val lastY: Int,
-        var heightOfRow: Int,
-        val newColor: Int,
+        private val text: String,
+        private val infoText: String,
+        private val dayOfLesson: Int,
+        private val lastY: Int,
+        private var heightOfRow: Int,
+        private val newColor: Int,
     ) {
 
         private val nameTextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
-            textSize = resources.getDimension(R.dimen.gant_period_name_text_size)
+            textSize = resources.getDimension(R.dimen.lesson_name_text_size)
             isFakeBoldText = true
             color = ContextCompat.getColor(context, R.color.black)
         }
 
         private val infoTextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
-            textSize = resources.getDimension(R.dimen.gant_period_name_text_size)
+            textSize = resources.getDimension(R.dimen.lesson_name_text_size)
             isFakeBoldText = false
             color = ContextCompat.getColor(context, R.color.grey_500)
         }
 
         // Создание прямоуголька и задание радиуса и размера боковой линии
-        var rect = RectF()
-        var rectRadius = 10f * transformations.scaleFactor
+        private var rect = RectF()
+        private var rectRadius = 10f * transformations.scaleFactor
         private var verticalLineSize = 10f * transformations.scaleFactor
         private val rectStrokeWidth = 2f
 
@@ -501,9 +473,9 @@ class NewView @JvmOverloads constructor(
             color = resources.getColor(newColor, null)
         }
 
-        val paddingX = 10f
-        val paddingY = 10f
-        val margin = 15f
+        private val paddingX = 10f
+        private val paddingY = 10f
+        private val margin = 15f
         private val path = Path()
         private val path2 = Path()
 
@@ -514,7 +486,7 @@ class NewView @JvmOverloads constructor(
         val isRectVisible: Boolean
             get() = ((rect.top < height) or (rect.bottom > 0)) and ((rect.right < width) or (rect.left > 0))
 
-        val staticLayoutWidth =
+        private val staticLayoutWidth =
             (columnWidth * transformations.scaleFactor - 2 * margin - 2 * paddingX - verticalLineSize - rectStrokeWidth) / transformations.scaleFactor
 
         // Создаем статик лэйаут
@@ -532,7 +504,9 @@ class NewView @JvmOverloads constructor(
                 true
             )
 
-        val height = nameStaticLayout.height + infoStaticLayout.height + paddingY + paddingY + margin + margin
+        val height: Float
+            get() = nameStaticLayout.height + infoStaticLayout.height + paddingY + paddingY + margin + margin
+
 
         fun updateInitialRect() {
 
@@ -624,6 +598,7 @@ class NewView @JvmOverloads constructor(
 
         }
 
+
         private fun changeColor(newColor: Int): Int {
             return when (newColor) {
                 R.color.red_fo_lessons_card -> R.color.red_fo_lessons_card_alpha
@@ -638,9 +613,137 @@ class NewView @JvmOverloads constructor(
 
     }
 
+        private inner class NamesRect(
+            private val text: String,
+            private val infoText: String,
+            private val numberOfColumn: Int,
+            private val lastY: Int,
+            private var heightOfRow: Int,
+        ) {
+
+            private val nameTextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
+                textSize = resources.getDimension(R.dimen.name_text_size)
+                isFakeBoldText = true
+                color = ContextCompat.getColor(context, R.color.black)
+            }
+
+            private val infoTextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
+                textSize = resources.getDimension(R.dimen.info_text_size)
+                isFakeBoldText = false
+                color = ContextCompat.getColor(context, R.color.grey_500)
+            }
+
+            // Создание прямоуголька и задание радиуса и размера боковой линии
+            private var rect = RectF()
+
+            // пэйнт для линии и для фона
+            private val paint = Paint().apply {
+                style = Paint.Style.FILL
+                color = Color.WHITE
+                strokeWidth = 0.5f
+                isAntiAlias = true
+                setBackgroundColor(Color.WHITE)
+            }
+
+            private val margin = 15f
+            private val path = Path()
+
+            // Начальный Rect для текущих размеров View
+            private val untransformedRect = RectF()
+
+            // Если false, таск рисовать не нужно
+            val isRectVisible: Boolean
+                get() = ((rect.top < height) or (rect.bottom > 0)) and ((rect.right < width) or (rect.left > 0))
+
+            private val staticLayoutWidth =
+                (columnWidth * transformations.scaleFactor - 2 * margin) / transformations.scaleFactor
+
+            // Создаем статик лэйаут
+            private val nameStaticLayout = getStaticLayout(
+                text,
+                staticLayoutWidth.toInt(),
+                nameTextPaint,
+                true
+            )
+
+            private val infoStaticLayout = getStaticLayout(
+                infoText,
+                staticLayoutWidth.toInt(),
+                infoTextPaint,
+                true
+            )
+
+            val height: Float
+                get() = nameStaticLayout.height + infoStaticLayout.height + margin + margin
+
+
+            fun updateInitialRect() {
+                fun getY(): Float {
+                    return lastY.toFloat() + (heightOfRow - height + margin + margin) * transformations.scaleFactor / 2 + transformations.translationY
+                }
+
+                fun getX(index: Int): Float {
+                    return ((index * columnWidth) + dateTextSize) * transformations.scaleFactor + transformations.translationX + margin
+                }
+
+                fun getEndX(index: Int): Float {
+                    return (((index + 1) * columnWidth) + dateTextSize) * transformations.scaleFactor + transformations.translationX - margin
+                }
+
+                // Создание самой формы прямоугольника
+                if(numberOfColumn == ZERO_COLUMN){
+                    untransformedRect.set(
+                        0  + transformations.translationX + margin,
+                        getY(),
+                        dateTextSize * transformations.scaleFactor + transformations.translationX - margin,
+                        getY() + (height - 2 * margin) * transformations.scaleFactor,
+                    )
+                }else{
+                    untransformedRect.set(
+                        getX(numberOfColumn),
+                        getY(),
+                        getEndX(numberOfColumn),
+                        getY() + (height - 2 * margin) * transformations.scaleFactor,
+                    )
+                }
+
+                rect.set(untransformedRect)
+            }
+
+            fun draw(canvas: Canvas) {
+
+
+                // Отрисовка самого прямоугольника
+                path.addRect(rect, Path.Direction.CW)
+                canvas.drawPath(path, paint)
+
+
+                canvas.save()
+                canvas.translate(
+                    rect.left,
+                    rect.top + (rect.bottom - rect.top - (nameStaticLayout.height + infoStaticLayout.height) * transformations.scaleFactor) / 2
+                )
+                canvas.scale(transformations.scaleFactor, transformations.scaleFactor)
+                nameStaticLayout.draw(canvas)
+                canvas.restore()
+
+                canvas.save()
+                canvas.translate(
+                    rect.left,
+                    rect.top + (rect.bottom - rect.top - (infoStaticLayout.height - nameStaticLayout.height) * transformations.scaleFactor) / 2
+                )
+                canvas.scale(transformations.scaleFactor, transformations.scaleFactor)
+                infoStaticLayout.draw(canvas)
+                canvas.restore()
+
+            }
+
+        }
+
 
     companion object {
         const val COUNT_OF_LESSONS = 5
+        const val ZERO_COLUMN = -1
     }
 
 }
