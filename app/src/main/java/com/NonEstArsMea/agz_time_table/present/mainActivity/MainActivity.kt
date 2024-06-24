@@ -53,14 +53,11 @@ class MainActivity : AppCompatActivity(),
         analytics = Firebase.analytics
 
         component.inject(this)
-        Log.e("fin", "onCreate")
-        mainViewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
-
 
         _binding = MainLayoutBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-
+        mainViewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
     }
 
     override fun onStart() {
@@ -71,18 +68,19 @@ class MainActivity : AppCompatActivity(),
             if (!it){
                         binding.errorNetLayout.root.visibility = View.VISIBLE
             }else{
-                val collapseAnimation = ObjectAnimator.ofPropertyValuesHolder(
-                    binding.errorNetLayout.root,
-                    PropertyValuesHolder.ofFloat(View.ALPHA, 0f),
-                    PropertyValuesHolder.ofFloat(View.SCALE_Y, 0f)
-                )
-                collapseAnimation.duration = 300
-                collapseAnimation.addListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationEnd(animation: Animator) {
-                        binding.errorNetLayout.root.visibility = View.GONE
-                    }
-                })
-                collapseAnimation.start()
+//                val collapseAnimation = ObjectAnimator.ofPropertyValuesHolder(
+//                    binding.errorNetLayout.root,
+//                    PropertyValuesHolder.ofFloat(View.ALPHA, 0f),
+//                    PropertyValuesHolder.ofFloat(View.SCALE_Y, 0f)
+//                )
+//                collapseAnimation.duration = 300
+//                collapseAnimation.addListener(object : AnimatorListenerAdapter() {
+//                    override fun onAnimationEnd(animation: Animator) {
+//                        binding.errorNetLayout.root.visibility = View.GONE
+//                    }
+//                })
+//                collapseAnimation.start()
+                binding.errorNetLayout.root.visibility = View.GONE
             }
 
         }

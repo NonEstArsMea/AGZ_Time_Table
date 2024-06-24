@@ -9,6 +9,7 @@ import android.graphics.Path
 import android.graphics.PointF
 import android.graphics.Rect
 import android.graphics.RectF
+import android.graphics.drawable.Drawable
 import android.text.Layout
 import android.text.StaticLayout
 import android.text.TextPaint
@@ -18,9 +19,11 @@ import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toDrawable
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellClass
 import com.NonEstArsMea.agz_time_table.util.getStaticLayout
+import com.google.android.material.color.MaterialColors
 import java.lang.Integer.max
 
 class NewView @JvmOverloads constructor(
@@ -28,6 +31,8 @@ class NewView @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
+
+    private val theme = context.theme
 
     // Основная информация об строках и колонках
     private val minRowHight = 170
@@ -59,15 +64,19 @@ class NewView @JvmOverloads constructor(
 
     private var dateList = listOf<String>()
 
+    override fun setBackground(background: Drawable?) {
+        super.setBackground(MaterialColors.getColor(context, com.google.android.material.R.attr.colorSurfaceContainer, Color.WHITE).toDrawable())
+    }
+
 
     private val rowPaint = Paint().apply {
         style = Paint.Style.FILL
-        color = Color.TRANSPARENT
+        color = MaterialColors.getColor(context, com.google.android.material.R.attr.colorSurfaceContainer, Color.WHITE)
     }
 
     private val separatorsPaint = Paint().apply {
         strokeWidth = 2f
-        color = context.getColor(R.color.gray_400)
+        color = MaterialColors.getColor(context, com.google.android.material.R.attr.colorSurfaceContainer, Color.WHITE)
     }
 
     private val mainSeparatorsPaint = Paint().apply {
