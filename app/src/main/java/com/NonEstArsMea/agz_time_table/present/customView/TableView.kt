@@ -76,7 +76,7 @@ class NewView @JvmOverloads constructor(
 
     private val separatorsPaint = Paint().apply {
         strokeWidth = 2f
-        color = MaterialColors.getColor(context, com.google.android.material.R.attr.colorSurfaceContainer, Color.WHITE)
+        color = MaterialColors.getColor(context, com.google.android.material.R.attr.colorOnSurfaceVariant, Color.WHITE)
     }
 
     private val mainSeparatorsPaint = Paint().apply {
@@ -163,6 +163,17 @@ class NewView @JvmOverloads constructor(
 
 
         var lastY = namesRowHight.toFloat() * transformations.scaleFactor
+
+        rowRect.set(
+            /* left = */ 0,
+            /* top = */
+            0,
+            /* right = */
+            width,
+            /* bottom = */
+            lastY.toInt()
+        )
+        drawRect(rowRect, rowPaint)
 
         repeat(COUNT_OF_LESSONS) { numberOfLesson ->
             var maxHeightOfRow = minRowHight
@@ -450,13 +461,13 @@ class NewView @JvmOverloads constructor(
         private val nameTextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
             textSize = resources.getDimension(R.dimen.lesson_name_text_size)
             isFakeBoldText = true
-            color = ContextCompat.getColor(context, R.color.black)
+            color = MaterialColors.getColor(context, com.google.android.material.R.attr.titleTextColor, Color.WHITE)
         }
 
         private val infoTextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
             textSize = resources.getDimension(R.dimen.lesson_name_text_size)
             isFakeBoldText = false
-            color = ContextCompat.getColor(context, R.color.grey_500)
+            color = MaterialColors.getColor(context, com.google.android.material.R.attr.colorOnSurfaceVariant, Color.WHITE)
         }
 
         // Создание прямоуголька и задание радиуса и размера боковой линии
@@ -468,10 +479,8 @@ class NewView @JvmOverloads constructor(
         // пэйнт для линии и для фона
         private val paint = Paint().apply {
             style = Paint.Style.FILL
-            color = Color.WHITE
             strokeWidth = 0.5f
             isAntiAlias = true
-            setBackgroundColor(Color.WHITE)
         }
 
         @SuppressLint("ResourceType")
@@ -631,15 +640,15 @@ class NewView @JvmOverloads constructor(
         ) {
 
             private val nameTextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
-                textSize = resources.getDimension(R.dimen.name_text_size)
+                textSize = resources.getDimension(R.dimen.lesson_name_text_size)
                 isFakeBoldText = true
-                color = ContextCompat.getColor(context, R.color.black)
+                color = MaterialColors.getColor(context, com.google.android.material.R.attr.titleTextColor, Color.WHITE)
             }
 
             private val infoTextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
-                textSize = resources.getDimension(R.dimen.info_text_size)
+                textSize = resources.getDimension(R.dimen.lesson_name_text_size)
                 isFakeBoldText = false
-                color = ContextCompat.getColor(context, R.color.grey_500)
+                color = MaterialColors.getColor(context, com.google.android.material.R.attr.colorOnSurfaceVariant, Color.WHITE)
             }
 
             // Создание прямоуголька и задание радиуса и размера боковой линии
@@ -648,10 +657,9 @@ class NewView @JvmOverloads constructor(
             // пэйнт для линии и для фона
             private val paint = Paint().apply {
                 style = Paint.Style.FILL
-                color = Color.WHITE
+                color = Color.TRANSPARENT
                 strokeWidth = 0.5f
                 isAntiAlias = true
-                setBackgroundColor(Color.WHITE)
             }
 
             private val margin = 15f

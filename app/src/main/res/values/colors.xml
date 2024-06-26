@@ -22,7 +22,7 @@
     <!-- Light Theme Colors -->
     <color name="orange_light">#FFC75F</color>
     <color name="red_light">#FF0000</color>
-    <color name="gray_400">#DCDCDC</color>
+    <color name="gray_400">#636363</color>
     <color name="red_light_500">#FF6347</color>
 
     <!-- Dark Theme Colors -->
