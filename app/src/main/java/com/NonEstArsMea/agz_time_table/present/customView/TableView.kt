@@ -448,8 +448,7 @@ class NewView @JvmOverloads constructor(
             // Разбираемся с высотой
             maxHeightOfRow = minRowHight
         }
-
-        Log.e("contentHei", contentHeight.toString())
+        
         contentHeight = lastY.toInt()
     }
 
