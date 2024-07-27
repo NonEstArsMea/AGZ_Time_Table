@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "639243459340",
-    "project_id": "agz-time-table",
-    "storage_bucket": "agz-time-table.appspot.com"
+    "project_number": "646232742988",
+    "project_id": "agztimetable-2a68d",
+    "storage_bucket": "agztimetable-2a68d.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:639243459340:android:be4eb9c15daf484fd60729",
+        "mobilesdk_app_id": "1:646232742988:android:16d7702274841a2f2ee8e9",
         "android_client_info": {
           "package_name": "com.NonEstArsMea.agz_time_table"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDSvL-m9R9Jqkr8wDNGxhOhG2qEZaG16Ic"
+          "current_key": "AIzaSyCLNkgSF5u_1kJZmx20x-IHUwe29xY_Wi8"
         }
       ],
       "services": {

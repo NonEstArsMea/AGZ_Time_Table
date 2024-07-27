@@ -71,6 +71,10 @@ class SettingFragment : Fragment() {
         binding.searchBar.setOnClickListener {
             findNavController().navigate(R.id.searchFragment)
         }
+
+        binding.navigateToLoginCard.setOnClickListener {
+            findNavController().navigate(R.id.loginFragment)
+        }
         binding.botButton.setOnClickListener {
             actionViewStart("https://t.me/timeagzbot")
         }

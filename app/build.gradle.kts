@@ -12,7 +12,7 @@ plugins {
 
 android {
     namespace = "com.NonEstArsMea.agz_time_table"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.NonEstArsMea.agz_time_table"
@@ -79,6 +79,8 @@ dependencies {
     implementation(libs.firebase.analytics.ktx)
     implementation(libs.car.ui.lib)
     implementation(libs.androidx.appcompat)
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.database)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -87,36 +89,34 @@ dependencies {
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
 
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.4.1")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.4")
 
-    val nav_version = "2.6.0"
+    val nav_version = "2.7.7"
     // Kotlin
     implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
     implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
     implementation("androidx.navigation:navigation-dynamic-features-fragment:$nav_version")
-    implementation ("androidx.fragment:fragment-ktx:1.6.0")
+    implementation ("androidx.fragment:fragment-ktx:1.8.2")
 
     // Jetpack Compose Integration
     implementation("androidx.navigation:navigation-compose:$nav_version")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
     //material 3
-    implementation("com.google.android.material:material:1.9.0")
+    implementation("com.google.android.material:material:1.12.0")
     //get CSV
     implementation ("org.apache.commons:commons-csv:1.5")
     //Gson
     implementation ("com.google.code.gson:gson:2.10.1")
 
-    implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
+    implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
     implementation("com.google.firebase:firebase-analytics")
 
     //Dagger2
     implementation ("com.google.dagger:dagger:2.48.1")
     kapt ("com.google.dagger:dagger-compiler:2.48.1")
 
-    // Splash Screen
-    implementation("androidx.core:core-splashscreen:1.0.0")
 
     val room_version = "2.5.0"
     annotationProcessor ("androidx.room:room-compiler:$room_version")

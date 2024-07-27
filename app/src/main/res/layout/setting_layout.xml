@@ -68,10 +68,69 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margine_all"
                 android:text="@string/add_group_button"
+                app:cornerRadius="10dp"
                 app:icon="@drawable/plus"
                 app:iconGravity="textStart" />
 
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/navigate_to_login_card"
+                style="@style/MyCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="5dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/setting_layout_header">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:padding="5dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="10dp"
+                            android:text="Войти"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            style="@style/MainTextViewStyle.Header1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="10dp"
+                            android:text="Если у вас есть аккаунт, вы можете просматривать дополнительную информацию"
+                            android:textColor="@color/gray_400"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+
+
+                    <Button
+                        style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:icon="@drawable/profile" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
             <TextView
+
                 android:id="@+id/theme_change"
                 style="@style/MainTextViewStyle.Header1"
                 android:layout_width="match_parent"
@@ -80,12 +139,12 @@
                 android:paddingStart="@dimen/margine_all"
                 android:text="@string/theme_change_lable" />
 
+
             <com.google.android.material.button.MaterialButtonToggleGroup
                 android:id="@+id/toggleButton"
                 style="?attr/materialButtonToggleGroupStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:gravity="center_horizontal">
 
                 <Button
@@ -94,8 +153,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-
-                    android:text="@string/theme_system" />
+                    android:text="@string/theme_system"
+                    app:cornerRadius="10dp" />
 
                 <Button
                     android:id="@+id/button2"
@@ -111,7 +170,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/theme_light" />
+                    android:text="@string/theme_light"
+                    app:cornerRadius="10dp" />
             </com.google.android.material.button.MaterialButtonToggleGroup>
 
             <TextView
@@ -129,7 +189,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:padding="@dimen/margine_all">
+                android:padding="@dimen/margine_all"
+                app:cardElevation="5dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -181,7 +242,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:padding="@dimen/margine_all">
+                android:padding="@dimen/margine_all"
+                app:cardElevation="5dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -234,7 +296,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="25dp"
-                android:padding="@dimen/margine_all">
+                android:padding="@dimen/margine_all"
+                app:cardElevation="5dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
