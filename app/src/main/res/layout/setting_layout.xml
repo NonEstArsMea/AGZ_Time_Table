@@ -73,7 +73,7 @@
                 app:iconGravity="textStart" />
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/navigate_to_login_card"
+                android:id="@+id/login_card"
                 style="@style/MyCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -88,46 +88,80 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:padding="5dp">
 
                     <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
 
-                        <TextView
-                            android:layout_width="match_parent"
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/login_card_top_text"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="10dp"
+                                android:text="Войти"
+                                android:textColor="?attr/colorOnSurface"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/login_card_info_text"
+                                style="@style/MainTextViewStyle.Header1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="10dp"
+                                android:text="Если у вас есть аккаунт, вы можете просматривать дополнительную информацию"
+                                android:textColor="@color/gray_400"
+                                android:textSize="14sp" />
+
+                        </LinearLayout>
+
+
+                        <Button
+                            style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginLeft="10dp"
-                            android:text="Войти"
-                            android:textColor="?attr/colorOnSurface"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            style="@style/MainTextViewStyle.Header1"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="10dp"
-                            android:text="Если у вас есть аккаунт, вы можете просматривать дополнительную информацию"
-                            android:textColor="@color/gray_400"
-                            android:textSize="14sp" />
-
+                            app:icon="@drawable/profile" />
                     </LinearLayout>
 
-
-                    <Button
-                        style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
-                        android:layout_width="wrap_content"
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/departmental_timetable"
+                        style="@style/MyCard"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        app:icon="@drawable/profile" />
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:visibility="gone"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="5dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:padding="10dp"
+                            android:text="Расписание кафедр"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                    </com.google.android.material.card.MaterialCardView>
                 </LinearLayout>
+
+
             </com.google.android.material.card.MaterialCardView>
+
 
             <TextView
 

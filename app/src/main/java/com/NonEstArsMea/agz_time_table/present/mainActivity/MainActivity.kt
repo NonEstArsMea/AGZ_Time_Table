@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.NonEstArsMea.agz_time_table.NavGraphDirections
 import com.NonEstArsMea.agz_time_table.R
+import com.NonEstArsMea.agz_time_table.data.AuthRepositoryImpl
 import com.NonEstArsMea.agz_time_table.util.DateManager
 import com.NonEstArsMea.agz_time_table.databinding.MainLayoutBinding
 import com.NonEstArsMea.agz_time_table.present.TimeTableApplication
@@ -40,6 +41,10 @@ class MainActivity : AppCompatActivity(),
 
     @Inject
     lateinit var viewModelFactory: MainViewModelFactory
+
+    @Inject
+    lateinit var userAuth: AuthRepositoryImpl
+
     private val component by lazy {
         (application as TimeTableApplication).component
     }
@@ -50,9 +55,12 @@ class MainActivity : AppCompatActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         analytics = Firebase.analytics
 
         component.inject(this)
+
+        userAuth.init(this)
 
         _binding = MainLayoutBinding.inflate(layoutInflater)
         val view = binding.root
@@ -63,23 +71,11 @@ class MainActivity : AppCompatActivity(),
     override fun onStart() {
         super.onStart()
         mainViewModel.checkNetConnection()
-        mainViewModel.isConnected.observe(this){
+        mainViewModel.isConnected.observe(this) {
             // появление кнопки об отсутсвии интернета
-            if (!it){
-                        binding.errorNetLayout.root.visibility = View.VISIBLE
-            }else{
-//                val collapseAnimation = ObjectAnimator.ofPropertyValuesHolder(
-//                    binding.errorNetLayout.root,
-//                    PropertyValuesHolder.ofFloat(View.ALPHA, 0f),
-//                    PropertyValuesHolder.ofFloat(View.SCALE_Y, 0f)
-//                )
-//                collapseAnimation.duration = 300
-//                collapseAnimation.addListener(object : AnimatorListenerAdapter() {
-//                    override fun onAnimationEnd(animation: Animator) {
-//                        binding.errorNetLayout.root.visibility = View.GONE
-//                    }
-//                })
-//                collapseAnimation.start()
+            if (!it) {
+                binding.errorNetLayout.root.visibility = View.VISIBLE
+            } else {
                 binding.errorNetLayout.root.visibility = View.GONE
             }
 
@@ -95,7 +91,7 @@ class MainActivity : AppCompatActivity(),
 
         }
 
-        mainViewModel.dataIsLoad.observe(this){
+        mainViewModel.dataIsLoad.observe(this) {
             mainViewModel.getListOfMainParam()
         }
 
@@ -119,7 +115,7 @@ class MainActivity : AppCompatActivity(),
                 }
 
                 R.id.menu_setting -> {
-                    if(mainViewModel.selectedItem.value != BottomMenuItemStateManager.SETTING_ITEM){
+                    if (mainViewModel.selectedItem.value != BottomMenuItemStateManager.SETTING_ITEM) {
                         findNavController(R.id.fragmentContainerView)
                             .navigate(R.id.settingFragment)
                     }

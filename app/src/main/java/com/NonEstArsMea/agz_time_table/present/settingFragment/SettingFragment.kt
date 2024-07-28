@@ -6,14 +6,17 @@ import android.content.Intent
 import android.content.Intent.ACTION_VIEW
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.NonEstArsMea.agz_time_table.R
+import com.NonEstArsMea.agz_time_table.data.AuthRepositoryImpl
 import com.NonEstArsMea.agz_time_table.databinding.SettingLayoutBinding
 import com.NonEstArsMea.agz_time_table.present.TimeTableApplication
 import com.NonEstArsMea.agz_time_table.present.mainActivity.MainViewModelFactory
@@ -46,11 +49,10 @@ class SettingFragment : Fragment() {
         super.onAttach(context)
         component.inject(this)
         vm = ViewModelProvider(this, viewModelFactory)[SettingViewModel::class.java]
-        if(context is setThemeInterface){
+        if (context is setThemeInterface) {
             setSystemTheme = context
         }
     }
-
 
 
     @SuppressLint("NotifyDataSetChanged")
@@ -72,9 +74,6 @@ class SettingFragment : Fragment() {
             findNavController().navigate(R.id.searchFragment)
         }
 
-        binding.navigateToLoginCard.setOnClickListener {
-            findNavController().navigate(R.id.loginFragment)
-        }
         binding.botButton.setOnClickListener {
             actionViewStart("https://t.me/timeagzbot")
         }
@@ -111,6 +110,16 @@ class SettingFragment : Fragment() {
 
         }
 
+        vm.authResult.observe(viewLifecycleOwner) {
+            Log.e("log", it.toString())
+            when (it) {
+                is AuthRepositoryImpl.UserProfile.IsLoggedIn -> setLogicIfLoggedIn(it.name)
+                is AuthRepositoryImpl.UserProfile.IsLoggedOut -> setLogicIfLoggedOut()
+            }
+        }
+
+
+
         binding.toggleButton.isSingleSelection = true
         binding.toggleButton.check(themeChecker.checkTheme())
         binding.toggleButton.addOnButtonCheckedListener { toggleGroup, checkedId, isChecked ->
@@ -130,7 +139,7 @@ class SettingFragment : Fragment() {
     }
 
 
-    interface setThemeInterface{
+    interface setThemeInterface {
         fun setLightTheme()
         fun setDarkTheme()
         fun setSystemTheme()
@@ -144,5 +153,35 @@ class SettingFragment : Fragment() {
     private fun actionViewStart(uri: String) {
         val link = Intent(ACTION_VIEW, Uri.parse(uri))
         startActivity(link)
+    }
+
+    private fun setLogicIfLoggedIn(name: String) {
+        binding.loginCardTopText.text = name
+        binding.loginCardInfoText.text = "Вы вошли в аккаунт. \nЧтобы выйти, удерживайте кнопку"
+        binding.departmentalTimetable.visibility = View.VISIBLE
+
+        binding.departmentalTimetable.setOnClickListener {
+            Toast.makeText(requireActivity(), "1234", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.loginCard.setOnLongClickListener {
+            vm.logOut()
+            return@setOnLongClickListener true
+        }
+
+        binding.loginCard.setOnClickListener(null)
+    }
+
+    private fun setLogicIfLoggedOut() {
+        binding.loginCardTopText.text = "Вход"
+        binding.loginCardInfoText.text =
+            "Если у вас есть аккаунт, вы можете просматривать дополнительную информацию"
+        binding.departmentalTimetable.visibility = View.GONE
+
+        binding.loginCard.setOnLongClickListener(null)
+
+        binding.loginCard.setOnClickListener {
+            findNavController().navigate(R.id.loginFragment)
+        }
     }
 }

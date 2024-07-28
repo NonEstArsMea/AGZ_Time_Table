@@ -3,6 +3,7 @@ package com.NonEstArsMea.agz_time_table.di
 import androidx.lifecycle.ViewModel
 import com.NonEstArsMea.agz_time_table.present.customDateFragment.CustomDateFragmentViewModel
 import com.NonEstArsMea.agz_time_table.present.examsFragment.ExamsFragmentViewModel
+import com.NonEstArsMea.agz_time_table.present.loginLayout.LoginViewModel
 import com.NonEstArsMea.agz_time_table.present.mainActivity.MainViewModel
 import com.NonEstArsMea.agz_time_table.present.searchFragment.SearchViewModel
 import com.NonEstArsMea.agz_time_table.present.settingFragment.SettingViewModel
@@ -46,4 +47,9 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(CustomDateFragmentViewModel::class)
     fun bindCustomViewModel(viewModel: CustomDateFragmentViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(LoginViewModel::class)
+    fun bindLoginViewModel(viewModel: LoginViewModel): ViewModel
 }
