@@ -162,6 +162,7 @@ class SettingFragment : Fragment() {
 
         binding.departmentalTimetable.setOnClickListener {
             Toast.makeText(requireActivity(), "1234", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.departmentalTimeTableFragment)
         }
 
         binding.loginCard.setOnLongClickListener {

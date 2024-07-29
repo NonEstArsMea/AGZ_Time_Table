@@ -234,9 +234,11 @@ class NewView @JvmOverloads constructor(
 
         currentPeriods.forEachIndexed { index, periodName ->
             // По X текст рисуется относительно его начала
+
+            val infoText = if (dateList.size > index) dateList[index] else ""
             val periodName = NamesRect(
                 text = periodName,
-                infoText = dateList[index],
+                infoText = infoText,
                 numberOfColumn = index,
                 lastY = 0,
                 heightOfRow = namesRowHight,

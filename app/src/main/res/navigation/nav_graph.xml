@@ -30,6 +30,9 @@
         <action
             android:id="@+id/action_settingFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_settingFragment_to_departmentalTimeTableFragment"
+            app:destination="@id/departmentalTimeTableFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -79,6 +82,14 @@
         android:label="LoginFragment" >
         <action
             android:id="@+id/action_loginFragment_to_settingFragment"
+            app:destination="@id/settingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/departmentalTimeTableFragment"
+        android:name="com.NonEstArsMea.agz_time_table.present.departmentalTimetableFragment.DepartmentalTimeTableFragment"
+        android:label="DepartmentalTimeTableFragment" >
+        <action
+            android:id="@+id/action_departmentalTimeTableFragment_to_settingFragment"
             app:destination="@id/settingFragment" />
     </fragment>
 </navigation>
