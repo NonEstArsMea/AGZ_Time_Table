@@ -437,5 +437,60 @@ class TimeTableRepositoryImpl @Inject constructor(
         listOfFavoriteMainParam.value = list
     }
 
+    suspend fun getDepartmentTimeTable(
+        departmentId: String,
+        date: String
+    ): List<List<CellClass>> = withContext(Dispatchers.Default) {
+        val data = dataRepositoryImpl.getContent()
+        val csvParser = CSVParser(
+            data.reader(), CSVFormat.DEFAULT
+                .withFirstRecordAsHeader()
+                .withIgnoreHeaderCase()
+                .withTrim()
+                .withDelimiter(';')
+        )
+        val listOfTeachers = emptyList<String>().toMutableList()
+        for (line in csvParser) {
+            if (line.get(7) == departmentId && (line.get(6) !in listOfTeachers)) {
+                listOfTeachers.add(line.get(6))
+            }
+        }
+
+        listOfTeachers.sort()
+
+        val list = mutableListOf<List<CellClass>>()
+        repeat((1..list.size).count()) { _ ->
+            list.add(emptyList<CellClass>().toMutableList())
+        }
+        for (line in csvParser) {
+            for (teacher in listOfTeachers) {
+                if (line.get(7) == departmentId &&
+                    line.get(10).replace('.', '-') == date &&
+                    line.get(6) == teacher
+                ) {
+
+//                group = line.get(0)
+//                les = line.get(2).toInt() - 1
+//                aud = line.get(3)
+//                name = line.get(6)
+//                _subject = line.get(8)
+//                subj_type = line.get(9)
+//                departmentId = line.get(7)
+                    list[listOfTeachers.indexOf(teacher)].toMutableList().add(
+                        CellClass(
+                            noEmpty = true,
+                            teacher = line.get(6).toString(),
+                            subject = line.get(8).toString(),
+                            date = date,
+                            subjectNumber = line.get(2).toInt()
+                        )
+                    )
+                }
+            }
+
+        }
+        return@withContext list
+    }
+
 
 }
