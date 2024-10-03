@@ -27,7 +27,8 @@ class DataRepositoryImpl @Inject constructor(
         if (_dataLiveData.value == null) {
             withContext(Dispatchers.IO) {
                 val connection =
-                    URL("http://a0755299.xsph.ru/wp-content/uploads/3-1-1.txt").openConnection()
+                    URL("http://a0755299.xsph.ru/data/combined_output.txt").openConnection()
+                Log.e("cont", connection.toString())
                 connection.connect()
                 content = connection.getInputStream().bufferedReader().use { it.readText() }
                 _dataLiveData.postValue(content)

@@ -17,7 +17,6 @@ class ViewPagerAdapter(
         val diffResult =
             DiffUtil.calculateDiff(WeekScheduleDiffUtilCallback(weekSchedule, newWeekSchedule))
         weekSchedule.clear()
-        Log.e("tag2", "$newWeekSchedule")
         weekSchedule.addAll(newWeekSchedule)
         diffResult.dispatchUpdatesTo(this)
     }

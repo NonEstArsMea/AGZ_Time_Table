@@ -112,6 +112,8 @@ class TimeTableRepositoryImpl @Inject constructor(
             it.noEmpty
         } as ArrayList<CellClass>
 
+        Log.e("tag2", mainParam.toString())
+
         return@withContext setBreakCell(listOfLes, listTT)
     }
 
@@ -437,7 +439,27 @@ class TimeTableRepositoryImpl @Inject constructor(
         listOfFavoriteMainParam.value = list
     }
 
-    suspend fun getDepartmentTimeTable(
+    override fun getDepartment(): List<String> {
+        val data = dataRepositoryImpl.getContent()
+        val csvParser = CSVParser(
+            data.reader(), CSVFormat.DEFAULT
+                .withFirstRecordAsHeader()
+                .withIgnoreHeaderCase()
+                .withTrim()
+                .withDelimiter(';')
+        )
+
+        val masOfDepartment = mutableListOf<String>()
+        for (line in csvParser){
+            if(line.get(7) !in masOfDepartment){
+                masOfDepartment.add(line.get(7))
+            }
+        }
+        masOfDepartment.sort()
+        return masOfDepartment
+    }
+
+    override suspend fun getDepartmentTimeTable(
         departmentId: String,
         date: String
     ): List<List<CellClass>> = withContext(Dispatchers.Default) {

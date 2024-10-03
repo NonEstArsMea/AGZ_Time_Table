@@ -53,6 +53,7 @@ class TimeTableViewModel @Inject constructor(
         data.observeForever {
             if (data.value?.isNotEmpty() == true) {
                 getNewTimeTable()
+                Log.e("observeForever", "---------------")
             }
         }
     }
@@ -60,7 +61,6 @@ class TimeTableViewModel @Inject constructor(
     @SuppressLint("SuspiciousIndentation")
     fun getNewTimeTable(newTime: Int? = null) {
         currentItem = newTime
-        _state.postValue(LoadData)
         if (newTime == 0) {
             DateManager.setDayNow()
         } else {
@@ -75,7 +75,6 @@ class TimeTableViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.Default) {
             list = timeTableRepositoryImpl.getWeekTimeTable()
             launch(Dispatchers.Main) {
-                Log.e("tag", list.size.toString())
                 _state.value = TimeTableIsLoad(list)
             }
         }
