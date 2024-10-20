@@ -67,14 +67,14 @@ class TimeTableRepositoryImpl @Inject constructor(
 
         for (line in csvParser) {
             group = line.get(0)
-            les = line.get(2).toInt() - 1
-            aud = line.get(3)
-            name = line.get(6)
-            _subject = line.get(8)
-            subj_type = line.get(9)
-            departmentId = line.get(7)
-            _date = line.get(10).replace('.', '-')
-            themas = line.get(12)
+            les = line.get(3).toInt() - 1
+            aud = line.get(4)
+            name = line.get(7)
+            _subject = line.get(9)
+            subj_type = line.get(10)
+            departmentId = line.get(8)
+            _date = line.get(11).replace('.', '-')
+            themas = line.get(14)
             if ((_date == dayOfWeek) and ((mainParam == group) or (mainParam == aud) or (mainParam == name))) {
                 listTT[les].apply {
                     if (teacher == null) {
@@ -250,14 +250,14 @@ class TimeTableRepositoryImpl @Inject constructor(
             var lastDate = ""
             var lastSubject = ""
             for (line in csvParser) {
-                val group = line.get(0)
-                val aud = line.get(3)
-                val name = line.get(6)
-                val departmentId = line.get(7)
-                val subject = line.get(8)
-                val subj_type = line.get(9)
-                val date = line.get(10).replace('.', '-')
-                val themas = line.get(12)
+                val group = line.get(NUMBER_OF_GROUP)
+                val aud = line.get(4)
+                val name = line.get(7)
+                val departmentId = line.get(8)
+                val subject = line.get(9)
+                val subj_type = line.get(10)
+                val date = line.get(11).replace('.', '-')
+                val themas = line.get(14)
                 if ((mainParam == group) or ((mainParam == name)) and (Methods.validExams(subj_type))) {
                     if ((lastDate != date) or (lastSubject != subject)) {
                         listTT.add(currentExam)
@@ -280,8 +280,8 @@ class TimeTableRepositoryImpl @Inject constructor(
                             color = Methods.setColor(subj_type)
                             noEmpty = true
                             this.date = date
-                            startTime = getStartTime(number = line.get(2).toInt())
-                            endTime = getEndTime(number = line.get(2).toInt())
+                            startTime = getStartTime(number = line.get(NUMBER_OF_LESSON).toInt())
+                            endTime = getEndTime(number = line.get(NUMBER_OF_LESSON).toInt())
                             department = departmentId
                         } else {
                             if (name !in teacher!!) {
@@ -341,9 +341,9 @@ class TimeTableRepositoryImpl @Inject constructor(
         val listName = ArrayList<MainParam>()
 
         for (line in csvParser) {
-            val group = line.get(0)
-            val aud = line.get(3)
-            val name = line.get(6)
+            val group = line.get(NUMBER_OF_GROUP)
+            val aud = line.get(NUMBER_OF_AUD)
+            val name = line.get(NUMBER_OF_TEACHER)
 
             if (listGroup.none { it.name == group }) {
                 listGroup.add(MainParam(group, false))
@@ -374,7 +374,6 @@ class TimeTableRepositoryImpl @Inject constructor(
             addAll(listName)
         }
 
-        Log.e("fin_2", "end  ${listOfMainParam.value!!.size}")
     }
 
     override fun getNewListOfMainParam(): MutableLiveData<ArrayList<MainParam>> {
@@ -451,7 +450,7 @@ class TimeTableRepositoryImpl @Inject constructor(
 
         val masOfDepartment = mutableListOf<String>()
         for (line in csvParser){
-            if(line.get(7) !in masOfDepartment){
+            if(line.get(NUMBER_OF_CAFID) !in masOfDepartment){
                 masOfDepartment.add(line.get(7))
             }
         }
@@ -473,7 +472,8 @@ class TimeTableRepositoryImpl @Inject constructor(
         )
         val listOfTeachers = emptyList<String>().toMutableList()
         for (line in csvParser) {
-            if (line.get(7) == departmentId && (line.get(6) !in listOfTeachers)) {
+            if (line.get(NUMBER_OF_CAFID) == departmentId &&
+                (line.get(NUMBER_OF_TEACHER) !in listOfTeachers)) {
                 listOfTeachers.add(line.get(6))
             }
         }
@@ -486,9 +486,9 @@ class TimeTableRepositoryImpl @Inject constructor(
         }
         for (line in csvParser) {
             for (teacher in listOfTeachers) {
-                if (line.get(7) == departmentId &&
-                    line.get(10).replace('.', '-') == date &&
-                    line.get(6) == teacher
+                if (line.get(NUMBER_OF_CAFID) == departmentId &&
+                    line.get(NUMBER_OF_DATE).replace('.', '-') == date &&
+                    line.get(NUMBER_OF_TEACHER) == teacher
                 ) {
 
 //                group = line.get(0)
@@ -501,10 +501,10 @@ class TimeTableRepositoryImpl @Inject constructor(
                     list[listOfTeachers.indexOf(teacher)].toMutableList().add(
                         CellClass(
                             noEmpty = true,
-                            teacher = line.get(6).toString(),
-                            subject = line.get(8).toString(),
+                            teacher = line.get(NUMBER_OF_TEACHER).toString(),
+                            subject = line.get(NUMBER_OF_SUBJECT).toString(),
                             date = date,
-                            subjectNumber = line.get(2).toInt()
+                            subjectNumber = line.get(NUMBER_OF_LESSON).toInt()
                         )
                     )
                 }
@@ -514,5 +514,18 @@ class TimeTableRepositoryImpl @Inject constructor(
         return@withContext list
     }
 
+    companion object{
+        const val NUMBER_OF_GROUP = 0
+        const val NUMBER_OF_DAY = 2
+        const val NUMBER_OF_LESSON = 3
+        const val NUMBER_OF_AUD = 4
+        const val NUMBER_OF_TEACHER = 7
+        const val NUMBER_OF_CAFID = 8
+        const val NUMBER_OF_SUBJECT = 9
+        const val NUMBER_OF_SUBJ_TYPE = 10
+        const val NUMBER_OF_DATE = 11
+        const val NUMBER_OF_THEMAS = 14
+
+    }
 
 }

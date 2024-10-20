@@ -38,6 +38,10 @@ class TimeTableViewModel @Inject constructor(
     val state: LiveData<State>
         get() = _state
 
+    private var _month = MutableLiveData<String>()
+    val month: LiveData<String>
+        get() = _month
+
     var mainParam: LiveData<MainParam> = getMainParamUseCase.getLiveData()
 
     private var lastMainParam: String = EMPTY_STRING
@@ -53,7 +57,6 @@ class TimeTableViewModel @Inject constructor(
         data.observeForever {
             if (data.value?.isNotEmpty() == true) {
                 getNewTimeTable()
-                Log.e("observeForever", "---------------")
             }
         }
     }
@@ -71,6 +74,8 @@ class TimeTableViewModel @Inject constructor(
         if (job.isActive) {
             job.cancel()
         }
+
+        _month.value = getMonth()
 
         viewModelScope.launch(Dispatchers.Default) {
             list = timeTableRepositoryImpl.getWeekTimeTable()
@@ -90,7 +95,6 @@ class TimeTableViewModel @Inject constructor(
     }
 
     fun timeTableFromStorage(): List<List<CellClass>> {
-        Log.e("storrage_4", storageRepositoryImpl.getLastWeekFromStorage().toString())
         return storageRepositoryImpl.getLastWeekFromStorage()
     }
 

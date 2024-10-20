@@ -74,7 +74,11 @@ class TimeTableFragment : Fragment() {
 
         vm.checkMainParam()
 
-        binding.monthDate.text = vm.getMonth()
+        //binding.monthDate.text = vm.getMonth()
+
+        vm.month.observe(viewLifecycleOwner){
+            binding.monthDate.text = it
+        }
 
         observeViewModel()
 
@@ -108,24 +112,6 @@ class TimeTableFragment : Fragment() {
             binding.mainParam.text = it.name
         }
 
-        vm.state.observe(viewLifecycleOwner) {
-            when (it) {
-                is LoadData -> {
-                    binding.progressBar.isVisible = true
-                }
-
-                is ConnectionError -> {
-                    binding.progressBar.isVisible = true
-                }
-
-                is TimeTableIsLoad -> {
-                    binding.progressBar.isVisible = false
-
-                }
-            }
-
-
-        }
     }
 
 

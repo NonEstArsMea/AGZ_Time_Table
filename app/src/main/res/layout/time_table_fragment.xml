@@ -102,21 +102,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/top_info" />
 
-    <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:id="@+id/progressBar"
-        style="@style/Widget.Material3.LinearProgressIndicator"
-        android:layout_width="match_parent"
-        android:layout_height="15dp"
-        android:layout_marginTop="2dp"
-        android:indeterminate="true"
-        android:indeterminateBehavior="cycle"
-        android:indeterminateOnly="true"
-        android:indeterminateTint="#8BC34A"
-        android:indeterminateTintMode="src_in"
-        android:visibility="visible"
-        app:indicatorColor="@color/red_themes"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/top_info" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

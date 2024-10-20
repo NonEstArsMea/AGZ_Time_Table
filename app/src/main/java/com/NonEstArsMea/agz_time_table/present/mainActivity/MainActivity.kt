@@ -93,6 +93,7 @@ class MainActivity : AppCompatActivity(),
 
         mainViewModel.dataIsLoad.observe(this) {
             mainViewModel.getListOfMainParam()
+            binding.mainProgressBar.visibility = View.GONE
         }
 
         binding.bottomInfo.setOnItemSelectedListener {

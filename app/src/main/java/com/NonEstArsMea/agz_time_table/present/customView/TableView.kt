@@ -271,6 +271,7 @@ class NewView @JvmOverloads constructor(
         drawRowsAndDates()
         drawPeriods()
         drawTimeAndDateLine()
+        invalidate()
     }
 
 
@@ -364,7 +365,6 @@ class NewView @JvmOverloads constructor(
             Log.e("trans", "tranaslation")
             translationX = (translationX + dx).coerceIn(minTranslationX, 0f)
             translationY = (translationY + dy).coerceIn(minTranslationY, 0f)
-            invalidate()
         }
 
         fun addScale(sx: Float) {
@@ -373,7 +373,6 @@ class NewView @JvmOverloads constructor(
                     scaleFactor = (scaleFactor * sx).coerceIn(minScaleFactor, maxScaleFactor)
                     translationX = (translationX * sx).coerceIn(minTranslationX, 0f)
                     translationY = (translationY * sx).coerceIn(minTranslationY, 0f)
-                    invalidate()
                 }
 
             } else {
@@ -381,7 +380,6 @@ class NewView @JvmOverloads constructor(
                     scaleFactor = (scaleFactor * sx).coerceIn(minScaleFactor, maxScaleFactor)
                     translationX = (translationX * sx).coerceIn(minTranslationX, 0f)
                     translationY = (translationY * sx).coerceIn(minTranslationY, 0f)
-                    invalidate()
                 }
             }
 

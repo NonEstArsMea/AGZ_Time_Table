@@ -9,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.doOnLayout
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -28,6 +30,7 @@ class ViewPagerFragment : Fragment() {
     private lateinit var vm: TimeTableViewModel
 
     private var days = mutableListOf<TextView>()
+
 
 
     private var _binding: ViewPagerBinding? = null
@@ -105,6 +108,25 @@ class ViewPagerFragment : Fragment() {
 
             }
         })
+
+
+
+        vm.state.observe(viewLifecycleOwner) {
+            when (it) {
+                is LoadData -> {
+                    binding.progressBar.isVisible = true
+                }
+
+                is ConnectionError -> {
+                    binding.progressBar.isVisible = true
+                }
+
+                is TimeTableIsLoad -> {
+                    binding.progressBar.visibility = View.GONE
+
+                }
+            }
+        }
 
         updateData(NOW_WEEK)
         setButtonNumbers()

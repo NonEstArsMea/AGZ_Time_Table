@@ -28,9 +28,9 @@ class DataRepositoryImpl @Inject constructor(
             withContext(Dispatchers.IO) {
                 val connection =
                     URL("http://a0755299.xsph.ru/data/combined_output.txt").openConnection()
-                Log.e("cont", connection.toString())
                 connection.connect()
                 content = connection.getInputStream().bufferedReader().use { it.readText() }
+                Log.e("cont", content)
                 _dataLiveData.postValue(content)
                 dataIsLoad.postValue(true)
             }

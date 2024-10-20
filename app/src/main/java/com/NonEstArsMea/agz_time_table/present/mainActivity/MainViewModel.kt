@@ -14,6 +14,7 @@ import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.GetMainParamUseCa
 import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.TimeTableRepository
 import com.NonEstArsMea.agz_time_table.present.settingFragment.ThemeController
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -59,6 +60,7 @@ class MainViewModel @Inject constructor(
                     loadData.loadData()
                     isReady = true
                 } catch (e: Exception) {
+                    delay(1000)
                     loadDataFromURL()
                 }
             }
