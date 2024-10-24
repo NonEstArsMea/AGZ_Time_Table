@@ -77,7 +77,7 @@ class TimeTableViewModel @Inject constructor(
 
         _month.value = getMonth()
 
-        viewModelScope.launch(Dispatchers.Default) {
+        job = viewModelScope.launch(Dispatchers.Default) {
             list = timeTableRepositoryImpl.getWeekTimeTable()
             launch(Dispatchers.Main) {
                 _state.value = TimeTableIsLoad(list)
