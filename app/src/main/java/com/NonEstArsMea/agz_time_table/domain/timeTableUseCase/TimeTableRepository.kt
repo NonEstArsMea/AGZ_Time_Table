@@ -38,5 +38,4 @@ interface TimeTableRepository {
     ): List<List<CellClass>>
 
     fun getDepartment(): List<String>
-
 }

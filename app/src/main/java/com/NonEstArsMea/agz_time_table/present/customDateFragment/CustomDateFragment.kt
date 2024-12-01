@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.NonEstArsMea.agz_time_table.databinding.CastomDateFragmentBinding
+import com.NonEstArsMea.agz_time_table.databinding.ExamsFragmentBinding
 import com.NonEstArsMea.agz_time_table.present.TimeTableApplication
 import com.NonEstArsMea.agz_time_table.present.mainActivity.MainViewModelFactory
 import com.NonEstArsMea.agz_time_table.present.timeTableFragment.recycleView.TimeTableRecycleViewAdapter
@@ -29,7 +29,7 @@ class CustomDateFragment : Fragment() {
     lateinit var vm: CustomDateFragmentViewModel
     private val adapter = TimeTableRecycleViewAdapter()
 
-    private var _binding: CastomDateFragmentBinding? = null
+    private var _binding: ExamsFragmentBinding? = null
     private val binding get() = _binding!!
 
     @Inject
@@ -76,7 +76,7 @@ class CustomDateFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = CastomDateFragmentBinding.inflate(layoutInflater)
+        _binding = ExamsFragmentBinding.inflate(layoutInflater)
         return binding.root
     }
 

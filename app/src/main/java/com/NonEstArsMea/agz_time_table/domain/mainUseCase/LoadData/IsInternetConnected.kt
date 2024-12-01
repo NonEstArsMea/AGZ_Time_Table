@@ -5,9 +5,9 @@ import javax.inject.Inject
 class IsInternetConnected @Inject constructor(
     private val repository: DataRepository,
 ) {
-
     fun execute(): Boolean {
         return repository.isInternetConnected()
     }
-
 }
+
+

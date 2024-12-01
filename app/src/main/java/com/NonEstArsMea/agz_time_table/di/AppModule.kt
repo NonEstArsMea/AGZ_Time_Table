@@ -3,9 +3,7 @@ package com.NonEstArsMea.agz_time_table.di
 import android.app.Application
 import android.content.Context
 import android.content.res.Resources
-import com.NonEstArsMea.agz_time_table.data.storage.DataBaseInitial
 import com.NonEstArsMea.agz_time_table.data.storage.LocalStorageInitial
-import dagger.BindsInstance
 import dagger.Module
 import dagger.Provides
 
@@ -28,8 +26,4 @@ class AppModule {
         return LocalStorageInitial(context)
     }
 
-    @Provides
-    fun bindDataBase(application: Application): DataBaseInitial {
-        return DataBaseInitial(application)
-    }
 }

@@ -1,6 +1,7 @@
 package com.NonEstArsMea.agz_time_table.util
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.NonEstArsMea.agz_time_table.R
 import java.util.Calendar
@@ -94,6 +95,7 @@ object DateManager {
             calendar.add(Calendar.DAY_OF_MONTH, 1)
         }
         calendar.add(Calendar.DAY_OF_WEEK, razn - 6)
+        Log.e("err", days.toString())
         return days
     }
 

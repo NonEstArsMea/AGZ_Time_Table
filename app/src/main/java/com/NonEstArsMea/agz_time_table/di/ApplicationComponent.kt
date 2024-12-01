@@ -1,7 +1,6 @@
 package com.NonEstArsMea.agz_time_table.di
 
 import android.app.Application
-import android.content.Context
 import com.NonEstArsMea.agz_time_table.present.customDateFragment.CustomDateFragment
 import com.NonEstArsMea.agz_time_table.present.departmentalTimetableFragment.DepartmentalTimeTableFragment
 import com.NonEstArsMea.agz_time_table.present.examsFragment.ExamsFragment

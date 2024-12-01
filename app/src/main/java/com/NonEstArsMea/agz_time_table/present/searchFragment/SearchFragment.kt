@@ -2,6 +2,7 @@ package com.NonEstArsMea.agz_time_table.present.searchFragment
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,10 +11,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.NonEstArsMea.agz_time_table.R
+import com.NonEstArsMea.agz_time_table.data.net.retrofit.Common
 import com.NonEstArsMea.agz_time_table.databinding.SearchLayoutBinding
 import com.NonEstArsMea.agz_time_table.present.TimeTableApplication
 import com.NonEstArsMea.agz_time_table.present.mainActivity.MainViewModelFactory
 import com.NonEstArsMea.agz_time_table.present.searchFragment.recycleView.RecycleViewOnSearchFragmentAdapter
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import javax.inject.Inject
 
 class SearchFragment : Fragment() {
@@ -56,6 +61,18 @@ class SearchFragment : Fragment() {
         searchView.isIconifiedByDefault = false
 
         vm.listOfMainParam.observe(viewLifecycleOwner) {
+            Common.retrofitService.getMainParamsList().enqueue(object : Callback<MutableList<String>>{
+                override fun onResponse(
+                    call: Call<MutableList<String>>,
+                    response: Response<MutableList<String>>
+                ) {
+                    Log.e("retro", (response.body()).toString())
+                }
+
+                override fun onFailure(p0: Call<MutableList<String>>, p1: Throwable) {
+
+                }
+            })
             mainParamAdapter.submitList(it)
             searchView.setOnQueryTextListener(object :
                 android.widget.SearchView.OnQueryTextListener {
