@@ -2,8 +2,11 @@ package com.NonEstArsMea.agz_time_table.present.searchFragment
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.NonEstArsMea.agz_time_table.data.net.retrofit.Common
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
 import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.TimeTableRepository
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SearchViewModel @Inject constructor(
@@ -18,4 +21,5 @@ class SearchViewModel @Inject constructor(
         timeTableRepositoryImpl.updateFavoriteParamList(mainParam)
         timeTableRepositoryImpl.setMainParam(mainParam)
     }
+
 }

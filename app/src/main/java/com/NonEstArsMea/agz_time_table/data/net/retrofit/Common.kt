@@ -5,5 +5,7 @@ import com.NonEstArsMea.agz_time_table.data.net.retrofit.services.RetrofitServie
 object Common {
     private val BASE_URL = "https://agzprogs.ru/api/"
     val retrofitService: RetrofitServieces
-        get() = RetrofitClient.getClient(BASE_URL).create(RetrofitServieces::class.java)
+        get(){
+            return RetrofitClient.getClient(BASE_URL).create(RetrofitServieces::class.java)
+        }
 }

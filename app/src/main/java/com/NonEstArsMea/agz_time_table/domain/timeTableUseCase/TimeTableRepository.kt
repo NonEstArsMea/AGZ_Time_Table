@@ -16,7 +16,7 @@ interface TimeTableRepository {
         mainParam: String
     ): List<CellClass>
 
-    fun getListOfMainParam()
+    suspend fun getListOfMainParam()
     fun getNewListOfMainParam(): MutableLiveData<ArrayList<MainParam>>
 
     fun getMainParam(): MutableLiveData<MainParam>

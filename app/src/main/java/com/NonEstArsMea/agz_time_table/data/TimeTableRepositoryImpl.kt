@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.data.net.DataRepositoryImpl
-import com.NonEstArsMea.agz_time_table.data.storage.StorageRepositoryImpl
+import com.NonEstArsMea.agz_time_table.data.net.retrofit.Common
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellClass
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
 import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.TimeTableRepository
@@ -307,73 +307,56 @@ class TimeTableRepositoryImpl @Inject constructor(
         }
 
 
+    fun prepareData(data: List<List<String>>){
+        data.forEach {
+
+        }
+    }
+
     override suspend fun getWeekTimeTable(): List<List<CellClass>> {
         val dayOfWeek = DateManager.getArrayOfWeekDate()
 
-        return mainParam.value?.let { mainParamValue ->
-            try {
-                coroutineScope {
-                    dayOfWeek.map { day ->
-                        async {
-                            preparationData(day, mainParamValue.name)
-                        }
-                    }.awaitAll()
-                }
-            } catch (e: Exception) {
-                emptyList()
+        mainParam.value?.let {
+            val response = Common.retrofitService.getAggregate(dayOfWeek, it.name)
+            Log.e("responce", response.body().toString())
+            if(response.isSuccessful){
+                Log.e("responce", response.body().toString())
+                return emptyList()
+            }else{
+                return emptyList()
             }
-        } ?: emptyList()
+        }
+        return emptyList()
+//        Log.e("week", dayOfWeek.toString())
+//        return mainParam.value?.let { mainParamValue ->
+//            try {
+//                coroutineScope {
+//                    dayOfWeek.map { day ->
+//                        async {
+//                            preparationData(day, mainParamValue.name)
+//                        }
+//                    }.awaitAll()
+//                }
+//            } catch (e: Exception) {
+//                emptyList()
+//            }
+//        } ?: emptyList()
     }
 
 
-    override fun getListOfMainParam() {
-        val data = dataRepositoryImpl.getContent()
-        val csvParser = CSVParser(
-            data.reader(), CSVFormat.DEFAULT
-                .withFirstRecordAsHeader()
-                .withIgnoreHeaderCase()
-                .withTrim()
-                .withDelimiter(';')
-        )
+    override suspend fun getListOfMainParam() {
+        val list = ArrayList<MainParam>()
 
-        val listGroup = ArrayList<MainParam>()
-        val listAud = ArrayList<MainParam>()
-        val listName = ArrayList<MainParam>()
-
-        for (line in csvParser) {
-            val group = line.get(NUMBER_OF_GROUP)
-            val aud = line.get(NUMBER_OF_AUD)
-            val name = line.get(NUMBER_OF_TEACHER)
-
-            if (listGroup.none { it.name == group }) {
-                listGroup.add(MainParam(group, false))
+        val restResponce = Common.retrofitService.getMainParamsList()
+        Log.e("MainparamList", restResponce.body().toString())
+        if (restResponce.isSuccessful) {
+            restResponce.body()?.forEach {
+                list.add(MainParam(it, false))
             }
-            if (listAud.none { it.name == aud }) {
-                listAud.add(MainParam(aud, false))
-            }
-            if (listName.none { it.name == name }) {
-                listName.add(MainParam(name, false))
-            }
-
         }
 
 
-
-        listGroup.sortBy { it.name }
-        listGroup.forEachIndexed { index, mainParam -> mainParam.position = index }
-
-        listAud.sortBy { it.name }
-        listAud.forEachIndexed { index, mainParam -> mainParam.position = index }
-
-        listName.sortBy { it.name }
-        listName.forEachIndexed { index, mainParam -> mainParam.position = index }
-
-        listOfMainParam.value = ArrayList<MainParam>().apply {
-            addAll(listGroup)
-            addAll(listAud)
-            addAll(listName)
-        }
-
+        listOfMainParam.postValue(list)
     }
 
     override fun getNewListOfMainParam(): MutableLiveData<ArrayList<MainParam>> {
@@ -449,8 +432,8 @@ class TimeTableRepositoryImpl @Inject constructor(
         )
 
         val masOfDepartment = mutableListOf<String>()
-        for (line in csvParser){
-            if(line.get(NUMBER_OF_CAFID) !in masOfDepartment){
+        for (line in csvParser) {
+            if (line.get(NUMBER_OF_CAFID) !in masOfDepartment) {
                 masOfDepartment.add(line.get(7))
             }
         }
@@ -473,7 +456,8 @@ class TimeTableRepositoryImpl @Inject constructor(
         val listOfTeachers = emptyList<String>().toMutableList()
         for (line in csvParser) {
             if (line.get(NUMBER_OF_CAFID) == departmentId &&
-                (line.get(NUMBER_OF_TEACHER) !in listOfTeachers)) {
+                (line.get(NUMBER_OF_TEACHER) !in listOfTeachers)
+            ) {
                 listOfTeachers.add(line.get(6))
             }
         }
@@ -514,7 +498,7 @@ class TimeTableRepositoryImpl @Inject constructor(
         return@withContext list
     }
 
-    companion object{
+    companion object {
         const val NUMBER_OF_GROUP = 0
         const val NUMBER_OF_DAY = 2
         const val NUMBER_OF_LESSON = 3

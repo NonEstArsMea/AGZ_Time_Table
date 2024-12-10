@@ -50,6 +50,10 @@ class MainViewModel @Inject constructor(
 
     init {
         getDataFromStorage.execute()
+
+        viewModelScope.launch {
+            timeTableRepositoryImpl.getListOfMainParam()
+        }
     }
 
     // закгрузка данных и сохраниение

@@ -61,18 +61,6 @@ class SearchFragment : Fragment() {
         searchView.isIconifiedByDefault = false
 
         vm.listOfMainParam.observe(viewLifecycleOwner) {
-            Common.retrofitService.getMainParamsList().enqueue(object : Callback<MutableList<String>>{
-                override fun onResponse(
-                    call: Call<MutableList<String>>,
-                    response: Response<MutableList<String>>
-                ) {
-                    Log.e("retro", (response.body()).toString())
-                }
-
-                override fun onFailure(p0: Call<MutableList<String>>, p1: Throwable) {
-
-                }
-            })
             mainParamAdapter.submitList(it)
             searchView.setOnQueryTextListener(object :
                 android.widget.SearchView.OnQueryTextListener {
