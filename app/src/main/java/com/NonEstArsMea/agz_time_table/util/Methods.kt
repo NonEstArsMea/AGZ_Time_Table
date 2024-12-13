@@ -1,5 +1,6 @@
 package com.NonEstArsMea.agz_time_table.util
 
+import android.util.Log
 import com.NonEstArsMea.agz_time_table.R
 
 object Methods {
@@ -40,6 +41,7 @@ object Methods {
     }}
 
     fun setColor(text: String): Int{
+        Log.e("col", R.color.red_fo_lessons_card.toString())
         return when(text){
             "э" -> R.color.red_fo_lessons_card
             "эк" -> R.color.red_fo_lessons_card

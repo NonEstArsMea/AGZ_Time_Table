@@ -320,27 +320,17 @@ class TimeTableRepositoryImpl @Inject constructor(
             val response = Common.retrofitService.getAggregate(dayOfWeek, it.name)
             Log.e("responce", response.body().toString())
             if(response.isSuccessful){
-                Log.e("responce", response.body().toString())
-                return emptyList()
+                if (response.body() != null){
+                    return response.body()!!
+                }else{
+                    return emptyList()
+                }
             }else{
                 return emptyList()
             }
         }
         return emptyList()
-//        Log.e("week", dayOfWeek.toString())
-//        return mainParam.value?.let { mainParamValue ->
-//            try {
-//                coroutineScope {
-//                    dayOfWeek.map { day ->
-//                        async {
-//                            preparationData(day, mainParamValue.name)
-//                        }
-//                    }.awaitAll()
-//                }
-//            } catch (e: Exception) {
-//                emptyList()
-//            }
-//        } ?: emptyList()
+
     }
 
 
@@ -348,7 +338,7 @@ class TimeTableRepositoryImpl @Inject constructor(
         val list = ArrayList<MainParam>()
 
         val restResponce = Common.retrofitService.getMainParamsList()
-        Log.e("MainparamList", restResponce.body().toString())
+        Methods.setColor("")
         if (restResponce.isSuccessful) {
             restResponce.body()?.forEach {
                 list.add(MainParam(it, false))

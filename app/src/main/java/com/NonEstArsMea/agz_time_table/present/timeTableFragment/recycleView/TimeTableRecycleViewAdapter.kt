@@ -47,7 +47,7 @@ class TimeTableRecycleViewAdapter : ListAdapter<CellClass, RecyclerView.ViewHold
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (getItem(position).text == null) {
+        return if (getItem(position).text == "") {
             LESSON_TIME_TABLE_TYPE
         } else {
             BREAK_CELL_TYPE
