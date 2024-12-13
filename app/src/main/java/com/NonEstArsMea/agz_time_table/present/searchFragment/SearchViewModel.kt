@@ -3,7 +3,6 @@ package com.NonEstArsMea.agz_time_table.present.searchFragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.NonEstArsMea.agz_time_table.data.net.retrofit.Common
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
 import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.TimeTableRepository
 import kotlinx.coroutines.launch
@@ -17,9 +16,16 @@ class SearchViewModel @Inject constructor(
     val listOfMainParam: LiveData<ArrayList<MainParam>>
         get() = _listOfMainParam
 
+    init {
+        viewModelScope.launch {
+            timeTableRepositoryImpl.getListOfMainParam()
+        }
+    }
+
     fun setNewMainParam(mainParam: MainParam) {
         timeTableRepositoryImpl.updateFavoriteParamList(mainParam)
         timeTableRepositoryImpl.setMainParam(mainParam)
+
     }
 
 }

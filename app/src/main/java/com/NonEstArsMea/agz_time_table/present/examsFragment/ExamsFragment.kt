@@ -13,7 +13,6 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.NonEstArsMea.agz_time_table.databinding.ExamsLayoutBinding
 import com.NonEstArsMea.agz_time_table.present.TimeTableApplication
-import com.NonEstArsMea.agz_time_table.present.customDateFragment.CustomDateFragment
 import com.NonEstArsMea.agz_time_table.present.mainActivity.MainViewModelFactory
 import com.NonEstArsMea.agz_time_table.present.timeTableFragment.recycleView.TimeTableRecycleViewAdapter
 import javax.inject.Inject
@@ -24,7 +23,7 @@ class ExamsFragment : Fragment() {
 
     private val args by navArgs<ExamsFragmentArgs>()
 
-    private lateinit var onStartAndFinishListener: CustomDateFragment.OnStartAndFinishListener
+    private lateinit var onStartAndFinishListener: ExamsFragment.OnStartAndFinishListener
 
     private val adapter = TimeTableRecycleViewAdapter()
     private var _binding: ExamsLayoutBinding? = null
@@ -45,7 +44,7 @@ class ExamsFragment : Fragment() {
         component.inject(this)
 
         vm = ViewModelProvider(this, viewModelFactory)[ExamsFragmentViewModel::class.java]
-        if (context is CustomDateFragment.OnStartAndFinishListener) {
+        if (context is ExamsFragment.OnStartAndFinishListener) {
             onStartAndFinishListener = context
         } else throw RuntimeException("$context is empty")
 

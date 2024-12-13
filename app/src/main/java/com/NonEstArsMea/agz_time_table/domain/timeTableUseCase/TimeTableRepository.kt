@@ -11,11 +11,6 @@ interface TimeTableRepository {
 
     suspend fun getWeekTimeTable(): List<List<CellClass>>
 
-    suspend fun preparationData(
-        dayOfWeek: String,
-        mainParam: String
-    ): List<CellClass>
-
     suspend fun getListOfMainParam()
     fun getNewListOfMainParam(): MutableLiveData<ArrayList<MainParam>>
 

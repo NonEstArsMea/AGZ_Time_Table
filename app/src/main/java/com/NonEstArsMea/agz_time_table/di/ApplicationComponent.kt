@@ -1,7 +1,6 @@
 package com.NonEstArsMea.agz_time_table.di
 
 import android.app.Application
-import com.NonEstArsMea.agz_time_table.present.customDateFragment.CustomDateFragment
 import com.NonEstArsMea.agz_time_table.present.departmentalTimetableFragment.DepartmentalTimeTableFragment
 import com.NonEstArsMea.agz_time_table.present.examsFragment.ExamsFragment
 import com.NonEstArsMea.agz_time_table.present.loginLayout.LoginFragment
@@ -30,8 +29,6 @@ interface ApplicationComponent {
     fun inject(fragment: SearchFragment)
 
     fun inject(fragment: ExamsFragment)
-
-    fun inject(fragment: CustomDateFragment)
 
     fun inject(fragment: ViewPagerFragment)
 

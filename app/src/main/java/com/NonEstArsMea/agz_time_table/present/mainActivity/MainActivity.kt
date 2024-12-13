@@ -1,11 +1,6 @@
 package com.NonEstArsMea.agz_time_table.present.mainActivity
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.animation.ObjectAnimator
-import android.animation.PropertyValuesHolder
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
@@ -14,14 +9,13 @@ import androidx.navigation.findNavController
 import com.NonEstArsMea.agz_time_table.NavGraphDirections
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.data.AuthRepositoryImpl
-import com.NonEstArsMea.agz_time_table.util.DateManager
 import com.NonEstArsMea.agz_time_table.databinding.MainLayoutBinding
 import com.NonEstArsMea.agz_time_table.present.TimeTableApplication
-import com.NonEstArsMea.agz_time_table.present.customDateFragment.CustomDateFragment
 import com.NonEstArsMea.agz_time_table.present.examsFragment.ExamsFragment
 import com.NonEstArsMea.agz_time_table.present.settingFragment.SettingFragment
 import com.NonEstArsMea.agz_time_table.present.settingFragment.ThemeController
 import com.NonEstArsMea.agz_time_table.util.BottomMenuItemStateManager
+import com.NonEstArsMea.agz_time_table.util.DateManager
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
@@ -29,7 +23,6 @@ import javax.inject.Inject
 
 
 class MainActivity : AppCompatActivity(),
-    CustomDateFragment.OnStartAndFinishListener,
     SettingFragment.setThemeInterface,
     ExamsFragment.OnStartAndFinishListener {
 
@@ -93,7 +86,6 @@ class MainActivity : AppCompatActivity(),
 
         mainViewModel.dataIsLoad.observe(this) {
             mainViewModel.getListOfMainParam()
-            binding.mainProgressBar.visibility = View.GONE
         }
 
         binding.bottomInfo.setOnItemSelectedListener {

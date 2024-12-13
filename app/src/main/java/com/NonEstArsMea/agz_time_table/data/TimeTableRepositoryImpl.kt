@@ -13,9 +13,6 @@ import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.TimeTableReposito
 import com.NonEstArsMea.agz_time_table.util.DateManager
 import com.NonEstArsMea.agz_time_table.util.Methods
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVParser
@@ -33,170 +30,7 @@ class TimeTableRepositoryImpl @Inject constructor(
     private var listOfMainParam = MutableLiveData<ArrayList<MainParam>>()
     private var listOfFavoriteMainParam = MutableLiveData<ArrayList<MainParam>>()
 
-    override suspend fun preparationData(
-        dayOfWeek: String,
-        mainParam: String,
-    ): ArrayList<CellClass> = withContext(Dispatchers.Default) {
 
-        val data = dataRepositoryImpl.getContent()
-        val csvParser = CSVParser(
-            data.reader(), CSVFormat.DEFAULT
-                .withFirstRecordAsHeader()
-                .withIgnoreHeaderCase()
-                .withTrim()
-                .withDelimiter(';')
-        )
-        val listOfLes = mutableListOf<Int>()
-        var listTT = ArrayList<CellClass>()
-        for (a in 1..5) {
-            listTT.add(
-                CellClass(
-                    noEmpty = false,
-                )
-            )
-        }
-        var group: String
-        var les: Int
-        var aud: String
-        var name: String
-        var _subject: String
-        var subj_type: String
-        var departmentId: String
-        var _date: String
-        var themas: String
-
-        for (line in csvParser) {
-            group = line.get(0)
-            les = line.get(3).toInt() - 1
-            aud = line.get(4)
-            name = line.get(7)
-            _subject = line.get(9)
-            subj_type = line.get(10)
-            departmentId = line.get(8)
-            _date = line.get(11).replace('.', '-')
-            themas = line.get(14)
-            if ((_date == dayOfWeek) and ((mainParam == group) or (mainParam == aud) or (mainParam == name))) {
-                listTT[les].apply {
-                    if (teacher == null) {
-                        teacher = name
-                        studyGroup = group
-                        classroom = aud
-                        subject = _subject
-                        subjectNumber = les + 1
-                        subjectType = "$themas ${
-                            resources.getString(
-                                Methods.returnFullNameOfTheItemType(subj_type)
-                            )
-                        }"
-                        color = Methods.setColor(subj_type)
-                        noEmpty = true
-                        date = _date
-                        department = departmentId
-                        startTime = getStartTime(number = les + 1)
-                        endTime = getEndTime(number = les + 1)
-                        listOfLes.add(les + 1)
-                    } else {
-                        if (name !in listTT[les].teacher!!) {
-                            listTT[les].teacher += "\n${name}"
-                        }
-                        if (aud !in listTT[les].classroom!!) {
-                            listTT[les].classroom += "\n${aud}"
-                        }
-                    }
-                }
-            }
-
-        }
-        // Фильтрация списка
-        listTT = listTT.filter {
-            it.noEmpty
-        } as ArrayList<CellClass>
-
-        Log.e("tag2", mainParam.toString())
-
-        return@withContext setBreakCell(listOfLes, listTT)
-    }
-
-    private fun setBreakCell(
-        listOfLes: MutableList<Int>,
-        listTT: ArrayList<CellClass>,
-    ): ArrayList<CellClass> {
-        var listOfLes1 = listOfLes
-        listOfLes1 = listOfLes1.sorted().toMutableList()
-        var lessonOffset = 0
-        if (!listTT.isEmpty()) {
-            // Проверка первого элемента
-            if (listTT[0].subjectNumber != 1) {
-                val endTime = getStartTime(listTT[0].subjectNumber!!)
-                val countOfPairs = listTT[0].subjectNumber!! - 1
-                val wordEnd = wordEnding(listTT[0].subjectNumber!! - 1)
-                listTT.add(
-                    0,
-                    CellClass(
-                        text = "9:00 - $endTime     $countOfPairs $wordEnd",
-                        noEmpty = true,
-                        viewSize = 50
-                    )
-                )
-                // Нужно для вставки по индексу
-                lessonOffset += 1
-            }
-            if (listOfLes1.size > 1) {
-                for (a in 0 until listOfLes1.size - 1) {
-                    // Разность пар
-                    val diff = (listOfLes1[a + 1] - listOfLes1[a])
-
-                    if (diff > 1) {
-
-                        val endTime =
-                            getEndTime(listTT[a + lessonOffset].subjectNumber!!)
-                        val startTime =
-                            getStartTime(listTT[a + lessonOffset + 1].subjectNumber!!)
-                        val wordEnd = wordEnding(diff - 1)
-                        listTT.add(
-                            index = a + lessonOffset + 1,
-                            element = CellClass(
-                                text = "${endTime} - ${startTime}   ${diff - 1} $wordEnd",
-                                noEmpty = true,
-                                viewSize = 60
-                            )
-                        )
-                        lessonOffset += 1
-                    } else if (listOfLes1[a + 1] == 4) {
-                        listTT.add(
-                            index = a + lessonOffset + 1,
-                            element = CellClass(
-                                text = resources.getString(R.string.break_45),
-                                noEmpty = true,
-                                viewSize = 50
-                            )
-                        )
-                        lessonOffset += 1
-                    } else {
-                        listTT.add(
-                            index = a + lessonOffset + 1,
-                            element = CellClass(
-                                text = resources.getString(R.string.break_15),
-                                noEmpty = true,
-                                viewSize = 16
-                            )
-                        )
-                        lessonOffset += 1
-                    }
-                }
-            }
-        } else {
-            listTT.add(
-                CellClass(
-                    text = resources.getString(R.string.no_school),
-                    noEmpty = true,
-                    viewSize = 20
-                )
-            )
-        }
-
-        return listTT
-    }
 
 
     override fun getMainParam(): MutableLiveData<MainParam> {
@@ -307,11 +141,6 @@ class TimeTableRepositoryImpl @Inject constructor(
         }
 
 
-    fun prepareData(data: List<List<String>>){
-        data.forEach {
-
-        }
-    }
 
     override suspend fun getWeekTimeTable(): List<List<CellClass>> {
         val dayOfWeek = DateManager.getArrayOfWeekDate()
@@ -321,7 +150,8 @@ class TimeTableRepositoryImpl @Inject constructor(
             Log.e("responce", response.body().toString())
             if(response.isSuccessful){
                 if (response.body() != null){
-                    return response.body()!!
+
+                    return replaceColomns(dayOfWeek, response.body()!!)
                 }else{
                     return emptyList()
                 }
@@ -333,12 +163,27 @@ class TimeTableRepositoryImpl @Inject constructor(
 
     }
 
+    fun replaceColomns(dayOfWeek: ArrayList<String>,
+                       list: List<List<CellClass>>): List<List<CellClass>>{
+        val newList = mutableListOf<List<CellClass>>()
+        dayOfWeek.forEach {
+            for(day in list){
+                for(b in day){
+                    if(b.date == it){
+                        newList.add(day)
+                        break
+                    }
+                }
+            }
+        }
+        return newList
+    }
+
 
     override suspend fun getListOfMainParam() {
         val list = ArrayList<MainParam>()
 
         val restResponce = Common.retrofitService.getMainParamsList()
-        Methods.setColor("")
         if (restResponce.isSuccessful) {
             restResponce.body()?.forEach {
                 list.add(MainParam(it, false))
