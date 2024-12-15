@@ -15,4 +15,9 @@ interface RetrofitServieces {
         @Query("dayOfWeek") daysOfWeek: List<String>,
         @Query("mainParam") mainParam: String
     ): Response<Map<String, List<CellClass>>>
+
+    @GET("get_exams")
+    suspend fun getExams(
+        @Query("mainParam") mainParam: String
+    ): Response<List<CellClass>>
 }

@@ -66,8 +66,23 @@ class TimeTableRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun getExams(mainParam: String): ArrayList<CellClass> =
-        emptyList<CellClass>() as ArrayList<CellClass>
+    override suspend fun getExams(): List<CellClass> {
+        val response = Common.retrofitService.getExams(mainParam.value!!.name)
+        if (response.isSuccessful) {
+            return if (response.body() != null) {
+                val exams = response.body()!!
+                exams.forEach { lesson ->
+                    lesson.color = Methods.setColor(lesson.subjectType!!)
+                    lesson.subjectType =
+                        resources.getString(Methods.returnFullNameOfTheItemType(lesson.subjectType!!))
+                }
+                exams
+            } else {
+                emptyList()
+            }
+        }
+        return emptyList()
+    }
 
 
     override suspend fun getWeekTimeTable(): List<List<CellClass>> {
@@ -91,7 +106,10 @@ class TimeTableRepositoryImpl @Inject constructor(
 
     }
 
-    private fun replaceColomns(list: Map<String, List<CellClass>>, dayOfWeekList: ArrayList<String>)
+    private fun replaceColomns(
+        list: Map<String, List<CellClass>>,
+        dayOfWeekList: ArrayList<String>
+    )
             : List<List<CellClass>> {
         val newList = mutableListOf<List<CellClass>>()
         dayOfWeekList.forEach { date ->

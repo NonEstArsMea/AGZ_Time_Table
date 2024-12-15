@@ -25,7 +25,7 @@ interface TimeTableRepository {
     fun setListOfFavoriteMainParam(list: ArrayList<MainParam>)
     fun updateFavoriteParamList(newMainParam: MainParam)
 
-    suspend fun getExams(mainParam: String): ArrayList<CellClass>
+    suspend fun getExams(): List<CellClass>
 
     suspend fun getDepartmentTimeTable(
         departmentId: String,

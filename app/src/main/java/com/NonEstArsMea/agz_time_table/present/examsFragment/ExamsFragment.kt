@@ -21,7 +21,6 @@ class ExamsFragment : Fragment() {
 
     private lateinit var mainParam: String
 
-    private val args by navArgs<ExamsFragmentArgs>()
 
     private lateinit var onStartAndFinishListener: OnStartAndFinishListener
 
@@ -62,10 +61,7 @@ class ExamsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        args.let {
-            mainParam = it.nameParam
-        }
-        vm.setMainParam(mainParam)
+        vm.getTimeTable()
     }
 
     override fun onCreateView(
