@@ -48,17 +48,11 @@ class TimeTableViewModel @Inject constructor(
 
     private var list: List<List<CellClass>> = listOf()
 
-    private val data = repository.getData()
 
     private var currentItem: Int? = 0
 
     init {
         _state.value = LoadData
-        data.observeForever {
-            if (data.value?.isNotEmpty() == true) {
-                getNewTimeTable()
-            }
-        }
     }
 
     @SuppressLint("SuspiciousIndentation")

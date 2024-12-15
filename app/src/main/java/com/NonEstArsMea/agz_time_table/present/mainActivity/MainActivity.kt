@@ -84,9 +84,6 @@ class MainActivity : AppCompatActivity(),
 
         }
 
-        mainViewModel.dataIsLoad.observe(this) {
-            mainViewModel.getListOfMainParam()
-        }
 
         binding.bottomInfo.setOnItemSelectedListener {
             when (it.itemId) {

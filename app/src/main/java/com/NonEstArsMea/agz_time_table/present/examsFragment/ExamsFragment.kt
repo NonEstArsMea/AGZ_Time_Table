@@ -23,7 +23,7 @@ class ExamsFragment : Fragment() {
 
     private val args by navArgs<ExamsFragmentArgs>()
 
-    private lateinit var onStartAndFinishListener: ExamsFragment.OnStartAndFinishListener
+    private lateinit var onStartAndFinishListener: OnStartAndFinishListener
 
     private val adapter = TimeTableRecycleViewAdapter()
     private var _binding: ExamsLayoutBinding? = null

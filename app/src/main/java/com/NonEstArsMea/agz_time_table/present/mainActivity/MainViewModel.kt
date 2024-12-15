@@ -29,7 +29,6 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
 
 
-    private val uiScope = viewModelScope
 
     private var _isConnected = MutableLiveData<Boolean>()
     val isConnected: LiveData<Boolean>
@@ -43,33 +42,14 @@ class MainViewModel @Inject constructor(
     val selectedItem: LiveData<Int>
         get() = _selectedItem
 
-    private var isReady = false
 
-    val dataIsLoad: LiveData<Boolean> = loadData.dataIsLoad()
 
 
     init {
         getDataFromStorage.execute()
 
-        viewModelScope.launch {
-            timeTableRepositoryImpl.getListOfMainParam()
-        }
     }
 
-    // закгрузка данных и сохраниение
-    fun loadDataFromURL() {
-        if (!isReady) {
-            uiScope.launch(Dispatchers.IO) {
-                try {
-                    loadData.loadData()
-                    isReady = true
-                } catch (e: Exception) {
-                    delay(1000)
-                    loadDataFromURL()
-                }
-            }
-        }
-    }
 
     fun getMainParam(): String {
         return getNameParam.getNameOfMainParamFromStorage()
@@ -93,9 +73,6 @@ class MainViewModel @Inject constructor(
 
     fun checkNetConnection(){
         _isConnected.value = isInternetConnected()
-        if(isInternetConnected()){
-            loadDataFromURL()
-        }
     }
 
     fun getListOfMainParam() {

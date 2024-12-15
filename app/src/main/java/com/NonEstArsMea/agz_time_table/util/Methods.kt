@@ -5,10 +5,6 @@ import com.NonEstArsMea.agz_time_table.R
 
 object Methods {
 
-    fun validExams(type: String): Boolean{
-        val exams = listOf("ЗаО", "э", "эк", "экз", "экз.", "Зачет", "зчО.")
-        return type in exams
-    }
     fun returnFullNameOfTheItemType(text: String): Int {
     return when(text){
         "ПЗ" -> R.string.type_subject_pz

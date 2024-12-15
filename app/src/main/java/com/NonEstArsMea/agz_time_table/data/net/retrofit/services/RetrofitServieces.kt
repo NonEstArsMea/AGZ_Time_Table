@@ -14,5 +14,5 @@ interface RetrofitServieces {
     suspend fun getAggregate(
         @Query("dayOfWeek") daysOfWeek: List<String>,
         @Query("mainParam") mainParam: String
-    ): Response<List<List<CellClass>>>
+    ): Response<Map<String, List<CellClass>>>
 }

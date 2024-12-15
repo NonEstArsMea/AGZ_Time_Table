@@ -21,7 +21,6 @@ import javax.inject.Singleton
 
 @Singleton
 class TimeTableRepositoryImpl @Inject constructor(
-    private val dataRepositoryImpl: DataRepositoryImpl,
     private val resources: Resources,
 ) : TimeTableRepository {
 
@@ -29,8 +28,6 @@ class TimeTableRepositoryImpl @Inject constructor(
     private var mainParam = MutableLiveData<MainParam>()
     private var listOfMainParam = MutableLiveData<ArrayList<MainParam>>()
     private var listOfFavoriteMainParam = MutableLiveData<ArrayList<MainParam>>()
-
-
 
 
     override fun getMainParam(): MutableLiveData<MainParam> {
@@ -70,76 +67,7 @@ class TimeTableRepositoryImpl @Inject constructor(
 
 
     override suspend fun getExams(mainParam: String): ArrayList<CellClass> =
-        withContext(Dispatchers.Default) {
-            val data = dataRepositoryImpl.getContent()
-            val csvParser = CSVParser(
-                data.reader(), CSVFormat.DEFAULT
-                    .withFirstRecordAsHeader()
-                    .withIgnoreHeaderCase()
-                    .withTrim()
-                    .withDelimiter(';')
-            )
-            val listTT = ArrayList<CellClass>()
-            var currentExam = CellClass(noEmpty = false)
-            var lastDate = ""
-            var lastSubject = ""
-            for (line in csvParser) {
-                val group = line.get(NUMBER_OF_GROUP)
-                val aud = line.get(4)
-                val name = line.get(7)
-                val departmentId = line.get(8)
-                val subject = line.get(9)
-                val subj_type = line.get(10)
-                val date = line.get(11).replace('.', '-')
-                val themas = line.get(14)
-                if ((mainParam == group) or ((mainParam == name)) and (Methods.validExams(subj_type))) {
-                    if ((lastDate != date) or (lastSubject != subject)) {
-                        listTT.add(currentExam)
-                        currentExam = CellClass(noEmpty = true)
-                        lastDate = date
-                        lastSubject = subject
-                    }
-                    currentExam.apply {
-                        if (teacher == null) {
-                            teacher = name
-                            studyGroup = group
-                            classroom = aud
-                            this.subject = subject
-                            subjectNumber = listTT.size
-                            subjectType = "$themas ${
-                                resources.getString(
-                                    Methods.returnFullNameOfTheItemType(subj_type)
-                                )
-                            }"
-                            color = Methods.setColor(subj_type)
-                            noEmpty = true
-                            this.date = date
-                            startTime = getStartTime(number = line.get(NUMBER_OF_LESSON).toInt())
-                            endTime = getEndTime(number = line.get(NUMBER_OF_LESSON).toInt())
-                            department = departmentId
-                        } else {
-                            if (name !in teacher!!) {
-                                teacher += "\n${name}"
-                            }
-                            if (aud !in classroom!!) {
-                                classroom += "\n${aud}"
-                            }
-                        }
-                    }
-
-                }
-
-            }
-            if (listTT.isEmpty()) {
-                return@withContext listTT
-            } else {
-                listTT.removeAt(0)
-                listTT.add(currentExam)
-                return@withContext listTT
-            }
-
-        }
-
+        emptyList<CellClass>() as ArrayList<CellClass>
 
 
     override suspend fun getWeekTimeTable(): List<List<CellClass>> {
@@ -148,14 +76,14 @@ class TimeTableRepositoryImpl @Inject constructor(
         mainParam.value?.let {
             val response = Common.retrofitService.getAggregate(dayOfWeek, it.name)
             Log.e("responce", response.body().toString())
-            if(response.isSuccessful){
-                if (response.body() != null){
+            if (response.isSuccessful) {
+                if (response.body() != null) {
 
-                    return replaceColomns(dayOfWeek, response.body()!!)
-                }else{
+                    return replaceColomns(response.body()!!, dayOfWeek)
+                } else {
                     return emptyList()
                 }
-            }else{
+            } else {
                 return emptyList()
             }
         }
@@ -163,19 +91,22 @@ class TimeTableRepositoryImpl @Inject constructor(
 
     }
 
-    fun replaceColomns(dayOfWeek: ArrayList<String>,
-                       list: List<List<CellClass>>): List<List<CellClass>>{
+    private fun replaceColomns(list: Map<String, List<CellClass>>, dayOfWeekList: ArrayList<String>)
+            : List<List<CellClass>> {
         val newList = mutableListOf<List<CellClass>>()
-        dayOfWeek.forEach {
-            for(day in list){
-                for(b in day){
-                    if(b.date == it){
-                        newList.add(day)
-                        break
-                    }
+        dayOfWeekList.forEach { date ->
+            list.get(date)?.let {
+
+                it.forEach { lesson ->
+                    lesson.color = Methods.setColor(lesson.subjectType!!)
+                    lesson.subjectType =
+                        resources.getString(Methods.returnFullNameOfTheItemType(lesson.subjectType!!))
                 }
+                newList.add(it)
             }
         }
+
+
         return newList
     }
 
@@ -198,41 +129,6 @@ class TimeTableRepositoryImpl @Inject constructor(
         return listOfMainParam
     }
 
-    private fun getStartTime(number: Int): String {
-        return when (number) {
-            1 -> "09:00"
-            2 -> "10:45"
-            3 -> "12:30"
-            4 -> "14:45"
-            5 -> "16:25"
-            else -> {
-                throw Exception("Unknown EndStart - $number")
-            }
-        }
-    }
-
-    private fun getEndTime(number: Int?): String {
-        return when (number) {
-            1 -> "10:30"
-            2 -> "12:15"
-            3 -> "14:00"
-            4 -> "16:15"
-            5 -> "17:55"
-            else -> {
-                throw Exception("Unknown EndTime - $number")
-            }
-        }
-    }
-
-    private fun wordEnding(number: Int): String {
-        return when (number) {
-            1 -> resources.getString(R.string.pair)
-            2, 3, 4 -> resources.getString(R.string.pairs)
-            else -> {
-                throw Exception("Unknown Number - $number")
-            }
-        }
-    }
 
     override fun updateFavoriteParamList(newMainParam: MainParam) {
         val list = (listOfFavoriteMainParam.value?.toMutableList()
@@ -257,22 +153,9 @@ class TimeTableRepositoryImpl @Inject constructor(
     }
 
     override fun getDepartment(): List<String> {
-        val data = dataRepositoryImpl.getContent()
-        val csvParser = CSVParser(
-            data.reader(), CSVFormat.DEFAULT
-                .withFirstRecordAsHeader()
-                .withIgnoreHeaderCase()
-                .withTrim()
-                .withDelimiter(';')
-        )
 
         val masOfDepartment = mutableListOf<String>()
-        for (line in csvParser) {
-            if (line.get(NUMBER_OF_CAFID) !in masOfDepartment) {
-                masOfDepartment.add(line.get(7))
-            }
-        }
-        masOfDepartment.sort()
+
         return masOfDepartment
     }
 
@@ -280,56 +163,8 @@ class TimeTableRepositoryImpl @Inject constructor(
         departmentId: String,
         date: String
     ): List<List<CellClass>> = withContext(Dispatchers.Default) {
-        val data = dataRepositoryImpl.getContent()
-        val csvParser = CSVParser(
-            data.reader(), CSVFormat.DEFAULT
-                .withFirstRecordAsHeader()
-                .withIgnoreHeaderCase()
-                .withTrim()
-                .withDelimiter(';')
-        )
-        val listOfTeachers = emptyList<String>().toMutableList()
-        for (line in csvParser) {
-            if (line.get(NUMBER_OF_CAFID) == departmentId &&
-                (line.get(NUMBER_OF_TEACHER) !in listOfTeachers)
-            ) {
-                listOfTeachers.add(line.get(6))
-            }
-        }
-
-        listOfTeachers.sort()
-
         val list = mutableListOf<List<CellClass>>()
-        repeat((1..list.size).count()) { _ ->
-            list.add(emptyList<CellClass>().toMutableList())
-        }
-        for (line in csvParser) {
-            for (teacher in listOfTeachers) {
-                if (line.get(NUMBER_OF_CAFID) == departmentId &&
-                    line.get(NUMBER_OF_DATE).replace('.', '-') == date &&
-                    line.get(NUMBER_OF_TEACHER) == teacher
-                ) {
 
-//                group = line.get(0)
-//                les = line.get(2).toInt() - 1
-//                aud = line.get(3)
-//                name = line.get(6)
-//                _subject = line.get(8)
-//                subj_type = line.get(9)
-//                departmentId = line.get(7)
-                    list[listOfTeachers.indexOf(teacher)].toMutableList().add(
-                        CellClass(
-                            noEmpty = true,
-                            teacher = line.get(NUMBER_OF_TEACHER).toString(),
-                            subject = line.get(NUMBER_OF_SUBJECT).toString(),
-                            date = date,
-                            subjectNumber = line.get(NUMBER_OF_LESSON).toInt()
-                        )
-                    )
-                }
-            }
-
-        }
         return@withContext list
     }
 

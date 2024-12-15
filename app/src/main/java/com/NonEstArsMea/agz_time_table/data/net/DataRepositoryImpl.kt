@@ -18,36 +18,6 @@ class DataRepositoryImpl @Inject constructor(
     private val context: Context
 ) : DataRepository {
 
-    private var _dataLiveData = MutableLiveData<String>()
-    private var content = ""
-    private var dataIsLoad =  MutableLiveData<Boolean>()
-
-    override suspend fun loadData(): LiveData<String> {
-        if (_dataLiveData.value == null) {
-            withContext(Dispatchers.IO) {
-                val connection =
-                    URL("http://a0755299.xsph.ru/data/combined_output.txt").openConnection()
-                connection.connect()
-                content = connection.getInputStream().bufferedReader().use { it.readText() }
-                Log.e("cont", content)
-                _dataLiveData.postValue(content)
-                dataIsLoad.postValue(true)
-            }
-        }
-        return _dataLiveData
-    }
-
-    override fun dataIsLoad(): LiveData<Boolean> {
-        return dataIsLoad
-    }
-
-    override fun getData(): LiveData<String> {
-        return _dataLiveData
-    }
-
-    override fun getContent(): String {
-        return content
-    }
 
     override fun isInternetConnected(): Boolean {
         val connectivityManager =
