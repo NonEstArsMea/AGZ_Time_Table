@@ -71,9 +71,6 @@ class TableFragment : Fragment() {
         vm.state.observe(viewLifecycleOwner) {
                 when (it) {
                     is LoadData -> {
-                        val list = vm.timeTableFromStorage()
-                        val dateList = vm.getDateList()
-                        binding.tabView.setTimeTable(list, dateList)
                     }
 
                     is ConnectionError -> {}

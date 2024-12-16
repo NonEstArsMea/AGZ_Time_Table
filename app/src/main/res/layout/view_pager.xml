@@ -6,21 +6,6 @@
      android:layout_width="match_parent"
     android:orientation="vertical">
 
-    <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:id="@+id/progressBar"
-        style="@style/Widget.Material3.LinearProgressIndicator"
-        android:layout_width="match_parent"
-        android:layout_height="15dp"
-        android:paddingTop="20dp"
-        android:layout_marginTop="2dp"
-        android:indeterminate="true"
-        android:indeterminateBehavior="cycle"
-        android:indeterminateOnly="true"
-        android:indeterminateTint="#8BC34A"
-        android:indeterminateTintMode="src_in"
-        android:visibility="visible"
-        app:indicatorColor="@color/red_themes"
-        />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card"

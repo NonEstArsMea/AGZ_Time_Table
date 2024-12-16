@@ -61,7 +61,7 @@ class TimeTableFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        viewModeIsPager = true
         updateViewMode()
 
         binding.setDateButton.setOnClickListener {
@@ -74,16 +74,12 @@ class TimeTableFragment : Fragment() {
 
         vm.checkMainParam()
 
-        //binding.monthDate.text = vm.getMonth()
 
         vm.month.observe(viewLifecycleOwner){
             binding.monthDate.text = it
         }
 
         observeViewModel()
-
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.view_pager_and_table_container, ViewPagerFragment.newInstance()).commit()
     }
 
     private fun updateViewMode() {
@@ -104,6 +100,8 @@ class TimeTableFragment : Fragment() {
         super.onStart()
         vm.startFragment()
     }
+
+
 
     private fun observeViewModel() {
 

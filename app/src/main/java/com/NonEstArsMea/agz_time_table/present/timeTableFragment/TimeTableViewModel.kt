@@ -23,9 +23,7 @@ import javax.inject.Inject
 class TimeTableViewModel @Inject constructor(
     private val getMainParamUseCase: GetMainParamUseCase,
     private val timeTableRepositoryImpl: TimeTableRepository,
-    private val repository: DataRepository,
     private val application: Application,
-    private val storageRepositoryImpl: StorageRepositoryImpl,
 ) : ViewModel() {
 
 
@@ -58,7 +56,7 @@ class TimeTableViewModel @Inject constructor(
     @SuppressLint("SuspiciousIndentation")
     fun getNewTimeTable(newTime: Int? = null) {
         currentItem = newTime
-        if (newTime == 0) {
+        if (newTime == NOW_WEEK) {
             DateManager.setDayNow()
         } else {
             if (newTime != null) {
@@ -74,6 +72,7 @@ class TimeTableViewModel @Inject constructor(
         job = viewModelScope.launch(Dispatchers.Default) {
             list = timeTableRepositoryImpl.getWeekTimeTable()
             launch(Dispatchers.Main) {
+                if(list.size > 0) Log.e("responce", list[0].toString())
                 _state.value = TimeTableIsLoad(list)
             }
         }
@@ -88,9 +87,6 @@ class TimeTableViewModel @Inject constructor(
         }
     }
 
-    fun timeTableFromStorage(): List<List<CellClass>> {
-        return storageRepositoryImpl.getLastWeekFromStorage()
-    }
 
     /**
      * Остановка корутины после завершения работы
@@ -101,6 +97,7 @@ class TimeTableViewModel @Inject constructor(
     }
 
     fun startFragment() {
+        getNewTimeTable(NOW_WEEK)
         BottomMenuItemStateManager.setNewMenuItem(BottomMenuItemStateManager.TIME_TABLE_ITEM)
     }
 
@@ -133,6 +130,7 @@ class TimeTableViewModel @Inject constructor(
     companion object {
         const val PREVIOUS_WEEK = -7
         const val NEXT_WEEK = 7
+        const val NOW_WEEK = 0
         const val EMPTY_STRING = ""
 
         private const val LAST_DAY = 5

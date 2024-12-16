@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.doOnLayout
+import androidx.core.view.doOnNextLayout
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -30,7 +31,6 @@ class ViewPagerFragment : Fragment() {
     private lateinit var vm: TimeTableViewModel
 
     private var days = mutableListOf<TextView>()
-
 
 
     private var _binding: ViewPagerBinding? = null
@@ -111,22 +111,6 @@ class ViewPagerFragment : Fragment() {
 
 
 
-        vm.state.observe(viewLifecycleOwner) {
-            when (it) {
-                is LoadData -> {
-                    binding.progressBar.isVisible = true
-                }
-
-                is ConnectionError -> {
-                    binding.progressBar.isVisible = true
-                }
-
-                is TimeTableIsLoad -> {
-                    binding.progressBar.visibility = View.GONE
-
-                }
-            }
-        }
 
         updateData(NOW_WEEK)
         setButtonNumbers()
@@ -137,22 +121,16 @@ class ViewPagerFragment : Fragment() {
 
     private fun observeViewModel(viewPager: ViewPager2, viewPagerAdapter: ViewPagerAdapter) {
         vm.state.observe(viewLifecycleOwner) {
-            viewPager.doOnLayout { _ ->
-                when (it) {
-                    is LoadData -> {
-                        val list = vm.timeTableFromStorage()
-                        viewPagerAdapter.setData(list)
-                    }
+            when (it) {
+                is LoadData -> {
+                }
 
-                    is ConnectionError -> {}
+                is ConnectionError -> {}
 
-                    is TimeTableIsLoad -> {
-                        viewPagerAdapter.setData(it.list)
-                        viewPager.post {
-                            viewPager.currentItem = vm.getCurrentItem()
-                        }
-                        setButtonNumbers()
-                    }
+                is TimeTableIsLoad -> {
+                    viewPagerAdapter.setData(it.list)
+                    viewPager.currentItem = vm.getCurrentItem()
+                    setButtonNumbers()
                 }
             }
         }

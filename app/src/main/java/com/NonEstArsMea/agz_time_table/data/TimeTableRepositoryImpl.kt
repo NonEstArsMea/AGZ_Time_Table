@@ -90,10 +90,9 @@ class TimeTableRepositoryImpl @Inject constructor(
 
         mainParam.value?.let {
             val response = Common.retrofitService.getAggregate(dayOfWeek, it.name)
-            Log.e("responce", response.body().toString())
             if (response.isSuccessful) {
                 if (response.body() != null) {
-
+                    Log.e("responce", response.body()!![dayOfWeek[0]].toString())
                     return replaceColomns(response.body()!!, dayOfWeek)
                 } else {
                     return emptyList()
