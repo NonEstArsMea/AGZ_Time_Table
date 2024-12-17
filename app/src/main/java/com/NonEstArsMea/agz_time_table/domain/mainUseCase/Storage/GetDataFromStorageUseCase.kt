@@ -16,8 +16,6 @@ class GetDataFromStorageUseCase @Inject constructor(
 
     fun execute(){
         timeTableRepositoryImpl.setMainParam(repository.getMainParamFromStorage())
-        val list: MutableLiveData<List<List<CellClass>>> = MutableLiveData(repository.getLastWeekFromStorage())
-        timeTableRepositoryImpl.setWeekTimeTable(list)
         timeTableRepositoryImpl.setListOfFavoriteMainParam(repository.getFavoriteMainParamsFromStorage())
         themeController.setTheme(repository.getThemeFromStorage())
     }

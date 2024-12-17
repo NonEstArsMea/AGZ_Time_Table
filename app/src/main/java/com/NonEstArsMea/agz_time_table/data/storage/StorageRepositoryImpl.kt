@@ -12,7 +12,6 @@ import javax.inject.Inject
 class StorageRepositoryImpl @Inject constructor(
     private val resource: Resources,
     localStorage: LocalStorageInitial,
-    private val dataStorageManager: DataStorageManager,
 ) : StorageRepository {
 
     private val sharedPreferences = localStorage.getSharedPreferences()
@@ -39,14 +38,6 @@ class StorageRepositoryImpl @Inject constructor(
         ) ?: arrayListOf()
     }
 
-    override fun getLastWeekFromStorage(): List<List<CellClass>> {
-       val list = dataStorageManager.loadData()
-        return list
-    }
-
-    override fun setTimeTableInStorage(list: List<List<CellClass>>?) {
-        dataStorageManager.saveData(list)
-    }
 
     override fun getThemeFromStorage(): Int {
         return sharedPreferences.getInt(THEME, SYSTEM_THEME)
@@ -73,7 +64,6 @@ class StorageRepositoryImpl @Inject constructor(
     companion object {
         private const val MAIN_PARAM_KEY = "mainParam"
         private const val LIST_OF_FAVORITE_MAIN_PARAMS = "LOFMP"
-        private const val LAST_WEEK_TIME_TABLE_LIST = "LWTTL"
         private const val THEME = "T"
         private const val SYSTEM_THEME = 1
 

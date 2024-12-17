@@ -20,4 +20,9 @@ interface RetrofitServieces {
     suspend fun getExams(
         @Query("mainParam") mainParam: String
     ): Response<List<CellClass>>
+
+    @GET("aud_workload")
+    suspend fun getAudWorkload(
+        @Query("date") date: String
+    ): Response<Map<String, List<CellClass>>>
 }

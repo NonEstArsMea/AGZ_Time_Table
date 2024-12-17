@@ -10,9 +10,6 @@ interface StorageRepository {
 
     fun getFavoriteMainParamsFromStorage(): ArrayList<MainParam>
 
-    fun getLastWeekFromStorage(): List<List<CellClass>>
-
-    fun setTimeTableInStorage(list: List<List<CellClass>>?)
 
     fun getThemeFromStorage(): Int
     fun setDataInStorage(

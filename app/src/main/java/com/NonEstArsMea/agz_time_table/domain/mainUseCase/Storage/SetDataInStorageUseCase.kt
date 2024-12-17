@@ -10,9 +10,7 @@ class SetDataInStorageUseCase @Inject constructor(
         mainParam: MainParam?,
         favMainParamList: ArrayList<MainParam>?,
         theme: Int?,
-        list: List<List<CellClass>>?
     ) {
         repository.setDataInStorage(mainParam, favMainParamList, theme)
-        repository.setTimeTableInStorage(list)
     }
 }
