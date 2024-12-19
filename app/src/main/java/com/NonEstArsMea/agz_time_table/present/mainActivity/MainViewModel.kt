@@ -61,7 +61,6 @@ class MainViewModel @Inject constructor(
             mainParam = getNameParam.getLiveData().value,
             favMainParamList = timeTableRepositoryImpl.getArrayOfFavoriteMainParam().value,
             theme = _theme.value,
-            list = timeTableRepositoryImpl.getArrayOfWeekTimeTable().value
         )
 
 

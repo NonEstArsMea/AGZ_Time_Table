@@ -60,4 +60,6 @@
     <string name="fifth_day">пт</string>
     <string name="sixth_day">сб</string>
     <string name="network_error_message">Ошибка подключения</string>
+    <string name="aud_workload_button_name">Загрузка аудиторий</string>
+    <string name="aud_workload_button">Просмотр загруженности аудиторий в учебных корпусах</string>
 </resources>

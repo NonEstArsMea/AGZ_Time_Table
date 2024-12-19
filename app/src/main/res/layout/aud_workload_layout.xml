@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/exit_buttom"
+        style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margine_all"
+        android:layout_marginTop="@dimen/margine_all"
+        app:icon="@drawable/left_button"
+
+        />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/aud_workload_button"
+        style="@style/MyCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:padding="@dimen/margine_all"
+        app:cardElevation="5dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/margine_all"
+            >
+
+            <!-- Левая кнопка -->
+            <Button
+                android:id="@+id/btn_left"
+                style="@style/Widget.Material3.Button.IconButton.Outlined"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/left_button"
+
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/educational_building_1"/>
+
+            <!-- Первый TextView -->
+            <TextView
+                android:id="@+id/educational_building_1"
+                style="?attr/textAppearanceHeadline3"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:text="1"
+                app:layout_constraintStart_toEndOf="@id/btn_left"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/educational_building_2"
+                />
+
+            <!-- Второй TextView -->
+            <TextView
+                android:id="@+id/educational_building_2"
+                style="?attr/textAppearanceHeadline3"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:text="2"
+
+                app:layout_constraintStart_toEndOf="@id/educational_building_1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/educational_building_3"/>
+
+            <!-- Третий TextView -->
+            <TextView
+                android:id="@+id/educational_building_3"
+                style="?attr/textAppearanceHeadline3"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:text="3"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/educational_building_2"
+                app:layout_constraintStart_toEndOf="@id/educational_building_4"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/educational_building_4"
+                style="?attr/textAppearanceHeadline3"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:text="4"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btn_right"
+                app:layout_constraintStart_toEndOf="@id/educational_building_3"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Правая кнопка -->
+            <Button
+                android:id="@+id/btn_right"
+                style="@style/Widget.Material3.Button.IconButton.Outlined"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/right_button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/educational_building_4"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <!-- Создание горизонтальной цепочки -->
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintGuide_percent="6.0689654" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.NonEstArsMea.agz_time_table.present.customView.NewView
+        android:id="@+id/aud_workload_table_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>

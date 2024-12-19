@@ -73,6 +73,59 @@
                 app:iconGravity="textStart" />
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/aud_workload_button"
+                style="@style/MyCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="@dimen/margine_all"
+                app:cardElevation="5dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="@dimen/margine_all">
+
+                    <TextView
+                        android:id="@+id/aud_workload_text"
+                        style="@style/MainTextViewStyle.Header1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:text="@string/aud_workload_button_name"
+                        android:textSize="14sp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        style="@style/MainTextViewStyle.Header1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginRight="@dimen/margine_all"
+                        android:text="@string/aud_workload_button"
+                        android:textColor="@color/gray_400"
+                        android:textSize="14sp"
+
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/aud_workload_icon"
+                        app:layout_constraintTop_toBottomOf="@id/aud_workload_text" />
+
+                    <Button
+                        android:id="@+id/aud_workload_icon"
+                        style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:icon="@drawable/todolist"
+
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/login_card"
                 style="@style/MyCard"
                 android:layout_width="match_parent"
