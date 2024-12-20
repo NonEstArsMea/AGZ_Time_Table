@@ -62,6 +62,15 @@ class NewView @JvmOverloads constructor(
         "16:25", "17:55",
     )
 
+    private var currentPeriods = listOf(
+        "ПН",
+        "ВТ",
+        "СР",
+        "ЧТ",
+        "ПТ",
+        "СБ"
+    )
+
     private var dateList = listOf<String>()
 
     override fun setBackground(background: Drawable?) {
@@ -162,9 +171,9 @@ class NewView @JvmOverloads constructor(
         // Нижняя линия конца таблицы
         drawLine(
             0f,
-            contentHeight.toFloat()  * transformations.scaleFactor + transformations.translationY,
+            contentHeight.toFloat() * transformations.scaleFactor + transformations.translationY,
             width.toFloat(),
-            contentHeight.toFloat()  * transformations.scaleFactor + transformations.translationY,
+            contentHeight.toFloat() * transformations.scaleFactor + transformations.translationY,
             mainSeparatorsPaint
         )
     }
@@ -177,16 +186,20 @@ class NewView @JvmOverloads constructor(
             // Разделитель
             drawLine(
                 /* startX = */ 0f,
-                /* startY = */ (lastYList[numberOfLesson] * transformations.scaleFactor + transformations.translationY),
-                /* stopX = */ width.toFloat(),
-                /* stopY = */ (lastYList[numberOfLesson] * transformations.scaleFactor + transformations.translationY),
-                /* paint = */ separatorsPaint
+                /* startY = */
+                (lastYList[numberOfLesson] * transformations.scaleFactor + transformations.translationY),
+                /* stopX = */
+                width.toFloat(),
+                /* stopY = */
+                (lastYList[numberOfLesson] * transformations.scaleFactor + transformations.translationY),
+                /* paint = */
+                separatorsPaint
             )
 
             Log.e("lastYList", lastYList.toString())
             // Получаем элементы и отрисовываем их
             namesStaticLayoutList.forEach { name ->
-                if(name.lessonNumber == numberOfLesson) {
+                if (name.lessonNumber == numberOfLesson) {
                     name.setLastY(lastYList[numberOfLesson].toInt())
                     name.updateInitialRect()
                     if (name.isRectVisible) {
@@ -196,7 +209,7 @@ class NewView @JvmOverloads constructor(
             }
 
             lessonsStaticLayoutList.forEach { lesson ->
-                if(lesson.lessonNumber == numberOfLesson){
+                if (lesson.lessonNumber == numberOfLesson) {
                     lesson.setLastY(lastYList[numberOfLesson].toInt())
                     lesson.updateInitialRect()
                     if (lesson.isRectVisible) {
@@ -210,7 +223,8 @@ class NewView @JvmOverloads constructor(
         //Проверка на выполнение один раз
 
         if (startScaleFactor == null) {
-            startScaleFactor = height.toFloat() / contentHeight.toFloat()  * transformations.scaleFactor
+            startScaleFactor =
+                height.toFloat() / contentHeight.toFloat() * transformations.scaleFactor
             transformations.scaleFactor = startScaleFactor!!
             transformations.minScaleFactor = startScaleFactor!!
             invalidate()
@@ -220,14 +234,6 @@ class NewView @JvmOverloads constructor(
 
     // Отрисовка линий колонн и названия колонн
     private fun Canvas.drawPeriods() {
-        val currentPeriods = listOf(
-            "ПН",
-            "ВТ",
-            "СР",
-            "ЧТ",
-            "ПТ",
-            "СБ"
-        )
 
         var lastX = dateTextSize * transformations.scaleFactor + transformations.translationX
 
@@ -257,10 +263,14 @@ class NewView @JvmOverloads constructor(
             // Разделитель
             drawLine(
                 /* startX = */ lastX,
-                /* startY = */ 0f,
-                /* stopX = */ lastX,
-                /* stopY = */ contentHeight.toFloat()  * transformations.scaleFactor + transformations.translationY,
-                /* paint = */ separatorsPaint
+                /* startY = */
+                0f,
+                /* stopX = */
+                lastX,
+                /* stopY = */
+                contentHeight.toFloat() * transformations.scaleFactor + transformations.translationY,
+                /* paint = */
+                separatorsPaint
             )
         }
     }
@@ -291,6 +301,12 @@ class NewView @JvmOverloads constructor(
         this.dateList = dateList
         createLayoutList()
         invalidate()
+    }
+
+    fun setDateTable(list:List<CellClass>, unicList: List<String>){
+
+        this.currentPeriods = unicList
+
     }
 
 
@@ -359,7 +375,8 @@ class NewView @JvmOverloads constructor(
         private val minTranslationX: Float
             get() = (width - contentWidth * scaleFactor).coerceAtMost(0f).toFloat()
         private val minTranslationY: Float
-            get() = (height - (contentHeight  *  transformations.scaleFactor).toInt()).coerceAtMost(0).toFloat()
+            get() = (height - (contentHeight * transformations.scaleFactor).toInt()).coerceAtMost(0)
+                .toFloat()
 
         fun addTranslation(dx: Float, dy: Float) {
             Log.e("trans", "tranaslation")
@@ -376,7 +393,7 @@ class NewView @JvmOverloads constructor(
                 }
 
             } else {
-                if (scaleFactor > minScaleFactor && (height < contentHeight  * transformations.scaleFactor)) {
+                if (scaleFactor > minScaleFactor && (height < contentHeight * transformations.scaleFactor)) {
                     scaleFactor = (scaleFactor * sx).coerceIn(minScaleFactor, maxScaleFactor)
                     translationX = (translationX * sx).coerceIn(minTranslationX, 0f)
                     translationY = (translationY * sx).coerceIn(minTranslationY, 0f)
@@ -397,10 +414,8 @@ class NewView @JvmOverloads constructor(
 
         lastY = namesRowHight.toFloat()
 
-
         maxHeightOfRow = minRowHight
         repeat(COUNT_OF_LESSONS) { numberOfLesson ->
-
 
             val nameOfROwStaticLayout = NamesRect(
                 text = timeStartOfLessonsList[numberOfLesson * 2],
@@ -448,7 +463,7 @@ class NewView @JvmOverloads constructor(
             // Разбираемся с высотой
             maxHeightOfRow = minRowHight
         }
-        
+
         contentHeight = lastY.toInt()
     }
 
@@ -460,7 +475,8 @@ class NewView @JvmOverloads constructor(
         private var heightOfRow: Int,
         private val newColor: Int,
         val lessonNumber: Int
-    ) {
+    )
+    {
 
         private val nameTextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
             textSize = resources.getDimension(R.dimen.lesson_name_text_size)
@@ -658,7 +674,8 @@ class NewView @JvmOverloads constructor(
         private var lastY: Int,
         private var heightOfRow: Int,
         val lessonNumber: Int
-    ) {
+    )
+    {
 
         private val nameTextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
             textSize = resources.getDimension(R.dimen.lesson_name_text_size)
@@ -725,7 +742,7 @@ class NewView @JvmOverloads constructor(
 
         fun updateInitialRect() {
             fun getY(): Float {
-                return (lastY.toFloat()  + (heightOfRow - height + margin + margin) / 2) * transformations.scaleFactor + transformations.translationY
+                return (lastY.toFloat() + (heightOfRow - height + margin + margin) / 2) * transformations.scaleFactor + transformations.translationY
             }
 
             fun getX(index: Int): Float {

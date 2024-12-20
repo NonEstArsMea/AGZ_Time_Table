@@ -15,6 +15,7 @@ class GetDataFromStorageUseCase @Inject constructor(
 
 
     fun execute(){
+
         timeTableRepositoryImpl.setMainParam(repository.getMainParamFromStorage())
         timeTableRepositoryImpl.setListOfFavoriteMainParam(repository.getFavoriteMainParamsFromStorage())
         themeController.setTheme(repository.getThemeFromStorage())

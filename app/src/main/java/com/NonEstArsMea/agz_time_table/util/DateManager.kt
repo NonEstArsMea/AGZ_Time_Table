@@ -55,8 +55,6 @@ object DateManager {
     }
 
 
-
-
     fun engToRusDayOfWeekNumbers(time: Int): Int {
         return if (time == 1) {
             SUNDAY
@@ -122,7 +120,7 @@ object DateManager {
         return text
     }
 
-    fun getDateList():List<String> {
+    fun getDateList(): List<String> {
 
         val razn = (calendar.get(Calendar.DAY_OF_WEEK) + 5) % 7
         calendar.add(Calendar.DAY_OF_MONTH, -razn)
@@ -137,6 +135,16 @@ object DateManager {
         calendar.add(Calendar.DAY_OF_WEEK, razn - 6)
 
         return list
+    }
+
+    fun getFullDateNow(): String {
+
+        setDayNow()
+        val dayNow = calendar.get(Calendar.DAY_OF_MONTH).toString()
+        val monthNow = calendar.get(Calendar.MONTH)
+        val yearNow = calendar.get(Calendar.YEAR).toString()
+
+        return "$dayNow-$monthNow-$yearNow"
     }
 
     private const val SUNDAY = 6

@@ -3,21 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:theme="@style/Theme.AGZ_Time_Table"
     android:background="?attr/colorSurfaceContainer"
-    >
+    android:orientation="vertical"
+    android:theme="@style/Theme.AGZ_Time_Table">
 
-    <Button
-        android:id="@+id/exit_buttom"
-        style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margine_all"
-        android:layout_marginTop="@dimen/margine_all"
-        app:icon="@drawable/left_button"
 
-        />
+
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/aud_workload_button"
@@ -41,60 +32,66 @@
                 android:layout_height="wrap_content"
                 app:icon="@drawable/left_button"
 
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/educational_building_1"
                 app:layout_constraintHorizontal_chainStyle="spread"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text=""
+                android:textSize="20sp"
+                android:id="@+id/date_text"
+
+                app:layout_constraintLeft_toRightOf="@id/btn_left"
+                app:layout_constraintRight_toLeftOf="@id/btn_right"
+                app:layout_constraintTop_toTopOf="@id/btn_right"
+                app:layout_constraintBottom_toBottomOf="@id/btn_right"/>
+
             <!-- Первый TextView -->
             <TextView
                 android:id="@+id/educational_building_1"
                 style="?attr/textAppearanceHeadline3"
-                android:layout_margin="1dp"
                 android:layout_width="40dp"
-                android:layout_height="0dp"
+                android:layout_height="40dp"
                 android:text="1"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/educational_building_2"
                 app:layout_constraintStart_toEndOf="@id/btn_left"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/btn_left" />
 
             <!-- Второй TextView -->
             <TextView
                 android:id="@+id/educational_building_2"
                 style="?attr/textAppearanceHeadline3"
                 android:layout_width="40dp"
-                android:layout_height="0dp"
+                android:layout_height="40dp"
                 android:text="2"
-android:clickable="true"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/educational_building_3"
                 app:layout_constraintStart_toEndOf="@id/educational_building_1"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/btn_left" />
 
             <!-- Третий TextView -->
             <TextView
                 android:id="@+id/educational_building_3"
                 style="?attr/textAppearanceHeadline3"
                 android:layout_width="40dp"
-                android:layout_height="0dp"
+                android:layout_height="40dp"
                 android:text="3"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/educational_building_2"
                 app:layout_constraintStart_toEndOf="@id/educational_building_4"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/btn_left" />
 
             <TextView
                 android:id="@+id/educational_building_4"
                 style="?attr/textAppearanceHeadline3"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:text="4"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/btn_right"
                 app:layout_constraintStart_toEndOf="@id/educational_building_3"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/btn_left" />
 
             <!-- Правая кнопка -->
             <Button
@@ -103,7 +100,6 @@ android:clickable="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:icon="@drawable/right_button"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/educational_building_4"
                 app:layout_constraintTop_toTopOf="parent" />

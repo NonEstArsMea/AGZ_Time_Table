@@ -76,7 +76,6 @@ class TableFragment : Fragment() {
                     is ConnectionError -> {}
 
                     is TimeTableIsLoad -> {
-                        Log.e("tag", it.toString())
                         val dateList = vm.getDateList()
                         binding.tabView.setTimeTable(it.list, dateList)
                         binding.weekDateText.text = vm.getWeekDateText()

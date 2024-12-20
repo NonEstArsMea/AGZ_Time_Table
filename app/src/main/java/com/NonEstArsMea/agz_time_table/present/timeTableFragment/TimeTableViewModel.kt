@@ -2,18 +2,15 @@ package com.NonEstArsMea.agz_time_table.present.timeTableFragment
 
 import android.annotation.SuppressLint
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.NonEstArsMea.agz_time_table.data.storage.StorageRepositoryImpl
-import com.NonEstArsMea.agz_time_table.util.BottomMenuItemStateManager
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellClass
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
-import com.NonEstArsMea.agz_time_table.domain.mainUseCase.LoadData.DataRepository
 import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.GetMainParamUseCase
 import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.TimeTableRepository
+import com.NonEstArsMea.agz_time_table.util.BottomMenuItemStateManager
 import com.NonEstArsMea.agz_time_table.util.DateManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -69,7 +66,6 @@ class TimeTableViewModel @Inject constructor(
         job = viewModelScope.launch(Dispatchers.Default) {
             list = timeTableRepositoryImpl.getWeekTimeTable()
             launch(Dispatchers.Main) {
-                if(list.size > 0) Log.e("responce", list[0].toString())
                 _state.value = TimeTableIsLoad(list)
             }
         }
@@ -94,7 +90,6 @@ class TimeTableViewModel @Inject constructor(
     }
 
     fun startFragment() {
-        getNewTimeTable(NOW_WEEK)
         BottomMenuItemStateManager.setNewMenuItem(BottomMenuItemStateManager.TIME_TABLE_ITEM)
     }
 

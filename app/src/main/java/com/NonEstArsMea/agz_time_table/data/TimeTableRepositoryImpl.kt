@@ -13,6 +13,7 @@ import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.TimeTableReposito
 import com.NonEstArsMea.agz_time_table.util.DateManager
 import com.NonEstArsMea.agz_time_table.util.Methods
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVParser
@@ -50,10 +51,9 @@ class TimeTableRepositoryImpl @Inject constructor(
         return weekTimeTable
     }
 
-
     override fun setMainParam(newMainParam: MainParam) {
         if (mainParam.value != newMainParam) {
-            mainParam.postValue(newMainParam)
+            mainParam.value = newMainParam
         }
     }
 
@@ -87,20 +87,16 @@ class TimeTableRepositoryImpl @Inject constructor(
 
     override suspend fun getWeekTimeTable(): List<List<CellClass>> {
         val dayOfWeek = DateManager.getArrayOfWeekDate()
-
         mainParam.value?.let {
             val response = Common.retrofitService.getAggregate(dayOfWeek, it.name)
             if (response.isSuccessful) {
-                if (response.body() != null) {
-                    Log.e("responce", response.body()!![dayOfWeek[0]].toString())
+                if (!response.body().isNullOrEmpty()) {
                     return replaceColomns(response.body()!!, dayOfWeek)
-                } else {
-                    return emptyList()
                 }
-            } else {
-                return emptyList()
             }
         }
+
+
         return emptyList()
 
     }
@@ -130,7 +126,6 @@ class TimeTableRepositoryImpl @Inject constructor(
 
     override suspend fun getListOfMainParam() {
         val list = ArrayList<MainParam>()
-
         val restResponce = Common.retrofitService.getMainParamsList()
         if (restResponce.isSuccessful) {
             restResponce.body()?.forEach {
@@ -138,14 +133,18 @@ class TimeTableRepositoryImpl @Inject constructor(
             }
         }
 
-
         listOfMainParam.postValue(list)
+    }
+
+    override suspend fun getListOfAudWorkload(date: String): Map<String, List<CellClass>> {
+        val restResponce = Common.retrofitService.getAudWorkload(date)
+        return if (restResponce.isSuccessful)
+            restResponce.body() ?: mapOf() else mapOf()
     }
 
     override fun getNewListOfMainParam(): MutableLiveData<ArrayList<MainParam>> {
         return listOfMainParam
     }
-
 
     override fun updateFavoriteParamList(newMainParam: MainParam) {
         val list = (listOfFavoriteMainParam.value?.toMutableList()
@@ -185,18 +184,5 @@ class TimeTableRepositoryImpl @Inject constructor(
         return@withContext list
     }
 
-    companion object {
-        const val NUMBER_OF_GROUP = 0
-        const val NUMBER_OF_DAY = 2
-        const val NUMBER_OF_LESSON = 3
-        const val NUMBER_OF_AUD = 4
-        const val NUMBER_OF_TEACHER = 7
-        const val NUMBER_OF_CAFID = 8
-        const val NUMBER_OF_SUBJECT = 9
-        const val NUMBER_OF_SUBJ_TYPE = 10
-        const val NUMBER_OF_DATE = 11
-        const val NUMBER_OF_THEMAS = 14
-
-    }
 
 }

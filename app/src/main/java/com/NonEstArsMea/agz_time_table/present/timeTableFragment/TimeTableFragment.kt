@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -95,14 +94,6 @@ class TimeTableFragment : Fragment() {
 
     }
 
-
-    override fun onStart() {
-        super.onStart()
-        vm.startFragment()
-    }
-
-
-
     private fun observeViewModel() {
 
 
@@ -110,6 +101,11 @@ class TimeTableFragment : Fragment() {
             binding.mainParam.text = it.name
         }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        vm.startFragment()
     }
 
 

@@ -12,6 +12,8 @@ interface TimeTableRepository {
     suspend fun getWeekTimeTable(): List<List<CellClass>>
 
     suspend fun getListOfMainParam()
+    suspend fun getListOfAudWorkload(date: String): Map<String, List<CellClass>>
+
     fun getNewListOfMainParam(): MutableLiveData<ArrayList<MainParam>>
 
     fun getMainParam(): MutableLiveData<MainParam>

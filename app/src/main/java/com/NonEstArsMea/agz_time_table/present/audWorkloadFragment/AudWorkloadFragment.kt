@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.databinding.AudWorkloadLayoutBinding
@@ -74,6 +75,7 @@ class AudWorkloadFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        vm.getData()
         educationalBuildings.forEachIndexed { index, textView ->
             textView.setOnClickListener {
                 vm.setPosition(index)
@@ -82,6 +84,24 @@ class AudWorkloadFragment : Fragment() {
 
         vm.position.observe(viewLifecycleOwner) { position ->
             updateStyles(position)
+            vm.getNewBuilding(position)
+
+        }
+
+        observeVM()
+    }
+
+    private fun observeVM() {
+        vm.state.observe(viewLifecycleOwner){
+            when(it){
+                ConnectionError -> TODO()
+                is SetDate -> {
+                    binding.dateText.text = it.date
+                }
+                is DataIsLoad -> {
+                    binding.audWorkloadTableView.setDateTable(it.list, it.unicList)
+                }
+            }
         }
     }
 
@@ -100,8 +120,5 @@ class AudWorkloadFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
-        binding.exitButtom.setOnClickListener {
-            findNavController().popBackStack()
-        }
     }
 }

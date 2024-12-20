@@ -47,7 +47,6 @@ class MainViewModel @Inject constructor(
 
     init {
         getDataFromStorage.execute()
-
     }
 
 

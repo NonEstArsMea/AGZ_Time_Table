@@ -130,13 +130,13 @@ class ViewPagerFragment : Fragment() {
                 is TimeTableIsLoad -> {
                     viewPagerAdapter.setData(it.list)
                     val d = vm.getCurrentItem()
-                    Log.e("current", d.toString())
                     viewPager.setCurrentItem(d, false)
                     setButtonNumbers()
                 }
             }
         }
     }
+
 
     private fun setButtonNumbers() {
         DateManager.dayNumberOnButton().forEachIndexed { index, s ->
