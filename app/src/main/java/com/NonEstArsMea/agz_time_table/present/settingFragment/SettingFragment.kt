@@ -74,6 +74,10 @@ class SettingFragment : Fragment() {
             findNavController().navigate(R.id.searchFragment)
         }
 
+        binding.audWorkloadButton.setOnClickListener {
+            findNavController().navigate(R.id.audWorkloadFragment)
+        }
+
         binding.botButton.setOnClickListener {
             actionViewStart("https://t.me/timeagzbot")
         }

@@ -30,7 +30,7 @@ class ViewPagerFragment : Fragment() {
 
     private lateinit var vm: TimeTableViewModel
 
-    private var days = mutableListOf<TextView>()
+    private var days = listOf<TextView>()
 
 
     private var _binding: ViewPagerBinding? = null
@@ -38,6 +38,8 @@ class ViewPagerFragment : Fragment() {
 
     @Inject
     lateinit var timeTableViewModelFactory: MainViewModelFactory
+
+    lateinit var viewPager: ViewPager2
 
     private val component by lazy {
         (requireActivity().application as TimeTableApplication).component
@@ -67,7 +69,7 @@ class ViewPagerFragment : Fragment() {
             binding.day4,
             binding.day5,
             binding.day6,
-        ).toMutableList()
+        )
 
 
         binding.buttomLeft.setOnClickListener {
@@ -78,23 +80,22 @@ class ViewPagerFragment : Fragment() {
             updateData(NEXT_WEEK)
         }
 
-        val viewPager: ViewPager2 = binding.viewPagerTimeTableFragment
+        viewPager = binding.viewPagerTimeTableFragment
         val viewPagerAdapter = ViewPagerAdapter(this)
 
         // Слушатель на дни
-        days.toList().forEachIndexed { index, textView ->
+        days.forEachIndexed { index, textView ->
             textView.setOnClickListener {
                 viewPager.setCurrentItem(index, true)
             }
         }
-
         viewPager.adapter = viewPagerAdapter
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             @SuppressLint("UseCompatLoadingForDrawables")
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 context?.let { context ->
-                    days.toList().forEach {
+                    days.forEach {
                         it.setTextAppearance(R.style.MainTextViewStyle_WeekNumber)
                         it.background =
                             resources.getDrawable(R.drawable.main_surface, context.theme)
@@ -111,15 +112,14 @@ class ViewPagerFragment : Fragment() {
 
 
 
-
+        observeViewModel(viewPagerAdapter)
         updateData(NOW_WEEK)
-        setButtonNumbers()
-        observeViewModel(viewPager, viewPagerAdapter)
 
         return binding.root
     }
 
-    private fun observeViewModel(viewPager: ViewPager2, viewPagerAdapter: ViewPagerAdapter) {
+
+    private fun observeViewModel(viewPagerAdapter: ViewPagerAdapter) {
         vm.state.observe(viewLifecycleOwner) {
             when (it) {
                 is LoadData -> {
@@ -129,13 +129,14 @@ class ViewPagerFragment : Fragment() {
 
                 is TimeTableIsLoad -> {
                     viewPagerAdapter.setData(it.list)
-                    viewPager.currentItem = vm.getCurrentItem()
+                    val d = vm.getCurrentItem()
+                    Log.e("current", d.toString())
+                    viewPager.setCurrentItem(d, false)
                     setButtonNumbers()
                 }
             }
         }
     }
-
 
     private fun setButtonNumbers() {
         DateManager.dayNumberOnButton().forEachIndexed { index, s ->

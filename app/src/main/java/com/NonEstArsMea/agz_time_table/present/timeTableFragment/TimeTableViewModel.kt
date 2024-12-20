@@ -47,15 +47,12 @@ class TimeTableViewModel @Inject constructor(
     private var list: List<List<CellClass>> = listOf()
 
 
-    private var currentItem: Int? = 0
-
     init {
         _state.value = LoadData
     }
 
     @SuppressLint("SuspiciousIndentation")
     fun getNewTimeTable(newTime: Int? = null) {
-        currentItem = newTime
         if (newTime == NOW_WEEK) {
             DateManager.setDayNow()
         } else {
@@ -105,19 +102,7 @@ class TimeTableViewModel @Inject constructor(
         return DateManager.monthAndDayNow(application.applicationContext)
     }
 
-    fun getCurrentItem() = (when (currentItem) {
-        NEXT_WEEK -> {
-            FIRST_DAY
-        }
-
-        PREVIOUS_WEEK -> {
-            LAST_DAY
-        }
-
-        else -> {
-            null
-        }
-    }) ?: DateManager.getDayOfWeek()
+    fun getCurrentItem() = DateManager.getDayOfWeek()
 
     fun getWeekDateText(): String {
         return DateManager.getWeekDateText(application.applicationContext)
@@ -128,13 +113,8 @@ class TimeTableViewModel @Inject constructor(
     }
 
     companion object {
-        const val PREVIOUS_WEEK = -7
-        const val NEXT_WEEK = 7
         const val NOW_WEEK = 0
         const val EMPTY_STRING = ""
-
-        private const val LAST_DAY = 5
-        private const val FIRST_DAY = 0
     }
 
 

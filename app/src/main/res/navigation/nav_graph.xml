@@ -33,6 +33,9 @@
         <action
             android:id="@+id/action_settingFragment_to_departmentalTimeTableFragment"
             app:destination="@id/departmentalTimeTableFragment" />
+        <action
+            android:id="@+id/action_settingFragment_to_audWorkloadFragment"
+            app:destination="@id/audWorkloadFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -91,5 +94,15 @@
         <action
             android:id="@+id/action_departmentalTimeTableFragment_to_settingFragment"
             app:destination="@id/settingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/audWorkloadFragment"
+        android:name="com.NonEstArsMea.agz_time_table.present.audWorkloadFragment.AudWorkloadFragment"
+        android:label="fragment_aud_workload"
+        tools:layout="@layout/fragment_aud_workload" >
+        <action
+            android:id="@+id/action_audWorkloadFragment_to_settingFragment"
+            app:destination="@id/settingFragment"
+            app:popUpTo="@id/settingFragment" />
     </fragment>
 </navigation>

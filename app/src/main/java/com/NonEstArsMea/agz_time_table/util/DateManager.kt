@@ -10,12 +10,8 @@ object DateManager {
 
     private var calendar: Calendar = Calendar.getInstance()
 
-
-    private val calendarLiveData = MutableLiveData<Calendar>()
-
     fun setDayNow() {
         calendar = Calendar.getInstance()
-        updateCalendar()
     }
 
     fun getMonth(number: Int): Int {
@@ -56,12 +52,9 @@ object DateManager {
 
     fun setNewCalendar(newTime: Int) {
         calendar.add(Calendar.DAY_OF_MONTH, newTime)
-        updateCalendar()
     }
 
-    private fun updateCalendar() {
-        calendarLiveData.value = calendar
-    }
+
 
 
     fun engToRusDayOfWeekNumbers(time: Int): Int {
@@ -100,10 +93,9 @@ object DateManager {
     }
 
     fun getDayOfWeek(): Int {
-        val dayOfWeek = (calendar.get(Calendar.DAY_OF_WEEK) + 5) % 7
+        var dayOfWeek = (calendar.get(Calendar.DAY_OF_WEEK) + 5) % 7
         if (dayOfWeek == SUNDAY) {
-            calendar.add(Calendar.DAY_OF_YEAR, 1)
-            return 1
+            dayOfWeek = 0
         }
         return dayOfWeek
     }
@@ -147,7 +139,7 @@ object DateManager {
         return list
     }
 
-    private const val SUNDAY = 7
+    private const val SUNDAY = 6
 
 
 }

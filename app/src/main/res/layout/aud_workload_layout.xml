@@ -3,7 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:theme="@style/Theme.AGZ_Time_Table"
+    android:background="?attr/colorSurfaceContainer"
+    >
 
     <Button
         android:id="@+id/exit_buttom"
@@ -28,8 +31,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="@dimen/margine_all"
-            >
+            android:padding="@dimen/margine_all">
 
             <!-- Левая кнопка -->
             <Button
@@ -39,44 +41,44 @@
                 android:layout_height="wrap_content"
                 app:icon="@drawable/left_button"
 
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/educational_building_1"
                 app:layout_constraintHorizontal_chainStyle="spread"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/educational_building_1"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <!-- Первый TextView -->
             <TextView
                 android:id="@+id/educational_building_1"
                 style="?attr/textAppearanceHeadline3"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
+                android:layout_margin="1dp"
+                android:layout_width="40dp"
+                android:layout_height="0dp"
                 android:text="1"
-                app:layout_constraintStart_toEndOf="@id/btn_left"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/educational_building_2"
-                />
+                app:layout_constraintStart_toEndOf="@id/btn_left"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <!-- Второй TextView -->
             <TextView
                 android:id="@+id/educational_building_2"
                 style="?attr/textAppearanceHeadline3"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="0dp"
                 android:text="2"
-
-                app:layout_constraintStart_toEndOf="@id/educational_building_1"
-                app:layout_constraintTop_toTopOf="parent"
+android:clickable="true"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/educational_building_3"/>
+                app:layout_constraintEnd_toStartOf="@id/educational_building_3"
+                app:layout_constraintStart_toEndOf="@id/educational_building_1"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <!-- Третий TextView -->
             <TextView
                 android:id="@+id/educational_building_3"
                 style="?attr/textAppearanceHeadline3"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="0dp"
                 android:text="3"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/educational_building_2"
@@ -101,10 +103,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:icon="@drawable/right_button"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toEndOf="@id/educational_building_4"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <!-- Создание горизонтальной цепочки -->
             <androidx.constraintlayout.widget.Guideline
@@ -119,6 +121,6 @@
     <com.NonEstArsMea.agz_time_table.present.customView.NewView
         android:id="@+id/aud_workload_table_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
 </LinearLayout>
