@@ -42,10 +42,7 @@ class AudWorkloadViewModel @Inject constructor(
     fun getData() {
         viewModelScope.launch {
             rep = repository.getListOfAudWorkload(date)
-            unicList = getUniqueСlass()
-            rep[numberOfBuilding]?.let {
-                _state.value = DataIsLoad(date, unicList, it)
-            }
+            getNewBuilding(0)
         }
     }
 
@@ -72,8 +69,12 @@ class AudWorkloadViewModel @Inject constructor(
         rep[numberOfBuilding]?.forEach {
             if (it.classroom !in list) list.add(it.classroom!!)
         }
+        list.sortedBy {
+            it.trim().split("/").getOrNull(1)?.toIntOrNull() ?: 0
+        }
         return list
     }
+
 
     companion object {
 
