@@ -13,6 +13,8 @@
     <color name="green_fo_lessons_card_alpha">#264CAF50</color>
     <color name="red_fo_lessons_card">#c16368</color>
     <color name="red_fo_lessons_card_alpha">#26C16368</color>
+    <color name="blue_fo_lessons_card">#303F9F</color>
+    <color name="blue_fo_lessons_card_alpha">#26303F9F</color>
     <color name="red_themes">#F8A34B</color>
     <color name="red_themes_500">#FADDC1</color>
     <color name="red_themes_100">#655A4E</color>

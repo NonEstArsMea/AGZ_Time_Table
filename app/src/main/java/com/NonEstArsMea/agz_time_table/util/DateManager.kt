@@ -137,12 +137,14 @@ object DateManager {
         return list
     }
 
-    fun getFullDateNow(): String {
+    fun getFullDateNow(dayOffset: Int): String {
 
         setDayNow()
+        calendar.add(Calendar.DAY_OF_MONTH, dayOffset)
         val dayNow = calendar.get(Calendar.DAY_OF_MONTH).toString()
-        val monthNow = calendar.get(Calendar.MONTH)
+        val monthNow = calendar.get(Calendar.MONTH) + 1
         val yearNow = calendar.get(Calendar.YEAR).toString()
+        calendar.add(Calendar.DAY_OF_MONTH, dayOffset*(-1))
 
         return "$dayNow-$monthNow-$yearNow"
     }

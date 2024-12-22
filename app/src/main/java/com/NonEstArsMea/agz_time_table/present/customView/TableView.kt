@@ -2,6 +2,7 @@ package com.NonEstArsMea.agz_time_table.present.customView
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -10,15 +11,12 @@ import android.graphics.PointF
 import android.graphics.Rect
 import android.graphics.RectF
 import android.graphics.drawable.Drawable
-import android.text.Layout
-import android.text.StaticLayout
 import android.text.TextPaint
 import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellClass
@@ -43,12 +41,11 @@ class NewView @JvmOverloads constructor(
 
     private var dateTextSize = 200f
 
-    private val contentWidth: Int
-        get() = max(width, (columnWidth * 6 + dateTextSize).toInt())
+    private var contentWidth: Int = max(width, (columnWidth * 6 + dateTextSize).toInt())
     private var contentHeight = 500
 
     // Отвечает за зум и сдвиги
-    private val transformations = Transformations()
+    private var transformations = Transformations()
 
     // Значения последнего эвента
     private val lastPoint = PointF()
@@ -73,6 +70,7 @@ class NewView @JvmOverloads constructor(
 
     private var dateList = listOf<String>()
 
+
     override fun setBackground(background: Drawable?) {
         super.setBackground(
             MaterialColors.getColor(
@@ -83,15 +81,6 @@ class NewView @JvmOverloads constructor(
         )
     }
 
-
-    private val rowPaint = Paint().apply {
-        style = Paint.Style.FILL
-        color = MaterialColors.getColor(
-            context,
-            com.google.android.material.R.attr.colorSurfaceContainer,
-            Color.WHITE
-        )
-    }
 
     private val separatorsPaint = Paint().apply {
         strokeWidth = 2f
@@ -113,10 +102,6 @@ class NewView @JvmOverloads constructor(
     private var namesStaticLayoutList = mutableListOf<NamesRect>()
     private var lessonsStaticLayoutList = mutableListOf<LessonsRect>()
     private var lastYList = mutableListOf<Float>()
-
-
-    // Rect для рисования строк
-    private val rowRect = Rect()
 
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -296,17 +281,16 @@ class NewView @JvmOverloads constructor(
             }
         }
 
-
         this.timeTable = list
         this.dateList = dateList
         createLayoutList()
-        invalidate()
     }
 
-    fun setDateTable(list:List<CellClass>, unicList: List<String>){
-
+    fun setDateTable(list: List<CellClass>, unicList: List<String>) {
         this.currentPeriods = unicList
-
+        contentWidth = (columnWidth * unicList.size + dateTextSize).toInt()
+        transformations.resetTranslation()
+        createWorkloadLayoutList(list, unicList)
     }
 
 
@@ -339,7 +323,7 @@ class NewView @JvmOverloads constructor(
             MotionEvent.ACTION_MOVE -> {
 
                 // Если размер контента меньше размера View - сдвиг недоступен
-                if (width < contentWidth) {
+                if (width < contentWidth * transformations.scaleFactor) {
                     val pointerId = event.getPointerId(0)
                     // Чтобы избежать скачков - сдвигаем, только если поинтер(палец) тот же, что и раньше
                     if (lastPointerId == pointerId) {
@@ -379,9 +363,14 @@ class NewView @JvmOverloads constructor(
                 .toFloat()
 
         fun addTranslation(dx: Float, dy: Float) {
-            Log.e("trans", "tranaslation")
+            Log.e("trans", "$translationX   $translationY")
             translationX = (translationX + dx).coerceIn(minTranslationX, 0f)
             translationY = (translationY + dy).coerceIn(minTranslationY, 0f)
+        }
+
+        fun resetTranslation() {
+            translationX = 0f
+            translationY = 0f
         }
 
         fun addScale(sx: Float) {
@@ -409,6 +398,7 @@ class NewView @JvmOverloads constructor(
         namesStaticLayoutList.clear()
         lessonsStaticLayoutList.clear()
         lastYList.clear()
+
 
         val bufferList = mutableListOf<LessonsRect>()
 
@@ -467,16 +457,68 @@ class NewView @JvmOverloads constructor(
         contentHeight = lastY.toInt()
     }
 
+    private fun createWorkloadLayoutList(list: List<CellClass>, unicList: List<String>) {
+
+        // Очищаем списки
+        namesStaticLayoutList.clear()
+        lessonsStaticLayoutList.clear()
+        lastYList.clear()
+
+        lastY = namesRowHight.toFloat()
+        contentHeight = 0
+
+        repeat(COUNT_OF_LESSONS) { numberOfLesson ->
+            val bufferList = list.filter { lesson ->
+                lesson.subjectNumber == numberOfLesson + 1
+            }.mapNotNull { lesson ->
+                val audIndex = unicList.indexOf(lesson.classroom)
+                if (audIndex >= 0) {
+                    LessonsRect(
+                        text = lesson.subject!!,
+                        infoText = "\n${lesson.studyGroup!!}",
+                        dayOfLesson = audIndex,
+                        lastY = lastY.toInt(),
+                        heightOfRow = maxHeightOfRow,
+                        newColor = R.color.blue_fo_lessons_card,
+                        lessonNumber = numberOfLesson
+                    )
+                } else null
+            }
+
+            maxHeightOfRow = max(bufferList.maxOfOrNull { it.height.toInt() } ?: minRowHight, minRowHight)
+
+            val nameOfRowStaticLayout = NamesRect(
+                text = timeStartOfLessonsList[numberOfLesson * 2],
+                infoText = timeStartOfLessonsList[numberOfLesson * 2 + 1],
+                numberOfColumn = ZERO_COLUMN,
+                lastY = lastY.toInt(),
+                heightOfRow = maxHeightOfRow,
+                lessonNumber = numberOfLesson
+            )
+
+            bufferList.forEach { it.setHeightOfRow(maxHeightOfRow) }
+            nameOfRowStaticLayout.setHeightOfRow(maxHeightOfRow)
+
+            lessonsStaticLayoutList.addAll(bufferList)
+            namesStaticLayoutList.add(nameOfRowStaticLayout)
+
+            lastYList.add(lastY)
+            lastY += maxHeightOfRow
+            maxHeightOfRow = minRowHight
+        }
+
+        contentHeight = lastY.toInt()
+    }
+
     private inner class LessonsRect(
-        private val text: String,
-        private val infoText: String,
+        text: String,
+        infoText: String,
         private val dayOfLesson: Int,
         private var lastY: Int,
         private var heightOfRow: Int,
         private val newColor: Int,
         val lessonNumber: Int
-    )
-    {
+    ) {
 
         private val nameTextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
             textSize = resources.getDimension(R.dimen.lesson_name_text_size)
@@ -654,6 +696,7 @@ class NewView @JvmOverloads constructor(
                 R.color.red_fo_lessons_card -> R.color.red_fo_lessons_card_alpha
                 R.color.yellow_fo_lessons_card -> R.color.yellow_fo_lessons_card_alpha
                 R.color.green_fo_lessons_card -> R.color.green_fo_lessons_card_alpha
+                R.color.blue_fo_lessons_card -> R.color.blue_fo_lessons_card_alpha
                 else -> {
                     R.color.white
                 }
@@ -674,8 +717,7 @@ class NewView @JvmOverloads constructor(
         private var lastY: Int,
         private var heightOfRow: Int,
         val lessonNumber: Int
-    )
-    {
+    ) {
 
         private val nameTextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
             textSize = resources.getDimension(R.dimen.lesson_name_text_size)

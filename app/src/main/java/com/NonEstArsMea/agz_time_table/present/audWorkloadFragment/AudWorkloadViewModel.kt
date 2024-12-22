@@ -10,6 +10,7 @@ import com.NonEstArsMea.agz_time_table.domain.dataClass.CellClass
 import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.TimeTableRepository
 import com.NonEstArsMea.agz_time_table.util.DateManager
 import dagger.Provides
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,11 +26,13 @@ class AudWorkloadViewModel @Inject constructor(
     val state: LiveData<WorkloadState>
         get() = _state
 
-    private val date = DateManager.getFullDateNow()
-
+    private var offset = 0
+    private var date = DateManager.getFullDateNow(offset)
     private var rep: Map<String, List<CellClass>> = mapOf()
     private lateinit var unicList: List<String>
     private var numberOfBuilding: String = "1"
+
+    private var currentJob: Job? = null
 
     init {
         _state.value = SetDate(date)
@@ -39,25 +42,40 @@ class AudWorkloadViewModel @Inject constructor(
         _position.value = p
     }
 
+    fun setNewDate(day: Int) {
+        offset += day
+        date = DateManager.getFullDateNow(offset)
+        getData()
+    }
+
     fun getData() {
-        viewModelScope.launch {
+        currentJob?.cancel()
+        currentJob = viewModelScope.launch {
             rep = repository.getListOfAudWorkload(date)
             getNewBuilding(0)
         }
     }
 
     fun getNewBuilding(position: Int) {
-        numberOfBuilding = when(position){
+        numberOfBuilding = when (position) {
             0 -> "1"
             1 -> "2"
             2 -> "3"
             3 -> "4"
-            else -> {"1"}
+            else -> {
+                "1"
+            }
         }
-        if(rep.isNotEmpty()){
+        if (rep.isNotEmpty()) {
             rep[numberOfBuilding]?.let {
+                val uniqueCells = it.distinctBy { cell ->
+                    cell.classroom to cell.subjectNumber
+                }
+                val sortedList = uniqueCells.sortedBy { cell ->
+                    cell.classroom!!.trim().split("/").getOrNull(1)?.toIntOrNull() ?: 0
+                }
                 unicList = getUniqueСlass()
-                _state.value = DataIsLoad(date, unicList, it)
+                _state.value = DataIsLoad(date, unicList, sortedList)
             }
         }
 
@@ -69,10 +87,15 @@ class AudWorkloadViewModel @Inject constructor(
         rep[numberOfBuilding]?.forEach {
             if (it.classroom !in list) list.add(it.classroom!!)
         }
-        list.sortedBy {
+        val sortedList = list.sortedBy {
             it.trim().split("/").getOrNull(1)?.toIntOrNull() ?: 0
         }
-        return list
+        return sortedList
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        currentJob?.cancel()
     }
 
 

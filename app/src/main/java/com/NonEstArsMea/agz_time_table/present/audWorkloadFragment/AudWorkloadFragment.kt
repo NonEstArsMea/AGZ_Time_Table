@@ -88,6 +88,14 @@ class AudWorkloadFragment : Fragment() {
 
         }
 
+        binding.btnLeft.setOnClickListener {
+            vm.setNewDate(-1)
+        }
+
+        binding.btnRight.setOnClickListener {
+            vm.setNewDate(1)
+        }
+
         observeVM()
     }
 
@@ -99,6 +107,7 @@ class AudWorkloadFragment : Fragment() {
                     binding.dateText.text = it.date
                 }
                 is DataIsLoad -> {
+                    binding.dateText.text = it.date
                     binding.audWorkloadTableView.setDateTable(it.list, it.unicList)
                 }
             }
@@ -117,8 +126,4 @@ class AudWorkloadFragment : Fragment() {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-
-    }
 }
