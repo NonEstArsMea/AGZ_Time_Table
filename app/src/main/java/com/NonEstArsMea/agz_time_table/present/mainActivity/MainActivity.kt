@@ -63,19 +63,19 @@ class MainActivity : AppCompatActivity(),
 
     override fun onStart() {
         super.onStart()
-        mainViewModel.checkNetConnection()
-        mainViewModel.isConnected.observe(this) {
-            // появление кнопки об отсутсвии интернета
-            if (!it) {
-                binding.errorNetLayout.root.visibility = View.VISIBLE
-            } else {
-                binding.errorNetLayout.root.visibility = View.GONE
-            }
-
-        }
+//        mainViewModel.checkNetConnection()
+//        mainViewModel.isConnected.observe(this) {
+//            // появление кнопки об отсутсвии интернета
+//            if (!it) {
+//                binding.errorNetLayout.root.visibility = View.VISIBLE
+//            } else {
+//                binding.errorNetLayout.root.visibility = View.GONE
+//            }
+//
+//        }
 
         binding.errorNetLayout.errorNetLayoutButton.setOnClickListener {
-            mainViewModel.checkNetConnection()
+            //mainViewModel.checkNetConnection()
         }
 
         val menu = binding.bottomInfo.menu

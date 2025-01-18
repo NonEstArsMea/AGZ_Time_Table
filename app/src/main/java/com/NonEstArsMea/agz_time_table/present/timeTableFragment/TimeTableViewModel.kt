@@ -2,6 +2,7 @@ package com.NonEstArsMea.agz_time_table.present.timeTableFragment
 
 import android.annotation.SuppressLint
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -65,8 +66,10 @@ class TimeTableViewModel @Inject constructor(
 
         job = viewModelScope.launch(Dispatchers.Default) {
             list = timeTableRepositoryImpl.getWeekTimeTable()
+            Log.e("debug", "get list" + list.toString())
             launch(Dispatchers.Main) {
                 _state.value = TimeTableIsLoad(list)
+                Log.e("debug", "set list")
             }
         }
     }

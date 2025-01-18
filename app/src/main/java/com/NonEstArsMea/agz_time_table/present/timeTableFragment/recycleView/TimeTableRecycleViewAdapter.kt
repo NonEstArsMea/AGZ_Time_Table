@@ -19,7 +19,7 @@ class TimeTableRecycleViewAdapter : ListAdapter<CellClass, RecyclerView.ViewHold
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
-            LESSON_TIME_TABLE_TYPE -> TimeTableLessonViewHolder(
+            CellClass.LESSON_CELL_TYPE -> TimeTableLessonViewHolder(
                 inflater.inflate(
                     R.layout.one_lesson_card, parent, false
                 )
@@ -47,11 +47,7 @@ class TimeTableRecycleViewAdapter : ListAdapter<CellClass, RecyclerView.ViewHold
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (getItem(position).text == "") {
-            LESSON_TIME_TABLE_TYPE
-        } else {
-            BREAK_CELL_TYPE
-        }
+        return getItem(position).cellType
     }
 
     private fun setAnimation(holder: TimeTableLessonViewHolder) {

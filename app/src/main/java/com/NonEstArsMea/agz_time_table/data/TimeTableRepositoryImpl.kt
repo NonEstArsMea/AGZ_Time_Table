@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.NonEstArsMea.agz_time_table.R
-import com.NonEstArsMea.agz_time_table.data.net.DataRepositoryImpl
 import com.NonEstArsMea.agz_time_table.data.net.retrofit.Common
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellClass
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
@@ -13,10 +12,7 @@ import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.TimeTableReposito
 import com.NonEstArsMea.agz_time_table.util.DateManager
 import com.NonEstArsMea.agz_time_table.util.Methods
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
-import org.apache.commons.csv.CSVFormat
-import org.apache.commons.csv.CSVParser
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -68,6 +64,7 @@ class TimeTableRepositoryImpl @Inject constructor(
 
     override suspend fun getExams(): List<CellClass> {
         val response = Common.retrofitService.getExams(mainParam.value!!.name)
+        Log.e("res", response.body().toString())
         if (response.isSuccessful) {
             return if (response.body() != null) {
                 val exams = response.body()!!
@@ -87,14 +84,22 @@ class TimeTableRepositoryImpl @Inject constructor(
 
     override suspend fun getWeekTimeTable(): List<List<CellClass>> {
         val dayOfWeek = DateManager.getArrayOfWeekDate()
-        mainParam.value?.let {
-            val response = Common.retrofitService.getAggregate(dayOfWeek, it.name)
-            if (response.isSuccessful) {
-                if (!response.body().isNullOrEmpty()) {
-                    return replaceColomns(response.body()!!, dayOfWeek)
+        Log.e("debug", mainParam.value.toString())
+        try {
+            mainParam.value?.let {
+                val response = Common.retrofitService.getAggregate(dayOfWeek, it.name)
+                Log.e("res", response.body().toString())
+                if (response.isSuccessful) {
+                    if (!response.body().isNullOrEmpty()) {
+                        return replaceColomns(response.body()!!, dayOfWeek)
+                    }
                 }
             }
+        }catch (e: Exception){
+            Log.e("debug", e.toString())
+            return emptyList()
         }
+
 
 
         return emptyList()

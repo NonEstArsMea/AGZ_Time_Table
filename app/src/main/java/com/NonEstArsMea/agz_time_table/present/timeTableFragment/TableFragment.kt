@@ -71,6 +71,7 @@ class TableFragment : Fragment() {
         vm.state.observe(viewLifecycleOwner) {
                 when (it) {
                     is LoadData -> {
+                        binding.tabView.setTimeTable()
                     }
 
                     is ConnectionError -> {}
