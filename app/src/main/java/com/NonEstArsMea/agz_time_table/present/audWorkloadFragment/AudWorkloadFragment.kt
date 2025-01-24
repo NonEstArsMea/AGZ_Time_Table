@@ -105,6 +105,7 @@ class AudWorkloadFragment : Fragment() {
                 ConnectionError -> TODO()
                 is SetDate -> {
                     binding.dateText.text = it.date
+                    binding.audWorkloadTableView.setDateTable()
                 }
                 is DataIsLoad -> {
                     binding.dateText.text = it.date

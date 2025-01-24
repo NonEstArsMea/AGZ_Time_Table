@@ -24,7 +24,7 @@ fun getStaticLayout(
         /* width = */  width.toInt()
     )
         .setAlignment(align)
-        .setLineSpacing(0f, 1f)
+        .setLineSpacing(0f, 0.9f)
         .setIncludePad(true)
         .build()
 }

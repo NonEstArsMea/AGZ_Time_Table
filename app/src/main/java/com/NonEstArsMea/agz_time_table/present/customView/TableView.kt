@@ -9,6 +9,7 @@ import android.graphics.Path
 import android.graphics.PointF
 import android.graphics.RectF
 import android.graphics.drawable.Drawable
+import android.text.StaticLayout
 import android.text.TextPaint
 import android.util.AttributeSet
 import android.util.Log
@@ -31,16 +32,15 @@ class NewView @JvmOverloads constructor(
 
 
     // Основная информация об строках и колонках
-    private val minCellHeight = 170f
-    private val minCellWidth = 200f
+    private val minCellHeight = 120f
+    private val minCellWidth = 150f
 
 
     private var startScaleFactor: Float? = null
 
-    private var dateTextSize = 200f
 
-    private var contentWidth: Int = max(width, (minCellWidth * 6 + dateTextSize).toInt())
-    private var contentHeight = 500
+    private var contentWidth = width
+    private var contentHeight = height
 
     // Отвечает за зум и сдвиги
     private var transformations = Transformations()
@@ -57,9 +57,21 @@ class NewView @JvmOverloads constructor(
     )
 
 
-    private var currentPeriods = listOf(
+    private val namesOfWeekDay = listOf(
         "ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ"
     )
+
+    // Переменные для отрисовки строк
+
+    private var rowHeadersStaticLayoutList = mutableListOf<CustomRect>()
+    private var columnHeadersStaticLayoutList = mutableListOf<CustomRect>()
+    private var lessonsStaticLayoutList = mutableListOf<CustomRect>()
+
+    // В эти перемемнные сохраняются ширина и высота ячеек,
+    // т.к. они могут меняться из-за изменяемоего контента
+
+    private val masOfCellWidth = mutableListOf<Float>()
+    private val masOfCellHeight = mutableListOf<Float>()
 
 
     override fun setBackground(background: Drawable?) {
@@ -80,11 +92,6 @@ class NewView @JvmOverloads constructor(
             com.google.android.material.R.attr.colorOnSurfaceVariant,
             Color.WHITE
         )
-    }
-
-    private val mainSeparatorsPaint = Paint().apply {
-        strokeWidth = 2f
-        color = context.getColor(R.color.gray_400)
     }
 
 
@@ -111,40 +118,6 @@ class NewView @JvmOverloads constructor(
         setMeasuredDimension(width, height)
     }
 
-    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-
-
-    }
-
-    // Отрисовка просто линии
-//    private fun Canvas.drawTimeAndDateLine() {
-//        // Линия для отделения времени
-//        drawLine(
-//            dateTextSize * transformations.scaleFactor + transformations.translationX,
-//            0f,
-//            dateTextSize * transformations.scaleFactor + transformations.translationX,
-//            contentHeight.toFloat() * transformations.scaleFactor + transformations.translationY,
-//            mainSeparatorsPaint
-//        )
-//
-//        // Линия для отделения даты
-//        drawLine(
-//            0f,
-//            namesRowHight * transformations.scaleFactor + transformations.translationY,
-//            width.toFloat(),
-//            namesRowHight * transformations.scaleFactor + transformations.translationY,
-//            mainSeparatorsPaint
-//        )
-//
-//        // Нижняя линия конца таблицы
-//        drawLine(
-//            0f,
-//            contentHeight.toFloat() * transformations.scaleFactor + transformations.translationY,
-//            width.toFloat(),
-//            contentHeight.toFloat() * transformations.scaleFactor + transformations.translationY,
-//            mainSeparatorsPaint
-//        )
-    // }
 
     // Отрисовка конкретных данных в строках
     private fun Canvas.drawTable() {
@@ -195,8 +168,15 @@ class NewView @JvmOverloads constructor(
             }
         }
 
-        lessonsStaticLayoutList.forEach {
+        lessonsStaticLayoutList.forEachIndexed { index, cell ->
+            (cell as LessonsRect).updateInitialRect(
+                masOfCellWidth.listSum(cell.column).toInt(),
+                masOfCellHeight.listSum(cell.row).toInt(),
+            )
 
+            if (cell.isRectVisible) {
+                cell.draw(this)
+            }
         }
 
         //Проверка на выполнение один раз
@@ -211,152 +191,63 @@ class NewView @JvmOverloads constructor(
 
     }
 
-    // Отрисовка линий колонн и названия колонн
-//    private fun Canvas.drawPeriods() {
-//
-//
-//    }
-
 
     override fun onDraw(canvas: Canvas) = with(canvas) {
-
         drawTable()
-        //drawPeriods()
-        //drawTimeAndDateLine()
-        invalidate()
     }
-
-
-    private var timeTable: List<List<CellClass>> = emptyList()
 
 
     fun setTimeTable(
         timeTable: List<List<CellClass>> = emptyList(),
         dateList: List<String> = emptyList()
     ) {
-
-        var listOfLists = timeTable.map { listOfCell ->
+        // Очистка массива
+        clearMas()
+        val listOfLists = timeTable.map { listOfCell ->
             listOfCell.filter {
-                it.subjectNumber != null
+                it.text == ""
             }
         }
-        var list = listOfLists.flatten()
+        val list = listOfLists.flatten()
+
+        val columnNameTextList = buildList {
+            for (a in namesOfWeekDay.indices) {
+                add(DataForCellClass(namesOfWeekDay[a], dateList[a]))
+            }
+        }
+
+        val rowNameText = buildList {
+            for (a in timeStartOfLessonsList.indices) {
+                add(DataForCellClass(timeStartOfLessonsList[a], timeEndOfLessonsList[a]))
+            }
+        }
 
 
-        list = listOf(
-            CellClass(
-                subject = "Автомобильная подготовка",
-                teacher = "Кузнецов Е . В .",
-                classroom = "1 / 220",
-                studyGroup = "213",
-                date = "4 - 03 - 2024",
-                subjectType = "6.4 Групповое занятие",
-                startTime = "09:00",
-                endTime = "10:30",
-                subjectNumber = 1,
-                noEmpty = true,
-                text = "",
-                lessonTheme = "",
-                color = 2131231033,
-                viewSize = 90,
-                isGone = true,
-                department = "34",
-                column = 1,
-                row = 1,
-                cellType = CellClass.LESSON_CELL_TYPE
-            ),
-            CellClass(
-                subject = "Автомобильная подготовка",
-                teacher = "Кузнецов Е . В .",
-                classroom = "1 / 220",
-                studyGroup = "213",
-                date = "4 - 03 - 2024",
-                subjectType = "6.4 Групповое занятие",
-                startTime = "09:00",
-                endTime = "10:30",
-                subjectNumber = 1,
-                noEmpty = true,
-                text = "",
-                lessonTheme = "",
-                color = 2131231033,
-                viewSize = 90,
-                isGone = true,
-                department = "34",
-                column = 1,
-                row = 2,
-                cellType = CellClass.LESSON_CELL_TYPE
-            ),
-            CellClass(
-                subject = "Автомобильная подготовка",
-                teacher = "Кузнецов Е . В .",
-                classroom = "1 / 220",
-                studyGroup = "213",
-                date = "4 - 03 - 2024",
-                subjectType = "6.4 Групповое занятие",
-                startTime = "09:00",
-                endTime = "10:30",
-                subjectNumber = 2,
-                noEmpty = true,
-                text = "",
-                lessonTheme = "",
-                color = 2131231033,
-                viewSize = 90,
-                isGone = true,
-                department = "34",
-                column = 1,
-                row = 3,
-                cellType = CellClass.LESSON_CELL_TYPE
-            ),
-            CellClass(
-                subject = "Автомобильная подготовка",
-                teacher = "Кузнецов Е . В .",
-                classroom = "1 / 220",
-                studyGroup = "213",
-                date = "4 - 03 - 2024",
-                subjectType = "6.4 Групповое занятие",
-                startTime = "09:00",
-                endTime = "10:30",
-                subjectNumber = 2,
-                noEmpty = true,
-                text = "",
-                lessonTheme = "",
-                color = 2131231033,
-                viewSize = 90,
-                isGone = true,
-                department = "34",
-                column = 1,
-                row = 4,
-                cellType = CellClass.LESSON_CELL_TYPE
-            )
-        )
-
-        val columnNameText = listOf(
-            DataForCellClass(" 1 ", " 1 ", 0, 1),
-            DataForCellClass(" 2 ", " 2 ", 0, 2),
-            DataForCellClass(" 3 ", " 3 ", 0, 3),
-            DataForCellClass(" 4 ", " 4 ", 0, 4),
-            DataForCellClass(" 5 ", " 5 ", 0, 5),
-            DataForCellClass(" 6 ", " 6 ", 0, 6)
-        )
-
-        val rowNameText = listOf(
-            DataForCellClass(" 1 ", " 1 ", 1, 0),
-            DataForCellClass(" 2 ", " 2 ", 2, 0),
-            DataForCellClass(" 3 ", " 3 ", 3, 0),
-            DataForCellClass(" 4 ", " 4 ", 4, 0),
-            DataForCellClass(" 5 ", " 5 ", 5, 0),
-            DataForCellClass(" 6 ", " 6 ", 6, 0)
-        )
-
-        calculateTable(list, columnNameText, rowNameText)
-
+        calculateTable(list, columnNameTextList, rowNameText)
+        invalidate()
     }
 
-    fun setDateTable(list: List<CellClass>, unicList: List<String>) {
-        this.currentPeriods = unicList
-        contentWidth = (minCellWidth * unicList.size + dateTextSize).toInt()
+    fun setDateTable(list: List<CellClass> = emptyList(),
+                     unicList: List<String> = emptyList()
+    ) {
         transformations.resetTranslation()
-        createWorkloadLayoutList(list, unicList)
+        clearMas()
+
+
+        val columnNameTextList = buildList {
+            for (a in unicList.indices) {
+                add(DataForCellClass(unicList[a], ""))
+            }
+        }
+
+        val rowNameText = buildList {
+            for (a in timeStartOfLessonsList.indices) {
+                add(DataForCellClass(timeStartOfLessonsList[a], timeEndOfLessonsList[a]))
+            }
+        }
+
+        calculateTable(list, columnNameTextList, rowNameText)
+        invalidate()
     }
 
 
@@ -432,11 +323,13 @@ class NewView @JvmOverloads constructor(
             Log.e("trans", "$translationX   $translationY")
             translationX = (translationX + dx).coerceIn(minTranslationX, 0f)
             translationY = (translationY + dy).coerceIn(minTranslationY, 0f)
+            invalidate()
         }
 
         fun resetTranslation() {
             translationX = 0f
             translationY = 0f
+            invalidate()
         }
 
         fun addScale(sx: Float) {
@@ -445,6 +338,7 @@ class NewView @JvmOverloads constructor(
                     scaleFactor = (scaleFactor * sx).coerceIn(minScaleFactor, maxScaleFactor)
                     translationX = (translationX * sx).coerceIn(minTranslationX, 0f)
                     translationY = (translationY * sx).coerceIn(minTranslationY, 0f)
+                    invalidate()
                 }
 
             } else {
@@ -452,6 +346,7 @@ class NewView @JvmOverloads constructor(
                     scaleFactor = (scaleFactor * sx).coerceIn(minScaleFactor, maxScaleFactor)
                     translationX = (translationX * sx).coerceIn(minTranslationX, 0f)
                     translationY = (translationY * sx).coerceIn(minTranslationY, 0f)
+                    invalidate()
                 }
             }
 
@@ -459,93 +354,15 @@ class NewView @JvmOverloads constructor(
     }
 
 
-    private fun createWorkloadLayoutList(list: List<CellClass>, unicList: List<String>) {
+    private open inner class CustomRect()
 
-//        // Очищаем списки
-//        lineHeadersStaticLayoutList.clear()
-//        lessonsStaticLayoutList.clear()
-//        lastYList.clear()
-//
-//        lastY = namesRowHight.toFloat()
-//        contentHeight = 0
-//
-//        repeat(COUNT_OF_LESSONS) { numberOfLesson ->
-//            val bufferList = list.filter { lesson ->
-//                lesson.subjectNumber == numberOfLesson + 1
-//            }.mapNotNull { lesson ->
-//                val audIndex = unicList.indexOf(lesson.classroom)
-//                if (audIndex >= 0) {
-//                    LessonsRect(
-//                        text = lesson.subject!!,
-//                        infoText = "\n${lesson.studyGroup!!}",
-//                        dayOfLesson = audIndex,
-//                        lastY = lastY.toInt(),
-//                        lastX =
-//                        heightOfRow = maxHeightOfRow,
-//                        newColor = R.color.blue_fo_lessons_card,
-//                        lessonNumber = numberOfLesson
-//                    )
-//                } else null
-//            }
-//
-//            maxHeightOfRow =
-//                max(bufferList.maxOfOrNull { it.height.toInt() } ?: minRowHight, minRowHight)
-//
-//            val nameOfRowStaticLayout = NamesRect(
-//                text = timeStartOfLessonsList[numberOfLesson * 2],
-//                infoText = timeStartOfLessonsList[numberOfLesson * 2 + 1],
-//                numberOfColumn = ZERO_COLUMN,
-//                lastY = lastY.toInt(),
-//                heightOfRow = maxHeightOfRow,
-//                lessonNumber = numberOfLesson
-//            )
-//
-//            bufferList.forEach { it.setHeightOfRow(maxHeightOfRow) }
-//            nameOfRowStaticLayout.setHeightOfRow(maxHeightOfRow)
-//
-//            lessonsStaticLayoutList.addAll(bufferList)
-//            lineHeadersStaticLayoutList.add(nameOfRowStaticLayout)
-//
-//            lastYList.add(lastY)
-//            lastY += maxHeightOfRow
-//            maxHeightOfRow = minRowHight
-//        }
-//
-//        contentHeight = lastY.toInt()
-    }
-
-    private open inner class CustomRect
     private inner class LessonsRect(
-        text: String,
-        infoText: String,
-        private val dayOfLesson: Int,
-        private var lastY: Int,
-        private var lastX: Int,
-        private var heightOfRow: Int,
-        private val newColor: Int,
-        val lessonNumber: Int,
-        val length: Int = 500
+        private val text: DataForCellClass,
+        val row: Int,
+        val column: Int,
+        val newColor: Int
     ) : CustomRect() {
 
-        private val nameTextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
-            textSize = resources.getDimension(R.dimen.lesson_name_text_size)
-            isFakeBoldText = true
-            color = MaterialColors.getColor(
-                context,
-                com.google.android.material.R.attr.titleTextColor,
-                Color.WHITE
-            )
-        }
-
-        private val infoTextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
-            textSize = resources.getDimension(R.dimen.lesson_name_text_size)
-            isFakeBoldText = false
-            color = MaterialColors.getColor(
-                context,
-                com.google.android.material.R.attr.colorOnSurfaceVariant,
-                Color.WHITE
-            )
-        }
 
         // Создание прямоуголька и задание радиуса и размера боковой линии
         private var rect = RectF()
@@ -553,12 +370,6 @@ class NewView @JvmOverloads constructor(
         private var verticalLineSize = 10f * transformations.scaleFactor
         private val rectStrokeWidth = 2f
 
-        // пэйнт для линии и для фона
-        private val paint = Paint().apply {
-            style = Paint.Style.FILL
-            strokeWidth = 0.5f
-            isAntiAlias = true
-        }
 
         @SuppressLint("ResourceType")
         private val strokePaint = Paint().apply {
@@ -574,65 +385,124 @@ class NewView @JvmOverloads constructor(
         private val path = Path()
         private val path2 = Path()
 
+        private var calculatedWidth = minCellWidth
+        private var calculatedHeight = minCellHeight
+
+        private val nameTextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
+            textSize = resources.getDimension(R.dimen.lesson_name_text_size)
+            isFakeBoldText = true
+            color = MaterialColors.getColor(
+                context,
+                com.google.android.material.R.attr.titleTextColor,
+                Color.WHITE
+            )
+        }
+        private val infoTextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
+            textSize = resources.getDimension(R.dimen.lesson_info_text_size)
+            isFakeBoldText = false
+            color = MaterialColors.getColor(
+                context,
+                com.google.android.material.R.attr.colorOnSurfaceVariant,
+                Color.WHITE
+            )
+        }
+
+        fun calculateSize() {
+            val words = text.text.split(" ")
+            val infoWords = text.infoText.split(" ")
+            val maxWordWith = max(
+                words.maxOf { nameTextPaint.measureText(it) },
+                infoWords.maxOf { infoTextPaint.measureText(it) }
+            )
+            val textHeight =
+                nameTextPaint.fontMetrics.run { bottom - top.toInt() }
+            val infoTextHeight = infoTextPaint.fontMetrics.run { bottom - top.toInt() }
+            val lines = wrapText(text.text, maxWordWith, nameTextPaint)
+            val infoLines = wrapText(text.infoText, maxWordWith, infoTextPaint)
+
+            calculatedWidth = max(
+                minCellWidth,
+                maxWordWith + margin * 2 + verticalLineSize + rectStrokeWidth * 2 + paddingX * 2
+            )
+            calculatedHeight =
+                max(
+                    minCellHeight,
+                    lines.size * textHeight + infoLines.size * infoTextHeight + margin * 2 + rectStrokeWidth * 2 + paddingY * 2
+                )
+
+            updateStaticLayouts()
+        }
+
+        fun getCalculatedWidth() = calculatedWidth
+        fun getCalculatedHeight() = calculatedHeight
+
+
+        // пэйнтдля фона
+        private val paint = Paint().apply {
+            style = Paint.Style.FILL
+            color = Color.TRANSPARENT
+            strokeWidth = 0f
+            isAntiAlias = true
+        }
+
+
+        private var nameStaticLayout: StaticLayout? = null
+        private var infoStaticLayout: StaticLayout? = null
+
+        private fun updateStaticLayouts() {
+            nameStaticLayout = getStaticLayout(
+                text = text.text,
+                width = calculatedWidth - (margin * 2 + verticalLineSize + rectStrokeWidth * 2 + paddingX * 2),
+                paint = nameTextPaint,
+                true
+            )
+            infoStaticLayout = getStaticLayout(
+                text = text.infoText,
+                width = calculatedWidth - (margin * 2 + verticalLineSize + rectStrokeWidth * 2 + paddingX * 2),
+                paint = infoTextPaint,
+                true
+            )
+        }
+
         // Начальный Rect для текущих размеров View
         private val untransformedRect = RectF()
 
         // Если false, таск рисовать не нужно
         val isRectVisible: Boolean
-            get() = ((rect.top < height) or (rect.bottom > 0)) and ((rect.right < width) or (rect.left > 0))
-
-        private val staticLayoutWidth =
-            (minCellWidth * transformations.scaleFactor - 2 * margin - 2 * paddingX - verticalLineSize - rectStrokeWidth) / transformations.scaleFactor
-
-        // Создаем статик лэйаут
-        private val nameStaticLayout = getStaticLayout(
-            text,
-            staticLayoutWidth,
-            nameTextPaint,
-            true
-        )
-
-        private val infoStaticLayout = getStaticLayout(
-            infoText,
-            staticLayoutWidth,
-            infoTextPaint,
-            true
-        )
-
-        val height: Float
-            get() = nameStaticLayout.height + infoStaticLayout.height + paddingY + paddingY + margin + margin
-
-        val width: Float
-            get() = nameStaticLayout.width.toFloat()
+            get() = (rect.top < this@NewView.height) and (rect.bottom >= 0) and (rect.left < this@NewView.width) and (rect.right > 0)
 
 
-        fun updateInitialRect() {
-
-
-            fun getX(index: Int): Float {
-                return ((index * minCellWidth) + dateTextSize) * transformations.scaleFactor + transformations.translationX + margin
-            }
-
-            fun getEndX(index: Int): Float {
-                return (((index + 1) * minCellWidth) + dateTextSize) * transformations.scaleFactor + transformations.translationX - margin
-            }
-
+        fun updateInitialRect(x: Int, y: Int) {
             fun getY(): Float {
-                return (lastY.toFloat() + (heightOfRow - height + margin + margin) / 2) * transformations.scaleFactor + transformations.translationY
+                return (y + margin) * transformations.scaleFactor + transformations.translationY
             }
 
-            // Создание самой формы прямоугольника
+            fun getX(): Float {
+                return (x + margin) * transformations.scaleFactor + transformations.translationX
+            }
+
+            fun getEndX(): Float {
+                return (x + calculatedWidth - margin) * transformations.scaleFactor + transformations.translationX
+            }
+
+            fun getEndY(): Float {
+                return (y + calculatedHeight - margin) * transformations.scaleFactor + transformations.translationY
+            }
+
             untransformedRect.set(
-                getX(dayOfLesson),
+                getX(),
                 getY(),
-                getEndX(dayOfLesson),
-                getY() + (height - 2 * margin) * transformations.scaleFactor,
+                getEndX(),
+                getEndY()
             )
+
             rect.set(untransformedRect)
         }
 
-        fun draw(canvas: Canvas) {
 
+        fun draw(canvas: Canvas) {
+            path.reset()
+            path2.reset()
 
             paint.color = resources.getColor(changeColor(newColor), null)
             // создаем обводку для
@@ -674,30 +544,26 @@ class NewView @JvmOverloads constructor(
 
             canvas.drawPath(path2, paint)
 
-            canvas.drawRoundRect(strokeRect, rectRadius, verticalLineSize, strokePaint)
+            canvas.drawRoundRect(strokeRect, rectRadius, rectRadius, strokePaint)
 
             canvas.save()
             canvas.translate(
                 rect.left + verticalLineSize + paddingX + rectStrokeWidth,
-                rect.top + (rect.bottom - rect.top - (nameStaticLayout.height + infoStaticLayout.height) * transformations.scaleFactor) / 2
+                rect.top + (rect.bottom - rect.top - (nameStaticLayout!!.height + infoStaticLayout!!.height) * transformations.scaleFactor) / 2
             )
             canvas.scale(transformations.scaleFactor, transformations.scaleFactor)
-            nameStaticLayout.draw(canvas)
+            nameStaticLayout!!.draw(canvas)
             canvas.restore()
 
             canvas.save()
             canvas.translate(
                 rect.left + verticalLineSize + paddingX + rectStrokeWidth,
-                rect.top + (rect.bottom - rect.top - (infoStaticLayout.height - nameStaticLayout.height) * transformations.scaleFactor) / 2
+                rect.top + (rect.bottom - rect.top - (infoStaticLayout!!.height - nameStaticLayout!!.height) * transformations.scaleFactor) / 2
             )
             canvas.scale(transformations.scaleFactor, transformations.scaleFactor)
-            infoStaticLayout.draw(canvas)
+            infoStaticLayout!!.draw(canvas)
             canvas.restore()
 
-        }
-
-        fun setHeightOfRow(newHeight: Int) {
-            heightOfRow = newHeight
         }
 
 
@@ -712,10 +578,6 @@ class NewView @JvmOverloads constructor(
                 }
             }
 
-        }
-
-        fun setLastY(newY: Int) {
-            lastY = newY
         }
 
     }
@@ -736,7 +598,7 @@ class NewView @JvmOverloads constructor(
             )
         }
         private val infoTextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
-            textSize = resources.getDimension(R.dimen.lesson_name_text_size)
+            textSize = resources.getDimension(R.dimen.lesson_info_text_size)
             isFakeBoldText = false
             color = MaterialColors.getColor(
                 context,
@@ -758,9 +620,14 @@ class NewView @JvmOverloads constructor(
             val lines = wrapText(text.text, maxWordWith, nameTextPaint)
             val infoLines = wrapText(text.infoText, maxWordWith, infoTextPaint)
 
-            calculatedWidth = max(minCellWidth, maxWordWith)
+            calculatedWidth = max(minCellWidth, maxWordWith + margin * 2)
             calculatedHeight =
-                max(minCellHeight, lines.size * textHeight + infoLines.size * infoTextHeight)
+                max(
+                    minCellHeight,
+                    lines.size * textHeight + infoLines.size * infoTextHeight + margin * 2
+                )
+
+            updateStaticLayouts()
         }
 
         fun getCalculatedWidth() = calculatedWidth
@@ -768,6 +635,7 @@ class NewView @JvmOverloads constructor(
 
         // Создание прямоуголька и задание радиуса и размера боковой линии
         private var rect = RectF()
+        private val margin = 15f
 
         // пэйнтдля фона
         private val paint = Paint().apply {
@@ -777,23 +645,26 @@ class NewView @JvmOverloads constructor(
             isAntiAlias = true
         }
 
-        // Создаем статик лэйаут
-        private val nameStaticLayout = getStaticLayout(
-            text.text,
-            calculatedWidth,
-            nameTextPaint,
-            true
-        )
 
-        private val infoStaticLayout = getStaticLayout(
-            text.infoText,
-            calculatedWidth,
-            infoTextPaint,
-            true
-        )
-
-        private val margin = 15f
         private val path = Path()
+
+        private var nameStaticLayout: StaticLayout? = null
+        private var infoStaticLayout: StaticLayout? = null
+
+        private fun updateStaticLayouts() {
+            nameStaticLayout = getStaticLayout(
+                text = text.text,
+                width = calculatedWidth - margin * 2,
+                paint = nameTextPaint,
+                true
+            )
+            infoStaticLayout = getStaticLayout(
+                text = text.infoText,
+                width = calculatedWidth - margin * 2,
+                paint = infoTextPaint,
+                true
+            )
+        }
 
         // Начальный Rect для текущих размеров View
         private val untransformedRect = RectF()
@@ -803,28 +674,21 @@ class NewView @JvmOverloads constructor(
             get() = (rect.top < this@NewView.height) and (rect.bottom >= 0) and (rect.left < this@NewView.width) and (rect.right > 0)
 
 
-        val height: Float
-            get() = nameStaticLayout.height + infoStaticLayout.height + margin + margin
-
-        val width: Float
-            get() = max(nameStaticLayout.width, infoStaticLayout.width) + margin + margin
-
-
         fun updateInitialRect(x: Int, y: Int) {
             fun getY(): Float {
-                return (y) * transformations.scaleFactor + transformations.translationY
+                return (y + margin) * transformations.scaleFactor + transformations.translationY
             }
 
             fun getX(): Float {
-                return (x) * transformations.scaleFactor + transformations.translationX
+                return (x + margin) * transformations.scaleFactor + transformations.translationX
             }
 
             fun getEndX(): Float {
-                return (x + calculatedWidth + 2 * margin) * transformations.scaleFactor + transformations.translationX
+                return (x + calculatedWidth - margin) * transformations.scaleFactor + transformations.translationX
             }
 
             fun getEndY(): Float {
-                return (y + calculatedHeight + 2 * margin) * transformations.scaleFactor + transformations.translationY
+                return (y + calculatedHeight - margin) * transformations.scaleFactor + transformations.translationY
             }
 
             untransformedRect.set(
@@ -839,7 +703,7 @@ class NewView @JvmOverloads constructor(
 
         fun draw(canvas: Canvas) {
 
-
+            path.reset()
             // Отрисовка самого прямоугольника
             path.addRect(rect, Path.Direction.CW)
             canvas.drawPath(path, paint)
@@ -847,37 +711,25 @@ class NewView @JvmOverloads constructor(
 
             canvas.save()
             canvas.translate(
-                rect.left + margin,
-                rect.top + (rect.bottom - rect.top - (nameStaticLayout.height + infoStaticLayout.height) * transformations.scaleFactor) / 2
+                rect.left,
+                rect.top + (rect.bottom - rect.top - (nameStaticLayout!!.height + infoStaticLayout!!.height) * transformations.scaleFactor) / 2
             )
             canvas.scale(transformations.scaleFactor, transformations.scaleFactor)
-            nameStaticLayout.draw(canvas)
+            nameStaticLayout!!.draw(canvas)
             canvas.restore()
 
             canvas.save()
             canvas.translate(
-                rect.left + margin,
-                rect.top + (rect.bottom - rect.top - (infoStaticLayout.height - nameStaticLayout.height) * transformations.scaleFactor) / 2
+                rect.left,
+                rect.top + (rect.bottom - rect.top - (infoStaticLayout!!.height - nameStaticLayout!!.height) * transformations.scaleFactor) / 2
             )
             canvas.scale(transformations.scaleFactor, transformations.scaleFactor)
-            infoStaticLayout.draw(canvas)
+            infoStaticLayout!!.draw(canvas)
             canvas.restore()
 
         }
 
     }
-
-    // Переменные для отрисовки строк
-
-    private var rowHeadersStaticLayoutList = mutableListOf<CustomRect>()
-    private var columnHeadersStaticLayoutList = mutableListOf<CustomRect>()
-    private var lessonsStaticLayoutList = mutableListOf<CustomRect>()
-
-    // В эти перемемнные сохраняются ширина и высота ячеек,
-    // т.к. они могут меняться из-за изменяемоего контента
-
-    private val masOfCellWidth = mutableListOf<Float>()
-    private val masOfCellHeight = mutableListOf<Float>()
 
 
     private fun calculateTable(
@@ -888,7 +740,7 @@ class NewView @JvmOverloads constructor(
 
         masOfCellWidth.add(minCellWidth)
         masOfCellHeight.add(minCellHeight)
-        columnNameText.forEach {
+        columnNameText.forEachIndexed { index, it ->
             val newCell = NamesRect(it)
             newCell.calculateSize()
             columnHeadersStaticLayoutList.add(newCell)
@@ -901,7 +753,7 @@ class NewView @JvmOverloads constructor(
             masOfCellHeight[0] = max(newCell.getCalculatedHeight(), minCellHeight)
         }
 
-        rowNameText.forEach {
+        rowNameText.forEachIndexed { index, it ->
             val newCell = NamesRect(it)
             newCell.calculateSize()
             rowHeadersStaticLayoutList.add(newCell)
@@ -917,7 +769,12 @@ class NewView @JvmOverloads constructor(
 
         table.forEach { cell ->
             val newCell =
-                NamesRect(DataForCellClass(cell.text, cell.classroom, cell.row, cell.column))
+                LessonsRect(
+                    DataForCellClass(cell.subject, cell.classroom),
+                    cell.row,
+                    cell.column,
+                    R.color.blue_fo_lessons_card
+                )
             newCell.calculateSize()
             lessonsStaticLayoutList.add(newCell)
             masOfCellWidth[cell.column] = max(
@@ -931,21 +788,129 @@ class NewView @JvmOverloads constructor(
 
         }
         contentHeight = masOfCellHeight.sum().toInt()
-        Log.e("table", masOfCellHeight.toString() + " " + masOfCellWidth.toString())
+        contentWidth = masOfCellWidth.sum().toInt()
+
     }
 
     private fun List<Float>.listSum(index: Int) = this.take(index).sum()
 
 
-    companion object {
-        const val COUNT_OF_LESSONS = 5
-    }
-
     data class DataForCellClass(
         val text: String,
         val infoText: String,
-        val row: Int,
-        val column: Int,
     )
 
+    private fun clearMas() {
+        rowHeadersStaticLayoutList.clear()
+        columnHeadersStaticLayoutList.clear()
+        lessonsStaticLayoutList.clear()
+        masOfCellWidth.clear()
+        masOfCellHeight.clear()
+    }
 }
+
+//тестовые данные
+//list = listOf(
+//CellClass(
+//subject = "Автомобильная подготовка",
+//teacher = "Кузнецов Е . В .",
+//classroom = "1 / 220",
+//studyGroup = "213",
+//date = "4 - 03 - 2024",
+//subjectType = "6.4 Групповое занятие",
+//startTime = "09:00",
+//endTime = "10:30",
+//subjectNumber = 1,
+//noEmpty = true,
+//text = "",
+//lessonTheme = "",
+//color = 2131231033,
+//viewSize = 90,
+//isGone = true,
+//department = "34",
+//column = 1,
+//row = 1,
+//cellType = CellClass.LESSON_CELL_TYPE
+//),
+//CellClass(
+//subject = "Автомобильная подготовка",
+//teacher = "Кузнецов Е . В .",
+//classroom = "1 / 220",
+//studyGroup = "213",
+//date = "4 - 03 - 2024",
+//subjectType = "6.4 Групповое занятие",
+//startTime = "09:00",
+//endTime = "10:30",
+//subjectNumber = 1,
+//noEmpty = true,
+//text = "",
+//lessonTheme = "",
+//color = 2131231033,
+//viewSize = 90,
+//isGone = true,
+//department = "34",
+//column = 1,
+//row = 2,
+//cellType = CellClass.LESSON_CELL_TYPE
+//),
+//CellClass(
+//subject = "Автомобильная подготовка",
+//teacher = "Кузнецов Е . В .",
+//classroom = "1 / 220",
+//studyGroup = "213",
+//date = "4 - 03 - 2024",
+//subjectType = "6.4 Групповое занятие",
+//startTime = "09:00",
+//endTime = "10:30",
+//subjectNumber = 2,
+//noEmpty = true,
+//text = "",
+//lessonTheme = "",
+//color = 2131231033,
+//viewSize = 90,
+//isGone = true,
+//department = "34",
+//column = 1,
+//row = 3,
+//cellType = CellClass.LESSON_CELL_TYPE
+//),
+//CellClass(
+//subject = "Автомобильная подготовкаАвтомобильная подготовкаАвтомобильная подготовка",
+//teacher = "Кузнецов Е . В .",
+//classroom = "1 / 220",
+//studyGroup = "213",
+//date = "4 - 03 - 2024",
+//subjectType = "6.4 Групповое занятие",
+//startTime = "09:00",
+//endTime = "10:30",
+//subjectNumber = 2,
+//noEmpty = true,
+//text = "",
+//lessonTheme = "",
+//color = 2131231033,
+//viewSize = 90,
+//isGone = true,
+//department = "34",
+//column = 1,
+//row = 4,
+//cellType = CellClass.LESSON_CELL_TYPE
+//)
+//)
+//
+//val columnNameText = listOf(
+//    NewView.DataForCellClass("1000000000000000", " 1 ", 0, 1),
+//    NewView.DataForCellClass("2 ", " 2 ", 0, 2),
+//    NewView.DataForCellClass("3 ", " 3 ", 0, 3),
+//    NewView.DataForCellClass("4 ", " 4 ", 0, 4),
+//    NewView.DataForCellClass("5 ", " 5 ", 0, 5),
+//    NewView.DataForCellClass("6 ", " 6 ", 0, 6)
+//)
+//
+//val rowNameText = listOf(
+//    NewView.DataForCellClass("1000000 0000000 0000000", " 1 ", 1, 0),
+//    NewView.DataForCellClass("2 ", " 2 ", 2, 0),
+//    NewView.DataForCellClass("3 ", " 3 ", 3, 0),
+//    NewView.DataForCellClass("4 ", " 4 ", 4, 0),
+//    NewView.DataForCellClass("5 ", " 5 ", 5, 0),
+//    NewView.DataForCellClass("6 ", " 6 ", 6, 0)
+//)

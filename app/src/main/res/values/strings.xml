@@ -10,8 +10,8 @@
     <dimen name="gant_task_vertical_margin">4dp</dimen>
     <dimen name="gant_task_text_horizontal_margin">4dp</dimen>
 
-    <dimen name="lesson_name_text_size">7sp</dimen>
-    <dimen name="lesson_info_text_size">6sp</dimen>
+    <dimen name="lesson_name_text_size">9sp</dimen>
+    <dimen name="lesson_info_text_size">8sp</dimen>
 
     <dimen name="name_text_size">8sp</dimen>
     <dimen name="info_text_size">7sp</dimen>
