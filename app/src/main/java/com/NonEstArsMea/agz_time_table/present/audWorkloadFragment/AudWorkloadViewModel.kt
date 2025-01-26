@@ -28,14 +28,15 @@ class AudWorkloadViewModel @Inject constructor(
 
     private var offset = 0
     private var date = DateManager.getFullDateNow(offset)
-    private var rep: Map<String, List<CellClass>> = mapOf()
+    private var rep: List<List<CellClass>> = listOf()
     private lateinit var unicList: List<String>
-    private var numberOfBuilding: String = "1"
+    private var numberOfBuilding: Int = 0
 
     private var currentJob: Job? = null
 
     init {
         _state.value = SetDate(date)
+        getData()
     }
 
     fun setPosition(p: Int) {
@@ -57,26 +58,27 @@ class AudWorkloadViewModel @Inject constructor(
     }
 
     fun getNewBuilding(position: Int) {
-        numberOfBuilding = when (position) {
-            0 -> "1"
-            1 -> "2"
-            2 -> "3"
-            3 -> "4"
-            else -> {
-                "1"
+        numberOfBuilding = position
+        // Проверяем, что rep не равен null и не пуст
+        if (!rep.isNullOrEmpty() && position in rep.indices) {
+            Log.e("rep", "start " + rep.toString())
+
+            // Проверяем, что rep[numberOfBuilding] не равен null
+            val cells = rep[numberOfBuilding] ?: emptyList()
+            val uniqueCells = cells.distinctBy { cell ->
+                cell.classroom to cell.subjectNumber
             }
-        }
-        if (rep.isNotEmpty()) {
-            rep[numberOfBuilding]?.let {
-                val uniqueCells = it.distinctBy { cell ->
-                    cell.classroom to cell.subjectNumber
-                }
-                val sortedList = uniqueCells.sortedBy { cell ->
-                    cell.classroom!!.trim().split("/").getOrNull(1)?.toIntOrNull() ?: 0
-                }
-                unicList = getUniqueСlass()
-                _state.value = DataIsLoad(date, unicList, sortedList)
+
+            // Сортируем список
+            val sortedList = uniqueCells.sortedBy { cell ->
+                cell.classroom.trim().split("/").getOrNull(1)?.toIntOrNull() ?: 0
             }
+
+            // Проверяем unicList
+            unicList = getUniqueСlass() ?: emptyList()
+
+            Log.e("rep", unicList.toString())
+            _state.value = DataIsLoad(date, unicList, sortedList)
         }
 
 
@@ -84,8 +86,8 @@ class AudWorkloadViewModel @Inject constructor(
 
     private fun getUniqueСlass(): List<String> {
         val list = mutableListOf<String>()
-        rep[numberOfBuilding]?.forEach {
-            if (it.classroom !in list) list.add(it.classroom!!)
+        rep[numberOfBuilding].forEach {
+            if (it.classroom !in list) list.add(it.classroom)
         }
         val sortedList = list.sortedBy {
             it.trim().split("/").getOrNull(1)?.toIntOrNull() ?: 0

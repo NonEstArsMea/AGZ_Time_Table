@@ -24,5 +24,5 @@ interface RetrofitServieces {
     @GET("aud_workload")
     suspend fun getAudWorkload(
         @Query("date") date: String
-    ): Response<Map<String, List<CellClass>>>
+    ): Response<List< List<CellClass>>>
 }

@@ -69,7 +69,7 @@ class TimeTableRepositoryImpl @Inject constructor(
             return if (response.body() != null) {
                 val exams = response.body()!!
                 exams.forEach { lesson ->
-                    lesson.color = Methods.setColor(lesson.subjectType!!)
+                    lesson.color = Methods.setColor(lesson.subjectType)
                     lesson.subjectType =
                         resources.getString(Methods.returnFullNameOfTheItemType(lesson.subjectType!!))
                 }
@@ -84,11 +84,9 @@ class TimeTableRepositoryImpl @Inject constructor(
 
     override suspend fun getWeekTimeTable(): List<List<CellClass>> {
         val dayOfWeek = DateManager.getArrayOfWeekDate()
-        Log.e("debug", mainParam.value.toString())
         try {
             mainParam.value?.let {
                 val response = Common.retrofitService.getAggregate(dayOfWeek, it.name)
-                Log.e("res", response.body().toString())
                 if (response.isSuccessful) {
                     if (!response.body().isNullOrEmpty()) {
                         return replaceColomns(response.body()!!, dayOfWeek)
@@ -96,7 +94,6 @@ class TimeTableRepositoryImpl @Inject constructor(
                 }
             }
         }catch (e: Exception){
-            Log.e("debug", e.toString())
             return emptyList()
         }
 
@@ -116,9 +113,9 @@ class TimeTableRepositoryImpl @Inject constructor(
             list.get(date)?.let {
 
                 it.forEach { lesson ->
-                    lesson.color = Methods.setColor(lesson.subjectType!!)
+                    lesson.color = Methods.setColor(lesson.subjectType)
                     lesson.subjectType =
-                        resources.getString(Methods.returnFullNameOfTheItemType(lesson.subjectType!!))
+                        resources.getString(Methods.returnFullNameOfTheItemType(lesson.subjectType))
                 }
                 newList.add(it)
             }
@@ -141,10 +138,10 @@ class TimeTableRepositoryImpl @Inject constructor(
         listOfMainParam.postValue(list)
     }
 
-    override suspend fun getListOfAudWorkload(date: String): Map<String, List<CellClass>> {
+    override suspend fun getListOfAudWorkload(date: String): List<List<CellClass>> {
         val restResponce = Common.retrofitService.getAudWorkload(date)
         return if (restResponce.isSuccessful)
-            restResponce.body() ?: mapOf() else mapOf()
+            restResponce.body() ?: listOf() else listOf()
     }
 
     override fun getNewListOfMainParam(): MutableLiveData<ArrayList<MainParam>> {

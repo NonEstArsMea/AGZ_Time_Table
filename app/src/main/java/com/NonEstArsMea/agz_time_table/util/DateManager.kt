@@ -142,7 +142,7 @@ object DateManager {
         setDayNow()
         calendar.add(Calendar.DAY_OF_MONTH, dayOffset)
         val dayNow = calendar.get(Calendar.DAY_OF_MONTH).toString()
-        val monthNow = calendar.get(Calendar.MONTH) + 1
+        val monthNow =  "0${calendar.get(Calendar.MONTH) + 1}"
         val yearNow = calendar.get(Calendar.YEAR).toString()
         calendar.add(Calendar.DAY_OF_MONTH, dayOffset*(-1))
 

@@ -202,6 +202,7 @@ class NewView @JvmOverloads constructor(
         dateList: List<String> = emptyList()
     ) {
         // Очистка массива
+        transformations.resetTranslation()
         clearMas()
         val listOfLists = timeTable.map { listOfCell ->
             listOfCell.filter {
@@ -227,13 +228,13 @@ class NewView @JvmOverloads constructor(
         invalidate()
     }
 
-    fun setDateTable(list: List<CellClass> = emptyList(),
-                     unicList: List<String> = emptyList()
+    fun setDateTable(list: List<CellClass>,
+                     unicList: List<String>
     ) {
         transformations.resetTranslation()
         clearMas()
-
-
+        Log.e("cuView", unicList.toString())
+        Log.e("cuView", list.last().toString())
         val columnNameTextList = buildList {
             for (a in unicList.indices) {
                 add(DataForCellClass(unicList[a], ""))
@@ -245,6 +246,8 @@ class NewView @JvmOverloads constructor(
                 add(DataForCellClass(timeStartOfLessonsList[a], timeEndOfLessonsList[a]))
             }
         }
+
+        list.forEach{ it.color = R.color.blue_fo_lessons_card}
 
         calculateTable(list, columnNameTextList, rowNameText)
         invalidate()
@@ -773,7 +776,7 @@ class NewView @JvmOverloads constructor(
                     DataForCellClass(cell.subject, cell.classroom),
                     cell.row,
                     cell.column,
-                    R.color.blue_fo_lessons_card
+                    cell.color
                 )
             newCell.calculateSize()
             lessonsStaticLayoutList.add(newCell)

@@ -72,12 +72,15 @@ class AudWorkloadFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
-        vm.getData()
+    override fun onResume() {
+        super.onResume()
+        Log.e("resume", "resume")
+        observeVM()
+
         educationalBuildings.forEachIndexed { index, textView ->
             textView.setOnClickListener {
+                Log.e("resume", "position" + index.toString())
                 vm.setPosition(index)
             }
         }
@@ -96,7 +99,6 @@ class AudWorkloadFragment : Fragment() {
             vm.setNewDate(1)
         }
 
-        observeVM()
     }
 
     private fun observeVM() {
@@ -105,10 +107,10 @@ class AudWorkloadFragment : Fragment() {
                 ConnectionError -> TODO()
                 is SetDate -> {
                     binding.dateText.text = it.date
-                    binding.audWorkloadTableView.setDateTable()
                 }
                 is DataIsLoad -> {
                     binding.dateText.text = it.date
+                    Log.e("resume", "draw table")
                     binding.audWorkloadTableView.setDateTable(it.list, it.unicList)
                 }
             }
