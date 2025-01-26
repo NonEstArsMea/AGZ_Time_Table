@@ -9,4 +9,4 @@ data object ConnectionError : WorkloadState()
 
 data class SetDate(val date: String) : WorkloadState()
 
-class DataIsLoad(val date: String, val unicList: List<String>, val list: List<CellClass>) : WorkloadState()
+class DataIsLoad(val date: String, val unicList: List<String>, val list: List<CellClass>,val position: Int) : WorkloadState()

@@ -37,14 +37,8 @@ class AudWorkloadFragment : Fragment() {
         (requireActivity().application as TimeTableApplication).component
     }
 
-    private val educationalBuildings: List<TextView> by lazy {
-        listOf(
-            binding.educationalBuilding1,
-            binding.educationalBuilding2,
-            binding.educationalBuilding3,
-            binding.educationalBuilding4,
-        )
-    }
+    private var educationalBuildings: List<TextView> = listOf()
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -72,24 +66,31 @@ class AudWorkloadFragment : Fragment() {
         return binding.root
     }
 
+    override fun onStart() {
+        super.onStart()
+        observeVM()
+
+    }
+
 
     override fun onResume() {
         super.onResume()
-        Log.e("resume", "resume")
-        observeVM()
+        updateList()
+        Log.e("resume", "$educationalBuildings")
 
-        educationalBuildings.forEachIndexed { index, textView ->
+        updateStyles(0)
+        listOf(
+            binding.educationalBuilding1,
+            binding.educationalBuilding2,
+            binding.educationalBuilding3,
+            binding.educationalBuilding4,
+        ).forEachIndexed { index, textView ->
             textView.setOnClickListener {
-                Log.e("resume", "position" + index.toString())
                 vm.setPosition(index)
             }
         }
 
-        vm.position.observe(viewLifecycleOwner) { position ->
-            updateStyles(position)
-            vm.getNewBuilding(position)
 
-        }
 
         binding.btnLeft.setOnClickListener {
             vm.setNewDate(-1)
@@ -109,6 +110,7 @@ class AudWorkloadFragment : Fragment() {
                     binding.dateText.text = it.date
                 }
                 is DataIsLoad -> {
+                    updateStyles(it.position)
                     binding.dateText.text = it.date
                     Log.e("resume", "draw table")
                     binding.audWorkloadTableView.setDateTable(it.list, it.unicList)
@@ -129,4 +131,12 @@ class AudWorkloadFragment : Fragment() {
         }
     }
 
+    private fun updateList(){
+        educationalBuildings = listOf(
+            binding.educationalBuilding1,
+            binding.educationalBuilding2,
+            binding.educationalBuilding3,
+            binding.educationalBuilding4,
+        )
+    }
 }

@@ -18,9 +18,6 @@ class AudWorkloadViewModel @Inject constructor(
     private val repository: TimeTableRepository
 ) : ViewModel() {
 
-    private var _position = MutableLiveData(0)
-    val position: LiveData<Int>
-        get() = _position
 
     private var _state = MutableLiveData<WorkloadState>()
     val state: LiveData<WorkloadState>
@@ -40,7 +37,7 @@ class AudWorkloadViewModel @Inject constructor(
     }
 
     fun setPosition(p: Int) {
-        _position.value = p
+        getNewBuilding(p)
     }
 
     fun setNewDate(day: Int) {
@@ -57,28 +54,21 @@ class AudWorkloadViewModel @Inject constructor(
         }
     }
 
-    fun getNewBuilding(position: Int) {
+    private fun getNewBuilding(position: Int) {
         numberOfBuilding = position
-        // Проверяем, что rep не равен null и не пуст
-        if (!rep.isNullOrEmpty() && position in rep.indices) {
+        if (rep.isNotEmpty()) {
             Log.e("rep", "start " + rep.toString())
-
-            // Проверяем, что rep[numberOfBuilding] не равен null
-            val cells = rep[numberOfBuilding] ?: emptyList()
-            val uniqueCells = cells.distinctBy { cell ->
-                cell.classroom to cell.subjectNumber
+            rep[numberOfBuilding].let {
+                val uniqueCells = it.distinctBy { cell ->
+                    cell.classroom to cell.subjectNumber
+                }
+                val sortedList = uniqueCells.sortedBy { cell ->
+                    cell.classroom.trim().split("/").getOrNull(1)?.toIntOrNull() ?: 0
+                }
+                unicList = getUniqueСlass()
+                Log.e("rep", unicList.toString())
+                _state.value = DataIsLoad(date, unicList, sortedList, position)
             }
-
-            // Сортируем список
-            val sortedList = uniqueCells.sortedBy { cell ->
-                cell.classroom.trim().split("/").getOrNull(1)?.toIntOrNull() ?: 0
-            }
-
-            // Проверяем unicList
-            unicList = getUniqueСlass() ?: emptyList()
-
-            Log.e("rep", unicList.toString())
-            _state.value = DataIsLoad(date, unicList, sortedList)
         }
 
 

@@ -9,6 +9,7 @@ import android.graphics.Path
 import android.graphics.PointF
 import android.graphics.RectF
 import android.graphics.drawable.Drawable
+import android.icu.text.ListFormatter.Width
 import android.text.StaticLayout
 import android.text.TextPaint
 import android.util.AttributeSet
@@ -97,7 +98,7 @@ class NewView @JvmOverloads constructor(
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val width = if (MeasureSpec.getMode(widthMeasureSpec) == MeasureSpec.UNSPECIFIED) {
-            6 * 100
+            contentWidth
         } else {
             // Даже если AT_MOST занимаем все доступное место, т.к. может быть зум
             MeasureSpec.getSize(widthMeasureSpec)
@@ -172,6 +173,8 @@ class NewView @JvmOverloads constructor(
             (cell as LessonsRect).updateInitialRect(
                 masOfCellWidth.listSum(cell.column).toInt(),
                 masOfCellHeight.listSum(cell.row).toInt(),
+                masOfCellWidth[cell.column],
+                masOfCellHeight[cell.row]
             )
 
             if (cell.isRectVisible) {
@@ -224,7 +227,7 @@ class NewView @JvmOverloads constructor(
         }
 
 
-        calculateTable(list, columnNameTextList, rowNameText)
+        calculateTable(list, columnNameTextList, rowNameText, CLASSROOM_INFO_TYPE)
         invalidate()
     }
 
@@ -233,8 +236,6 @@ class NewView @JvmOverloads constructor(
     ) {
         transformations.resetTranslation()
         clearMas()
-        Log.e("cuView", unicList.toString())
-        Log.e("cuView", list.last().toString())
         val columnNameTextList = buildList {
             for (a in unicList.indices) {
                 add(DataForCellClass(unicList[a], ""))
@@ -249,7 +250,7 @@ class NewView @JvmOverloads constructor(
 
         list.forEach{ it.color = R.color.blue_fo_lessons_card}
 
-        calculateTable(list, columnNameTextList, rowNameText)
+        calculateTable(list, columnNameTextList, rowNameText, TEACHER_AND_GROOP_INFO_TYPE)
         invalidate()
     }
 
@@ -332,6 +333,7 @@ class NewView @JvmOverloads constructor(
         fun resetTranslation() {
             translationX = 0f
             translationY = 0f
+            scaleFactor = 1.0f
             invalidate()
         }
 
@@ -364,7 +366,8 @@ class NewView @JvmOverloads constructor(
         val row: Int,
         val column: Int,
         val newColor: Int
-    ) : CustomRect() {
+    ) : CustomRect()
+    {
 
 
         // Создание прямоуголька и задание радиуса и размера боковой линии
@@ -382,8 +385,8 @@ class NewView @JvmOverloads constructor(
             color = resources.getColor(newColor, null)
         }
 
-        private val paddingX = 10f
-        private val paddingY = 10f
+        private val paddingX = 15f
+        private val paddingY = 15f
         private val margin = 15f
         private val path = Path()
         private val path2 = Path()
@@ -412,7 +415,7 @@ class NewView @JvmOverloads constructor(
 
         fun calculateSize() {
             val words = text.text.split(" ")
-            val infoWords = text.infoText.split(" ")
+            val infoWords = text.infoText.split("\n")
             val maxWordWith = max(
                 words.maxOf { nameTextPaint.measureText(it) },
                 infoWords.maxOf { infoTextPaint.measureText(it) }
@@ -475,7 +478,7 @@ class NewView @JvmOverloads constructor(
             get() = (rect.top < this@NewView.height) and (rect.bottom >= 0) and (rect.left < this@NewView.width) and (rect.right > 0)
 
 
-        fun updateInitialRect(x: Int, y: Int) {
+        fun updateInitialRect(x: Int, y: Int, width: Float, height: Float) {
             fun getY(): Float {
                 return (y + margin) * transformations.scaleFactor + transformations.translationY
             }
@@ -485,7 +488,7 @@ class NewView @JvmOverloads constructor(
             }
 
             fun getEndX(): Float {
-                return (x + calculatedWidth - margin) * transformations.scaleFactor + transformations.translationX
+                return (x + width - margin) * transformations.scaleFactor + transformations.translationX
             }
 
             fun getEndY(): Float {
@@ -587,7 +590,8 @@ class NewView @JvmOverloads constructor(
 
     private inner class NamesRect(
         private val text: DataForCellClass,
-    ) : CustomRect() {
+    ) : CustomRect()
+    {
         private var calculatedWidth = minCellWidth
         private var calculatedHeight = minCellHeight
 
@@ -738,7 +742,8 @@ class NewView @JvmOverloads constructor(
     private fun calculateTable(
         table: List<CellClass>,
         columnNameText: List<DataForCellClass>,
-        rowNameText: List<DataForCellClass>
+        rowNameText: List<DataForCellClass>,
+        typeInfo: Int,
     ) {
 
         masOfCellWidth.add(minCellWidth)
@@ -769,11 +774,17 @@ class NewView @JvmOverloads constructor(
             masOfCellWidth[0] = max(newCell.getCalculatedWidth(), minCellWidth)
         }
 
-
+        var infoText = ""
         table.forEach { cell ->
+
+            infoText = when(typeInfo){
+                CLASSROOM_INFO_TYPE -> cell.teacher + "\n" + cell.classroom
+                TEACHER_AND_GROOP_INFO_TYPE -> cell.teacher + "\n" + cell.studyGroup.trim()
+                else -> {cell.classroom}
+            }
             val newCell =
                 LessonsRect(
-                    DataForCellClass(cell.subject, cell.classroom),
+                    DataForCellClass(cell.subject, infoText),
                     cell.row,
                     cell.column,
                     cell.color
@@ -809,6 +820,12 @@ class NewView @JvmOverloads constructor(
         lessonsStaticLayoutList.clear()
         masOfCellWidth.clear()
         masOfCellHeight.clear()
+        startScaleFactor = null
+    }
+
+    companion object{
+        const val CLASSROOM_INFO_TYPE = 1
+        const val TEACHER_AND_GROOP_INFO_TYPE = 2
     }
 }
 
