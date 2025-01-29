@@ -5,7 +5,7 @@
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
-    <color name="black">#252525</color>
+    <color name="black">#151515</color>
     <color name="white">#FFFFFFFF</color>
     <color name="yellow_fo_lessons_card">#F9A824</color>
     <color name="yellow_fo_lessons_card_alpha">#26F9A824</color>
@@ -15,6 +15,7 @@
     <color name="red_fo_lessons_card_alpha">#26C16368</color>
     <color name="blue_fo_lessons_card">#303F9F</color>
     <color name="blue_fo_lessons_card_alpha">#26303F9F</color>
+
     <color name="red_themes">#F8A34B</color>
     <color name="red_themes_500">#FADDC1</color>
     <color name="red_themes_100">#655A4E</color>
