@@ -14,6 +14,8 @@ interface TimeTableRepository {
     suspend fun getListOfMainParam()
     suspend fun getListOfAudWorkload(date: String): List<List<CellClass>>
 
+    suspend fun getCafTimeTable(date: String, id: String): Map<String, List<CellClass>>
+
     fun getNewListOfMainParam(): MutableLiveData<ArrayList<MainParam>>
 
     fun getMainParam(): MutableLiveData<MainParam>

@@ -11,6 +11,7 @@
         <item name="titleTextColor">@color/black</item>
         <item name="subtitleTextColor">@color/white</item>
         <item name="backgroundColor">@color/white</item>
+        <item name="cardBackgroundColor">#F7F2FA</item>
 
 
 

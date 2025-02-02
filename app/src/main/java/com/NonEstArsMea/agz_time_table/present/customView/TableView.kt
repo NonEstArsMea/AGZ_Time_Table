@@ -204,31 +204,37 @@ class NewView @JvmOverloads constructor(
         timeTable: List<List<CellClass>> = emptyList(),
         dateList: List<String> = emptyList()
     ) {
-        // Очистка массива
-        transformations.resetTranslation()
-        clearMas()
-        val listOfLists = timeTable.map { listOfCell ->
-            listOfCell.filter {
-                it.text == ""
+
+        Log.e("log", timeTable.toString())
+        Log.e("log", dateList.toString())
+        if(timeTable.isNotEmpty()){
+            // Очистка массива
+            transformations.resetTranslation()
+            clearMas()
+            val listOfLists = timeTable.map { listOfCell ->
+                listOfCell.filter {
+                    it.text == ""
+                }
             }
-        }
-        val list = listOfLists.flatten()
+            val list = listOfLists.flatten()
 
-        val columnNameTextList = buildList {
-            for (a in namesOfWeekDay.indices) {
-                add(DataForCellClass(namesOfWeekDay[a], dateList[a]))
+            val columnNameTextList = buildList {
+                for (a in namesOfWeekDay.indices) {
+                    add(DataForCellClass(namesOfWeekDay[a], dateList[a]))
+                }
             }
-        }
 
-        val rowNameText = buildList {
-            for (a in timeStartOfLessonsList.indices) {
-                add(DataForCellClass(timeStartOfLessonsList[a], timeEndOfLessonsList[a]))
+            val rowNameText = buildList {
+                for (a in timeStartOfLessonsList.indices) {
+                    add(DataForCellClass(timeStartOfLessonsList[a], timeEndOfLessonsList[a]))
+                }
             }
+
+
+            calculateTable(list, columnNameTextList, rowNameText, CLASSROOM_INFO_TYPE)
+            invalidate()
         }
 
-
-        calculateTable(list, columnNameTextList, rowNameText, CLASSROOM_INFO_TYPE)
-        invalidate()
     }
 
     fun setDateTable(list: List<CellClass>,
@@ -251,6 +257,29 @@ class NewView @JvmOverloads constructor(
         list.forEach{ it.color = R.color.blue_fo_lessons_card}
 
         calculateTable(list, columnNameTextList, rowNameText, TEACHER_AND_GROOP_INFO_TYPE)
+        invalidate()
+    }
+
+
+    fun setCafTimeTable(map: Map<String, List<CellClass>>,
+                     unicList: List<String>
+    ) {
+        transformations.resetTranslation()
+        clearMas()
+        val columnNameTextList = buildList {
+            for (a in unicList.indices) {
+                add(DataForCellClass(unicList[a], ""))
+            }
+        }
+
+        val rowNameText = buildList {
+            for (a in timeStartOfLessonsList.indices) {
+                add(DataForCellClass(timeStartOfLessonsList[a], timeEndOfLessonsList[a]))
+            }
+        }
+
+
+        //calculateTable(list, columnNameTextList, rowNameText, TEACHER_AND_GROOP_INFO_TYPE)
         invalidate()
     }
 

@@ -2,6 +2,7 @@ package com.NonEstArsMea.agz_time_table.di
 
 import android.app.Application
 import com.NonEstArsMea.agz_time_table.present.audWorkloadFragment.AudWorkloadFragment
+import com.NonEstArsMea.agz_time_table.present.cafTimeTable.CafTimeTableFragment
 import com.NonEstArsMea.agz_time_table.present.departmentalTimetableFragment.DepartmentalTimeTableFragment
 import com.NonEstArsMea.agz_time_table.present.examsFragment.ExamsFragment
 import com.NonEstArsMea.agz_time_table.present.loginLayout.LoginFragment
@@ -38,6 +39,8 @@ interface ApplicationComponent {
     fun inject(fragment: LoginFragment)
 
     fun inject(fragment: AudWorkloadFragment)
+
+    fun inject(fragment: CafTimeTableFragment)
 
     fun inject(fragment: DepartmentalTimeTableFragment)
     @Component.Factory

@@ -144,6 +144,12 @@ class TimeTableRepositoryImpl @Inject constructor(
             restResponce.body() ?: listOf() else listOf()
     }
 
+    override suspend fun getCafTimeTable(date: String, id: String): Map<String, List<CellClass>> {
+        val restResponce = Common.retrofitService.getCafTimeTable(date, id)
+        return if (restResponce.isSuccessful)
+            restResponce.body() ?: mapOf() else mapOf()
+    }
+
     override fun getNewListOfMainParam(): MutableLiveData<ArrayList<MainParam>> {
         return listOfMainParam
     }

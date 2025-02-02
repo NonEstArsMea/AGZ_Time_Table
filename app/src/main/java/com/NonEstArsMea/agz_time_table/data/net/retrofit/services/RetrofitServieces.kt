@@ -25,4 +25,10 @@ interface RetrofitServieces {
     suspend fun getAudWorkload(
         @Query("date") date: String
     ): Response<List< List<CellClass>>>
+
+    @GET("cafid_timetable")
+    suspend fun getCafTimeTable(
+        @Query("date") date: String,
+        @Query("id") id: String
+    ): Response<Map<String, List<CellClass>>>
 }
