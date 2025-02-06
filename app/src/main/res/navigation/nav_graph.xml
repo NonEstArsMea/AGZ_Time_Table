@@ -36,6 +36,9 @@
         <action
             android:id="@+id/action_settingFragment_to_audWorkloadFragment"
             app:destination="@id/audWorkloadFragment" />
+        <action
+            android:id="@+id/action_settingFragment_to_cafTimeTableFragment"
+            app:destination="@id/cafTimeTableFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -104,5 +107,13 @@
             android:id="@+id/action_audWorkloadFragment_to_settingFragment"
             app:destination="@id/settingFragment"
             app:popUpTo="@id/settingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/cafTimeTableFragment"
+        android:name="com.NonEstArsMea.agz_time_table.present.cafTimeTable.CafTimeTableFragment"
+        android:label="CafTimeTableFragment" >
+        <action
+            android:id="@+id/action_cafTimeTableFragment_to_settingFragment"
+            app:destination="@id/settingFragment" />
     </fragment>
 </navigation>

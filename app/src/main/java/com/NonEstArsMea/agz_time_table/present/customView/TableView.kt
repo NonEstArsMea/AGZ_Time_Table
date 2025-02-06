@@ -272,14 +272,28 @@ class NewView @JvmOverloads constructor(
             }
         }
 
+        Log.e("rep", columnNameTextList.toString())
+
         val rowNameText = buildList {
             for (a in timeStartOfLessonsList.indices) {
                 add(DataForCellClass(timeStartOfLessonsList[a], timeEndOfLessonsList[a]))
             }
         }
+        Log.e("rep", rowNameText.toString())
+
+        unicList.forEachIndexed { index, it ->
+            map[it]!!.forEach {
+                it.column = index  + 1
+            }
+
+        }
 
 
-        //calculateTable(list, columnNameTextList, rowNameText, TEACHER_AND_GROOP_INFO_TYPE)
+        val list = map.values.flatten()
+
+        list.forEach{ it.color = R.color.orange_fo_lessons_card}
+
+        calculateTable(list, columnNameTextList, rowNameText, TEACHER_AND_GROOP_INFO_TYPE)
         invalidate()
     }
 
@@ -608,6 +622,7 @@ class NewView @JvmOverloads constructor(
                 R.color.yellow_fo_lessons_card -> R.color.yellow_fo_lessons_card_alpha
                 R.color.green_fo_lessons_card -> R.color.green_fo_lessons_card_alpha
                 R.color.blue_fo_lessons_card -> R.color.blue_fo_lessons_card_alpha
+                R.color.orange_fo_lessons_card -> R.color.orange_fo_lessons_card_alpha
                 else -> {
                     R.color.white
                 }

@@ -36,7 +36,8 @@ class CafTimeTableViewModel@Inject constructor(
     fun setNewDate(day: Int) {
         offset += day
         date = DateManager.getFullDateNow(offset)
-        getData(id)
+        _state.value = SetDate(date)
+
     }
 
     fun getData(cafID: String) {

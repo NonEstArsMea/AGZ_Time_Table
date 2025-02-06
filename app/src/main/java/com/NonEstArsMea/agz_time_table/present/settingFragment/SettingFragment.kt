@@ -78,6 +78,10 @@ class SettingFragment : Fragment() {
             findNavController().navigate(R.id.audWorkloadFragment)
         }
 
+        binding.cafTimeTableButton.setOnClickListener {
+            findNavController().navigate(R.id.cafTimeTableFragment)
+        }
+
         binding.botButton.setOnClickListener {
             actionViewStart("https://t.me/timeagzbot")
         }

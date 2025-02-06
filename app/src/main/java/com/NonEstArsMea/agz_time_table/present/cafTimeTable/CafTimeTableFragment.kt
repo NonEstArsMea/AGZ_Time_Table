@@ -71,7 +71,7 @@ class CafTimeTableFragment: Fragment() {
 
 
         binding.btnOk.setOnClickListener {
-            if(binding.inputField.text.isNotEmpty()){
+            if(binding.inputField.text.toString().isNotEmpty()){
                 vm.getData(binding.inputField.text.toString())
             }
         }
@@ -96,7 +96,7 @@ class CafTimeTableFragment: Fragment() {
                 is DataIsLoad -> {
                     binding.dateText.text = it.date
                     Log.e("resume", "draw table")
-                    binding.audWorkloadTableView.setCafTimeTable(it.rep, it.unicList)
+                    binding.cafTimeTableView.setCafTimeTable(it.rep, it.unicList)
                 }
             }
         }
