@@ -15,14 +15,15 @@
     <color name="red_fo_lessons_card_alpha">#26C16368</color>
     <color name="blue_fo_lessons_card">#303F9F</color>
     <color name="blue_fo_lessons_card_alpha">#26303F9F</color>
-    <color name="orange_fo_lessons_card">#F4511E</color>
-    <color name="orange_fo_lessons_card_alpha">#26F4511E</color>
+    <color name="orange_fo_lessons_card">#69F0AE</color>
+    <color name="orange_fo_lessons_card_alpha">#6669F0AE</color>
 
     <color name="red_themes">#F8A34B</color>
     <color name="red_themes_500">#FADDC1</color>
     <color name="red_themes_100">#655A4E</color>
 
     <color name="grey_500">#9E9E9E</color>
+    <color name="gray_600">#C6C6C6</color>
 
     <!-- Light Theme Colors -->
     <color name="orange_light">#FFC75F</color>

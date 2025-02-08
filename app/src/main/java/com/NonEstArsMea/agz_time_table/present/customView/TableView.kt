@@ -207,7 +207,7 @@ class NewView @JvmOverloads constructor(
 
         Log.e("log", timeTable.toString())
         Log.e("log", dateList.toString())
-        if(timeTable.isNotEmpty()){
+        if (timeTable.isNotEmpty()) {
             // Очистка массива
             transformations.resetTranslation()
             clearMas()
@@ -237,8 +237,9 @@ class NewView @JvmOverloads constructor(
 
     }
 
-    fun setDateTable(list: List<CellClass>,
-                     unicList: List<String>
+    fun setDateTable(
+        list: List<CellClass>,
+        unicList: List<String>
     ) {
         transformations.resetTranslation()
         clearMas()
@@ -254,47 +255,60 @@ class NewView @JvmOverloads constructor(
             }
         }
 
-        list.forEach{ it.color = R.color.blue_fo_lessons_card}
+        list.forEach { it.color = R.color.blue_fo_lessons_card }
 
         calculateTable(list, columnNameTextList, rowNameText, TEACHER_AND_GROOP_INFO_TYPE)
         invalidate()
     }
 
-
-    fun setCafTimeTable(map: Map<String, List<CellClass>>,
-                     unicList: List<String>
-    ) {
-        transformations.resetTranslation()
+    fun clearView() {
         clearMas()
-        val columnNameTextList = buildList {
-            for (a in unicList.indices) {
-                add(DataForCellClass(unicList[a], ""))
-            }
-        }
-
-        Log.e("rep", columnNameTextList.toString())
-
-        val rowNameText = buildList {
-            for (a in timeStartOfLessonsList.indices) {
-                add(DataForCellClass(timeStartOfLessonsList[a], timeEndOfLessonsList[a]))
-            }
-        }
-        Log.e("rep", rowNameText.toString())
-
-        unicList.forEachIndexed { index, it ->
-            map[it]!!.forEach {
-                it.column = index  + 1
-            }
-
-        }
-
-
-        val list = map.values.flatten()
-
-        list.forEach{ it.color = R.color.orange_fo_lessons_card}
-
-        calculateTable(list, columnNameTextList, rowNameText, TEACHER_AND_GROOP_INFO_TYPE)
         invalidate()
+    }
+
+
+    fun setCafTimeTable(
+        map: Map<String, List<CellClass>>,
+        unicList: List<String>
+    ) {
+
+        if (map.isNotEmpty()) {
+            transformations.resetTranslation()
+            clearMas()
+            val columnNameTextList = buildList {
+                for (a in unicList.indices) {
+                    add(DataForCellClass(unicList[a], ""))
+                }
+            }
+
+            Log.e("rep", columnNameTextList.toString())
+
+            val rowNameText = buildList {
+                for (a in timeStartOfLessonsList.indices) {
+                    add(DataForCellClass(timeStartOfLessonsList[a], timeEndOfLessonsList[a]))
+                }
+            }
+            Log.e("rep", rowNameText.toString())
+
+            unicList.forEachIndexed { index, it ->
+                map[it]!!.forEach {
+                    it.column = index + 1
+                }
+
+            }
+
+
+            val list = map.values.flatten()
+
+            list.forEach {
+                it.color = R.color.orange_fo_lessons_card
+                it.classroom.trim()
+            }
+
+            calculateTable(list, columnNameTextList, rowNameText, TEACHER_AND_GROOP_INFO_TYPE)
+            invalidate()
+        }
+
     }
 
 
@@ -409,8 +423,7 @@ class NewView @JvmOverloads constructor(
         val row: Int,
         val column: Int,
         val newColor: Int
-    ) : CustomRect()
-    {
+    ) : CustomRect() {
 
 
         // Создание прямоуголька и задание радиуса и размера боковой линии
@@ -634,8 +647,7 @@ class NewView @JvmOverloads constructor(
 
     private inner class NamesRect(
         private val text: DataForCellClass,
-    ) : CustomRect()
-    {
+    ) : CustomRect() {
         private var calculatedWidth = minCellWidth
         private var calculatedHeight = minCellHeight
 
@@ -821,10 +833,12 @@ class NewView @JvmOverloads constructor(
         var infoText = ""
         table.forEach { cell ->
 
-            infoText = when(typeInfo){
+            infoText = when (typeInfo) {
                 CLASSROOM_INFO_TYPE -> cell.teacher + "\n" + cell.classroom
                 TEACHER_AND_GROOP_INFO_TYPE -> cell.teacher + "\n" + cell.studyGroup.trim()
-                else -> {cell.classroom}
+                else -> {
+                    cell.classroom
+                }
             }
             val newCell =
                 LessonsRect(
@@ -867,12 +881,12 @@ class NewView @JvmOverloads constructor(
         startScaleFactor = null
     }
 
-    companion object{
+    companion object {
         const val CLASSROOM_INFO_TYPE = 1
         const val TEACHER_AND_GROOP_INFO_TYPE = 2
     }
 }
-
+//**
 //тестовые данные
 //list = listOf(
 //CellClass(

@@ -49,6 +49,11 @@ object DateManager {
         return "$dayNow $monthStrNow - $yearNow"
     }
 
+    fun getDateString(context: Context, s: String): String{
+        val a = s.split("-")
+        return "${a[0]} ${context.getString(getMonth( a[1].toInt() - 1))} - ${a[2]}"
+    }
+
 
     fun setNewCalendar(newTime: Int) {
         calendar.add(Calendar.DAY_OF_MONTH, newTime)

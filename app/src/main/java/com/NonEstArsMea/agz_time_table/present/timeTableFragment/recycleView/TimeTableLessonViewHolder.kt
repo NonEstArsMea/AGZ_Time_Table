@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellClass
+import com.NonEstArsMea.agz_time_table.util.DateManager
 
 class TimeTableLessonViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
     val vhSubject = view.findViewById<TextView>(R.id.subject)
@@ -28,13 +29,13 @@ class TimeTableLessonViewHolder(val view: View) : RecyclerView.ViewHolder(view) 
             vhSubject.text = dayTimeTable.subject
             vhTeacher.text = dayTimeTable.classroom
             vhClassroom.text = dayTimeTable.teacher
-            vhSubjectType.text = dayTimeTable.subjectType
+            vhSubjectType.text = dayTimeTable.lessonTheme + " " + dayTimeTable.subjectType
             vhSeparatorColor.setBackgroundResource(dayTimeTable.color)
             startTime.text = dayTimeTable.startTime
             endTime.text = dayTimeTable.endTime
             icon.text = dayTimeTable.subjectNumber.toString()
             groupNumber.text = context.getString(R.string.group_number) + dayTimeTable.studyGroup
-            dateNumber.text = dayTimeTable.date
+            dateNumber.text = DateManager.getDateString(context, dayTimeTable.date)
             add_info.visibility = View.GONE
             department.text = context.getString(R.string.department_number) + dayTimeTable.department
         }

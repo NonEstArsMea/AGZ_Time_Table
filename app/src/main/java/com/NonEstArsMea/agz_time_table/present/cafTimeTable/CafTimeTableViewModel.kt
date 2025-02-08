@@ -24,27 +24,31 @@ class CafTimeTableViewModel@Inject constructor(
     private var offset = 0
     private var date = DateManager.getFullDateNow(offset)
     private var id = ""
+    private var cafName = ""
     private var rep: Map<String, List<CellClass>> = mapOf()
     private lateinit var unicList: List<String>
 
     private var currentJob: Job? = null
 
     init {
-        _state.value = SetDate(date)
+        _state.value = SetDate(date, id)
     }
 
     fun setNewDate(day: Int) {
         offset += day
         date = DateManager.getFullDateNow(offset)
-        _state.value = SetDate(date)
-
+        _state.value = SetDate(date, id)
+        getData(cafName, id)
     }
 
-    fun getData(cafID: String) {
+    fun getData(name:String, cafID: String) {
         id = cafID
+        cafName = name
+        Log.e("log", id.toString())
         currentJob?.cancel()
         currentJob = viewModelScope.launch {
             rep = repository.getCafTimeTable(date, id)
+            Log.e("rep", "start " + date.toString() + rep.toString())
             setData()
         }
     }
@@ -54,7 +58,9 @@ class CafTimeTableViewModel@Inject constructor(
             Log.e("rep", "start " + rep.toString())
             unicList = getAllKeys()
             Log.e("rep", unicList.toString())
-            _state.value = DataIsLoad(date, unicList, rep)
+            _state.value = DataIsLoad(date, unicList, rep, cafName)
+        }else{
+            _state.value = SetDate(date, cafName)
         }
 
 

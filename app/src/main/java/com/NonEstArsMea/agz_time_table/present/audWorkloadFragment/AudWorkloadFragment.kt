@@ -21,6 +21,7 @@ import com.NonEstArsMea.agz_time_table.databinding.LoginLayoutBinding
 import com.NonEstArsMea.agz_time_table.present.TimeTableApplication
 import com.NonEstArsMea.agz_time_table.present.loginLayout.LoginViewModel
 import com.NonEstArsMea.agz_time_table.present.mainActivity.MainViewModelFactory
+import com.NonEstArsMea.agz_time_table.util.DateManager
 import javax.inject.Inject
 
 class AudWorkloadFragment : Fragment() {
@@ -108,11 +109,11 @@ class AudWorkloadFragment : Fragment() {
             when(it){
                 ConnectionError -> TODO()
                 is SetDate -> {
-                    binding.dateText.text = it.date
+                    binding.dateText.text = DateManager.getDateString(requireContext(), it.date)
                 }
                 is DataIsLoad -> {
                     updateStyles(it.position)
-                    binding.dateText.text = it.date
+                    binding.dateText.text = DateManager.getDateString(requireContext(), it.date)
                     Log.e("resume", "draw table")
                     binding.audWorkloadTableView.setDateTable(it.list, it.unicList)
                 }

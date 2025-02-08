@@ -1,272 +1,276 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="9dp"
-    android:layout_marginBottom="9dp"
-    android:layout_marginLeft="5dp"
-    android:layout_marginRight="5dp"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/Widget.Material3.CardView.Outlined"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/main_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="9dp"
-    android:layout_marginBottom="3dp"
     android:layout_marginLeft="5dp"
+    android:layout_marginTop="9dp"
     android:layout_marginRight="5dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:theme="@style/Theme.AGZ_Time_Table">
+    android:layout_marginBottom="9dp"
+    app:cardCornerRadius="20dp">
+
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/top_constraint"
-        android:layout_margin="@dimen/margine_all"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-
+        android:id="@+id/main_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="9dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="3dp"
+        android:theme="@style/Theme.AGZ_Time_Table">
 
-        <LinearLayout
-            android:id="@+id/time_constraint"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/top_constraint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/margine_all"
 
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/start_lesson_time"
+            <LinearLayout
+                android:id="@+id/time_constraint"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="00.00"
-                style="@style/MainTextViewStyle.Header2"
-                />
-            <TextView
-                android:id="@+id/end_lesson_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="00.00"
-                android:textColor="@color/gray_400"
-                style="@style/MainTextViewStyle"
-                android:textStyle="bold" />
-        </LinearLayout>
-        <View
-            android:id="@+id/view_separator"
-            android:layout_width="2dp"
-            android:layout_height="0dp"
-            android:background="@color/yellow_fo_lessons_card"
-            android:layout_margin="@dimen/margine_all"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/margine_all"
+                android:orientation="vertical"
 
-            app:layout_constraintLeft_toRightOf="@id/time_constraint"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/lesson_info_constraint"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/margine_all"
-            android:paddingLeft="@dimen/margine_all"
-            android:layout_margin="@dimen/margine_all"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/view_separator">
+                <TextView
+                    android:id="@+id/start_lesson_time"
+                    style="@style/MainTextViewStyle.Header2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="00.00" />
 
-            <TextView
-                android:id="@+id/subject"
+                <TextView
+                    android:id="@+id/end_lesson_time"
+                    style="@style/MainTextViewStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="00.00"
+                    android:textColor="@color/gray_400"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/view_separator"
+                android:layout_width="2dp"
+                android:layout_height="0dp"
+                android:layout_marginLeft="@dimen/margine_all"
+                android:background="@color/yellow_fo_lessons_card"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/time_constraint"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/lesson_info_constraint"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Subject"
-                android:maxLines="4"
-                android:layout_marginEnd="@dimen/margine_all"
-                style="@style/MainTextViewStyle.Header1"
+                android:layout_margin="@dimen/margine_all"
+                android:paddingLeft="@dimen/margine_all"
+                android:paddingBottom="@dimen/margine_all"
 
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@id/lesson_number"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintLeft_toRightOf="@id/view_separator"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <View
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:id="@+id/teacher_icon"
-                android:background="@drawable/class_"
-                app:layout_constraintLeft_toLeftOf="@id/subject"
-                app:layout_constraintTop_toTopOf="@id/teacher"
-                android:layout_marginTop="@dimen/margine_all"
-                />
+                <TextView
+                    android:id="@+id/subject"
+                    style="@style/MainTextViewStyle.Header1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margine_all"
+                    android:maxLines="4"
+                    android:text="Subject"
 
-            <TextView
-                android:id="@+id/teacher"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="teacher \nteacher"
-                android:maxLines="6"
-                style="@style/MainTextViewStyle"
-                android:layout_marginTop="25dp"
-                android:layout_marginLeft="@dimen/margine_all"
-                android:gravity="bottom"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/lesson_number"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                app:layout_constraintLeft_toRightOf="@id/teacher_icon"
-                app:layout_constraintTop_toBottomOf="@id/subject" />
-            <TextView
-                android:id="@+id/separator"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:maxLines="2"
-                android:textStyle="normal"
-                android:textSize="15dp"
-                android:textColor="@android:color/darker_gray"
-                android:layout_marginTop="@dimen/margine_all"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                <View
+                    android:id="@+id/teacher_icon"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginTop="@dimen/margine_all"
+                    android:background="@drawable/teacher"
+                    app:layout_constraintLeft_toLeftOf="@id/subject"
+                    app:layout_constraintTop_toTopOf="@id/classroom" />
 
-                app:layout_constraintLeft_toRightOf="@id/teacher"
-                app:layout_constraintBottom_toBottomOf="@id/teacher"/>
-
-            <View
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:id="@+id/class_icon"
-                android:layout_marginLeft="@dimen/margine_all"
-                android:background="@drawable/teacher"
-                app:layout_constraintLeft_toRightOf="@id/separator"
-                app:layout_constraintTop_toTopOf="@id/classroom"
-                android:layout_marginTop="@dimen/margine_all"
-                />
-
-            <TextView
-                android:id="@+id/classroom"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="classroom "
-                android:maxLines="6"
-                style="@style/MainTextViewStyle"
-                android:layout_marginTop="@dimen/margine_all"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:gravity="bottom"
-
-                app:layout_constraintLeft_toRightOf="@id/class_icon"
-                app:layout_constraintBottom_toBottomOf="@id/teacher"/>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/teacher"
-                app:layout_constraintLeft_toLeftOf="parent"
-                android:layout_marginTop="@dimen/margine_all"
-                android:orientation="vertical"
-                android:id="@+id/additional_information">
-                <LinearLayout
+                <TextView
+                    android:id="@+id/classroom"
+                    style="@style/MainTextViewStyle"
                     android:layout_width="wrap_content"
-                    android:layout_height="17dp">
-                    <View
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:id="@+id/date_icon"
-                        android:layout_marginEnd="@dimen/margine_all"
-                        android:layout_gravity="center"
-                        android:background="@drawable/date"
-                        />
-                    <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margine_all"
+                    android:layout_marginTop="15dp"
+                    android:gravity="bottom"
+                    android:maxLines="6"
+                    android:text="teacher \nteacher"
+
+                    app:layout_constraintLeft_toRightOf="@id/teacher_icon"
+                    app:layout_constraintTop_toBottomOf="@id/subject" />
+
+                <TextView
+                    android:id="@+id/separator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="@dimen/margine_all"
+                    android:layout_marginRight="10dp"
+                    android:maxLines="2"
+                    android:text=""
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="15dp"
+                    android:textStyle="normal"
+
+                    app:layout_constraintBottom_toBottomOf="@id/classroom"
+                    app:layout_constraintLeft_toRightOf="@id/classroom" />
+
+
+                <LinearLayout
+                    android:id="@+id/additional_information"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margine_all"
+                    android:orientation="vertical"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/classroom">
+
+                    <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        style="@style/MainTextViewStyle"
-                        android:id="@+id/add_date"
-                        android:text="22222222222222"
-                        android:visibility="visible"/>
+                        android:layout_height="17dp">
+
+                        <View
+                            android:id="@+id/date_icon"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="@dimen/margine_all"
+                            android:background="@drawable/date" />
+
+                        <TextView
+                            android:id="@+id/add_date"
+                            style="@style/MainTextViewStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="22222222222222"
+                            android:visibility="visible" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <View
+                            android:id="@+id/add_group_icon"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="@dimen/margine_all"
+                            android:background="@drawable/group" />
+
+                        <TextView
+                            android:id="@+id/add_group"
+                            style="@style/MainTextViewStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="33333333333333"
+                            android:visibility="visible" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:visibility="gone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <View
+                            android:id="@+id/add_department_icon"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:layout_marginEnd="@dimen/margine_all"
+                            android:background="@drawable/department"
+
+                            app:layout_constraintLeft_toLeftOf="@id/subject"
+                            app:layout_constraintTop_toTopOf="@id/teacher" />
+
+                        <TextView
+                            android:id="@+id/add_department"
+                            style="@style/MainTextViewStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="33333333333333"
+                            android:visibility="visible" />
+
+                    </LinearLayout>
                 </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <View
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:layout_gravity="center"
-                    android:id="@+id/add_group_icon"
-                    android:layout_marginEnd="@dimen/margine_all"
-                    android:background="@drawable/group"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/MainTextViewStyle"
-                    android:id="@+id/add_group"
-                    android:text="33333333333333"
-                    android:visibility="visible"/>
-            </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                <com.google.android.material.circularreveal.cardview.CircularRevealCardView
+                    android:id="@+id/lesson_number"
+                    style="@style/Widget.Material3.CardView.Filled"
+                    android:layout_width="31dp"
+                    android:layout_height="31dp"
+                    android:layout_marginRight="5dp"
 
-                <View
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:id="@+id/add_department_icon"
-                    android:layout_marginEnd="@dimen/margine_all"
-                    android:background="@drawable/department"
-
-                    app:layout_constraintLeft_toLeftOf="@id/subject"
-                    app:layout_constraintTop_toTopOf="@id/teacher"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/MainTextViewStyle"
-                    android:id="@+id/add_department"
-                    android:text="33333333333333"
-                    android:visibility="visible"/>
-
-            </LinearLayout>
-            </LinearLayout>
-
-
-            <com.google.android.material.circularreveal.cardview.CircularRevealCardView
-                android:id="@+id/lesson_number"
-                android:layout_width="31dp"
-                android:layout_height="31dp"
-                android:gravity="center"
-
-                android:paddingLeft="1dp"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp"
-                style="@style/Widget.Material3.CardView.Filled"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" >
-                <TextView
-                    android:id="@+id/lesson_number_text"
-                    android:textStyle="bold"
                     android:gravity="center"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="1"/>
-            </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
+                    android:paddingLeft="1dp"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/lesson_number_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="1"
+                        android:textStyle="bold" />
+                </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <TextView
+            android:id="@+id/subject_type"
+            style="@style/MainTextViewStyle.Header1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margine_all"
+            android:paddingLeft="@dimen/margine_all"
+            android:paddingTop="1dp"
+            android:text="subjectType"
+            android:textSize="14dp"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/top_constraint" />
+
+        <TextView
+            android:id="@+id/teacher"
+            style="@style/MainTextViewStyle.Header1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="@dimen/margine_all"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="1dp"
+            android:gravity="bottom"
+            android:maxLines="6"
+            android:text="classroom "
+            android:textSize="14dp"
+
+
+            app:layout_constraintTop_toBottomOf="@id/top_constraint"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="1dp"
-        android:paddingLeft="@dimen/margine_all"
-        android:id="@+id/subject_type"
-        android:layout_margin="@dimen/margine_all"
-        android:text="subjectType"
-        android:textSize="14dp"
-        style="@style/MainTextViewStyle.Header1"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/top_constraint"
-        app:layout_constraintLeft_toLeftOf="parent" />
-
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

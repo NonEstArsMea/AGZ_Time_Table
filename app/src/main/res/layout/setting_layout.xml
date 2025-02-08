@@ -63,6 +63,8 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/search_bar"
+                android:textColor="@color/red_themes"
+                app:iconTint="@color/red_themes"
                 style="@style/Widget.Material3.Button.IconButton.Outlined"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -169,7 +171,7 @@
                         style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:icon="@drawable/todolist"
+                        app:icon="@drawable/magnifier"
 
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
