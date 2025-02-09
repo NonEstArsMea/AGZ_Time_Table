@@ -39,4 +39,6 @@ interface TimeTableRepository {
     fun getDepartment(): List<String>
     fun getNextMainParam(): String
     fun checkFirstBeginning(): Boolean
+
+    fun moveItemInFavoriteMainParam(param: MainParam): ArrayList<MainParam>
 }

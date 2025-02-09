@@ -162,18 +162,6 @@
                             android:visibility="visible" />
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <View
-                            android:id="@+id/add_group_icon"
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:layout_gravity="center"
-                            android:layout_marginEnd="@dimen/margine_all"
-                            android:background="@drawable/group" />
-
                         <TextView
                             android:id="@+id/add_group"
                             style="@style/MainTextViewStyle"
@@ -181,7 +169,6 @@
                             android:layout_height="wrap_content"
                             android:text="33333333333333"
                             android:visibility="visible" />
-                    </LinearLayout>
 
                     <LinearLayout
                         android:visibility="gone"

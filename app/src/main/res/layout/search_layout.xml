@@ -6,12 +6,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".present.mainActivity.MainActivity"
     android:orientation="vertical">
-    <SearchView
+    <androidx.appcompat.widget.SearchView
         style="@style/Widget.Material3.SearchBar"
         android:id="@+id/search_view"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_margin="@dimen/margine_all" />
+        android:layout_margin="@dimen/margine_all"
+        android:queryHint="12"
+        />
     <com.google.android.material.divider.MaterialDivider
         android:id="@+id/div"
         android:layout_width="match_parent"

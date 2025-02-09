@@ -186,10 +186,27 @@ class TimeTableRepositoryImpl @Inject constructor(
     override fun getNextMainParam(): String {
         if (mainParam.value != null){
             val index = listOfFavoriteMainParam.value!!.indexOf(mainParam.value!!)
-            var masLen = listOfFavoriteMainParam.value!!.size
+            val masLen = listOfFavoriteMainParam.value!!.size
             mainParam.value = listOfFavoriteMainParam.value!![(index+1) % masLen]
+            moveItemInFavoriteMainParam(mainParam.value!!)
         }
         return mainParam.value.toString()
+    }
+
+    override fun moveItemInFavoriteMainParam(param: MainParam): ArrayList<MainParam> {
+        val list = listOfFavoriteMainParam.value?.toList() as ArrayList
+        with(list) {
+            if (this.size != 1) {
+                val itemIndex = this.indexOf(param)
+                for (item in itemIndex downTo 1) {
+                    this[item] = this[item - 1]
+                }
+                this[0] = param
+            }
+            listOfFavoriteMainParam.value = list
+        }
+
+        return listOfFavoriteMainParam.value?: ArrayList()
     }
 
     override fun checkFirstBeginning(): Boolean {

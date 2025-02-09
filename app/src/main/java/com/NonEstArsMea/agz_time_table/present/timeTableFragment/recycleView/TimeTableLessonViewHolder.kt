@@ -34,7 +34,7 @@ class TimeTableLessonViewHolder(val view: View) : RecyclerView.ViewHolder(view) 
             startTime.text = dayTimeTable.startTime
             endTime.text = dayTimeTable.endTime
             icon.text = dayTimeTable.subjectNumber.toString()
-            groupNumber.text = context.getString(R.string.group_number) + dayTimeTable.studyGroup
+            groupNumber.text = context.getString(R.string.group_number) + "\n" + dayTimeTable.studyGroup
             dateNumber.text = DateManager.getDateString(context, dayTimeTable.date)
             add_info.visibility = View.GONE
             department.text = context.getString(R.string.department_number) + dayTimeTable.department

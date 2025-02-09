@@ -42,6 +42,7 @@ class SearchFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = SearchLayoutBinding.inflate(inflater, container, false)
+        binding.searchView.queryHint = "Номер группы или Фамилия преподавателя"
         return binding.root
     }
 
@@ -53,14 +54,14 @@ class SearchFragment : Fragment() {
         rvSearchView.layoutManager = LinearLayoutManager(context)
 
         val searchView = binding.searchView
-        searchView.isIconifiedByDefault = false
+        searchView.setIconifiedByDefault(false)
 
 
 
         vm.listOfMainParam.observe(viewLifecycleOwner) {
             mainParamAdapter.submitList(it)
             searchView.setOnQueryTextListener(object :
-                android.widget.SearchView.OnQueryTextListener {
+                androidx.appcompat.widget.SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(p0: String?) = false
 
                 override fun onQueryTextChange(text: String): Boolean {

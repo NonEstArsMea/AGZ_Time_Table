@@ -302,7 +302,7 @@ class NewView @JvmOverloads constructor(
 
             list.forEach {
                 it.color = R.color.orange_fo_lessons_card
-                it.classroom.trim()
+                it.classroom
             }
 
             calculateTable(list, columnNameTextList, rowNameText, TEACHER_AND_GROOP_INFO_TYPE)

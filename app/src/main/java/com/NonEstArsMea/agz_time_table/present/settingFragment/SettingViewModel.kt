@@ -26,17 +26,8 @@ class SettingViewModel @Inject constructor(
     val authResult: LiveData<AuthRepositoryImpl.UserProfile> get() = _authResult
 
     fun moveItemInFavoriteMainParam(param: MainParam) {
-        val list = _listOfFavoriteMainParam.value?.toList() as ArrayList
-        with(list) {
-            if (this.size != 1) {
-                val itemIndex = this.indexOf(param)
-                for (item in itemIndex downTo 1) {
-                    this[item] = this[item - 1]
-                }
-                this[0] = param
-            }
-            _listOfFavoriteMainParam.value = list
-        }
+        _listOfFavoriteMainParam.value = timeTableRepositoryImpl.moveItemInFavoriteMainParam(param)
+
     }
 
 
