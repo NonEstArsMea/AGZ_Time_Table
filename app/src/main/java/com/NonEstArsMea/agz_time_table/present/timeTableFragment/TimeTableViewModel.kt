@@ -108,6 +108,11 @@ class TimeTableViewModel @Inject constructor(
         return DateManager.getDateList()
     }
 
+    fun getNextMainParam() {
+        timeTableRepositoryImpl.getNextMainParam()
+        getNewTimeTable()
+    }
+
     companion object {
         const val NOW_WEEK = 0
         const val EMPTY_STRING = ""

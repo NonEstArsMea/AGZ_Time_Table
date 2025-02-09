@@ -12,6 +12,7 @@ import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.databinding.TimeTableFragmentBinding
 import com.NonEstArsMea.agz_time_table.present.TimeTableApplication
 import com.NonEstArsMea.agz_time_table.present.mainActivity.MainViewModelFactory
+import com.NonEstArsMea.agz_time_table.util.animateSlideText
 import javax.inject.Inject
 
 
@@ -52,7 +53,7 @@ class TimeTableFragment : Fragment() {
 
 
         binding.mainParam.setOnClickListener {
-            findNavController().navigate(R.id.searchFragment)
+            vm.getNextMainParam()
         }
 
         return binding.root
@@ -98,7 +99,7 @@ class TimeTableFragment : Fragment() {
 
 
         vm.mainParam.observe(viewLifecycleOwner) {
-            binding.mainParam.text = it.name
+            binding.mainParam.animateSlideText(it.name)
         }
 
     }

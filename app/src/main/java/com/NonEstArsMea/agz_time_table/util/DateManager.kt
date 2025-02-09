@@ -24,6 +24,25 @@ object DateManager {
         return month[number]
     }
 
+    fun getMonthNominativeСase(number: Int): String {
+        val month = arrayOf(
+            "Январь",
+            "Февраль",
+            "Март",
+            "Апрель",
+            "Май",
+            "Июнь",
+            "Июль",
+            "Август",
+            "Сентябрь",
+            "Октябрь",
+            "Ноябрь",
+            "Декабрь",
+
+        )
+        return month[number]
+    }
+
     fun dayNumberOnButton(): List<String> {
         val days = mutableListOf<String>()
 
@@ -43,10 +62,10 @@ object DateManager {
 
         val dayNow = calendar.get(Calendar.DAY_OF_MONTH).toString()
         val monthNow = calendar.get(Calendar.MONTH)
-        val monthStrNow = context.getString(getMonth(monthNow))
+        val monthStrNow = getMonthNominativeСase(monthNow)
         val yearNow = calendar.get(Calendar.YEAR).toString()
 
-        return "$dayNow $monthStrNow - $yearNow"
+        return "$monthStrNow - $yearNow"
     }
 
     fun getDateString(context: Context, s: String): String{

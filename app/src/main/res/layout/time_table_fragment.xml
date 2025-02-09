@@ -9,6 +9,7 @@
     android:theme="@style/Theme.AGZ_Time_Table">
 
 
+
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/top_card"
             style="@style/Widget.Material3.CardView.Elevated"
@@ -30,6 +31,8 @@
 
 
                 app:layout_constraintTop_toTopOf="parent">
+
+
 
                 <Button
                     android:id="@+id/set_date_button"

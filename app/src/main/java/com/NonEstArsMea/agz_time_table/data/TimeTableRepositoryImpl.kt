@@ -183,6 +183,15 @@ class TimeTableRepositoryImpl @Inject constructor(
         return masOfDepartment
     }
 
+    override fun getNextMainParam(): String {
+        if (mainParam.value != null){
+            val index = listOfFavoriteMainParam.value!!.indexOf(mainParam.value!!)
+            var masLen = listOfFavoriteMainParam.value!!.size
+            mainParam.value = listOfFavoriteMainParam.value!![(index+1) % masLen]
+        }
+        return mainParam.value.toString()
+    }
+
     override suspend fun getDepartmentTimeTable(
         departmentId: String,
         date: String

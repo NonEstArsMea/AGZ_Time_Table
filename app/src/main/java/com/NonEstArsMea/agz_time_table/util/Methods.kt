@@ -1,6 +1,7 @@
 package com.NonEstArsMea.agz_time_table.util
 
 import android.util.Log
+import android.widget.TextView
 import com.NonEstArsMea.agz_time_table.R
 
 object Methods {
@@ -63,4 +64,21 @@ object Methods {
         }
     }
 
+}
+
+fun TextView.animateSlideText(newText: String) {
+    this.animate()
+        .translationY(-10f)
+        .alpha(0f)
+        .setDuration(150)
+        .withEndAction {
+            this.text = newText
+            this.translationY = 10f
+            this.animate()
+                .translationY(0f)
+                .alpha(1f)
+                .setDuration(150)
+                .start()
+        }
+        .start()
 }

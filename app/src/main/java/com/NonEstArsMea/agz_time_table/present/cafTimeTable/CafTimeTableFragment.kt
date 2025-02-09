@@ -20,6 +20,7 @@ import com.NonEstArsMea.agz_time_table.databinding.DialogSelectItemBinding
 import com.NonEstArsMea.agz_time_table.present.TimeTableApplication
 import com.NonEstArsMea.agz_time_table.present.mainActivity.MainViewModelFactory
 import com.NonEstArsMea.agz_time_table.util.DateManager
+import com.NonEstArsMea.agz_time_table.util.animateSlideText
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import javax.inject.Inject
 
@@ -36,6 +37,7 @@ class CafTimeTableFragment : Fragment() {
     private val component by lazy {
         (requireActivity().application as TimeTableApplication).component
     }
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -92,15 +94,14 @@ class CafTimeTableFragment : Fragment() {
                 ConnectionError -> TODO()
                 is SetDate -> {
                     binding.dateText.text = DateManager.getDateString(requireContext(), it.date)
-                    if (it.id.isNotEmpty()) binding.cafTimeTableButtonText.text = it.id
+                    if (it.id.isNotEmpty()) binding.cafTimeTableButtonText.animateSlideText(it.id)
                     binding.cafTimeTableView.clearView()
                 }
 
                 is DataIsLoad -> {
                     binding.dateText.text = DateManager.getDateString(requireContext(), it.date)
-                    binding.cafTimeTableButtonText.text = it.cafName
-                    Log.e("resume", "draw table")
                     binding.cafTimeTableView.setCafTimeTable(it.rep, it.unicList)
+                    binding.cafTimeTableButtonText.animateSlideText(it.cafName)
                 }
 
                 else -> {}
