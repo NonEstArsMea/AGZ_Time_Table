@@ -192,6 +192,10 @@ class TimeTableRepositoryImpl @Inject constructor(
         return mainParam.value.toString()
     }
 
+    override fun checkFirstBeginning(): Boolean {
+        return !listOfFavoriteMainParam.value.isNullOrEmpty()
+    }
+
     override suspend fun getDepartmentTimeTable(
         departmentId: String,
         date: String

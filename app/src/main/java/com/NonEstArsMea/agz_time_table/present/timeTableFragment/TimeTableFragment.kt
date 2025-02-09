@@ -53,7 +53,12 @@ class TimeTableFragment : Fragment() {
 
 
         binding.mainParam.setOnClickListener {
-            vm.getNextMainParam()
+            if(vm.ifNotFirstBeginning()){
+                vm.getNextMainParam()
+            }else{
+                findNavController().navigate(R.id.searchFragment)
+            }
+
         }
 
         return binding.root
@@ -96,8 +101,6 @@ class TimeTableFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-
-
         vm.mainParam.observe(viewLifecycleOwner) {
             binding.mainParam.animateSlideText(it.name)
         }

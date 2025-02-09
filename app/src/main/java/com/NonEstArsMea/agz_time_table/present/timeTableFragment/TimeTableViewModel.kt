@@ -2,7 +2,6 @@ package com.NonEstArsMea.agz_time_table.present.timeTableFragment
 
 import android.annotation.SuppressLint
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -111,6 +110,10 @@ class TimeTableViewModel @Inject constructor(
     fun getNextMainParam() {
         timeTableRepositoryImpl.getNextMainParam()
         getNewTimeTable()
+    }
+
+    fun ifNotFirstBeginning(): Boolean {
+        return timeTableRepositoryImpl.checkFirstBeginning()
     }
 
     companion object {

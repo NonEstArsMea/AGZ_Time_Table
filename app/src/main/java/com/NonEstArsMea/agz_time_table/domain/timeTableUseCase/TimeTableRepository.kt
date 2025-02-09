@@ -38,4 +38,5 @@ interface TimeTableRepository {
 
     fun getDepartment(): List<String>
     fun getNextMainParam(): String
+    fun checkFirstBeginning(): Boolean
 }
