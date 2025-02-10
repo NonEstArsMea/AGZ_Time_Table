@@ -83,7 +83,7 @@
                     android:layout_height="match_parent"
                     android:textColor="@color/gray_400"
                     android:textSize="14sp"
-                    android:text="Выбрать номер группы" />
+                    android:text="Выбрать кафедру" />
 
             </com.google.android.material.card.MaterialCardView>
 

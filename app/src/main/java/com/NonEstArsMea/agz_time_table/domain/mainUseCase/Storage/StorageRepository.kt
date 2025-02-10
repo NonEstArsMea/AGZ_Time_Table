@@ -17,4 +17,8 @@ interface StorageRepository {
         favMainParamList: ArrayList<MainParam>?,
         theme: Int?,
     )
+
+    fun setCafIdInStorage(id : String)
+
+    fun getCafIdInStorage():String
 }

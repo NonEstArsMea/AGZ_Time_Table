@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellClass
+import com.NonEstArsMea.agz_time_table.domain.mainUseCase.Storage.StorageRepository
 import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.TimeTableRepository
 
 import com.NonEstArsMea.agz_time_table.util.DateManager
@@ -14,7 +15,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class CafTimeTableViewModel@Inject constructor(
-    private val repository: TimeTableRepository
+    private val repository: TimeTableRepository,
+    private val storageRepository: StorageRepository
 ) : ViewModel() {
 
     private var _state = MutableLiveData<CafTimeTableState>()
@@ -31,7 +33,16 @@ class CafTimeTableViewModel@Inject constructor(
     private var currentJob: Job? = null
 
     init {
+        id = storageRepository.getCafIdInStorage()
         _state.value = SetDate(date, id)
+        val index = ItemsAdapter.items.indexOf(id)
+        Log.e("ind", id.toString())
+        Log.e("ind", index.toString())
+        if(index != -1){
+            Log.e("ind", index.toString())
+            cafName = ItemsAdapter.names[index]
+        }
+        getData(cafName, id)
     }
 
     fun setNewDate(day: Int) {
@@ -73,6 +84,10 @@ class CafTimeTableViewModel@Inject constructor(
     override fun onCleared() {
         super.onCleared()
         currentJob?.cancel()
+    }
+
+    fun setNewID(id: String) {
+        storageRepository.setCafIdInStorage(id)
     }
 
 }

@@ -61,9 +61,20 @@ class StorageRepositoryImpl @Inject constructor(
 
     }
 
+    override fun setCafIdInStorage(id: String) {
+        sharedPreferences.edit().apply {
+            putString(CAF_ID, id)
+        }.apply()
+    }
+
+    override fun getCafIdInStorage(): String {
+        return sharedPreferences.getString(CAF_ID, "").toString()
+    }
+
     companion object {
         private const val MAIN_PARAM_KEY = "mainParam"
         private const val LIST_OF_FAVORITE_MAIN_PARAMS = "LOFMP"
+        private const val CAF_ID = "CI"
         private const val THEME = "T"
         private const val SYSTEM_THEME = 1
 
