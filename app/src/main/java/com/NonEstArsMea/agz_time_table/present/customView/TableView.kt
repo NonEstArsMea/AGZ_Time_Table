@@ -835,7 +835,7 @@ class NewView @JvmOverloads constructor(
 
             infoText = when (typeInfo) {
                 CLASSROOM_INFO_TYPE -> cell.teacher + "\n" + cell.classroom
-                TEACHER_AND_GROOP_INFO_TYPE -> cell.teacher + "\n" + cell.studyGroup.trim()
+                TEACHER_AND_GROOP_INFO_TYPE -> cell.teacher + "\n" + cell.studyGroup
                 else -> {
                     cell.classroom
                 }

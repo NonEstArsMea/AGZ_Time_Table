@@ -3,10 +3,10 @@
     <string name="app_name">Расписание АГЗ</string>
     <string name="name_param_is_null">Группа не выбрана</string>
     <string name="BTB_tmenu_tt">Расписание</string>
-    <string name="agz_text_button">Нажмите, чтобы перейти на официальный сайт Академии</string>
+    <string name="agz_text_button">Нажмите, чтобы перейти на страничку сайт приложения</string>
     <string name="my_tg_text_button">"Возникили ошибки в работе приложения? "</string>
     <string name="my_tg_text_button_name">Напишите разработчику в Telegram</string>
-    <string name="agz_button_name">Вопросы и предложения?</string>
+    <string name="agz_button_name">Хотите узнать больше о приложении?</string>
     <string name="agz_bot_telegram_button_name">Telegram-бот</string>
     <string name="agz_bot_telegram_button">Нажмите, чтобы перейти к официальному боту с расписанием</string>
     <string name="theme_change_lable">Выбор темы</string>

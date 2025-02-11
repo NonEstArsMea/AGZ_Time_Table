@@ -3,7 +3,7 @@
     <string name="app_name">AGZ timetable</string>
     <string name="name_param_is_null">The group is not selected</string>
     <string name="BTB_tmenu_tt">Time table</string>
-    <string name="agz_text_button">Click to go to the official website of the Academy</string>
+    <string name="agz_text_button">Click to go to the official website of the app</string>
     <string name="agz_bot_telegram_button">Click to go to the official bot with the schedule</string>
     <string name="theme_change_lable">Choosing a theme</string>
     <string name="add_group_button">Add a group</string>
@@ -11,7 +11,7 @@
     <string name="setting_lable">Settings</string>
     <string name="my_tg_text_button">Are there any errors in the operation of the application? \n Write to the developer in Telegram</string>
     <string name="my_tg_text_button_name">Questions and suggestions?</string>
-    <string name="agz_button_name">The Academy\'s website</string>
+    <string name="agz_button_name">The app\'s website</string>
     <string name="agz_bot_telegram_button_name">Telegram bot</string>
     <string name="January">January</string>
     <string name="February">February</string>

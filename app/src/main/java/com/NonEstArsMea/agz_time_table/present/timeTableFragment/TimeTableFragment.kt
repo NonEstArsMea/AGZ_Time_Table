@@ -53,9 +53,9 @@ class TimeTableFragment : Fragment() {
 
 
         binding.mainParam.setOnClickListener {
-            if(vm.ifNotFirstBeginning()){
+            if (vm.ifNotFirstBeginning()) {
                 vm.getNextMainParam()
-            }else{
+            } else {
                 findNavController().navigate(R.id.searchFragment)
             }
 
@@ -80,7 +80,7 @@ class TimeTableFragment : Fragment() {
         vm.checkMainParam()
 
 
-        vm.month.observe(viewLifecycleOwner){
+        vm.month.observe(viewLifecycleOwner) {
             binding.monthDate.text = it
         }
 
@@ -90,10 +90,22 @@ class TimeTableFragment : Fragment() {
     private fun updateViewMode() {
         if (viewModeIsPager) {
             parentFragmentManager.beginTransaction()
+                .setCustomAnimations(
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_left,
+                    R.anim.slide_in_left,
+                    R.anim.slide_out_right
+                )
                 .replace(R.id.view_pager_and_table_container, ViewPagerFragment.newInstance())
                 .commit()
         } else {
             parentFragmentManager.beginTransaction()
+                .setCustomAnimations(
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_left,
+                    R.anim.slide_in_left,
+                    R.anim.slide_out_right
+                )
                 .replace(R.id.view_pager_and_table_container, TableFragment.newInstance()).commit()
         }
         viewModeIsPager = !viewModeIsPager

@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
+import android.animation.ValueAnimator
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,36 +52,43 @@ class TimeTableRecycleViewAdapter : ListAdapter<CellClass, RecyclerView.ViewHold
     }
 
     private fun setAnimation(holder: TimeTableLessonViewHolder) {
-        if (holder.add_info.visibility == View.GONE) {
-            // Раскрытие дополнительного контента с анимацией
-            val expandAnimation = ObjectAnimator.ofPropertyValuesHolder(
-                holder.add_info,
-                PropertyValuesHolder.ofFloat(View.ALPHA, 1f),
-                PropertyValuesHolder.ofFloat(View.SCALE_X, 1f),
-                PropertyValuesHolder.ofFloat(View.SCALE_Y, 1f)
-            )
-            expandAnimation.addListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {
-                    holder.add_info.visibility = View.VISIBLE
+        val targetView = holder.add_info
+
+        if (targetView.visibility == View.GONE) {
+            // Измеряем высоту контента
+            targetView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+            val targetHeight = targetView.measuredHeight
+
+            // Начальная высота = 0
+            targetView.layoutParams.height = 0
+            targetView.visibility = View.VISIBLE
+
+            // Анимация расширения
+            val expandAnimator = ValueAnimator.ofInt(0, targetHeight).apply {
+                duration = 400
+                addUpdateListener { animation ->
+                    targetView.layoutParams.height = animation.animatedValue as Int
+                    targetView.requestLayout()
                 }
-            })
-            expandAnimation.duration = 400
-            expandAnimation.start()
+            }
+            expandAnimator.start()
         } else {
-            // Скрытие дополнительного контента с анимацией
-            val collapseAnimation = ObjectAnimator.ofPropertyValuesHolder(
-                holder.add_info,
-                PropertyValuesHolder.ofFloat(View.ALPHA, 0f),
-                PropertyValuesHolder.ofFloat(View.SCALE_X, 0.8f),
-                PropertyValuesHolder.ofFloat(View.SCALE_Y, 0.8f)
-            )
-            collapseAnimation.duration = 300
-            collapseAnimation.addListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {
-                    holder.add_info.visibility = View.GONE
+            // Анимация схлопывания
+            val initialHeight = targetView.height
+
+            val collapseAnimator = ValueAnimator.ofInt(initialHeight, 0).apply {
+                duration = 300
+                addUpdateListener { animation ->
+                    targetView.layoutParams.height = animation.animatedValue as Int
+                    targetView.requestLayout()
                 }
-            })
-            collapseAnimation.start()
+                addListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator) {
+                        targetView.visibility = View.GONE
+                    }
+                })
+            }
+            collapseAnimator.start()
         }
     }
 

@@ -7,7 +7,7 @@
     <fragment
         android:id="@+id/timeTableFragment"
         android:name="com.NonEstArsMea.agz_time_table.present.timeTableFragment.TimeTableFragment"
-        android:label="TimeTableFragment" >
+        android:label="TimeTableFragment">
         <action
             android:id="@+id/action_timeTableFragment_to_settingFragment"
             app:destination="@id/settingFragment" />
@@ -18,12 +18,12 @@
     <fragment
         android:id="@+id/settingFragment"
         android:name="com.NonEstArsMea.agz_time_table.present.settingFragment.SettingFragment"
-        android:label="SettingFragment" >
+        android:label="SettingFragment">
         <action
             android:id="@+id/action_settingFragment_to_timeTableFragment"
             app:destination="@id/timeTableFragment"
             app:popUpTo="@id/timeTableFragment"
-            app:popUpToInclusive="false"/>
+            app:popUpToInclusive="false" />
         <action
             android:id="@+id/action_settingFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
@@ -43,7 +43,7 @@
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.NonEstArsMea.agz_time_table.present.searchFragment.SearchFragment"
-        android:label="SearchFragment" >
+        android:label="SearchFragment">
         <action
             android:id="@+id/action_searchFragment_to_settingFragment"
             app:destination="@id/settingFragment" />
@@ -52,10 +52,11 @@
         android:id="@+id/customDateFragment"
         android:name="com.NonEstArsMea.agz_time_table.present.customDateFragment.CustomDateFragment"
         android:label="fragment_custom_date"
-        tools:layout="@layout/custom_date_fragment" >
+        tools:layout="@layout/custom_date_fragment">
         <action
             android:id="@+id/action_customDateFragment_to_timeTableFragment"
-            app:destination="@id/timeTableFragment" />
+            app:destination="@id/timeTableFragment"
+             />
         <argument
             android:name="day"
             app:argType="integer" />
@@ -72,11 +73,12 @@
     <fragment
         android:id="@+id/examsFragment"
         android:name="com.NonEstArsMea.agz_time_table.present.examsFragment.ExamsFragment"
-        android:label="ExamsFragment" >
+        android:label="ExamsFragment">
         <action
             android:id="@+id/action_examsFragment_to_timeTableFragment"
             app:destination="@id/timeTableFragment" />
-        <argument android:name="nameParam"
+        <argument
+            android:name="nameParam"
             app:argType="string" />
     </fragment>
     <action
@@ -85,7 +87,7 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.NonEstArsMea.agz_time_table.present.loginLayout.LoginFragment"
-        android:label="LoginFragment" >
+        android:label="LoginFragment">
         <action
             android:id="@+id/action_loginFragment_to_settingFragment"
             app:destination="@id/settingFragment" />
@@ -93,7 +95,7 @@
     <fragment
         android:id="@+id/departmentalTimeTableFragment"
         android:name="com.NonEstArsMea.agz_time_table.present.departmentalTimetableFragment.DepartmentalTimeTableFragment"
-        android:label="DepartmentalTimeTableFragment" >
+        android:label="DepartmentalTimeTableFragment">
         <action
             android:id="@+id/action_departmentalTimeTableFragment_to_settingFragment"
             app:destination="@id/settingFragment" />
@@ -102,7 +104,7 @@
         android:id="@+id/audWorkloadFragment"
         android:name="com.NonEstArsMea.agz_time_table.present.audWorkloadFragment.AudWorkloadFragment"
         android:label="fragment_aud_workload"
-        tools:layout="@layout/fragment_aud_workload" >
+        tools:layout="@layout/fragment_aud_workload">
         <action
             android:id="@+id/action_audWorkloadFragment_to_settingFragment"
             app:destination="@id/settingFragment"
@@ -111,7 +113,7 @@
     <fragment
         android:id="@+id/cafTimeTableFragment"
         android:name="com.NonEstArsMea.agz_time_table.present.cafTimeTable.CafTimeTableFragment"
-        android:label="CafTimeTableFragment" >
+        android:label="CafTimeTableFragment">
         <action
             android:id="@+id/action_cafTimeTableFragment_to_settingFragment"
             app:destination="@id/settingFragment" />

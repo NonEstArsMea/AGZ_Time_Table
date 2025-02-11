@@ -91,11 +91,11 @@ class SettingFragment : Fragment() {
         }
 
         binding.agzButton.setOnClickListener {
-            actionViewStart("https://amchs.ru/")
+            actionViewStart("https://agzprogs.ru/")
         }
 
         binding.agzIcon.setOnClickListener {
-            actionViewStart("https://amchs.ru/")
+            actionViewStart("https://agzprogs.ru/")
         }
 
         binding.myTelegramButton.setOnClickListener {
