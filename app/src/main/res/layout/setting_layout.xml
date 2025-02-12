@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorSurfaceContainer"
+    android:theme="@style/Theme.AGZ_Time_Table"
     tools:context=".present.mainActivity.MainActivity">
 
     <TextView
@@ -72,7 +73,8 @@
                 android:text="@string/add_group_button"
                 app:cornerRadius="10dp"
                 app:icon="@drawable/plus"
-                app:iconGravity="textStart" />
+                app:iconGravity="textStart"
+                android:transitionName="morph_shared"/>
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/aud_workload_button"

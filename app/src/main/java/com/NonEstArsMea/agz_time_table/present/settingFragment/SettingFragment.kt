@@ -11,16 +11,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.compose.ui.graphics.Color
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.data.AuthRepositoryImpl
 import com.NonEstArsMea.agz_time_table.databinding.SettingLayoutBinding
 import com.NonEstArsMea.agz_time_table.present.TimeTableApplication
+import com.NonEstArsMea.agz_time_table.present.mainActivity.MainViewModel
 import com.NonEstArsMea.agz_time_table.present.mainActivity.MainViewModelFactory
 import com.NonEstArsMea.agz_time_table.present.settingFragment.recycleView.SettingRecycleViewAdapter
+import com.google.android.material.color.MaterialColors
+import com.google.android.material.transition.MaterialContainerTransform
 import javax.inject.Inject
 
 class SettingFragment : Fragment() {
@@ -29,6 +34,10 @@ class SettingFragment : Fragment() {
 
     @Inject
     lateinit var vm: SettingViewModel
+
+    @Inject
+    lateinit var themeViewModel: MainViewModel
+
 
     @Inject
     lateinit var viewModelFactory: MainViewModelFactory
@@ -49,11 +58,21 @@ class SettingFragment : Fragment() {
         super.onAttach(context)
         component.inject(this)
         vm = ViewModelProvider(this, viewModelFactory)[SettingViewModel::class.java]
+        themeViewModel = ViewModelProvider(requireActivity(), viewModelFactory)[MainViewModel::class.java]
         if (context is setThemeInterface) {
             setSystemTheme = context
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        exitTransition = MaterialContainerTransform().apply {
+            drawingViewId = R.id.fragmentContainerView
+            duration = 1000
+            scrimColor = android.graphics.Color.TRANSPARENT // Убирает затемнение фона
+        }
+    }
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
@@ -71,7 +90,10 @@ class SettingFragment : Fragment() {
 
 
         binding.searchBar.setOnClickListener {
-            findNavController().navigate(R.id.searchFragment)
+            val extras = FragmentNavigator.Extras.Builder()
+                .addSharedElement(it, "morph_shared")
+                .build()
+            findNavController().navigate(R.id.searchFragment, null, null, extras)
         }
 
         binding.audWorkloadButton.setOnClickListener {
@@ -118,13 +140,6 @@ class SettingFragment : Fragment() {
 
         }
 
-        vm.authResult.observe(viewLifecycleOwner) {
-            Log.e("log", it.toString())
-            when (it) {
-                is AuthRepositoryImpl.UserProfile.IsLoggedIn -> setLogicIfLoggedIn(it.name)
-                is AuthRepositoryImpl.UserProfile.IsLoggedOut -> setLogicIfLoggedOut()
-            }
-        }
 
 
 
@@ -132,6 +147,8 @@ class SettingFragment : Fragment() {
         binding.toggleButton.check(themeChecker.checkTheme())
         binding.toggleButton.addOnButtonCheckedListener { toggleGroup, checkedId, isChecked ->
             themeChecker.setTheme(isChecked, checkedId)
+            requireActivity().window.setWindowAnimations(R.style.ThemeChangeAnimation)
+            requireActivity().recreate()
         }
 
 
@@ -163,34 +180,5 @@ class SettingFragment : Fragment() {
         startActivity(link)
     }
 
-    private fun setLogicIfLoggedIn(name: String) {
-        binding.loginCardTopText.text = name
-        binding.loginCardInfoText.text = "Вы вошли в аккаунт. \nЧтобы выйти, удерживайте кнопку"
-        binding.departmentalTimetable.visibility = View.VISIBLE
 
-        binding.departmentalTimetable.setOnClickListener {
-            Toast.makeText(requireActivity(), "1234", Toast.LENGTH_SHORT).show()
-            findNavController().navigate(R.id.departmentalTimeTableFragment)
-        }
-
-        binding.loginCard.setOnLongClickListener {
-            vm.logOut()
-            return@setOnLongClickListener true
-        }
-
-        binding.loginCard.setOnClickListener(null)
-    }
-
-    private fun setLogicIfLoggedOut() {
-        binding.loginCardTopText.text = "Вход"
-        binding.loginCardInfoText.text =
-            "Если у вас есть аккаунт, вы можете просматривать дополнительную информацию"
-        binding.departmentalTimetable.visibility = View.GONE
-
-        binding.loginCard.setOnLongClickListener(null)
-
-        binding.loginCard.setOnClickListener {
-            findNavController().navigate(R.id.loginFragment)
-        }
-    }
 }

@@ -1,5 +1,6 @@
 package com.NonEstArsMea.agz_time_table.present.searchFragment
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import com.NonEstArsMea.agz_time_table.databinding.SearchLayoutBinding
 import com.NonEstArsMea.agz_time_table.present.TimeTableApplication
 import com.NonEstArsMea.agz_time_table.present.mainActivity.MainViewModelFactory
 import com.NonEstArsMea.agz_time_table.present.searchFragment.recycleView.RecycleViewOnSearchFragmentAdapter
+import com.google.android.material.transition.MaterialContainerTransform
 import javax.inject.Inject
 
 class SearchFragment : Fragment() {
@@ -30,10 +32,23 @@ class SearchFragment : Fragment() {
     private val component by lazy {
         (requireActivity().application as TimeTableApplication).component
     }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         component.inject(this)
-        vm = ViewModelProvider(this,viewModelFactory)[SearchViewModel::class.java]
+        vm = ViewModelProvider(this, viewModelFactory)[SearchViewModel::class.java]
+    }
+
+    @SuppressLint("ResourceType")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        sharedElementEnterTransition = MaterialContainerTransform().apply {
+            drawingViewId = R.id.fragmentContainerView
+            duration = 1000
+            scrimColor = android.graphics.Color.TRANSPARENT // Убирает затемнение фона
+
+        }
     }
 
     override fun onCreateView(

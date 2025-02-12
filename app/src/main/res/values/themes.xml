@@ -2,6 +2,7 @@
 <resources>
 
     <style name="Theme.AGZ_Time_Table" parent="Theme.Material3.Light.NoActionBar">
+        <item name="android:windowBackground">@color/white</item>
         <item name="colorPrimaryVariant">@color/red_themes</item>
         <item name="colorSecondary">@color/red_themes</item>
         <item name="colorSecondaryVariant">@color/white</item>

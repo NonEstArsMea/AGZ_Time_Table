@@ -77,6 +77,11 @@
         <item name="android:layout_marginRight">3dp</item>
     </style>
 
+    <style name="ThemeChangeAnimation">
+        <item name="android:windowEnterAnimation">@anim/fade_in</item>
+        <item name="android:windowExitAnimation">@anim/fade_out</item>
+    </style>
+
 
 
 

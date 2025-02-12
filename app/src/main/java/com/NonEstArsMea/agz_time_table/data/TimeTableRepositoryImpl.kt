@@ -127,13 +127,18 @@ class TimeTableRepositoryImpl @Inject constructor(
 
 
     override suspend fun getListOfMainParam() {
-        val list = ArrayList<MainParam>()
-        val restResponce = Common.retrofitService.getMainParamsList()
-        if (restResponce.isSuccessful) {
-            restResponce.body()?.forEach {
-                list.add(MainParam(it, false))
+        var list = ArrayList<MainParam>()
+        try {
+            val restResponce = Common.retrofitService.getMainParamsList()
+            if (restResponce.isSuccessful) {
+                restResponce.body()?.forEach {
+                    list.add(MainParam(it, false))
+                }
             }
+        }catch (e: Exception){
+            list = arrayListOf()
         }
+
 
         listOfMainParam.postValue(list)
     }
