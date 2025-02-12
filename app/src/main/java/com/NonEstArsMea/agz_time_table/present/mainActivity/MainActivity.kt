@@ -1,8 +1,8 @@
 package com.NonEstArsMea.agz_time_table.present.mainActivity
 
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isGone
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -12,8 +12,6 @@ import com.NonEstArsMea.agz_time_table.data.AuthRepositoryImpl
 import com.NonEstArsMea.agz_time_table.databinding.MainLayoutBinding
 import com.NonEstArsMea.agz_time_table.present.TimeTableApplication
 import com.NonEstArsMea.agz_time_table.present.examsFragment.ExamsFragment
-import com.NonEstArsMea.agz_time_table.present.settingFragment.SettingFragment
-import com.NonEstArsMea.agz_time_table.present.settingFragment.ThemeController
 import com.NonEstArsMea.agz_time_table.util.BottomMenuItemStateManager
 import com.NonEstArsMea.agz_time_table.util.DateManager
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -23,7 +21,6 @@ import javax.inject.Inject
 
 
 class MainActivity : AppCompatActivity(),
-    SettingFragment.setThemeInterface,
     ExamsFragment.OnStartAndFinishListener {
 
     private lateinit var mainViewModel: MainViewModel
@@ -42,23 +39,45 @@ class MainActivity : AppCompatActivity(),
         (application as TimeTableApplication).component
     }
 
-    @Inject
-    lateinit var themeController: ThemeController
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        component.inject(this)
+
+        mainViewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
+
+        mainViewModel.theme.observe(this) { themeNumber ->
+            when (themeNumber) {
+                SYSTEM_THEME -> AppCompatDelegate.setDefaultNightMode(
+                    AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+                )
+
+                NIGHT_THEME -> AppCompatDelegate.setDefaultNightMode(
+                    AppCompatDelegate.MODE_NIGHT_YES
+                )
+
+                LIGHT_THEME -> AppCompatDelegate.setDefaultNightMode(
+                    AppCompatDelegate.MODE_NIGHT_NO
+                )
+
+                else -> throw RuntimeException("Unknown number of theme")
+            }
+            this.window.setWindowAnimations(R.style.ThemeChangeAnimation)
+            //this.recreate()
+
+        }
+//setUserTheme()
+
+        this.window.setWindowAnimations(R.style.ThemeChangeAnimation)
         super.onCreate(savedInstanceState)
 
         analytics = Firebase.analytics
-
-        component.inject(this)
 
         userAuth.init(this)
 
         _binding = MainLayoutBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-        mainViewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
+
     }
 
     override fun onStart() {
@@ -83,6 +102,8 @@ class MainActivity : AppCompatActivity(),
             menu.getItem(it).isChecked = true
 
         }
+
+
 
 
         binding.bottomInfo.setOnItemSelectedListener {
@@ -138,18 +159,30 @@ class MainActivity : AppCompatActivity(),
         _binding = null
     }
 
-    override fun setLightTheme() {
-        themeController.setTheme(true, ThemeController.LIGHT_THEME)
+    private fun setUserTheme(){
+        when (mainViewModel.setUserTheme()) {
+            SYSTEM_THEME -> AppCompatDelegate.setDefaultNightMode(
+                AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+            )
+
+            NIGHT_THEME -> AppCompatDelegate.setDefaultNightMode(
+                AppCompatDelegate.MODE_NIGHT_YES
+            )
+
+            LIGHT_THEME -> AppCompatDelegate.setDefaultNightMode(
+                AppCompatDelegate.MODE_NIGHT_NO
+            )
+
+            else -> throw RuntimeException("Unknown number of theme")
+        }
     }
 
-    override fun setDarkTheme() {
-        themeController.setTheme(true, ThemeController.NIGHT_THEME)
-    }
 
-    override fun setSystemTheme() {
-        themeController.setTheme(true, ThemeController.SYSTEM_THEME)
+    companion object {
+        const val SYSTEM_THEME = 1
+        const val NIGHT_THEME = 2
+        const val LIGHT_THEME = 3
     }
-
 
 }
 

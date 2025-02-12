@@ -30,7 +30,7 @@ fun getStaticLayout(
 }
 
     /**
-     * Разбивает текст на строки с учетом максимальной ширины.
+     * Эта хрень разбивает текст на строки с учетом максимальной ширины.
      *
      * @param text Исходный текст.
      * @param maxWidth Максимальная ширина строки в пикселях.
@@ -50,18 +50,17 @@ fun getStaticLayout(
             val textWidth = paint.measureText(testLine)
 
             // Если строка помещается в maxWidth, оставляем её
-            if (textWidth <= maxWidth) {
-                currentLine = testLine
+            currentLine = if (textWidth <= maxWidth) {
+                testLine
             } else {
                 // Иначе добавляем текущую строку в список и начинаем новую
                 if (currentLine.isNotEmpty()) {
                     lines.add(currentLine)
                 }
-                currentLine = word
+                word
             }
         }
 
-        // Добавляем последнюю строку, если она не пустая
         if (currentLine.isNotEmpty()) {
             lines.add(currentLine)
         }

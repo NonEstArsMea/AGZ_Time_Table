@@ -38,17 +38,10 @@ class SettingFragment : Fragment() {
     @Inject
     lateinit var themeViewModel: MainViewModel
 
-
     @Inject
     lateinit var viewModelFactory: MainViewModelFactory
 
-    private lateinit var setSystemTheme: setThemeInterface
-
     private val rvSettingViewAdapter = SettingRecycleViewAdapter()
-
-    @Inject
-    lateinit var themeChecker: ThemeController
-
 
     private val component by lazy {
         (requireActivity().application as TimeTableApplication).component
@@ -59,9 +52,6 @@ class SettingFragment : Fragment() {
         component.inject(this)
         vm = ViewModelProvider(this, viewModelFactory)[SettingViewModel::class.java]
         themeViewModel = ViewModelProvider(requireActivity(), viewModelFactory)[MainViewModel::class.java]
-        if (context is setThemeInterface) {
-            setSystemTheme = context
-        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -144,11 +134,9 @@ class SettingFragment : Fragment() {
 
 
         binding.toggleButton.isSingleSelection = true
-        binding.toggleButton.check(themeChecker.checkTheme())
+        binding.toggleButton.check(themeViewModel.checkTheme())
         binding.toggleButton.addOnButtonCheckedListener { toggleGroup, checkedId, isChecked ->
-            themeChecker.setTheme(isChecked, checkedId)
-            requireActivity().window.setWindowAnimations(R.style.ThemeChangeAnimation)
-            requireActivity().recreate()
+            themeViewModel.setTheme(isChecked, checkedId)
         }
 
 
@@ -163,12 +151,6 @@ class SettingFragment : Fragment() {
 
     }
 
-
-    interface setThemeInterface {
-        fun setLightTheme()
-        fun setDarkTheme()
-        fun setSystemTheme()
-    }
 
     override fun onDestroy() {
         super.onDestroy()
