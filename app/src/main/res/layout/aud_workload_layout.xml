@@ -8,8 +8,6 @@
     android:theme="@style/Theme.AGZ_Time_Table">
 
 
-
-
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/aud_workload_button"
         style="@style/MyCard"
@@ -17,7 +15,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:padding="@dimen/margine_all"
-        app:cardElevation="5dp">
+        app:cardElevation="5dp"
+        android:transitionName="morph_aud_workload">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -38,17 +37,17 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/date_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:text=""
                 android:textSize="20sp"
-                android:id="@+id/date_text"
 
+                app:layout_constraintBottom_toBottomOf="@id/btn_right"
                 app:layout_constraintLeft_toRightOf="@id/btn_left"
                 app:layout_constraintRight_toLeftOf="@id/btn_right"
-                app:layout_constraintTop_toTopOf="@id/btn_right"
-                app:layout_constraintBottom_toBottomOf="@id/btn_right"/>
+                app:layout_constraintTop_toTopOf="@id/btn_right" />
 
             <!-- Первый TextView -->
             <TextView

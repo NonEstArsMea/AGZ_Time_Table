@@ -6,25 +6,20 @@ import android.content.Intent
 import android.content.Intent.ACTION_VIEW
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.compose.ui.graphics.Color
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.NonEstArsMea.agz_time_table.R
-import com.NonEstArsMea.agz_time_table.data.AuthRepositoryImpl
 import com.NonEstArsMea.agz_time_table.databinding.SettingLayoutBinding
 import com.NonEstArsMea.agz_time_table.present.TimeTableApplication
 import com.NonEstArsMea.agz_time_table.present.mainActivity.MainViewModel
 import com.NonEstArsMea.agz_time_table.present.mainActivity.MainViewModelFactory
 import com.NonEstArsMea.agz_time_table.present.settingFragment.recycleView.SettingRecycleViewAdapter
-import com.google.android.material.color.MaterialColors
 import com.google.android.material.transition.MaterialContainerTransform
 import javax.inject.Inject
 
@@ -51,7 +46,8 @@ class SettingFragment : Fragment() {
         super.onAttach(context)
         component.inject(this)
         vm = ViewModelProvider(this, viewModelFactory)[SettingViewModel::class.java]
-        themeViewModel = ViewModelProvider(requireActivity(), viewModelFactory)[MainViewModel::class.java]
+        themeViewModel =
+            ViewModelProvider(requireActivity(), viewModelFactory)[MainViewModel::class.java]
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,12 +83,24 @@ class SettingFragment : Fragment() {
         }
 
         binding.audWorkloadButton.setOnClickListener {
-            findNavController().navigate(R.id.audWorkloadFragment)
+            val extras = FragmentNavigator.Extras.Builder()
+                .addSharedElement(it, "morph_aud_workload")
+                .build()
+            findNavController().navigate(R.id.audWorkloadFragment, null, null, extras)
         }
 
         binding.cafTimeTableButton.setOnClickListener {
-            findNavController().navigate(R.id.cafTimeTableFragment)
+            val extras = FragmentNavigator.Extras.Builder()
+                .addSharedElement(it, "morph_caf_time_table")
+                .build()
+            findNavController().navigate(
+                R.id.action_settingFragment_to_cafTimeTableFragment,
+                null,
+                null,
+                extras
+            )
         }
+
 
         binding.botButton.setOnClickListener {
             actionViewStart("https://t.me/timeagzbot")
@@ -127,11 +135,7 @@ class SettingFragment : Fragment() {
 
         vm.listOfFavoriteMainParam.observe(viewLifecycleOwner) {
             rvSettingViewAdapter.submitList(it.toList())
-
         }
-
-
-
 
         binding.toggleButton.isSingleSelection = true
         binding.toggleButton.check(themeViewModel.checkTheme())
@@ -139,14 +143,15 @@ class SettingFragment : Fragment() {
             themeViewModel.setTheme(isChecked, checkedId)
         }
 
-
         rvSettingViewAdapter.onClickListener = { mainParam ->
             vm.setMainParam(mainParam)
             vm.moveItemInFavoriteMainParam(mainParam)
         }
+
         rvSettingViewAdapter.onDelClickListener = {
             vm.delParamFromFavoriteMainParam(it)
         }
+
         rvSettingView.adapter = rvSettingViewAdapter
 
     }

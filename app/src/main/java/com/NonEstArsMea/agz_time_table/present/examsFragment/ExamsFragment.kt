@@ -19,9 +19,6 @@ import javax.inject.Inject
 
 class ExamsFragment : Fragment() {
 
-    private lateinit var mainParam: String
-
-
     private lateinit var onStartAndFinishListener: OnStartAndFinishListener
 
     private val adapter = TimeTableRecycleViewAdapter()
@@ -55,8 +52,6 @@ class ExamsFragment : Fragment() {
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
-
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

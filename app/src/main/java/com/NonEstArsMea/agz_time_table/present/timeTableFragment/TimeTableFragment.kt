@@ -25,7 +25,6 @@ class TimeTableFragment : Fragment() {
 
     private var viewModeIsPager = true
 
-
     @Inject
     lateinit var timeTableViewModelFactory: MainViewModelFactory
 

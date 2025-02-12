@@ -27,15 +27,14 @@ class SettingViewModel @Inject constructor(
 
     }
 
-
     fun delParamFromFavoriteMainParam(index: MainParam) {
         val items = _listOfFavoriteMainParam.value
         if (items != null) {
             _listOfFavoriteMainParam.value?.let { items.removeAt(it.indexOf(index)) }
         }
+
         _listOfFavoriteMainParam.value = items
     }
-
 
     fun setMainParam(mainParam: MainParam) {
         timeTableRepositoryImpl.setMainParam(mainParam)
@@ -44,7 +43,6 @@ class SettingViewModel @Inject constructor(
     fun startFragment() {
         BottomMenuItemStateManager.setNewMenuItem(BottomMenuItemStateManager.SETTING_ITEM)
     }
-
 
     fun logOut() {
         authRepositoryImpl.logout()

@@ -83,7 +83,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:padding="@dimen/margine_all"
-                app:cardElevation="5dp">
+                app:cardElevation="5dp"
+                android:transitionName="morph_aud_workload"
+                >
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -115,7 +117,7 @@
                         app:layout_constraintRight_toLeftOf="@id/aud_workload_icon"
                         app:layout_constraintTop_toBottomOf="@id/aud_workload_text" />
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/aud_workload_icon"
                         style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
                         android:layout_width="wrap_content"
@@ -136,7 +138,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:padding="@dimen/margine_all"
-                app:cardElevation="5dp">
+                app:cardElevation="5dp"
+                android:transitionName="morph_caf_time_table">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"

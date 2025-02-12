@@ -18,6 +18,7 @@ import com.NonEstArsMea.agz_time_table.databinding.AudWorkloadLayoutBinding
 import com.NonEstArsMea.agz_time_table.present.TimeTableApplication
 import com.NonEstArsMea.agz_time_table.present.mainActivity.MainViewModelFactory
 import com.NonEstArsMea.agz_time_table.util.DateManager
+import com.google.android.material.transition.MaterialContainerTransform
 import javax.inject.Inject
 
 class AudWorkloadFragment : Fragment() {
@@ -50,6 +51,15 @@ class AudWorkloadFragment : Fragment() {
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        sharedElementEnterTransition = MaterialContainerTransform().apply {
+            drawingViewId = R.id.fragmentContainerView
+            duration = 1000
+        }
     }
 
 

@@ -199,7 +199,7 @@ class TimeTableRepositoryImpl @Inject constructor(
     }
 
     override fun moveItemInFavoriteMainParam(param: MainParam): ArrayList<MainParam> {
-        listOfFavoriteMainParam.value
+        //listOfFavoriteMainParam.value
         if(listOfFavoriteMainParam.value != null){
             if(listOfFavoriteMainParam.value!!.size > 1){
                 val list = listOfFavoriteMainParam.value?.toList() as ArrayList

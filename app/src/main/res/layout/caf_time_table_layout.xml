@@ -9,6 +9,7 @@
 
 
     <com.google.android.material.card.MaterialCardView
+        android:transitionName="morph_caf_time_table"
         android:id="@+id/aud_workload_button"
         style="@style/MyCard"
         android:layout_width="match_parent"
