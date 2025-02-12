@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity(),
         component.inject(this)
 
         mainViewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
-
+        mainViewModel.startApp()
         mainViewModel.theme.observe(this) { themeNumber ->
             when (themeNumber) {
                 SYSTEM_THEME -> AppCompatDelegate.setDefaultNightMode(
@@ -59,13 +59,13 @@ class MainActivity : AppCompatActivity(),
                     AppCompatDelegate.MODE_NIGHT_NO
                 )
 
-                else -> throw RuntimeException("Unknown number of theme")
+                else -> AppCompatDelegate.setDefaultNightMode(
+                    AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+                )
             }
             this.window.setWindowAnimations(R.style.ThemeChangeAnimation)
-            //this.recreate()
 
         }
-//setUserTheme()
 
         this.window.setWindowAnimations(R.style.ThemeChangeAnimation)
         super.onCreate(savedInstanceState)
@@ -157,24 +157,6 @@ class MainActivity : AppCompatActivity(),
         super.onDestroy()
 
         _binding = null
-    }
-
-    private fun setUserTheme(){
-        when (mainViewModel.setUserTheme()) {
-            SYSTEM_THEME -> AppCompatDelegate.setDefaultNightMode(
-                AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-            )
-
-            NIGHT_THEME -> AppCompatDelegate.setDefaultNightMode(
-                AppCompatDelegate.MODE_NIGHT_YES
-            )
-
-            LIGHT_THEME -> AppCompatDelegate.setDefaultNightMode(
-                AppCompatDelegate.MODE_NIGHT_NO
-            )
-
-            else -> throw RuntimeException("Unknown number of theme")
-        }
     }
 
 

@@ -32,13 +32,10 @@ class MainViewModel @Inject constructor(
     val selectedItem: LiveData<Int>
         get() = _selectedItem
 
-
-    init {
+    fun startApp(){
         getDataFromStorage.execute()
         _theme.value = getDataFromStorage.getTheme()
     }
-
-
     fun getMainParam(): String {
         return getNameParam.getNameOfMainParamFromStorage()
     }
@@ -54,9 +51,6 @@ class MainViewModel @Inject constructor(
 
     }
 
-    fun itemControl(): Boolean {
-        return BottomMenuItemStateManager.stateNow() != BottomMenuItemStateManager.SETTING_ITEM
-    }
 
     fun setTheme(isChecked: Boolean, newTheme: Int) {
         if (isChecked) {
@@ -83,8 +77,5 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun setUserTheme(): Int {
-        return getDataFromStorage.getTheme()
-    }
 }
 

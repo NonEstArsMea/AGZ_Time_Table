@@ -25,7 +25,6 @@ class SearchViewModel @Inject constructor(
     fun setNewMainParam(mainParam: MainParam) {
         timeTableRepositoryImpl.updateFavoriteParamList(mainParam)
         timeTableRepositoryImpl.setMainParam(mainParam)
-
     }
 
 }

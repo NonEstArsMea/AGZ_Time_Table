@@ -19,12 +19,8 @@ class SettingViewModel @Inject constructor(
     val listOfFavoriteMainParam: LiveData<ArrayList<MainParam>>
         get() = _listOfFavoriteMainParam
 
-    private val _authResult = authRepositoryImpl.getUserProfile()
-    val authResult: LiveData<AuthRepositoryImpl.UserProfile> get() = _authResult
-
     fun moveItemInFavoriteMainParam(param: MainParam) {
         _listOfFavoriteMainParam.value = timeTableRepositoryImpl.moveItemInFavoriteMainParam(param)
-
     }
 
     fun delParamFromFavoriteMainParam(index: MainParam) {
@@ -32,7 +28,6 @@ class SettingViewModel @Inject constructor(
         if (items != null) {
             _listOfFavoriteMainParam.value?.let { items.removeAt(it.indexOf(index)) }
         }
-
         _listOfFavoriteMainParam.value = items
     }
 
@@ -44,9 +39,6 @@ class SettingViewModel @Inject constructor(
         BottomMenuItemStateManager.setNewMenuItem(BottomMenuItemStateManager.SETTING_ITEM)
     }
 
-    fun logOut() {
-        authRepositoryImpl.logout()
-    }
 
 
 }
