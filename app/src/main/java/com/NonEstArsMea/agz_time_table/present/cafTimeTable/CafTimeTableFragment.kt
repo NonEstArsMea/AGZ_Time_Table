@@ -59,7 +59,8 @@ class CafTimeTableFragment : Fragment() {
 
         sharedElementEnterTransition = MaterialContainerTransform().apply {
             drawingViewId = R.id.fragmentContainerView
-            duration = 1000
+            duration = 1500
+            scrimColor = android.graphics.Color.TRANSPARENT
         }
     }
 
@@ -165,10 +166,10 @@ class SelectItemDialog : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        val adapter = ItemsAdapter() { selectedItem, id ->
+        val adapter = ItemsAdapter{ selectedItem, id ->
             vm.setNewID(id)
             vm.getData(selectedItem, id)
-            dismiss()  // Закрываем диалог
+            dismiss()
         }
 
         binding.recyclerView.adapter = adapter
@@ -199,6 +200,8 @@ class ItemsAdapter(
     override fun getItemCount() = items.size
 
     companion object {
+
+        // TODO позже перенести на загрузку с сервера
         val names =
             listOf(
                 "(№11) Кафедра оперативного управления мероприятиями РСЧС и ГО",

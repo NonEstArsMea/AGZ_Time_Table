@@ -50,14 +50,12 @@ class TimeTableFragment : Fragment() {
     ): View {
         _binding = TimeTableFragmentBinding.inflate(inflater, container, false)
 
-
         binding.mainParam.setOnClickListener {
             if (vm.ifNotFirstBeginning()) {
                 vm.getNextMainParam()
             } else {
                 findNavController().navigate(R.id.searchFragment)
             }
-
         }
 
         return binding.root

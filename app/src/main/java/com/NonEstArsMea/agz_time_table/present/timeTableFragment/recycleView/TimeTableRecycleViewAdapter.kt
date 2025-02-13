@@ -92,9 +92,4 @@ class TimeTableRecycleViewAdapter : ListAdapter<CellClass, RecyclerView.ViewHold
         }
     }
 
-    companion object {
-        const val LESSON_TIME_TABLE_TYPE = 0
-        const val BREAK_CELL_TYPE = 1
-    }
-
 }

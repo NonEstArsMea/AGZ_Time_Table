@@ -82,17 +82,6 @@ class MainActivity : AppCompatActivity(),
 
     override fun onStart() {
         super.onStart()
-//        mainViewModel.checkNetConnection()
-//        mainViewModel.isConnected.observe(this) {
-//            // появление кнопки об отсутсвии интернета
-//            if (!it) {
-//                binding.errorNetLayout.root.visibility = View.VISIBLE
-//            } else {
-//                binding.errorNetLayout.root.visibility = View.GONE
-//            }
-//
-//        }
-
         binding.errorNetLayout.errorNetLayoutButton.setOnClickListener {
             //mainViewModel.checkNetConnection()
         }
@@ -103,9 +92,6 @@ class MainActivity : AppCompatActivity(),
 
         }
 
-
-
-
         binding.bottomInfo.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.menu_tt -> {
@@ -115,7 +101,6 @@ class MainActivity : AppCompatActivity(),
                         inclusive = false
                     )
                 }
-
                 R.id.menu_exams -> {
                     findNavController(R.id.fragmentContainerView)
                         .navigate(
@@ -124,20 +109,15 @@ class MainActivity : AppCompatActivity(),
                             )
                         )
                 }
-
                 R.id.menu_setting -> {
                     if (mainViewModel.selectedItem.value != BottomMenuItemStateManager.SETTING_ITEM) {
                         findNavController(R.id.fragmentContainerView)
                             .navigate(R.id.settingFragment)
                     }
-
                 }
-
-
             }
             return@setOnItemSelectedListener true
         }
-
     }
 
     override fun startFragment() {
@@ -158,7 +138,6 @@ class MainActivity : AppCompatActivity(),
 
         _binding = null
     }
-
 
     companion object {
         const val SYSTEM_THEME = 1

@@ -12,9 +12,7 @@ class SettingViewModel @Inject constructor(
     private val timeTableRepositoryImpl: TimeTableRepository,
     private val authRepositoryImpl: AuthRepositoryImpl
 ) : ViewModel() {
-
-
-    // хранит список с главными параметрами
+    
     private val _listOfFavoriteMainParam = timeTableRepositoryImpl.getArrayOfFavoriteMainParam()
     val listOfFavoriteMainParam: LiveData<ArrayList<MainParam>>
         get() = _listOfFavoriteMainParam

@@ -17,27 +17,20 @@ class ExamsFragmentViewModel @Inject constructor(
 
     private var job: Job = viewModelScope.launch { }
 
-
     private var _timeTableChanged = MutableLiveData<List<CellClass>>()
     val timeTableChanged: LiveData<List<CellClass>>
         get() = _timeTableChanged
-
 
     fun getTimeTable() {
 
         if (job.isActive) {
             job.cancel()
         }
-        job = viewModelScope.launch {
 
+        job = viewModelScope.launch {
             _timeTableChanged.postValue(
                 timeTableRepositoryImpl.getExams()
             )
-
         }
-
-
     }
-
-
 }

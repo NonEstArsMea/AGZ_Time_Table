@@ -27,6 +27,7 @@ class RecycleViewFragment : Fragment() {
         val view = inflater.inflate(R.layout.recycle_view_view_pager, container)
         val rvTimeTable = view.findViewById<RecyclerView>(R.id.view_pager_recycler)
         rvTimeTable.adapter = adapter
+
         arguments?.let {
             val type: Type = object : TypeToken<List<CellClass>>() {}.type
             timeTableDay = Gson().fromJson(it.getString(ARGUMENTS), type)

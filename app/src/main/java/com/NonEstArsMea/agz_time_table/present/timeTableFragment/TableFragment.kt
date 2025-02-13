@@ -2,26 +2,20 @@ package com.NonEstArsMea.agz_time_table.present.timeTableFragment
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.doOnLayout
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.viewpager2.widget.ViewPager2
-import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.databinding.TableLayoutBinding
 import com.NonEstArsMea.agz_time_table.present.TimeTableApplication
 import com.NonEstArsMea.agz_time_table.present.mainActivity.MainViewModelFactory
-import com.NonEstArsMea.agz_time_table.present.timeTableFragment.viewPager.ViewPagerAdapter
 import javax.inject.Inject
 
 
 class TableFragment : Fragment() {
 
-    private var _binding:TableLayoutBinding? = null
+    private var _binding: TableLayoutBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var vm: TimeTableViewModel
@@ -43,10 +37,10 @@ class TableFragment : Fragment() {
         )[TimeTableViewModel::class.java]
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
-
-
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = TableLayoutBinding.inflate(layoutInflater)
         return binding.root
     }
@@ -69,19 +63,19 @@ class TableFragment : Fragment() {
 
     private fun observeViewModel() {
         vm.state.observe(viewLifecycleOwner) {
-                when (it) {
-                    is LoadData -> {
-                        binding.tabView.setTimeTable()
-                    }
-
-                    is ConnectionError -> {}
-
-                    is TimeTableIsLoad -> {
-                        val dateList = vm.getDateList()
-                        binding.tabView.setTimeTable(it.list, dateList)
-                        binding.weekDateText.text = vm.getWeekDateText()
-                    }
+            when (it) {
+                is LoadData -> {
+                    binding.tabView.setTimeTable()
                 }
+
+                is ConnectionError -> {}
+
+                is TimeTableIsLoad -> {
+                    val dateList = vm.getDateList()
+                    binding.tabView.setTimeTable(it.list, dateList)
+                    binding.weekDateText.text = vm.getWeekDateText()
+                }
+            }
         }
     }
 
@@ -93,6 +87,7 @@ class TableFragment : Fragment() {
         private const val PREVIOUS_WEEK = -7
         private const val NEXT_WEEK = 7
 
-        @JvmStatic fun newInstance() = TableFragment()
+        @JvmStatic
+        fun newInstance() = TableFragment()
     }
 }

@@ -77,21 +77,21 @@ class SettingFragment : Fragment() {
 
         binding.searchBar.setOnClickListener {
             val extras = FragmentNavigator.Extras.Builder()
-                .addSharedElement(it, "morph_shared")
+                .addSharedElement(it, MORPH_SHARED_NAME)
                 .build()
             findNavController().navigate(R.id.searchFragment, null, null, extras)
         }
 
         binding.audWorkloadButton.setOnClickListener {
             val extras = FragmentNavigator.Extras.Builder()
-                .addSharedElement(it, "morph_aud_workload")
+                .addSharedElement(it, MORPH_SHARED_NAME_FOR_AUD_WORKLOAD)
                 .build()
             findNavController().navigate(R.id.audWorkloadFragment, null, null, extras)
         }
 
         binding.cafTimeTableButton.setOnClickListener {
             val extras = FragmentNavigator.Extras.Builder()
-                .addSharedElement(it, "morph_caf_time_table")
+                .addSharedElement(it, MORPH_SHARED_NAME_FOR_CAF_TIME_TABLE)
                 .build()
             findNavController().navigate(
                 R.id.action_settingFragment_to_cafTimeTableFragment,
@@ -153,9 +153,7 @@ class SettingFragment : Fragment() {
         }
 
         rvSettingView.adapter = rvSettingViewAdapter
-
     }
-
 
     override fun onDestroy() {
         super.onDestroy()
@@ -165,6 +163,13 @@ class SettingFragment : Fragment() {
     private fun actionViewStart(uri: String) {
         val link = Intent(ACTION_VIEW, Uri.parse(uri))
         startActivity(link)
+    }
+
+    companion object {
+        // при смене поменять в xml
+        const val MORPH_SHARED_NAME = "morph_shared"
+        const val MORPH_SHARED_NAME_FOR_AUD_WORKLOAD = "morph_aud_workload"
+        const val MORPH_SHARED_NAME_FOR_CAF_TIME_TABLE = "morph_caf_time_table"
     }
 
 

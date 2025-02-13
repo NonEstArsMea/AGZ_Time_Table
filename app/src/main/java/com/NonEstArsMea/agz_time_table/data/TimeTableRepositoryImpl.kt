@@ -162,7 +162,6 @@ class TimeTableRepositoryImpl @Inject constructor(
     override fun updateFavoriteParamList(newMainParam: MainParam) {
         val list = (listOfFavoriteMainParam.value?.toMutableList()
             ?: mutableListOf()) as ArrayList<MainParam>
-        Log.e("list_2", list.toString())
         with(list) {
 
             if (newMainParam !in this) {
@@ -178,7 +177,6 @@ class TimeTableRepositoryImpl @Inject constructor(
                 this.removeLast()
             }
         }
-        Log.e("list_2", list.toString())
         listOfFavoriteMainParam.value = list
     }
 
@@ -200,7 +198,6 @@ class TimeTableRepositoryImpl @Inject constructor(
     }
 
     override fun moveItemInFavoriteMainParam(param: MainParam): ArrayList<MainParam> {
-        //listOfFavoriteMainParam.value
         if(listOfFavoriteMainParam.value != null){
             if(listOfFavoriteMainParam.value!!.size > 1){
                 val list = listOfFavoriteMainParam.value?.toList() as ArrayList

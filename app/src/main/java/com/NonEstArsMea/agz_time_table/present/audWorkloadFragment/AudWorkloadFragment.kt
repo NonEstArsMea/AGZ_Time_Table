@@ -58,7 +58,8 @@ class AudWorkloadFragment : Fragment() {
 
         sharedElementEnterTransition = MaterialContainerTransform().apply {
             drawingViewId = R.id.fragmentContainerView
-            duration = 1000
+            duration = 1500
+            scrimColor = android.graphics.Color.TRANSPARENT
         }
     }
 
@@ -68,23 +69,19 @@ class AudWorkloadFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = AudWorkloadLayoutBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 
     override fun onStart() {
         super.onStart()
         observeVM()
-
     }
 
 
     override fun onResume() {
         super.onResume()
         updateList()
-        Log.e("resume", "$educationalBuildings")
 
         updateStyles(0)
         listOf(
@@ -97,8 +94,6 @@ class AudWorkloadFragment : Fragment() {
                 vm.setPosition(index)
             }
         }
-
-
 
         binding.btnLeft.setOnClickListener {
             vm.setNewDate(-1)
@@ -120,7 +115,6 @@ class AudWorkloadFragment : Fragment() {
                 is DataIsLoad -> {
                     updateStyles(it.position)
                     binding.dateText.text = DateManager.getDateString(requireContext(), it.date)
-                    Log.e("resume", "draw table")
                     binding.audWorkloadTableView.setDateTable(it.list, it.unicList)
                 }
             }

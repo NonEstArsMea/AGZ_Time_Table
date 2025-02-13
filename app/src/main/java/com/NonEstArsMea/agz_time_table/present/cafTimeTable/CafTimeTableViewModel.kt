@@ -25,8 +25,8 @@ class CafTimeTableViewModel@Inject constructor(
 
     private var offset = 0
     private var date = DateManager.getFullDateNow(offset)
-    private var id = ""
-    private var cafName = ""
+    private var id = INDEFINITE_ID
+    private var cafName = INDEFINITE_NAME
     private var rep: Map<String, List<CellClass>> = mapOf()
     private lateinit var unicList: List<String>
 
@@ -36,10 +36,7 @@ class CafTimeTableViewModel@Inject constructor(
         id = storageRepository.getCafIdInStorage()
         _state.value = SetDate(date, id)
         val index = ItemsAdapter.items.indexOf(id)
-        Log.e("ind", id.toString())
-        Log.e("ind", index.toString())
-        if(index != -1){
-            Log.e("ind", index.toString())
+        if(index != INDEFINITE_INDEX){
             cafName = ItemsAdapter.names[index]
         }
         getData(cafName, id)
@@ -55,20 +52,16 @@ class CafTimeTableViewModel@Inject constructor(
     fun getData(name:String, cafID: String) {
         id = cafID
         cafName = name
-        Log.e("log", id.toString())
         currentJob?.cancel()
         currentJob = viewModelScope.launch {
             rep = repository.getCafTimeTable(date, id)
-            Log.e("rep", "start " + date.toString() + rep.toString())
             setData()
         }
     }
 
     private fun setData() {
         if (rep.isNotEmpty()) {
-            Log.e("rep", "start " + rep.toString())
             unicList = getAllKeys()
-            Log.e("rep", unicList.toString())
             _state.value = DataIsLoad(date, unicList, rep, cafName)
         }else{
             _state.value = SetDate(date, cafName)
@@ -88,6 +81,12 @@ class CafTimeTableViewModel@Inject constructor(
 
     fun setNewID(id: String) {
         storageRepository.setCafIdInStorage(id)
+    }
+
+    companion object{
+        private const val INDEFINITE_ID = ""
+        private const val INDEFINITE_NAME = ""
+        private const val INDEFINITE_INDEX = -1
     }
 
 }

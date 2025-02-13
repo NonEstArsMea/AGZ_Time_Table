@@ -9,11 +9,9 @@ import android.graphics.Path
 import android.graphics.PointF
 import android.graphics.RectF
 import android.graphics.drawable.Drawable
-import android.icu.text.ListFormatter.Width
 import android.text.StaticLayout
 import android.text.TextPaint
 import android.util.AttributeSet
-import android.util.Log
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
@@ -51,10 +49,10 @@ class NewView @JvmOverloads constructor(
     private var lastPointerId = 0
 
     private val timeStartOfLessonsList = listOf(
-        "9:00", "10:45", "12:30", "14:45", "16:25",
+        "9:00", "10:45", "12:30", "14:45", "16:25", "18:05"
     )
     private val timeEndOfLessonsList = listOf(
-        "10:30", "12:15", "14:00", "16:15", "17:55",
+        "10:30", "12:15", "14:00", "16:15", "17:55", "19:35"
     )
 
 
@@ -205,8 +203,6 @@ class NewView @JvmOverloads constructor(
         dateList: List<String> = emptyList()
     ) {
 
-        Log.e("log", timeTable.toString())
-        Log.e("log", dateList.toString())
         if (timeTable.isNotEmpty()) {
             // Очистка массива
             transformations.resetTranslation()
@@ -281,14 +277,12 @@ class NewView @JvmOverloads constructor(
                 }
             }
 
-            Log.e("rep", columnNameTextList.toString())
 
             val rowNameText = buildList {
                 for (a in timeStartOfLessonsList.indices) {
                     add(DataForCellClass(timeStartOfLessonsList[a], timeEndOfLessonsList[a]))
                 }
             }
-            Log.e("rep", rowNameText.toString())
 
             unicList.forEachIndexed { index, it ->
                 map[it]!!.forEach {
@@ -297,12 +291,10 @@ class NewView @JvmOverloads constructor(
 
             }
 
-
             val list = map.values.flatten()
 
             list.forEach {
                 it.color = R.color.orange_fo_lessons_card
-                it.classroom
             }
 
             calculateTable(list, columnNameTextList, rowNameText, TEACHER_AND_GROOP_INFO_TYPE)
@@ -381,7 +373,6 @@ class NewView @JvmOverloads constructor(
                 .toFloat()
 
         fun addTranslation(dx: Float, dy: Float) {
-            Log.e("trans", "$translationX   $translationY")
             translationX = (translationX + dx).coerceIn(minTranslationX, 0f)
             translationY = (translationY + dy).coerceIn(minTranslationY, 0f)
             invalidate()
@@ -833,6 +824,7 @@ class NewView @JvmOverloads constructor(
         var infoText = ""
         table.forEach { cell ->
 
+
             infoText = when (typeInfo) {
                 CLASSROOM_INFO_TYPE -> cell.teacher + "\n" + cell.classroom
                 TEACHER_AND_GROOP_INFO_TYPE -> cell.teacher + "\n" + cell.studyGroup
@@ -848,15 +840,19 @@ class NewView @JvmOverloads constructor(
                     cell.color
                 )
             newCell.calculateSize()
+
             lessonsStaticLayoutList.add(newCell)
             masOfCellWidth[cell.column] = max(
                 masOfCellWidth[cell.column],
                 newCell.getCalculatedWidth()
             )
-            masOfCellHeight[cell.row] = max(
-                masOfCellHeight[cell.row],
-                newCell.getCalculatedHeight()
-            )
+
+            if (masOfCellHeight.size > cell.row) {
+                masOfCellHeight[cell.row] = max(
+                    masOfCellHeight[cell.row],
+                    newCell.getCalculatedHeight()
+                )
+            }
 
         }
         contentHeight = masOfCellHeight.sum().toInt()

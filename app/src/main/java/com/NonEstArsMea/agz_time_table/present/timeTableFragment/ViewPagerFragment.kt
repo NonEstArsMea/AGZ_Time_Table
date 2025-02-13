@@ -71,7 +71,6 @@ class ViewPagerFragment : Fragment() {
             binding.day6,
         )
 
-
         binding.buttomLeft.setOnClickListener {
             updateData(PREVIOUS_WEEK)
         }

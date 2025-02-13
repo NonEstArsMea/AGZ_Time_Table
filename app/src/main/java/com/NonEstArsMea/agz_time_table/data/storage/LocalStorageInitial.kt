@@ -6,7 +6,6 @@ import android.content.SharedPreferences
 class LocalStorageInitial(
     context: Context
 ) {
-
     private val sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
 
     fun getSharedPreferences(): SharedPreferences{

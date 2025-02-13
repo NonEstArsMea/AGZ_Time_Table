@@ -55,7 +55,6 @@ class AudWorkloadViewModel @Inject constructor(
     private fun getNewBuilding(position: Int) {
         numberOfBuilding = position
         if (rep.isNotEmpty()) {
-            Log.e("rep", "start " + rep.toString())
             rep[numberOfBuilding].let {
                 val uniqueCells = it.distinctBy { cell ->
                     cell.classroom to cell.subjectNumber
@@ -64,12 +63,9 @@ class AudWorkloadViewModel @Inject constructor(
                     cell.classroom.trim().split("/").getOrNull(1)?.toIntOrNull() ?: 0
                 }
                 unicList = getUniqueСlass()
-                Log.e("rep", unicList.toString())
                 _state.value = DataIsLoad(date, unicList, sortedList, position)
             }
         }
-
-
     }
 
     private fun getUniqueСlass(): List<String> {
@@ -86,11 +82,6 @@ class AudWorkloadViewModel @Inject constructor(
     override fun onCleared() {
         super.onCleared()
         currentJob?.cancel()
-    }
-
-
-    companion object {
-
     }
 
 }
