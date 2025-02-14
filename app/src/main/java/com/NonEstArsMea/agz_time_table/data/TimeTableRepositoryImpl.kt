@@ -1,13 +1,17 @@
 package com.NonEstArsMea.agz_time_table.data
 
+import android.content.Context
 import android.content.res.Resources
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.NonEstArsMea.agz_time_table.R
+import com.NonEstArsMea.agz_time_table.data.net.NetUtilImpl
 import com.NonEstArsMea.agz_time_table.data.net.retrofit.Common
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellClass
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
+import com.NonEstArsMea.agz_time_table.domain.mainUseCase.Storage.GetDataFromStorageUseCase
+import com.NonEstArsMea.agz_time_table.domain.mainUseCase.Storage.StorageRepository
 import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.TimeTableRepository
 import com.NonEstArsMea.agz_time_table.util.DateManager
 import com.NonEstArsMea.agz_time_table.util.Methods
@@ -19,6 +23,8 @@ import javax.inject.Singleton
 @Singleton
 class TimeTableRepositoryImpl @Inject constructor(
     private val resources: Resources,
+    private val context: Context,
+    private val repository: StorageRepository
 ) : TimeTableRepository {
 
     private var weekTimeTable = MutableLiveData<List<List<CellClass>>>()
@@ -64,7 +70,6 @@ class TimeTableRepositoryImpl @Inject constructor(
 
     override suspend fun getExams(): List<CellClass> {
         val response = Common.retrofitService.getExams(mainParam.value!!.name)
-        Log.e("res", response.body().toString())
         if (response.isSuccessful) {
             return if (response.body() != null) {
                 val exams = response.body()!!
@@ -83,21 +88,23 @@ class TimeTableRepositoryImpl @Inject constructor(
 
 
     override suspend fun getWeekTimeTable(): List<List<CellClass>> {
-        val dayOfWeek = DateManager.getArrayOfWeekDate()
-        try {
-            mainParam.value?.let {
-                val response = Common.retrofitService.getAggregate(dayOfWeek, it.name)
-                if (response.isSuccessful) {
-                    if (!response.body().isNullOrEmpty()) {
-                        return replaceColomns(response.body()!!, dayOfWeek)
+        if(NetUtilImpl.isInternetConnected(context)){
+            val dayOfWeek = DateManager.getArrayOfWeekDate()
+            try {
+                mainParam.value?.let {
+                    val response = Common.retrofitService.getAggregate(dayOfWeek, it.name)
+                    if (response.isSuccessful) {
+                        if (!response.body().isNullOrEmpty()) {
+                            return replaceColomns(response.body()!!, dayOfWeek)
+                        }
                     }
                 }
+            }catch (e: Exception){
+                return emptyList()
             }
-        }catch (e: Exception){
-            return emptyList()
+        }else{
+            return repository.getTimeTableFromStorage()
         }
-
-
 
         return emptyList()
 

@@ -6,9 +6,9 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isGone
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.navOptions
 import com.NonEstArsMea.agz_time_table.NavGraphDirections
 import com.NonEstArsMea.agz_time_table.R
-import com.NonEstArsMea.agz_time_table.data.AuthRepositoryImpl
 import com.NonEstArsMea.agz_time_table.databinding.MainLayoutBinding
 import com.NonEstArsMea.agz_time_table.present.TimeTableApplication
 import com.NonEstArsMea.agz_time_table.present.examsFragment.ExamsFragment
@@ -32,8 +32,6 @@ class MainActivity : AppCompatActivity(),
     @Inject
     lateinit var viewModelFactory: MainViewModelFactory
 
-    @Inject
-    lateinit var userAuth: AuthRepositoryImpl
 
     private val component by lazy {
         (application as TimeTableApplication).component
@@ -72,8 +70,6 @@ class MainActivity : AppCompatActivity(),
 
         analytics = Firebase.analytics
 
-        userAuth.init(this)
-
         _binding = MainLayoutBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
@@ -101,6 +97,7 @@ class MainActivity : AppCompatActivity(),
                         inclusive = false
                     )
                 }
+
                 R.id.menu_exams -> {
                     findNavController(R.id.fragmentContainerView)
                         .navigate(
@@ -109,10 +106,19 @@ class MainActivity : AppCompatActivity(),
                             )
                         )
                 }
+
                 R.id.menu_setting -> {
                     if (mainViewModel.selectedItem.value != BottomMenuItemStateManager.SETTING_ITEM) {
+                        val navOptions = navOptions {
+                            this.anim {
+                                this.enter = R.anim.slide_in_right
+                                this.exit = R.anim.slide_out_left
+                                this.popEnter = R.anim.slide_in_left
+                                this.popExit = R.anim.slide_out_right
+                            }
+                        }
                         findNavController(R.id.fragmentContainerView)
-                            .navigate(R.id.settingFragment)
+                            .navigate(NavGraphDirections.actionToSettingFragment(), navOptions)
                     }
                 }
             }

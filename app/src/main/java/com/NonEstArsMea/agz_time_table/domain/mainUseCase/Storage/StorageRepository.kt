@@ -1,6 +1,5 @@
 package com.NonEstArsMea.agz_time_table.domain.mainUseCase.Storage
 
-import androidx.lifecycle.LiveData
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellClass
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
 
@@ -16,9 +15,12 @@ interface StorageRepository {
         mainParam: MainParam?,
         favMainParamList: ArrayList<MainParam>?,
         theme: Int?,
+        list: List<List<CellClass>>
     )
 
-    fun setCafIdInStorage(id : String)
+    fun setCafIdInStorage(id: String)
 
-    fun getCafIdInStorage():String
+    fun getCafIdInStorage(): String
+
+    fun getTimeTableFromStorage(): List<List<CellClass>>
 }

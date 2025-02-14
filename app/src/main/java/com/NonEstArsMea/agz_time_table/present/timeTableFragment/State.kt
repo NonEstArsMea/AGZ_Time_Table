@@ -8,4 +8,9 @@ data object ConnectionError : State()
 
 data object LoadData: State()
 
-class TimeTableIsLoad(val list: List<List<CellClass>>) : State()
+/**
+* List - само расписание
+* day - день недели для установки во вью пейджере
+*/
+
+class TimeTableIsLoad(val list: List<List<CellClass>>, val day: Int) : State()

@@ -3,12 +3,15 @@ package com.NonEstArsMea.agz_time_table.present.mainActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.domain.mainUseCase.Storage.GetDataFromStorageUseCase
 import com.NonEstArsMea.agz_time_table.domain.mainUseCase.Storage.SetDataInStorageUseCase
 import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.GetMainParamUseCase
 import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.TimeTableRepository
 import com.NonEstArsMea.agz_time_table.util.BottomMenuItemStateManager
+import com.NonEstArsMea.agz_time_table.util.DateManager
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
@@ -32,22 +35,26 @@ class MainViewModel @Inject constructor(
     val selectedItem: LiveData<Int>
         get() = _selectedItem
 
-    fun startApp(){
+    fun startApp() {
         getDataFromStorage.execute()
         _theme.value = getDataFromStorage.getTheme()
     }
+
     fun getMainParam(): String {
         return getNameParam.getNameOfMainParamFromStorage()
     }
 
 
     fun setDataInStorage() {
-        setDataInStorage.execute(
-            mainParam = getNameParam.getLiveData().value,
-            favMainParamList = timeTableRepositoryImpl.getArrayOfFavoriteMainParam().value,
-            theme = _theme.value,
-        )
-
+        DateManager.setDayNow()
+        viewModelScope.launch {
+            setDataInStorage.execute(
+                mainParam = getNameParam.getLiveData().value,
+                favMainParamList = timeTableRepositoryImpl.getArrayOfFavoriteMainParam().value,
+                theme = _theme.value,
+                list = timeTableRepositoryImpl.getWeekTimeTable()
+            )
+        }
 
     }
 

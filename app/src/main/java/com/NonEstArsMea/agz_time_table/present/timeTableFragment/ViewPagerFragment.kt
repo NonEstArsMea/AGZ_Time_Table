@@ -128,8 +128,7 @@ class ViewPagerFragment : Fragment() {
 
                 is TimeTableIsLoad -> {
                     viewPagerAdapter.setData(it.list)
-                    val d = vm.getCurrentItem()
-                    viewPager.setCurrentItem(d, false)
+                    viewPager.setCurrentItem(it.day, false)
                     setButtonNumbers()
                 }
             }

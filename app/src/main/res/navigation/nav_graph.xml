@@ -98,6 +98,13 @@
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"
         app:popExitAnim="@anim/slide_out_right" />
+
+    <action
+        android:id="@+id/action_to_settingFragment"
+        app:destination="@id/settingFragment"
+        app:enterAnim="@anim/slide_in_left"
+        app:exitAnim="@anim/slide_out_right"
+        app:popEnterAnim="@anim/slide_in_right" />
     <fragment
         android:id="@+id/audWorkloadFragment"
         android:name="com.NonEstArsMea.agz_time_table.present.audWorkloadFragment.AudWorkloadFragment"

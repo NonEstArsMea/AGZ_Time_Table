@@ -46,7 +46,8 @@ class StorageRepositoryImpl @Inject constructor(
     override fun setDataInStorage(
         mainParam: MainParam?,
         favMainParamList: ArrayList<MainParam>?,
-        theme: Int?
+        theme: Int?,
+        list: List<List<CellClass>>
     ) {
         sharedPreferences.edit().apply {
             if (favMainParamList != null)
@@ -56,6 +57,7 @@ class StorageRepositoryImpl @Inject constructor(
             if (theme != null) {
                 putInt(THEME, theme)
             }
+            putString(LIST_KEY, gson.toJson(list))
 
         }.apply()
 
@@ -71,8 +73,17 @@ class StorageRepositoryImpl @Inject constructor(
         return sharedPreferences.getString(CAF_ID, "").toString()
     }
 
+    override fun getTimeTableFromStorage(): List<List<CellClass>> {
+        val token = object : TypeToken<List<List<CellClass>>>() {}.type
+        return gson.fromJson(
+            sharedPreferences.getString(LIST_KEY, gson.toJson(listOf<List<CellClass>>())),
+            token
+        ) ?: listOf()
+    }
+
     companion object {
         private const val MAIN_PARAM_KEY = "mainParam"
+        private const val LIST_KEY = "LK"
         private const val LIST_OF_FAVORITE_MAIN_PARAMS = "LOFMP"
         private const val CAF_ID = "CI"
         private const val THEME = "T"

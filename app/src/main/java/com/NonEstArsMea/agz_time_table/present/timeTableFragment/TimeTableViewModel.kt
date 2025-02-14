@@ -43,6 +43,10 @@ class TimeTableViewModel @Inject constructor(
 
     private var list: List<List<CellClass>> = listOf()
 
+    private var dayOfWeek = getCurrentItem()
+
+    private var nowWeek = 0
+
 
     init {
         _state.value = LoadData
@@ -50,10 +54,13 @@ class TimeTableViewModel @Inject constructor(
 
     @SuppressLint("SuspiciousIndentation")
     fun getNewTimeTable(newTime: Int? = null) {
-        if (newTime == NOW_WEEK) {
-            DateManager.setDayNow()
-        } else {
-            if (newTime != null) {
+        if (newTime != null) {
+            nowWeek += newTime
+            if (nowWeek == NOW_WEEK) {
+                dayOfWeek = getCurrentItem()
+                DateManager.setDayNow()
+            } else {
+                dayOfWeek = 0
                 DateManager.setNewCalendar(newTime)
             }
         }
@@ -66,7 +73,7 @@ class TimeTableViewModel @Inject constructor(
         job = viewModelScope.launch(Dispatchers.Default) {
             list = timeTableRepositoryImpl.getWeekTimeTable()
             launch(Dispatchers.Main) {
-                _state.value = TimeTableIsLoad(list)
+                _state.value = TimeTableIsLoad(list, dayOfWeek)
             }
         }
     }
@@ -97,7 +104,7 @@ class TimeTableViewModel @Inject constructor(
         return DateManager.monthAndDayNow(application.applicationContext)
     }
 
-    fun getCurrentItem() = DateManager.getDayOfWeek()
+    private fun getCurrentItem() = DateManager.getDayOfWeek()
 
     fun getWeekDateText(): String {
         return DateManager.getWeekDateText(application.applicationContext)

@@ -2,7 +2,6 @@ package com.NonEstArsMea.agz_time_table.present.settingFragment
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.NonEstArsMea.agz_time_table.data.AuthRepositoryImpl
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
 import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.TimeTableRepository
 import com.NonEstArsMea.agz_time_table.util.BottomMenuItemStateManager
@@ -10,7 +9,6 @@ import javax.inject.Inject
 
 class SettingViewModel @Inject constructor(
     private val timeTableRepositoryImpl: TimeTableRepository,
-    private val authRepositoryImpl: AuthRepositoryImpl
 ) : ViewModel() {
     
     private val _listOfFavoriteMainParam = timeTableRepositoryImpl.getArrayOfFavoriteMainParam()

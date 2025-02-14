@@ -103,7 +103,8 @@ class TimeTableFragment : Fragment() {
                     R.anim.slide_in_left,
                     R.anim.slide_out_right
                 )
-                .replace(R.id.view_pager_and_table_container, TableFragment.newInstance()).commit()
+                .replace(R.id.view_pager_and_table_container, TableFragment.newInstance())
+                .commit()
         }
         viewModeIsPager = !viewModeIsPager
 
