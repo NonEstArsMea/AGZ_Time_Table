@@ -1,8 +1,6 @@
 package com.NonEstArsMea.agz_time_table.domain.mainUseCase.Storage
 
-import com.NonEstArsMea.agz_time_table.domain.dataClass.CellClass
 import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.TimeTableRepository
-import com.google.common.collect.Table.Cell
 import javax.inject.Inject
 
 class GetDataFromStorageUseCase @Inject constructor(

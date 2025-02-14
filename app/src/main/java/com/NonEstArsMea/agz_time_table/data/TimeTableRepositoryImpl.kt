@@ -1,16 +1,14 @@
 package com.NonEstArsMea.agz_time_table.data
 
-import android.content.Context
 import android.content.res.Resources
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.NonEstArsMea.agz_time_table.R
-import com.NonEstArsMea.agz_time_table.data.net.NetUtilImpl
 import com.NonEstArsMea.agz_time_table.data.net.retrofit.Common
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellClass
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
-import com.NonEstArsMea.agz_time_table.domain.mainUseCase.Storage.GetDataFromStorageUseCase
+import com.NonEstArsMea.agz_time_table.domain.mainUseCase.NetUtil
 import com.NonEstArsMea.agz_time_table.domain.mainUseCase.Storage.StorageRepository
 import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.TimeTableRepository
 import com.NonEstArsMea.agz_time_table.util.DateManager
@@ -23,8 +21,8 @@ import javax.inject.Singleton
 @Singleton
 class TimeTableRepositoryImpl @Inject constructor(
     private val resources: Resources,
-    private val context: Context,
-    private val repository: StorageRepository
+    private val repository: StorageRepository,
+    private val netUtil: NetUtil,
 ) : TimeTableRepository {
 
     private var weekTimeTable = MutableLiveData<List<List<CellClass>>>()
@@ -76,7 +74,7 @@ class TimeTableRepositoryImpl @Inject constructor(
                 exams.forEach { lesson ->
                     lesson.color = Methods.setColor(lesson.subjectType)
                     lesson.subjectType =
-                        resources.getString(Methods.returnFullNameOfTheItemType(lesson.subjectType!!))
+                        resources.getString(Methods.returnFullNameOfTheItemType(lesson.subjectType))
                 }
                 exams
             } else {
@@ -88,7 +86,9 @@ class TimeTableRepositoryImpl @Inject constructor(
 
 
     override suspend fun getWeekTimeTable(): List<List<CellClass>> {
-        if(NetUtilImpl.isInternetConnected(context)){
+
+        Log.e("list", repository.getTimeTableFromStorage().toString())
+        if (netUtil.isNetConnection()) {
             val dayOfWeek = DateManager.getArrayOfWeekDate()
             try {
                 mainParam.value?.let {
@@ -99,14 +99,14 @@ class TimeTableRepositoryImpl @Inject constructor(
                         }
                     }
                 }
-            }catch (e: Exception){
+            } catch (e: Exception) {
                 return emptyList()
             }
-        }else{
+        } else {
             return repository.getTimeTableFromStorage()
         }
 
-        return emptyList()
+        return repository.getTimeTableFromStorage()
 
     }
 
@@ -142,7 +142,7 @@ class TimeTableRepositoryImpl @Inject constructor(
                     list.add(MainParam(it, false))
                 }
             }
-        }catch (e: Exception){
+        } catch (e: Exception) {
             list = arrayListOf()
         }
 
@@ -195,18 +195,18 @@ class TimeTableRepositoryImpl @Inject constructor(
     }
 
     override fun getNextMainParam(): String {
-        if (mainParam.value != null){
+        if (mainParam.value != null) {
             val index = listOfFavoriteMainParam.value!!.indexOf(mainParam.value!!)
             val masLen = listOfFavoriteMainParam.value!!.size
-            mainParam.value = listOfFavoriteMainParam.value!![(index+1) % masLen]
+            mainParam.value = listOfFavoriteMainParam.value!![(index + 1) % masLen]
             moveItemInFavoriteMainParam(mainParam.value!!)
         }
         return mainParam.value.toString()
     }
 
     override fun moveItemInFavoriteMainParam(param: MainParam): ArrayList<MainParam> {
-        if(listOfFavoriteMainParam.value != null){
-            if(listOfFavoriteMainParam.value!!.size > 1){
+        if (listOfFavoriteMainParam.value != null) {
+            if (listOfFavoriteMainParam.value!!.size > 1) {
                 val list = listOfFavoriteMainParam.value?.toList() as ArrayList
                 with(list) {
                     if (this.size != 1) {

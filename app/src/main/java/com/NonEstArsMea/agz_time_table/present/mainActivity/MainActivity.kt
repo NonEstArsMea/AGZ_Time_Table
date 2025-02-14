@@ -1,9 +1,14 @@
 package com.NonEstArsMea.agz_time_table.present.mainActivity
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.view.forEach
+import androidx.core.view.forEachIndexed
+import androidx.core.view.get
 import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.navOptions
@@ -79,7 +84,7 @@ class MainActivity : AppCompatActivity(),
     override fun onStart() {
         super.onStart()
         binding.errorNetLayout.errorNetLayoutButton.setOnClickListener {
-            //mainViewModel.checkNetConnection()
+            setClickable()
         }
 
         val menu = binding.bottomInfo.menu
@@ -88,6 +93,9 @@ class MainActivity : AppCompatActivity(),
 
         }
 
+        setClickable()
+
+        Log.e("click", mainViewModel.checkClickable().toString())
         binding.bottomInfo.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.menu_tt -> {
@@ -124,6 +132,15 @@ class MainActivity : AppCompatActivity(),
             }
             return@setOnItemSelectedListener true
         }
+    }
+
+    fun setClickable(){
+        val visible = mainViewModel.checkClickable()
+        binding.bottomInfo.menu.forEachIndexed { index, item ->
+            item.isVisible = visible
+        }
+
+        binding.errorNetLayout.root.isVisible = !visible
     }
 
     override fun startFragment() {

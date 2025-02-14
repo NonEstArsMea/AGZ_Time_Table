@@ -1,10 +1,12 @@
 package com.NonEstArsMea.agz_time_table.present.mainActivity
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.NonEstArsMea.agz_time_table.R
+import com.NonEstArsMea.agz_time_table.domain.mainUseCase.NetUtil
 import com.NonEstArsMea.agz_time_table.domain.mainUseCase.Storage.GetDataFromStorageUseCase
 import com.NonEstArsMea.agz_time_table.domain.mainUseCase.Storage.SetDataInStorageUseCase
 import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.GetMainParamUseCase
@@ -19,6 +21,8 @@ class MainViewModel @Inject constructor(
     private val getNameParam: GetMainParamUseCase,
     private val getDataFromStorage: GetDataFromStorageUseCase,
     private val timeTableRepositoryImpl: TimeTableRepository,
+    private val net: NetUtil,
+    private val context: Context
 ) : ViewModel() {
 
     private var _theme = MutableLiveData<Int>()
@@ -34,6 +38,10 @@ class MainViewModel @Inject constructor(
     private var _selectedItem: MutableLiveData<Int> = BottomMenuItemStateManager.getMenuItem()
     val selectedItem: LiveData<Int>
         get() = _selectedItem
+
+    init {
+        net.checkNetConn(context)
+    }
 
     fun startApp() {
         getDataFromStorage.execute()
@@ -56,6 +64,11 @@ class MainViewModel @Inject constructor(
             )
         }
 
+    }
+
+    fun checkClickable(): Boolean{
+        net.checkNetConn(context)
+        return net.isNetConnection()
     }
 
 

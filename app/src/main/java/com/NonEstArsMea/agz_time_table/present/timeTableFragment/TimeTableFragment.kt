@@ -110,9 +110,16 @@ class TimeTableFragment : Fragment() {
 
     }
 
+    private fun setClickable(b: Boolean){
+        binding.mainParam.isClickable = b
+    }
+
     private fun observeViewModel() {
         vm.mainParam.observe(viewLifecycleOwner) {
             binding.mainParam.animateSlideText(it.name)
+        }
+        vm.isConnected.observe(viewLifecycleOwner){
+            setClickable(it)
         }
 
     }

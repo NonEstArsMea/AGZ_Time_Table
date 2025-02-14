@@ -124,8 +124,6 @@ class ViewPagerFragment : Fragment() {
                 is LoadData -> {
                 }
 
-                is ConnectionError -> {}
-
                 is TimeTableIsLoad -> {
                     viewPagerAdapter.setData(it.list)
                     viewPager.setCurrentItem(it.day, false)
@@ -133,6 +131,15 @@ class ViewPagerFragment : Fragment() {
                 }
             }
         }
+
+        vm.isConnected.observe(viewLifecycleOwner){
+            setClickable(it)
+        }
+    }
+
+    private fun setClickable(it: Boolean){
+        binding.buttomLeft.isClickable = it
+        binding.buttomRight.isClickable = it
     }
 
 

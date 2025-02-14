@@ -3,14 +3,15 @@ package com.NonEstArsMea.agz_time_table.data.net
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import com.NonEstArsMea.agz_time_table.domain.mainUseCase.LoadData.NetUtil
-import javax.inject.Singleton
+import androidx.lifecycle.MutableLiveData
+import com.NonEstArsMea.agz_time_table.domain.mainUseCase.NetUtil
+import javax.inject.Inject
 
 
-object NetUtilImpl: NetUtil {
+class NetUtilImpl @Inject constructor(): NetUtil {
 
-
-    override fun isInternetConnected(context: Context): Boolean {
+    private var netConnection : MutableLiveData<Boolean> = MutableLiveData(false)
+    override fun checkNetConn(context: Context) {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
@@ -18,12 +19,22 @@ object NetUtilImpl: NetUtil {
             connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
         if (capabilities != null) {
             if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
-                return true
+                netConnection.value = true
+                return
             } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
-                return true
+                netConnection.value = true
+                return
             }
         }
-        return false
+        netConnection.value = false
+    }
+
+    override fun isNetConnection(): Boolean {
+        return netConnection.value!!
+    }
+
+    override fun getNetLiveData(): MutableLiveData<Boolean>{
+        return netConnection
     }
 
 }

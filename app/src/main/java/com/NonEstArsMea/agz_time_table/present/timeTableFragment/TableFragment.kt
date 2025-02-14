@@ -68,8 +68,6 @@ class TableFragment : Fragment() {
                     binding.tabView.setTimeTable()
                 }
 
-                is ConnectionError -> {}
-
                 is TimeTableIsLoad -> {
                     val dateList = vm.getDateList()
                     binding.tabView.setTimeTable(it.list, dateList)
@@ -77,6 +75,14 @@ class TableFragment : Fragment() {
                 }
             }
         }
+        vm.isConnected.observe(viewLifecycleOwner){
+            setClickable(it)
+        }
+    }
+
+    private fun setClickable(it: Boolean){
+        binding.buttonLeft.isClickable = it
+        binding.buttonRight.isClickable = it
     }
 
     private fun updateData(newTime: Int? = null) {
