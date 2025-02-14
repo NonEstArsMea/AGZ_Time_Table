@@ -31,11 +31,6 @@ interface TimeTableRepository {
 
     suspend fun getExams(): List<CellClass>
 
-    suspend fun getDepartmentTimeTable(
-        departmentId: String,
-        date: String
-    ): List<List<CellClass>>
-
     fun getDepartment(): List<String>
     fun getNextMainParam(): String
     fun checkFirstBeginning(): Boolean

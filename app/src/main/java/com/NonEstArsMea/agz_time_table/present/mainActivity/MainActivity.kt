@@ -95,7 +95,6 @@ class MainActivity : AppCompatActivity(),
 
         setClickable()
 
-        Log.e("click", mainViewModel.checkClickable().toString())
         binding.bottomInfo.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.menu_tt -> {

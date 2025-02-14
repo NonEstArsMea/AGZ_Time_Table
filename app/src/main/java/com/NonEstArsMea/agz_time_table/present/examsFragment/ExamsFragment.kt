@@ -2,6 +2,7 @@ package com.NonEstArsMea.agz_time_table.present.examsFragment
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -75,6 +76,7 @@ class ExamsFragment : Fragment() {
         recycleView.layoutManager = LinearLayoutManager(context)
 
         vm.timeTableChanged.observe(viewLifecycleOwner) {
+            Log.e("adapter", it.toString())
             adapter.submitList(it)
         }
 

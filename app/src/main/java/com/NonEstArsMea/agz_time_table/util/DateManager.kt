@@ -110,7 +110,6 @@ object DateManager {
             calendar.add(Calendar.DAY_OF_MONTH, 1)
         }
         calendar.add(Calendar.DAY_OF_WEEK, razn - 6)
-        Log.e("err", days.toString())
         return days
     }
 

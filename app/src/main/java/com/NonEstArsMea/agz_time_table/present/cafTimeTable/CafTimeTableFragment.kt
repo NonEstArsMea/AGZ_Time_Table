@@ -119,14 +119,10 @@ class CafTimeTableFragment : Fragment() {
             }
         }
     }
-
-
 }
-
 class SelectItemDialog : BottomSheetDialogFragment() {
 
     lateinit var vm: CafTimeTableViewModel
-
 
     lateinit var binding: DialogSelectItemBinding
 

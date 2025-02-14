@@ -81,7 +81,6 @@ class TimeTableViewModel @Inject constructor(
 
         job = viewModelScope.launch(Dispatchers.Default) {
             list = timeTableRepositoryImpl.getWeekTimeTable()
-            Log.e("list", list.toString())
             launch(Dispatchers.Main) {
                 _state.value = TimeTableIsLoad(list, dayOfWeek)
             }

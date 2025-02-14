@@ -67,27 +67,30 @@ class TimeTableRepositoryImpl @Inject constructor(
 
 
     override suspend fun getExams(): List<CellClass> {
-        val response = Common.retrofitService.getExams(mainParam.value!!.name)
-        if (response.isSuccessful) {
-            return if (response.body() != null) {
-                val exams = response.body()!!
-                exams.forEach { lesson ->
-                    lesson.color = Methods.setColor(lesson.subjectType)
-                    lesson.subjectType =
-                        resources.getString(Methods.returnFullNameOfTheItemType(lesson.subjectType))
+        try {
+            val response = Common.retrofitService.getExams(mainParam.value!!.name)
+            if (response.isSuccessful) {
+                return if (!response.body().isNullOrEmpty()) {
+                    val exams = response.body()!!
+                    exams.forEach { lesson ->
+                        lesson.color = Methods.setColor(lesson.subjectType)
+                        lesson.subjectType =
+                            resources.getString(Methods.returnFullNameOfTheItemType(lesson.subjectType))
+                    }
+                    exams
+                } else {
+                    emptyList()
                 }
-                exams
-            } else {
-                emptyList()
             }
+        } catch (e: Exception) {
+            return emptyList()
         }
+
         return emptyList()
     }
 
-
     override suspend fun getWeekTimeTable(): List<List<CellClass>> {
 
-        Log.e("list", repository.getTimeTableFromStorage().toString())
         if (netUtil.isNetConnection()) {
             val dayOfWeek = DateManager.getArrayOfWeekDate()
             try {
@@ -105,9 +108,7 @@ class TimeTableRepositoryImpl @Inject constructor(
         } else {
             return repository.getTimeTableFromStorage()
         }
-
         return repository.getTimeTableFromStorage()
-
     }
 
     private fun replaceColomns(
@@ -136,9 +137,9 @@ class TimeTableRepositoryImpl @Inject constructor(
     override suspend fun getListOfMainParam() {
         var list = ArrayList<MainParam>()
         try {
-            val restResponce = Common.retrofitService.getMainParamsList()
-            if (restResponce.isSuccessful) {
-                restResponce.body()?.forEach {
+            val restResponse = Common.retrofitService.getMainParamsList()
+            if (restResponse.isSuccessful) {
+                restResponse.body()?.forEach {
                     list.add(MainParam(it, false))
                 }
             }
@@ -151,15 +152,25 @@ class TimeTableRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getListOfAudWorkload(date: String): List<List<CellClass>> {
-        val restResponce = Common.retrofitService.getAudWorkload(date)
-        return if (restResponce.isSuccessful)
-            restResponce.body() ?: listOf() else listOf()
+
+        return try {
+            val restResponse = Common.retrofitService.getAudWorkload(date)
+            if (restResponse.isSuccessful)
+                restResponse.body() ?: listOf() else listOf()
+        } catch (e: Exception) {
+            listOf()
+        }
+
     }
 
     override suspend fun getCafTimeTable(date: String, id: String): Map<String, List<CellClass>> {
-        val restResponce = Common.retrofitService.getCafTimeTable(date, id)
-        return if (restResponce.isSuccessful)
-            restResponce.body() ?: mapOf() else mapOf()
+        return try {
+            val restResponse = Common.retrofitService.getCafTimeTable(date, id)
+            if (restResponse.isSuccessful)
+                restResponse.body() ?: mapOf() else mapOf()
+        } catch (e: Exception) {
+            mapOf()
+        }
     }
 
     override fun getNewListOfMainParam(): MutableLiveData<ArrayList<MainParam>> {
@@ -188,7 +199,7 @@ class TimeTableRepositoryImpl @Inject constructor(
     }
 
     override fun getDepartment(): List<String> {
-
+        // Функция для получения данных с сервера
         val masOfDepartment = mutableListOf<String>()
 
         return masOfDepartment
@@ -228,15 +239,4 @@ class TimeTableRepositoryImpl @Inject constructor(
     override fun checkFirstBeginning(): Boolean {
         return !listOfFavoriteMainParam.value.isNullOrEmpty()
     }
-
-    override suspend fun getDepartmentTimeTable(
-        departmentId: String,
-        date: String
-    ): List<List<CellClass>> = withContext(Dispatchers.Default) {
-        val list = mutableListOf<List<CellClass>>()
-
-        return@withContext list
-    }
-
-
 }

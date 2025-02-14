@@ -38,7 +38,6 @@ object Methods {
     }}
 
     fun setColor(text: String): Int{
-        Log.e("col", R.color.red_fo_lessons_card.toString())
         return when(text){
             "э" -> R.color.red_fo_lessons_card
             "эк" -> R.color.red_fo_lessons_card
@@ -68,16 +67,16 @@ object Methods {
 
 fun TextView.animateSlideText(newText: String) {
     this.animate()
-        .translationY(-10f)
+        .translationY(-5f)
         .alpha(0f)
-        .setDuration(150)
+        .setDuration(200)
         .withEndAction {
             this.text = newText
-            this.translationY = 10f
+            this.translationY = 5f
             this.animate()
                 .translationY(0f)
                 .alpha(1f)
-                .setDuration(150)
+                .setDuration(200)
                 .start()
         }
         .start()
