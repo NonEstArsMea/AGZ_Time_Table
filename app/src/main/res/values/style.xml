@@ -83,15 +83,6 @@
     </style>
 
 
-    <style name="CollapsedToolbarTitle">
-        <item name="android:textSize">18sp</item> <!-- Уменьшаем текст при схлопывании -->
-        <item name="android:textColor">?attr/titleTextColor</item>
-    </style>
-
-    <style name="ExpandedToolbarTitle">
-        <item name="android:textSize">24sp</item> <!-- Крупный текст в развернутом состоянии -->
-        <item name="android:textColor">?attr/colorPrimary</item>
-    </style>
 
 
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -10,41 +10,30 @@
     android:theme="@style/Theme.AGZ_Time_Table"
     tools:context=".present.mainActivity.MainActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
+   <TextView
+       android:id="@+id/setting_layout_header"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:text="@string/setting_lable"
+       style="@style/MainTextViewStyle.Header1"
+       android:textSize="20sp"
+       android:padding="15dp"
+       app:layout_constraintLeft_toLeftOf="parent"
+       app:layout_constraintTop_toTopOf="parent"/>
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <!-- CollapsingToolbarLayout для анимации заголовка -->
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            app:contentScrim="?attr/colorSurface"
-            app:title="Настройки"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
-            app:collapsedTitleTextAppearance="@style/CollapsedToolbarTitle"
-            app:expandedTitleTextAppearance="@style/ExpandedToolbarTitle">
-
-            <!-- Toolbar (название "Настройки") -->
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/setting_layout_header"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
-                />
-
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:layout_marginStart="@dimen/margine_all"
         android:layout_marginEnd="@dimen/margine_all"
+        android:paddingBottom="0dp"
         android:paddingStart="5dp"
         android:paddingEnd="5dp"
         android:scrollbars="none"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/setting_layout_header"
+        app:layout_constraintLeft_toLeftOf="parent"
         >
 
         <LinearLayout
@@ -503,7 +492,7 @@
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
 
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout >
+</androidx.constraintlayout.widget.ConstraintLayout>

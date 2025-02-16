@@ -63,8 +63,15 @@ class TimeTableViewModel @Inject constructor(
 
     @SuppressLint("SuspiciousIndentation")
     fun getNewTimeTable(newTime: Int? = null) {
+        if (newTime == 0){
+            nowWeek = newTime
+        }
         if (newTime != null) {
-            nowWeek += newTime
+            if (newTime == 0){
+                nowWeek = newTime
+            }else{
+                nowWeek += newTime
+            }
             if (nowWeek == NOW_WEEK) {
                 dayOfWeek = getCurrentItem()
                 DateManager.setDayNow()

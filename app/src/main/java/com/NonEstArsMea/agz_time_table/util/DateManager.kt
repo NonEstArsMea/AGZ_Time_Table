@@ -12,6 +12,10 @@ object DateManager {
 
     fun setDayNow() {
         calendar = Calendar.getInstance()
+        val dayOfWeek = (calendar.get(Calendar.DAY_OF_WEEK) + 5) % 7
+        if (dayOfWeek == SUNDAY) {
+            calendar.add(Calendar.DAY_OF_MONTH, 1)
+        }
     }
 
     fun getMonth(number: Int): Int {

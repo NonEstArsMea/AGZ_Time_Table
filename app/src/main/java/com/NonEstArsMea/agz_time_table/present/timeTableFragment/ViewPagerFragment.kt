@@ -99,11 +99,14 @@ class ViewPagerFragment : Fragment() {
                         it.background =
                             resources.getDrawable(R.drawable.main_surface, context.theme)
                     }
-                    with(days[position]) {
-                        this.setTextAppearance(R.style.MainTextViewStyle_DayNowWeekNumber)
-                        this.background =
-                            resources.getDrawable(R.drawable.break_cell_background, context.theme)
+                    if(position in days.indices){
+                        with(days[position]) {
+                            this.setTextAppearance(R.style.MainTextViewStyle_DayNowWeekNumber)
+                            this.background =
+                                resources.getDrawable(R.drawable.break_cell_background, context.theme)
+                        }
                     }
+
                 }
 
             }
