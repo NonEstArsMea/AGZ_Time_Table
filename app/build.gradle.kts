@@ -18,8 +18,8 @@ android {
         applicationId = "com.NonEstArsMea.agz_time_table"
         minSdk = 28
         targetSdk = 33
-        versionCode = 11
-        versionName = "2.1.3"
+        versionCode = 12
+        versionName = "2.1.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

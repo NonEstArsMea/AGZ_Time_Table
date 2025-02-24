@@ -62,4 +62,6 @@
     <string name="network_error_message">Network Error</string>
     <string name="aud_workload_button_name">Aud workload</string>
     <string name="aud_workload_button">Viewing the workload of classrooms in academic buildings</string>
+    <string name="add_teacher_button">Add teacher</string>
+
 </resources>

@@ -62,19 +62,43 @@
                 tools:itemCount="3"
                 tools:listitem="@layout/favorite_param_card" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/search_bar"
-                android:textColor="@color/red_themes"
-                app:iconTint="@color/red_themes"
-                style="@style/Widget.Material3.Button.IconButton.Outlined"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:layout_margin="@dimen/margine_all"
-                android:text="@string/add_group_button"
-                app:cornerRadius="10dp"
-                app:icon="@drawable/plus"
-                app:iconGravity="textStart"
-                android:transitionName="morph_shared"/>
+                android:gravity="center">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/select_group_button"
+                    android:textColor="@color/red_themes"
+                    app:iconTint="@color/red_themes"
+                    style="@style/Widget.Material3.Button.IconButton.Outlined"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/add_group_button"
+                    app:cornerRadius="10dp"
+                    app:icon="@drawable/ic_group"
+                    app:iconGravity="textStart"
+                    android:layout_marginEnd="4dp"
+                    android:transitionName="morph_shared_group"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/select_teacher_button"
+                    android:textColor="@color/red_themes"
+                    app:iconTint="@color/red_themes"
+                    style="@style/Widget.Material3.Button.IconButton.Outlined"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/add_teacher_button"
+                    app:cornerRadius="10dp"
+                    app:icon="@drawable/ic_teacher"
+                    app:iconGravity="textStart"
+                    android:layout_marginStart="4dp"
+                    android:transitionName="morph_shared_teacher"/>
+            </LinearLayout>
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/aud_workload_button"

@@ -87,5 +87,7 @@
     <string name="aud_workload_button">Просмотр загруженности аудиторий в учебных корпусах</string>
     <string name="caf_time_table_button_name">Расписание кафедры</string>
     <string name="caf_time_table_button">Просмотр расписания кафедры для всех преподавателей</string>
+    <string name="add_teacher_button">Выбрать преподавателя</string>
+
 
 </resources>
