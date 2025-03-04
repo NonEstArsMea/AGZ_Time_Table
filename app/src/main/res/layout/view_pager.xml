@@ -78,6 +78,7 @@
                 <TextView
                     android:id="@+id/mon_text"
                     style="?attr/textAppearanceHeadline1"
+                    android:textSize="15dp"
                     android:text="@string/first_day"
 
                     />
@@ -85,6 +86,7 @@
                 <TextView
                     android:id="@+id/day_1"
                     style="?attr/textAppearanceHeadline3"
+                    android:textSize="15dp"
                     android:text="1" />
 
 
@@ -103,11 +105,13 @@
                 <TextView
                     android:id="@+id/tue_text"
                     style="?attr/textAppearanceHeadline1"
+                    android:textSize="15dp"
                     android:text="@string/second_day" />
 
                 <TextView
                     android:id="@+id/day_2"
                     style="?attr/textAppearanceHeadline3"
+                    android:textSize="15dp"
                     android:text="2" />
             </LinearLayout>
 
@@ -124,11 +128,13 @@
                 <TextView
                     android:id="@+id/wed_text"
                     style="?attr/textAppearanceHeadline1"
+                    android:textSize="15dp"
                     android:text="@string/third_day" />
 
                 <TextView
                     android:id="@+id/day_3"
                     style="?attr/textAppearanceHeadline3"
+                    android:textSize="15dp"
                     android:text="3" />
             </LinearLayout>
 
@@ -145,11 +151,13 @@
                 <TextView
                     android:id="@+id/thu_text"
                     style="?attr/textAppearanceHeadline1"
+                    android:textSize="15dp"
                     android:text="@string/fourth_day" />
 
                 <TextView
                     android:id="@+id/day_4"
                     style="?attr/textAppearanceHeadline3"
+                    android:textSize="15dp"
                     android:text="4" />
             </LinearLayout>
 
@@ -166,11 +174,13 @@
                 <TextView
                     android:id="@+id/fri_text"
                     style="?attr/textAppearanceHeadline1"
+                    android:textSize="15dp"
                     android:text="@string/fifth_day" />
 
                 <TextView
                     android:id="@+id/day_5"
                     style="?attr/textAppearanceHeadline3"
+                    android:textSize="15dp"
                     android:text="5" />
             </LinearLayout>
 
@@ -187,11 +197,13 @@
                 <TextView
                     android:id="@+id/sat_text"
                     style="?attr/textAppearanceHeadline1"
+                    android:textSize="15dp"
                     android:text="@string/sixth_day" />
 
                 <TextView
                     android:id="@+id/day_6"
                     style="?attr/textAppearanceHeadline3"
+                    android:textSize="15dp"
                     android:text="6" />
             </LinearLayout>
 

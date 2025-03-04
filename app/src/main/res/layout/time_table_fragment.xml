@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/time_table_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,87 +8,85 @@
     android:theme="@style/Theme.AGZ_Time_Table">
 
 
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/top_card"
+        style="@style/Widget.Material3.CardView.Elevated"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margine_all"
+        app:cardElevation="5dp"
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/top_card"
-            style="@style/Widget.Material3.CardView.Elevated"
-            android:layout_margin="@dimen/margine_all"
-            app:cardElevation="5dp"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/user_info"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:background="?attr/colorPrimary"
+
+
             app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/user_info"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
 
-                android:background="?attr/colorPrimary"
+            <Button
+                android:id="@+id/set_date_button"
+                style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/margine_all"
+                app:icon="@drawable/home_icon"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
+            <Button
+                android:id="@+id/change_view_mod"
+                style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/margine_all"
+                app:icon="@drawable/squares"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/set_date_button"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                app:layout_constraintTop_toTopOf="parent">
+            <TextView
+                android:id="@+id/main_param"
+                style="@style/MainTextViewStyle.HeaderText"
+                android:layout_width="0dp"
 
+                android:layout_height="wrap_content"
+                android:gravity="left|center"
+                android:maxLines="2"
 
+                android:paddingLeft="15dp"
+                android:paddingTop="10dp"
+                android:text="@string/group_not_selected_text"
+                app:layout_constraintBottom_toTopOf="@id/month_date"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/change_view_mod"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <Button
-                    android:id="@+id/set_date_button"
-                    style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/margine_all"
-                    app:icon="@drawable/home_icon"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+            <TextView
+                android:id="@+id/month_date"
+                style="@style/MainTextViewStyle.HeaderText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:paddingBottom="10dp"
+                android:text="Month, Year"
+                android:textSize="14sp"
 
-                <Button
-                    android:id="@+id/change_view_mod"
-                    style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/margine_all"
-                    app:icon="@drawable/squares"
-                    app:layout_constraintRight_toLeftOf="@id/set_date_button"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
-
-                <TextView
-                    android:id="@+id/main_param"
-                    style="@style/MainTextViewStyle.HeaderText"
-                    android:layout_width="196dp"
-
-                    android:layout_height="35dp"
-
-                    android:gravity="left|center"
-
-                    android:paddingLeft="15dp"
-                    android:paddingTop="10dp"
-                    android:text="@string/group_not_selected_text"
-                    app:layout_constraintBottom_toTopOf="@id/month_date"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/month_date"
-                    style="@style/MainTextViewStyle.HeaderText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="15dp"
-                    android:paddingBottom="10dp"
-                    android:text="Month, Year"
-                    android:textSize="14sp"
-
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/main_param" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/main_param" />
 
 
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </com.google.android.material.card.MaterialCardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/view_pager_and_table_container"
@@ -100,8 +97,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/top_card" />
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

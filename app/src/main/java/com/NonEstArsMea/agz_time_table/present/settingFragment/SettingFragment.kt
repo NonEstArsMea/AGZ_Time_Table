@@ -75,7 +75,7 @@ class SettingFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        binding.searchBar.setOnClickListener {
+        binding.selectGroupButton.setOnClickListener {
             val extras = FragmentNavigator.Extras.Builder()
                 .addSharedElement(it, MORPH_SHARED_NAME)
                 .build()

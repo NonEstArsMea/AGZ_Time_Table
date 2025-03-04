@@ -79,11 +79,10 @@
                     android:layout_weight="1"
                     android:text="@string/add_group_button"
                     app:cornerRadius="10dp"
-                    app:icon="@drawable/ic_group"
                     app:iconGravity="textStart"
                     android:layout_marginEnd="4dp"
                     android:transitionName="morph_shared_group"/>
-
+                <!--app:icon="@drawable/ic_group"-->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/select_teacher_button"
                     android:textColor="@color/red_themes"
@@ -94,7 +93,6 @@
                     android:layout_weight="1"
                     android:text="@string/add_teacher_button"
                     app:cornerRadius="10dp"
-                    app:icon="@drawable/ic_teacher"
                     app:iconGravity="textStart"
                     android:layout_marginStart="4dp"
                     android:transitionName="morph_shared_teacher"/>
