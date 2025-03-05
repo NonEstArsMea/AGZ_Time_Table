@@ -134,13 +134,31 @@ class TimeTableRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun getListOfMainParam() {
+    override suspend fun getListOfGroups() {
         var list = ArrayList<MainParam>()
         try {
-            val restResponse = Common.retrofitService.getMainParamsList()
+            val restResponse = Common.retrofitService.getGroupsParamsList()
             if (restResponse.isSuccessful) {
                 restResponse.body()?.forEach {
                     list.add(MainParam(it, false))
+                }
+            }
+        } catch (e: Exception) {
+            list = arrayListOf()
+        }
+
+
+        listOfMainParam.postValue(list)
+    }
+
+    override suspend fun getListOfTeachers() {
+        var list = ArrayList<MainParam>()
+        try {
+            val restResponse = Common.retrofitService.getTeachersParamsList()
+            if (restResponse.isSuccessful) {
+                restResponse.body()?.forEach {
+                    if(it.trim().isNotEmpty())
+                        list.add(MainParam(it, false))
                 }
             }
         } catch (e: Exception) {

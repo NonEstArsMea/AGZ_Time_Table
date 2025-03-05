@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.databinding.SearchLayoutBinding
 import com.NonEstArsMea.agz_time_table.present.TimeTableApplication
+import com.NonEstArsMea.agz_time_table.present.cafTimeTable.CafTimeTableViewModel
 import com.NonEstArsMea.agz_time_table.present.mainActivity.MainViewModelFactory
 import com.NonEstArsMea.agz_time_table.present.searchFragment.recycleView.RecycleViewOnSearchFragmentAdapter
 import com.google.android.material.transition.MaterialContainerTransform
@@ -56,6 +57,8 @@ class SearchFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        val arg = arguments?.getInt(CafTimeTableViewModel.BUNDLE_KEY) ?: CafTimeTableViewModel.GROUP_LIST_KEY
+        vm.getListOfMainParam(arg)
         _binding = SearchLayoutBinding.inflate(inflater, container, false)
         binding.searchView.queryHint = "Номер группы или Фамилия преподавателя"
         return binding.root

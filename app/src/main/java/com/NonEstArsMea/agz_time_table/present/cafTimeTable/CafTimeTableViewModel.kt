@@ -87,6 +87,9 @@ class CafTimeTableViewModel@Inject constructor(
         private const val INDEFINITE_ID = ""
         private const val INDEFINITE_NAME = ""
         private const val INDEFINITE_INDEX = -1
+        const val TEACHER_LIST_KEY = 1
+        const val GROUP_LIST_KEY = 2
+        const val BUNDLE_KEY = "BK"
     }
 
 }

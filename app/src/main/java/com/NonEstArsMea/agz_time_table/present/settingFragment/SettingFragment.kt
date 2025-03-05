@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.databinding.SettingLayoutBinding
 import com.NonEstArsMea.agz_time_table.present.TimeTableApplication
+import com.NonEstArsMea.agz_time_table.present.cafTimeTable.CafTimeTableViewModel
 import com.NonEstArsMea.agz_time_table.present.mainActivity.MainViewModel
 import com.NonEstArsMea.agz_time_table.present.mainActivity.MainViewModelFactory
 import com.NonEstArsMea.agz_time_table.present.settingFragment.recycleView.SettingRecycleViewAdapter
@@ -79,7 +80,23 @@ class SettingFragment : Fragment() {
             val extras = FragmentNavigator.Extras.Builder()
                 .addSharedElement(it, MORPH_SHARED_NAME)
                 .build()
-            findNavController().navigate(R.id.searchFragment, null, null, extras)
+
+            val bundle = Bundle().apply {
+                putInt(CafTimeTableViewModel.BUNDLE_KEY, CafTimeTableViewModel.GROUP_LIST_KEY) // или false в зависимости от вашего условия
+            }
+
+            findNavController().navigate(R.id.searchFragment, bundle, null, extras)
+        }
+
+        binding.selectTeacherButton.setOnClickListener {
+            val extras = FragmentNavigator.Extras.Builder()
+                .addSharedElement(it, MORPH_SHARED_NAME)
+                .build()
+
+            val bundle = Bundle().apply {
+                putInt(CafTimeTableViewModel.BUNDLE_KEY, CafTimeTableViewModel.TEACHER_LIST_KEY) // или false в зависимости от вашего условия
+            }
+            findNavController().navigate(R.id.searchFragment, bundle, null, extras)
         }
 
         binding.audWorkloadButton.setOnClickListener {

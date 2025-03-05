@@ -105,7 +105,7 @@ class CafTimeTableFragment : Fragment() {
                 ConnectionError -> TODO()
                 is SetDate -> {
                     binding.dateText.text = DateManager.getDateString(requireContext(), it.date)
-                    if (it.id.isNotEmpty()) binding.cafTimeTableButtonText.animateSlideText(it.id)
+                    if (it.id.isNotEmpty()) binding.cafTimeTableButtonText.animateSlideText("\n ")
                     binding.cafTimeTableView.clearView()
                 }
 

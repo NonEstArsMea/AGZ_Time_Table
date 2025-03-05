@@ -11,7 +11,9 @@ interface TimeTableRepository {
 
     suspend fun getWeekTimeTable(): List<List<CellClass>>
 
-    suspend fun getListOfMainParam()
+    suspend fun getListOfGroups()
+
+    suspend fun getListOfTeachers()
     suspend fun getListOfAudWorkload(date: String): List<List<CellClass>>
 
     suspend fun getCafTimeTable(date: String, id: String): Map<String, List<CellClass>>

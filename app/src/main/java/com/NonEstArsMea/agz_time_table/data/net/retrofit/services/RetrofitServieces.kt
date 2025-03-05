@@ -7,8 +7,12 @@ import retrofit2.http.Query
 
 interface RetrofitServieces {
 
-    @GET("unique-values")
-    suspend fun getMainParamsList(): Response<ArrayList<String>>
+    @GET("unique-groups")
+    suspend fun getGroupsParamsList(): Response<ArrayList<String>>
+
+    @GET("unique-teachers")
+    suspend fun getTeachersParamsList(): Response<ArrayList<String>>
+
 
     @GET("aggregate")
     suspend fun getAggregate(

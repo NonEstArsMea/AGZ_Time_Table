@@ -16,11 +16,12 @@
         android:layout_marginTop="10dp"
         android:padding="@dimen/margine_all"
         android:paddingBottom="20dp"
+        android:transitionName="morph_caf_time_table"
         app:cardElevation="5dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/margine_all"
             android:padding="@dimen/margine_all">
 
@@ -60,7 +61,6 @@
 
             <!-- Поле для ввода -->
             <com.google.android.material.card.MaterialCardView
-                android:transitionName="morph_caf_time_table"
                 android:id="@+id/caf_time_table_button"
                 style="@style/Widget.Material3.CardView.Filled"
                 android:layout_width="match_parent"
@@ -77,13 +77,13 @@
                 <TextView
                     android:id="@+id/caf_time_table_button_text"
                     style="@style/MainTextViewStyle.Header1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:padding="15dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:text="Выбрать кафедру"
                     android:textColor="@color/gray_400"
-                    android:textSize="14sp"
-                    android:text="Выбрать кафедру" />
+                    android:textSize="14sp" />
 
             </com.google.android.material.card.MaterialCardView>
 
