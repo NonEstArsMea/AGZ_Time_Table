@@ -106,6 +106,13 @@ class SettingFragment : Fragment() {
             findNavController().navigate(R.id.audWorkloadFragment, null, null, extras)
         }
 
+        binding.workloadButton.setOnClickListener {
+            val extras = FragmentNavigator.Extras.Builder()
+                .addSharedElement(it, MORPH_SHARED_NAME_FOR_WORKLOAD)
+                .build()
+            findNavController().navigate(R.id.workloadFragment, null, null, extras)
+        }
+
         binding.cafTimeTableButton.setOnClickListener {
             val extras = FragmentNavigator.Extras.Builder()
                 .addSharedElement(it, MORPH_SHARED_NAME_FOR_CAF_TIME_TABLE)
@@ -187,6 +194,7 @@ class SettingFragment : Fragment() {
         const val MORPH_SHARED_NAME = "morph_shared"
         const val MORPH_SHARED_NAME_FOR_AUD_WORKLOAD = "morph_aud_workload"
         const val MORPH_SHARED_NAME_FOR_CAF_TIME_TABLE = "morph_caf_time_table"
+        const val MORPH_SHARED_NAME_FOR_WORKLOAD = "morph_workload"
     }
 
 

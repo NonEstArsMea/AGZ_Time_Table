@@ -63,4 +63,6 @@
     <string name="aud_workload_button_name">Загрузка аудиторий</string>
     <string name="aud_workload_button">Просмотр загруженности аудиторий в учебных корпусах</string>
     <string name="add_teacher_button">Выбрать преподавателя</string>
+    <string name="workload_text">Нагрузка</string>
+    <string name="workload_info_text">Просмотр нагрузки преподавателей игрупп</string>
 </resources>

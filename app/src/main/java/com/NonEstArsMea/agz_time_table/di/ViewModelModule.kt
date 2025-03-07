@@ -8,6 +8,7 @@ import com.NonEstArsMea.agz_time_table.present.mainActivity.MainViewModel
 import com.NonEstArsMea.agz_time_table.present.searchFragment.SearchViewModel
 import com.NonEstArsMea.agz_time_table.present.settingFragment.SettingViewModel
 import com.NonEstArsMea.agz_time_table.present.timeTableFragment.TimeTableViewModel
+import com.NonEstArsMea.agz_time_table.present.workloadLayout.WorkloadViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -52,4 +53,9 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(CafTimeTableViewModel::class)
     fun bindCafTimeTableViewModel(viewModel: CafTimeTableViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(WorkloadViewModel::class)
+    fun bindWorkloadViewModel(viewModel: WorkloadViewModel): ViewModel
 }

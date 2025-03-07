@@ -88,6 +88,8 @@
     <string name="caf_time_table_button_name">Расписание кафедры</string>
     <string name="caf_time_table_button">Просмотр расписания кафедры для всех преподавателей</string>
     <string name="add_teacher_button">Выбрать преподавателя</string>
+    <string name="workload_text">Нагрузка</string>
+    <string name="workload_info_text">Просмотр нагрузки преподавателей и групп</string>
 
 
 </resources>

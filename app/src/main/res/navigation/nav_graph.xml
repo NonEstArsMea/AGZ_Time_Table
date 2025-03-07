@@ -14,13 +14,6 @@
             app:enterAnim="@anim/slide_in_left"
             app:exitAnim="@anim/slide_out_right"
             app:popEnterAnim="@anim/slide_in_right" />
-        <action
-            android:id="@+id/action_timeTableFragment_to_customDateFragment"
-            app:destination="@id/customDateFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/settingFragment"
@@ -46,6 +39,12 @@
             android:id="@+id/action_settingFragment_to_cafTimeTableFragment"
             app:destination="@id/cafTimeTableFragment"
              />
+        <action
+            android:id="@+id/action_settingFragment_to_workloadFragment"
+            app:destination="@id/workloadFragment" />
+        <action
+            android:id="@+id/action_settingFragment_to_workloadFragment2"
+            app:destination="@id/workloadFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -55,27 +54,7 @@
             android:id="@+id/action_searchFragment_to_settingFragment"
             app:destination="@id/settingFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/customDateFragment"
-        android:name="com.NonEstArsMea.agz_time_table.present.customDateFragment.CustomDateFragment"
-        android:label="fragment_custom_date"
-        tools:layout="@layout/custom_date_fragment">
-        <action
-            android:id="@+id/action_customDateFragment_to_timeTableFragment"
-            app:destination="@id/timeTableFragment" />
-        <argument
-            android:name="day"
-            app:argType="integer" />
-        <argument
-            android:name="month"
-            app:argType="integer" />
-        <argument
-            android:name="year"
-            app:argType="integer" />
-        <argument
-            android:name="mainParam"
-            app:argType="string" />
-    </fragment>
+
     <fragment
         android:id="@+id/examsFragment"
         android:name="com.NonEstArsMea.agz_time_table.present.examsFragment.ExamsFragment"
@@ -123,5 +102,13 @@
             android:id="@+id/action_cafTimeTableFragment_to_settingFragment"
             app:destination="@id/settingFragment"
              />
+    </fragment>
+    <fragment
+        android:id="@+id/workloadFragment"
+        android:name="com.NonEstArsMea.agz_time_table.present.workloadLayout.WorkloadFragment"
+        android:label="WorkloadFragment" >
+        <action
+            android:id="@+id/action_workloadFragment_to_settingFragment"
+            app:destination="@id/settingFragment" />
     </fragment>
 </navigation>

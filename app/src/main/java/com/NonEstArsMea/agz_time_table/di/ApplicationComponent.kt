@@ -11,6 +11,7 @@ import com.NonEstArsMea.agz_time_table.present.settingFragment.SettingFragment
 import com.NonEstArsMea.agz_time_table.present.timeTableFragment.TableFragment
 import com.NonEstArsMea.agz_time_table.present.timeTableFragment.TimeTableFragment
 import com.NonEstArsMea.agz_time_table.present.timeTableFragment.ViewPagerFragment
+import com.NonEstArsMea.agz_time_table.present.workloadLayout.WorkloadFragment
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -40,6 +41,8 @@ interface ApplicationComponent {
     fun inject(fragment: CafTimeTableFragment)
 
     fun inject(fragment: SelectItemDialog)
+
+    fun inject(fragment: WorkloadFragment)
     @Component.Factory
     interface Factory {
         fun create(

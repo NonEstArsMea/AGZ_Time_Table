@@ -63,5 +63,7 @@
     <string name="aud_workload_button_name">Aud workload</string>
     <string name="aud_workload_button">Viewing the workload of classrooms in academic buildings</string>
     <string name="add_teacher_button">Add teacher</string>
+    <string name="workload_text">Workload</string>
+    <string name="workload_info_text">Viewing the workload of teachers and groups</string>
 
 </resources>
