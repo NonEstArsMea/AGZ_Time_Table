@@ -53,7 +53,9 @@ class SettingFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        sharedElementReturnTransition = MaterialContainerTransform().apply {
+            duration = 300
+        }
         exitTransition = MaterialContainerTransform().apply {
             drawingViewId = R.id.fragmentContainerView
             duration = 1000

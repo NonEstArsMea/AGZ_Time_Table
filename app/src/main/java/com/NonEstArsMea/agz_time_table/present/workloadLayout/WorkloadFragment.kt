@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -14,6 +15,7 @@ import com.NonEstArsMea.agz_time_table.databinding.WorkloadLayoutBinding
 import com.NonEstArsMea.agz_time_table.present.TimeTableApplication
 import com.NonEstArsMea.agz_time_table.present.mainActivity.MainViewModelFactory
 import com.NonEstArsMea.agz_time_table.present.timeTableFragment.TimeTableViewModel
+import com.NonEstArsMea.agz_time_table.present.workloadLayout.recycleView.WorkloadRWAdapter
 import com.google.android.material.transition.MaterialContainerTransform
 import javax.inject.Inject
 
@@ -31,6 +33,8 @@ class WorkloadFragment : Fragment() {
         (requireActivity().application as TimeTableApplication).component
     }
 
+    private val rwAdapter = WorkloadRWAdapter()
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         component.inject(this)
@@ -39,6 +43,7 @@ class WorkloadFragment : Fragment() {
             this,
             timeTableViewModelFactory
         )[WorkloadViewModel::class.java]
+
     }
 
     override fun onCreateView(
@@ -60,6 +65,24 @@ class WorkloadFragment : Fragment() {
             duration = 1500
             scrimColor = android.graphics.Color.TRANSPARENT
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        binding.workloadLayoutExitButton.setOnClickListener {
+            exitTransition = MaterialContainerTransform().apply {
+                duration = 300
+            }
+
+            requireActivity().supportFragmentManager.executePendingTransactions()
+            startPostponedEnterTransition()
+            findNavController().popBackStack()
+        }
+
+
+        val workloadRW = binding.recyclerViewWorkloadLayout
+        workloadRW.adapter = rwAdapter
     }
 
 }
