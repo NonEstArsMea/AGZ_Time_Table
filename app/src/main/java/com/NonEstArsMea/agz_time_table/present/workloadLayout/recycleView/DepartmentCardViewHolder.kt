@@ -4,7 +4,9 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 
 class DepartmentCardViewHolder(view: View): ViewHolder(view) {
-
+    fun bind() {
+        TODO("Not yet implemented")
+    }
 
 
 }

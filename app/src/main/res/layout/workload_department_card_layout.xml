@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Widget.Material3.CardView.Elevated"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="100dp"
+    android:backgroundTint="@color/white"
+    android:theme="@style/Theme.AGZ_Time_Table">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <View
+            android:id="@+id/view_separator"
+            android:layout_width="5dp"
+            android:layout_height="match_parent"
+            android:background="@color/yellow_fo_lessons_card"
+
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/MainTextViewStyle.Header1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Гуманитарный факультет" />
+
+
+            <TextView
+                style="@style/MainTextViewStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="left"
+                android:text="25 ч \t- Лекция\n34 ч \t- Практическая работа" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</com.google.android.material.card.MaterialCardView>
