@@ -181,6 +181,16 @@ class TimeTableRepositoryImpl @Inject constructor(
 
     }
 
+    override suspend fun getTeacherWorkload(name: String): Map<String, Map<String, Map<String, Int>>>{
+        return try {
+            val restResponse = Common.retrofitService.getTeacherWorkload(name)
+            if (restResponse.isSuccessful)
+                restResponse.body() ?: mapOf() else mapOf()
+        }catch (e: Exception) {
+            mapOf()
+        }
+    }
+
     override suspend fun getCafTimeTable(date: String, id: String): Map<String, List<CellClass>> {
         return try {
             val restResponse = Common.retrofitService.getCafTimeTable(date, id)

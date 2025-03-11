@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.NonEstArsMea.agz_time_table.R
+import com.NonEstArsMea.agz_time_table.present.settingFragment.recycleView.CafClass
 import com.NonEstArsMea.agz_time_table.present.settingFragment.recycleView.MonthName
 import com.NonEstArsMea.agz_time_table.present.settingFragment.recycleView.RWWorkloadClass
 
@@ -26,7 +27,7 @@ class WorkloadRWAdapter :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when(holder){
             is NamingViewHolder -> holder.bind((getItem(position) as MonthName).month)
-            is DepartmentCardViewHolder -> holder.bind()
+            is DepartmentCardViewHolder -> holder.bind(getItem(position) as CafClass)
         }
     }
 

@@ -38,4 +38,5 @@ interface TimeTableRepository {
     fun checkFirstBeginning(): Boolean
 
     fun moveItemInFavoriteMainParam(param: MainParam): ArrayList<MainParam>
+    suspend fun getTeacherWorkload(name: String): Map<String, Map<String, Map<String, Int>>>
 }

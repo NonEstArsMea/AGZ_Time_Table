@@ -9,6 +9,8 @@ interface StorageRepository {
 
     fun getFavoriteMainParamsFromStorage(): ArrayList<MainParam>
 
+    fun getNameTeacherWorkload(): String
+
 
     fun getThemeFromStorage(): Int
     fun setDataInStorage(
@@ -23,4 +25,5 @@ interface StorageRepository {
     fun getCafIdInStorage(): String
 
     fun getTimeTableFromStorage(): List<List<CellClass>>
+    fun setNameTeacherWorkloadInStorage(name: String)
 }

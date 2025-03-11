@@ -81,9 +81,20 @@ class StorageRepositoryImpl @Inject constructor(
         ) ?: listOf()
     }
 
+    override fun getNameTeacherWorkload(): String {
+        return sharedPreferences.getString(NAME_KEY, "Выберите преподавателя") ?: "Выберите преподавателя"
+    }
+
+    override fun setNameTeacherWorkloadInStorage(name: String) {
+        sharedPreferences.edit().apply {
+            putString(NAME_KEY, name)
+        }.apply()
+    }
+
     companion object {
         private const val MAIN_PARAM_KEY = "mainParam"
         private const val LIST_KEY = "LK"
+        private const val NAME_KEY = "NK"
         private const val LIST_OF_FAVORITE_MAIN_PARAMS = "LOFMP"
         private const val CAF_ID = "CI"
         private const val THEME = "T"

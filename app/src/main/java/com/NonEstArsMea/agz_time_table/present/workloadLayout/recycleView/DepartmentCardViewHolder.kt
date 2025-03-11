@@ -16,6 +16,4 @@ class DepartmentCardViewHolder(val view: View): ViewHolder(view) {
         hoursText.text = cafClass.hours
         separator.setBackgroundColor(view.context.getColor(cafClass.getColor()))
     }
-
-
 }
