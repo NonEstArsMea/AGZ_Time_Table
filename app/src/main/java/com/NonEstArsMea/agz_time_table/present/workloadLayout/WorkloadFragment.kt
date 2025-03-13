@@ -83,6 +83,10 @@ class WorkloadFragment : Fragment() {
 
         val workloadRW = binding.recyclerViewWorkloadLayout
         workloadRW.adapter = rwAdapter
+
+        binding.workloadButton.setOnClickListener {
+
+        }
     }
 
 }

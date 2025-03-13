@@ -3,7 +3,7 @@ package com.NonEstArsMea.agz_time_table.di
 import android.app.Application
 import com.NonEstArsMea.agz_time_table.present.audWorkloadFragment.AudWorkloadFragment
 import com.NonEstArsMea.agz_time_table.present.cafTimeTable.CafTimeTableFragment
-import com.NonEstArsMea.agz_time_table.present.cafTimeTable.SelectItemDialog
+import com.NonEstArsMea.agz_time_table.present.dialog.SelectItemDialog
 import com.NonEstArsMea.agz_time_table.present.examsFragment.ExamsFragment
 import com.NonEstArsMea.agz_time_table.present.mainActivity.MainActivity
 import com.NonEstArsMea.agz_time_table.present.searchFragment.SearchFragment

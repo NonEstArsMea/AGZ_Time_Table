@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellClass
 import com.NonEstArsMea.agz_time_table.domain.mainUseCase.Storage.StorageRepository
 import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.TimeTableRepository
+import com.NonEstArsMea.agz_time_table.present.dialog.ItemsAdapter
 
 import com.NonEstArsMea.agz_time_table.util.DateManager
 import kotlinx.coroutines.Job
@@ -35,9 +36,9 @@ class CafTimeTableViewModel@Inject constructor(
     init {
         id = storageRepository.getCafIdInStorage()
         _state.value = SetDate(date, id)
-        val index = ItemsAdapter.items.indexOf(id)
+        val index = CafTimeTableFragment.items.indexOf(id)
         if(index != INDEFINITE_INDEX){
-            cafName = ItemsAdapter.names[index]
+            cafName = CafTimeTableFragment.names[index]
         }
         getData(cafName, id)
     }
