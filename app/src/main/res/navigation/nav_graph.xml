@@ -53,6 +53,9 @@
         <action
             android:id="@+id/action_searchFragment_to_settingFragment"
             app:destination="@id/settingFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_workloadFragment"
+            app:destination="@id/workloadFragment" />
     </fragment>
 
     <fragment
@@ -110,5 +113,8 @@
         <action
             android:id="@+id/action_workloadFragment_to_settingFragment"
             app:destination="@id/settingFragment" />
+        <action
+            android:id="@+id/action_workloadFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
     </fragment>
 </navigation>

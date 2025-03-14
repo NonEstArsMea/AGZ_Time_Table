@@ -3,26 +3,20 @@ package com.NonEstArsMea.agz_time_table.present.cafTimeTable
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.databinding.CafTimeTableLayoutBinding
-import com.NonEstArsMea.agz_time_table.databinding.DialogSelectItemBinding
 import com.NonEstArsMea.agz_time_table.present.TimeTableApplication
 import com.NonEstArsMea.agz_time_table.present.dialog.SelectItemDialog
 import com.NonEstArsMea.agz_time_table.present.mainActivity.MainViewModelFactory
 import com.NonEstArsMea.agz_time_table.util.DateManager
 import com.NonEstArsMea.agz_time_table.util.animateSlideText
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.transition.MaterialContainerTransform
 import javax.inject.Inject
 
@@ -70,16 +64,13 @@ class CafTimeTableFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = CafTimeTableLayoutBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 
     override fun onStart() {
         super.onStart()
         observeVM()
-
     }
 
     override fun onResume() {
@@ -115,8 +106,6 @@ class CafTimeTableFragment : Fragment() {
                     binding.cafTimeTableView.setCafTimeTable(it.rep, it.unicList)
                     binding.cafTimeTableButtonText.animateSlideText(it.cafName)
                 }
-
-                else -> {}
             }
         }
     }

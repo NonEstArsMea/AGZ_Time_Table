@@ -5,16 +5,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.findNavController
 import com.NonEstArsMea.agz_time_table.R
-import com.NonEstArsMea.agz_time_table.databinding.TimeTableFragmentBinding
 import com.NonEstArsMea.agz_time_table.databinding.WorkloadLayoutBinding
 import com.NonEstArsMea.agz_time_table.present.TimeTableApplication
+import com.NonEstArsMea.agz_time_table.present.cafTimeTable.CafTimeTableViewModel
 import com.NonEstArsMea.agz_time_table.present.mainActivity.MainViewModelFactory
-import com.NonEstArsMea.agz_time_table.present.timeTableFragment.TimeTableViewModel
 import com.NonEstArsMea.agz_time_table.present.workloadLayout.recycleView.WorkloadRWAdapter
 import com.google.android.material.transition.MaterialContainerTransform
 import javax.inject.Inject
@@ -53,7 +52,14 @@ class WorkloadFragment : Fragment() {
     ): View {
         _binding = WorkloadLayoutBinding.inflate(inflater, container, false)
 
-
+        parentFragmentManager.setFragmentResultListener(
+            REQUEST_KEY,
+            viewLifecycleOwner
+        ) { requestKey, result ->
+            val name = result.getString(SELECTED_ITEM) ?: ERROR_ITEM
+            vm.getData(name)
+            binding.workloadButtonText.text = name
+        }
         return binding.root
     }
 
@@ -65,6 +71,7 @@ class WorkloadFragment : Fragment() {
             duration = 1500
             scrimColor = android.graphics.Color.TRANSPARENT
         }
+
     }
 
     override fun onStart() {
@@ -84,9 +91,28 @@ class WorkloadFragment : Fragment() {
         val workloadRW = binding.recyclerViewWorkloadLayout
         workloadRW.adapter = rwAdapter
 
-        binding.workloadButton.setOnClickListener {
+        binding.workloadChangeMainParamButton.setOnClickListener {
+            val extras = FragmentNavigator.Extras.Builder()
+                .addSharedElement(it, WORKLOAD_MORPH_KEY)
+                .build()
 
+            val bundle = Bundle().apply {
+                putInt(
+                    CafTimeTableViewModel.BUNDLE_KEY,
+                    CafTimeTableViewModel.TEACHER_LIST_KEY_FOR_WORKLOAD
+                )
+            }
+            findNavController().navigate(R.id.searchFragment, bundle, null, extras)
         }
+
+
+    }
+
+    companion object {
+        private const val WORKLOAD_MORPH_KEY = "morph_shared"
+        const val REQUEST_KEY = "RK"
+        const val SELECTED_ITEM = "SI"
+        const val ERROR_ITEM = "Не выбрано"
     }
 
 }

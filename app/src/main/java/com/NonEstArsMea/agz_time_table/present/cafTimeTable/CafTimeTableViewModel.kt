@@ -1,6 +1,5 @@
 package com.NonEstArsMea.agz_time_table.present.cafTimeTable
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,8 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellClass
 import com.NonEstArsMea.agz_time_table.domain.mainUseCase.Storage.StorageRepository
 import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.TimeTableRepository
-import com.NonEstArsMea.agz_time_table.present.dialog.ItemsAdapter
-
 import com.NonEstArsMea.agz_time_table.util.DateManager
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -90,6 +87,7 @@ class CafTimeTableViewModel@Inject constructor(
         private const val INDEFINITE_INDEX = -1
         const val TEACHER_LIST_KEY = 1
         const val GROUP_LIST_KEY = 2
+        const val TEACHER_LIST_KEY_FOR_WORKLOAD = 3
         const val BUNDLE_KEY = "BK"
     }
 

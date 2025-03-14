@@ -27,6 +27,7 @@ class SelectItemDialog : BottomSheetDialogFragment() {
         (requireActivity().application as TimeTableApplication).component
     }
 
+
     @Inject
     lateinit var viewModelFactory: MainViewModelFactory
     override fun onAttach(context: Context) {
@@ -59,7 +60,10 @@ class SelectItemDialog : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        val adapter = ItemsAdapter(CafTimeTableFragment.names, CafTimeTableFragment.items){ selectedItem, id ->
+        val adapter = ItemsAdapter(
+            CafTimeTableFragment.names,
+            CafTimeTableFragment.items
+        ) { selectedItem, id ->
             vm.setNewID(id)
             vm.getData(selectedItem, id)
             dismiss()
@@ -68,4 +72,6 @@ class SelectItemDialog : BottomSheetDialogFragment() {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
     }
+
+
 }

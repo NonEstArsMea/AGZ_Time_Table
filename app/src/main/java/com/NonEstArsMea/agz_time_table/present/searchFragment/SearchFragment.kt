@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +18,7 @@ import com.NonEstArsMea.agz_time_table.present.TimeTableApplication
 import com.NonEstArsMea.agz_time_table.present.cafTimeTable.CafTimeTableViewModel
 import com.NonEstArsMea.agz_time_table.present.mainActivity.MainViewModelFactory
 import com.NonEstArsMea.agz_time_table.present.searchFragment.recycleView.RecycleViewOnSearchFragmentAdapter
+import com.NonEstArsMea.agz_time_table.present.workloadLayout.WorkloadFragment
 import com.google.android.material.transition.MaterialContainerTransform
 import javax.inject.Inject
 
@@ -24,6 +27,8 @@ class SearchFragment : Fragment() {
     private val binding get() = _binding!!
 
     lateinit var vm: SearchViewModel
+
+    private var arg = CafTimeTableViewModel.GROUP_LIST_KEY
 
     @Inject
     lateinit var viewModelFactory: MainViewModelFactory
@@ -57,7 +62,8 @@ class SearchFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val arg = arguments?.getInt(CafTimeTableViewModel.BUNDLE_KEY) ?: CafTimeTableViewModel.GROUP_LIST_KEY
+        arg = arguments?.getInt(CafTimeTableViewModel.BUNDLE_KEY)
+            ?: CafTimeTableViewModel.GROUP_LIST_KEY
         vm.getListOfMainParam(arg)
         _binding = SearchLayoutBinding.inflate(inflater, container, false)
         binding.searchView.queryHint = "Номер группы или Фамилия преподавателя"
@@ -95,8 +101,20 @@ class SearchFragment : Fragment() {
 
         // Нажатие на объекты
         mainParamAdapter.onMainParamClickListener = { mainParam ->
-            vm.setNewMainParam(mainParam)
-            findNavController().popBackStack(R.id.timeTableFragment, false)
+            when (arg) {
+                CafTimeTableViewModel.TEACHER_LIST_KEY_FOR_WORKLOAD -> {
+                    setFragmentResult(
+                        WorkloadFragment.REQUEST_KEY,
+                        bundleOf(WorkloadFragment.SELECTED_ITEM to mainParam.name)
+                    )
+                    findNavController().popBackStack()
+                }
+                else -> {
+                    vm.setNewMainParam(mainParam)
+                    findNavController().popBackStack(R.id.timeTableFragment, false)
+                }
+            }
+
         }
 
     }
@@ -105,4 +123,5 @@ class SearchFragment : Fragment() {
         super.onDestroy()
         _binding = null
     }
+
 }

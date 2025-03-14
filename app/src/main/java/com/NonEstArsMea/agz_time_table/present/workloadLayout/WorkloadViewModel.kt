@@ -24,11 +24,14 @@ class WorkloadViewModel @Inject constructor(
 
     init {
         name = storageRepository.getNameTeacherWorkload()
+
+    }
+
+    fun getData(name:String){
         viewModelScope.launch{
-            val teacherWorkload = repository.getTeacherWorkload("Багдасарян А.О.")
+            val teacherWorkload = repository.getTeacherWorkload(name)
             Log.e("log", teacherWorkload.toString())
         }
-
     }
 
 }

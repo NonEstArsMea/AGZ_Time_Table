@@ -13,9 +13,7 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="-10dp"
-        android:background="?attr/colorPrimary"
-        android:transitionName="morph_workload">
+        android:layout_marginTop="-10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -59,7 +57,8 @@
                         android:layout_marginLeft="@dimen/margine_all"
                         android:layout_marginTop="@dimen/margine_all"
                         android:gravity="left"
-                        android:text="@string/workload_text" />
+                        android:text="@string/workload_text"
+                        android:id="@+id/workloaf_name_text"/>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -70,7 +69,7 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/workload_button"
+                    android:id="@+id/workload_change_main_param_button"
                     style="@style/Widget.Material3.CardView.Filled"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -81,7 +80,8 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/btn_right">
+                    app:layout_constraintTop_toBottomOf="@id/btn_right"
+                    android:transitionName="morph_shared">
 
                     <TextView
                         android:id="@+id/workload_button_text"

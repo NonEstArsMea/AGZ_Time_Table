@@ -86,7 +86,6 @@ class SettingFragment : Fragment() {
             val bundle = Bundle().apply {
                 putInt(CafTimeTableViewModel.BUNDLE_KEY, CafTimeTableViewModel.GROUP_LIST_KEY) // или false в зависимости от вашего условия
             }
-
             findNavController().navigate(R.id.searchFragment, bundle, null, extras)
         }
 

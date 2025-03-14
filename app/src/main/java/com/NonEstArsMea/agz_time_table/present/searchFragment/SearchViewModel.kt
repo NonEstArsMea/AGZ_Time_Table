@@ -28,6 +28,7 @@ class SearchViewModel @Inject constructor(
             when(key){
                 CafTimeTableViewModel.GROUP_LIST_KEY -> timeTableRepositoryImpl.getListOfGroups()
                 CafTimeTableViewModel.TEACHER_LIST_KEY -> timeTableRepositoryImpl.getListOfTeachers()
+                CafTimeTableViewModel.TEACHER_LIST_KEY_FOR_WORKLOAD -> timeTableRepositoryImpl.getListOfTeachers()
             }
         }
     }
