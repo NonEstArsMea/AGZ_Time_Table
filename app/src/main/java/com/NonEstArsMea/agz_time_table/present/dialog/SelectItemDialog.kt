@@ -34,7 +34,6 @@ class SelectItemDialog : BottomSheetDialogFragment() {
         super.onAttach(context)
         component.inject(this)
 
-
         vm = ViewModelProvider(
             requireParentFragment(),
             viewModelFactory

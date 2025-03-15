@@ -1,8 +1,6 @@
 package com.NonEstArsMea.agz_time_table.util
 
 import android.content.Context
-import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import com.NonEstArsMea.agz_time_table.R
 import java.util.Calendar
 
@@ -43,8 +41,32 @@ object DateManager {
             "Ноябрь",
             "Декабрь",
 
-        )
+            )
         return month[number]
+    }
+
+    fun getMonthNominativeСaseByString(number: String): String {
+        val intNumber = if (number[0] == '0') {
+            number[1].toString().toInt()
+        } else {
+            number.toInt()
+        }
+        val month = arrayOf(
+            "Январь",
+            "Февраль",
+            "Март",
+            "Апрель",
+            "Май",
+            "Июнь",
+            "Июль",
+            "Август",
+            "Сентябрь",
+            "Октябрь",
+            "Ноябрь",
+            "Декабрь",
+
+            )
+        return month[intNumber - 1]
     }
 
     fun dayNumberOnButton(): List<String> {
@@ -72,9 +94,9 @@ object DateManager {
         return "$monthStrNow - $yearNow"
     }
 
-    fun getDateString(context: Context, s: String): String{
+    fun getDateString(context: Context, s: String): String {
         val a = s.split("-")
-        return "${a[0]} ${context.getString(getMonth( a[1].toInt() - 1))} - ${a[2]}"
+        return "${a[0]} ${context.getString(getMonth(a[1].toInt() - 1))} - ${a[2]}"
     }
 
 
@@ -169,9 +191,9 @@ object DateManager {
         setDayNow()
         calendar.add(Calendar.DAY_OF_MONTH, dayOffset)
         val dayNow = calendar.get(Calendar.DAY_OF_MONTH).toString()
-        val monthNow =  "0${calendar.get(Calendar.MONTH) + 1}"
+        val monthNow = "0${calendar.get(Calendar.MONTH) + 1}"
         val yearNow = calendar.get(Calendar.YEAR).toString()
-        calendar.add(Calendar.DAY_OF_MONTH, dayOffset*(-1))
+        calendar.add(Calendar.DAY_OF_MONTH, dayOffset * (-1))
 
         return "$dayNow-$monthNow-$yearNow"
     }

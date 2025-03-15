@@ -3,14 +3,15 @@
     style="@style/Widget.Material3.CardView.Elevated"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="100dp"
-    android:backgroundTint="@color/white"
+    android:layout_marginLeft="80dp"
+    android:layout_marginBottom="4dp"
+    android:backgroundTint="?attr/colorSurfaceContainerLow"
     android:theme="@style/Theme.AGZ_Time_Table"
     android:paddingBottom="@dimen/margine_all">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <View

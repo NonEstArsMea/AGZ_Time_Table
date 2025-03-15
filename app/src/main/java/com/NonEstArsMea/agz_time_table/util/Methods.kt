@@ -63,6 +63,19 @@ object Methods {
         }
     }
 
+
+}
+
+fun String.getFullName(): String {
+    return when(this){
+        "1" -> "ФРС"
+        "2" -> "КИФ"
+        "3" -> "Ф(И)"
+        "4" -> "Ф(Г)"
+        "5" -> "ФЗО"
+        "6" -> "Ф(ПИС)"
+        else -> "Неизвестное подразделение"
+    }
 }
 
 fun TextView.animateSlideText(newText: String) {

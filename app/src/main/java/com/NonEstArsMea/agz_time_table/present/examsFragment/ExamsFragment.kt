@@ -80,7 +80,7 @@ class ExamsFragment : Fragment() {
             adapter.submitList(it)
         }
 
-        binding.exitButtom.setOnClickListener {
+        binding.exitButton.setOnClickListener {
             onStartAndFinishListener.closeFragment()
             findNavController().popBackStack()
         }

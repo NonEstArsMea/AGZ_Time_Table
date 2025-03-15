@@ -116,5 +116,16 @@
         <action
             android:id="@+id/action_workloadFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_workloadFragment_to_workloadDetailInfoFragment"
+            app:destination="@id/workloadDetailInfoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/workloadDetailInfoFragment"
+        android:name="com.NonEstArsMea.agz_time_table.present.workloadDetailInfo.WorkloadDetailInfoFragment"
+        android:label="WorkloadDetailInfoFragment" >
+        <action
+            android:id="@+id/action_workloadDetailInfoFragment_to_workloadFragment"
+            app:destination="@id/workloadFragment" />
     </fragment>
 </navigation>

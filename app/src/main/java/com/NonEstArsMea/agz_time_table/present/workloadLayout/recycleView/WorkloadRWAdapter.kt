@@ -1,16 +1,18 @@
 package com.NonEstArsMea.agz_time_table.present.workloadLayout.recycleView
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.NonEstArsMea.agz_time_table.R
-import com.NonEstArsMea.agz_time_table.present.settingFragment.recycleView.CafClass
-import com.NonEstArsMea.agz_time_table.present.settingFragment.recycleView.MonthName
-import com.NonEstArsMea.agz_time_table.present.settingFragment.recycleView.RWWorkloadClass
+import com.NonEstArsMea.agz_time_table.present.workloadLayout.recycleView.holders.DepartmentCardViewHolder
+import com.NonEstArsMea.agz_time_table.present.workloadLayout.recycleView.holders.NamingViewHolder
 
-class WorkloadRWAdapter :
+class WorkloadRWAdapter(
+    val onClick: (String, String, View, Int) -> Unit
+) :
     ListAdapter<RWWorkloadClass, ViewHolder>(WorkloadItemDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -19,7 +21,7 @@ class WorkloadRWAdapter :
                 inflater.inflate(R.layout.workload_naming_layout, parent, false)
             )
 
-            else -> DepartmentCardViewHolder(inflater.inflate(R.layout.break_cell_layout, parent, false))
+            else -> DepartmentCardViewHolder(inflater.inflate(R.layout.workload_department_card_layout, parent, false))
         }
     }
 
@@ -27,7 +29,15 @@ class WorkloadRWAdapter :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when(holder){
             is NamingViewHolder -> holder.bind((getItem(position) as MonthName).month)
-            is DepartmentCardViewHolder -> holder.bind(getItem(position) as CafClass)
+            is DepartmentCardViewHolder -> {
+                holder.bind(getItem(position) as CafClass, position)
+                val cafClass = getItem(position) as CafClass
+                val transitionName = "morph_$position"
+                holder.view.transitionName = transitionName
+                holder.view.setOnClickListener {
+                    onClick(cafClass.month, cafClass.depNumber, it, position)
+                }
+            }
         }
     }
 

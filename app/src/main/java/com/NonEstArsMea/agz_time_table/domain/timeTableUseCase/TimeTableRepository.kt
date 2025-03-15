@@ -39,4 +39,6 @@ interface TimeTableRepository {
 
     fun moveItemInFavoriteMainParam(param: MainParam): ArrayList<MainParam>
     suspend fun getTeacherWorkload(name: String): Map<String, Map<String, Map<String, Int>>>
+    suspend fun getListOfDetailedWorkload(month: String, department: String):List<CellClass>
+    fun clearListOfMainParam()
 }

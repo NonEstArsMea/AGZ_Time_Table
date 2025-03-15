@@ -5,10 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.databinding.WorkloadLayoutBinding
 import com.NonEstArsMea.agz_time_table.present.TimeTableApplication
@@ -32,7 +34,20 @@ class WorkloadFragment : Fragment() {
         (requireActivity().application as TimeTableApplication).component
     }
 
-    private val rwAdapter = WorkloadRWAdapter()
+    private val rwAdapter = WorkloadRWAdapter { month, department, view, position ->
+
+        val extras = FragmentNavigator.Extras.Builder()
+            .addSharedElement(view, WORKLOAD_DETAIL_MORPH_KEY + position.toString())
+            .build()
+
+        val bundle = Bundle().apply {
+            putString(MORPH_KEY, "morph_$position")
+        }
+        findNavController().navigate(
+            R.id.action_workloadFragment_to_workloadDetailInfoFragment,
+            bundle, null, extras
+        )
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -44,6 +59,7 @@ class WorkloadFragment : Fragment() {
         )[WorkloadViewModel::class.java]
 
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,25 +73,49 @@ class WorkloadFragment : Fragment() {
             viewLifecycleOwner
         ) { requestKey, result ->
             val name = result.getString(SELECTED_ITEM) ?: ERROR_ITEM
+            vm.sedNameInStorage(name)
             vm.getData(name)
-            binding.workloadButtonText.text = name
         }
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        postponeEnterTransition() // Останавливаем анимацию до полной загрузки списка
+
+        binding.recyclerViewWorkloadLayout.viewTreeObserver.addOnPreDrawListener(
+            object : ViewTreeObserver.OnPreDrawListener {
+                override fun onPreDraw(): Boolean {
+                    binding.recyclerViewWorkloadLayout.viewTreeObserver.removeOnPreDrawListener(this)
+                    startPostponedEnterTransition() // Запускаем анимацию, когда список готов
+                    return true
+                }
+            }
+        )
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        exitTransition = MaterialContainerTransform().apply {
+            drawingViewId = R.id.fragmentContainerView
+            duration = 1000
+            scrimColor = android.graphics.Color.TRANSPARENT // Убирает затемнение фона
+        }
         sharedElementEnterTransition = MaterialContainerTransform().apply {
             drawingViewId = R.id.fragmentContainerView
             duration = 1500
             scrimColor = android.graphics.Color.TRANSPARENT
+        }
+        sharedElementReturnTransition = MaterialContainerTransform().apply {
+            duration = 300
         }
 
     }
 
     override fun onStart() {
         super.onStart()
+
+        observeVM()
 
         binding.workloadLayoutExitButton.setOnClickListener {
             exitTransition = MaterialContainerTransform().apply {
@@ -90,6 +130,7 @@ class WorkloadFragment : Fragment() {
 
         val workloadRW = binding.recyclerViewWorkloadLayout
         workloadRW.adapter = rwAdapter
+        workloadRW.layoutManager = LinearLayoutManager(context)
 
         binding.workloadChangeMainParamButton.setOnClickListener {
             val extras = FragmentNavigator.Extras.Builder()
@@ -105,12 +146,29 @@ class WorkloadFragment : Fragment() {
             findNavController().navigate(R.id.searchFragment, bundle, null, extras)
         }
 
+    }
 
+    private fun observeVM() {
+        vm.state.observe(viewLifecycleOwner) {
+            when (it) {
+                is SetName -> {
+                    binding.workloadButtonText.text = it.name
+                }
+
+                is DataIsLoad -> {
+                    binding.workloadButtonText.text = it.name
+                    rwAdapter.submitList(it.list)
+                    binding.recyclerViewWorkloadLayout.adapter = rwAdapter
+                }
+            }
+        }
     }
 
     companion object {
         private const val WORKLOAD_MORPH_KEY = "morph_shared"
+        private const val WORKLOAD_DETAIL_MORPH_KEY = "morph_"
         const val REQUEST_KEY = "RK"
+        const val MORPH_KEY = "RK"
         const val SELECTED_ITEM = "SI"
         const val ERROR_ITEM = "Не выбрано"
     }

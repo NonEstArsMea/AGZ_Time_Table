@@ -82,7 +82,7 @@ class StorageRepositoryImpl @Inject constructor(
     }
 
     override fun getNameTeacherWorkload(): String {
-        return sharedPreferences.getString(NAME_KEY, "Выберите преподавателя") ?: "Выберите преподавателя"
+        return sharedPreferences.getString(NAME_KEY, ERROR_VALUE) ?: ERROR_VALUE
     }
 
     override fun setNameTeacherWorkloadInStorage(name: String) {
@@ -99,6 +99,7 @@ class StorageRepositoryImpl @Inject constructor(
         private const val CAF_ID = "CI"
         private const val THEME = "T"
         private const val SYSTEM_THEME = 1
+        const val ERROR_VALUE =  "Выберите преподавателя"
 
         private val gson: Gson = Gson()
     }

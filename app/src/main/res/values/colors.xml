@@ -41,6 +41,13 @@
     <color name="gray">#474747</color>
     <color name="red">#F44336</color>
 
+    <color name="color_workload_100">#1B5E20</color>
+    <color name="color_workload_200">#33691E</color>
+    <color name="color_workload_300">#827717</color>
+    <color name="color_workload_400">#F57F17</color>
+    <color name="color_workload_500">#FF6F00</color>
+    <color name="color_workload_600">#E65100</color>
+
 
     <color name="red_200">#FA928A</color>
 </resources>

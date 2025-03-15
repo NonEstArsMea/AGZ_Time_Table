@@ -17,6 +17,10 @@ class SearchViewModel @Inject constructor(
     val listOfMainParam: LiveData<ArrayList<MainParam>>
         get() = _listOfMainParam
 
+    init {
+        timeTableRepositoryImpl.clearListOfMainParam()
+    }
+
 
     fun setNewMainParam(mainParam: MainParam) {
         timeTableRepositoryImpl.updateFavoriteParamList(mainParam)

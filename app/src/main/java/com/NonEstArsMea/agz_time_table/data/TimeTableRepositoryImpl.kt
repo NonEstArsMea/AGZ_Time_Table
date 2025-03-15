@@ -264,7 +264,21 @@ class TimeTableRepositoryImpl @Inject constructor(
         return listOfFavoriteMainParam.value ?: ArrayList()
     }
 
+    override suspend fun getListOfDetailedWorkload(month: String, department: String): List<CellClass> {
+        return try {
+            val restResponse = Common.retrofitService.getDetailedWorkload(month, department)
+            if (restResponse.isSuccessful)
+                restResponse.body() ?: listOf() else listOf()
+        } catch (e: Exception) {
+            listOf()
+        }
+    }
+
     override fun checkFirstBeginning(): Boolean {
         return !listOfFavoriteMainParam.value.isNullOrEmpty()
+    }
+
+    override fun clearListOfMainParam() {
+        listOfMainParam.value?.clear()
     }
 }

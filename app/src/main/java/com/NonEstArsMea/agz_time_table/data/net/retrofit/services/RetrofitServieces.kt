@@ -40,4 +40,10 @@ interface RetrofitServieces {
     suspend fun getTeacherWorkload(
         @Query("name") date: String,
     ): Response<Map<String, Map<String, Map<String, Int>>>>
+
+    @GET("detailed_workload")
+    suspend fun getDetailedWorkload(
+        @Query("month") month: String,
+        @Query("department") department: String,
+    ): Response<List<CellClass>>
 }
