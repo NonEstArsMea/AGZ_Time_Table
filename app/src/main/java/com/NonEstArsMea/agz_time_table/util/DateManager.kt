@@ -45,6 +45,30 @@ object DateManager {
         return month[number]
     }
 
+    fun getMonthNominativeСaseSecondVariant(number: String): String {
+        val intNumber = if (number[0] == '0') {
+            number[1].toString().toInt()
+        } else {
+            number.toInt()
+        }
+        val month = arrayOf(
+            "Января",
+            "Февраля",
+            "Марта",
+            "Апреля",
+            "Мая",
+            "Июня",
+            "Июля",
+            "Августа",
+            "Сентября",
+            "Октября",
+            "Ноября",
+            "Декабря",
+
+            )
+        return month[intNumber - 1]
+    }
+
     fun getMonthNominativeСaseByString(number: String): String {
         val intNumber = if (number[0] == '0') {
             number[1].toString().toInt()
@@ -196,6 +220,11 @@ object DateManager {
         calendar.add(Calendar.DAY_OF_MONTH, dayOffset * (-1))
 
         return "$dayNow-$monthNow-$yearNow"
+    }
+
+    fun getDayAndMonth(date: String):String{
+        val dateList = date.split("-")
+        return dateList[0] + " " + getMonthNominativeСaseSecondVariant(dateList[1])
     }
 
     private const val SUNDAY = 6

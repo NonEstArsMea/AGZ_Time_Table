@@ -2,29 +2,39 @@ package com.NonEstArsMea.agz_time_table.present.timeTableFragment.recycleView
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
-import android.animation.ObjectAnimator
-import android.animation.PropertyValuesHolder
 import android.animation.ValueAnimator
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellClass
 
-class TimeTableRecycleViewAdapter : ListAdapter<CellClass, RecyclerView.ViewHolder>(
-    TimeTableItemDiffCallback()
-) {
+class TimeTableRecycleViewAdapter(val withDate: Boolean = false) :
+    ListAdapter<CellClass, RecyclerView.ViewHolder>(
+        TimeTableItemDiffCallback()
+    ) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
-            CellClass.LESSON_CELL_TYPE -> TimeTableLessonViewHolder(
-                inflater.inflate(
-                    R.layout.one_lesson_card, parent, false
-                )
-            )
+            CellClass.LESSON_CELL_TYPE -> {
+                if (withDate) {
+                    TimeTableDateLessonViewHolder(
+                        inflater.inflate(
+                            R.layout.date_one_lesson_card, parent, false
+                        )
+                    )
+                } else {
+                    TimeTableLessonViewHolder(
+                        inflater.inflate(
+                            R.layout.one_lesson_card, parent, false
+                        )
+                    )
+                }
+            }
 
             else -> BreakCellViewHolder(inflater.inflate(R.layout.break_cell_layout, parent, false))
         }
@@ -37,7 +47,14 @@ class TimeTableRecycleViewAdapter : ListAdapter<CellClass, RecyclerView.ViewHold
             is TimeTableLessonViewHolder -> {
                 holder.bind(getItem(position), holder.view.context)
                 holder.view.setOnClickListener {
-                    setAnimation(holder)
+                    setAnimation(holder.add_info)
+                }
+            }
+
+            is TimeTableDateLessonViewHolder -> {
+                holder.bind(getItem(position), holder.view.context)
+                holder.view.setOnClickListener {
+                    setAnimation(holder.add_info)
                 }
             }
 
@@ -51,8 +68,8 @@ class TimeTableRecycleViewAdapter : ListAdapter<CellClass, RecyclerView.ViewHold
         return getItem(position).cellType
     }
 
-    private fun setAnimation(holder: TimeTableLessonViewHolder) {
-        val targetView = holder.add_info
+    private fun setAnimation(view: LinearLayout) {
+        val targetView = view
 
         if (targetView.visibility == View.GONE) {
             // Измеряем высоту контента
@@ -91,5 +108,6 @@ class TimeTableRecycleViewAdapter : ListAdapter<CellClass, RecyclerView.ViewHold
             collapseAnimator.start()
         }
     }
+
 
 }

@@ -22,7 +22,7 @@ class ExamsFragment : Fragment() {
 
     private lateinit var onStartAndFinishListener: OnStartAndFinishListener
 
-    private val adapter = TimeTableRecycleViewAdapter()
+    private val adapter = TimeTableRecycleViewAdapter(true)
     private var _binding: ExamsLayoutBinding? = null
 
 

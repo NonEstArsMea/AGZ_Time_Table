@@ -12,7 +12,7 @@
     </style>
 
     <style name="MainTextViewStyle.Header1">
-        <item name="android:textSize">17dp</item>
+        <item name="android:textSize">15dp</item>
         <item name="android:textColor">?attr/titleTextColor</item>
         <item name="android:textFontWeight">600</item>
         <item name="android:textStyle">bold</item>
