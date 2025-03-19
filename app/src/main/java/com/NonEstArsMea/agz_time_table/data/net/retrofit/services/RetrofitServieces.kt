@@ -45,5 +45,7 @@ interface RetrofitServieces {
     suspend fun getDetailedWorkload(
         @Query("month") month: String,
         @Query("department") department: String,
-    ): Response<List<CellClass>>
+        @Query("year") year: String,
+        @Query("mainParam") mainParam: String,
+    ): Response<Map<String, List<CellClass>>>
 }

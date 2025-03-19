@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.databinding.ExamsLayoutBinding
 import com.NonEstArsMea.agz_time_table.present.TimeTableApplication
@@ -17,13 +18,14 @@ import com.NonEstArsMea.agz_time_table.present.mainActivity.MainViewModelFactory
 import com.NonEstArsMea.agz_time_table.present.timeTableFragment.recycleView.TimeTableRecycleViewAdapter
 import com.NonEstArsMea.agz_time_table.present.workloadLayout.WorkloadFragment
 import com.NonEstArsMea.agz_time_table.util.DateManager
+import com.NonEstArsMea.agz_time_table.util.Methods
 import com.NonEstArsMea.agz_time_table.util.getFullName
 import com.google.android.material.transition.MaterialContainerTransform
 import javax.inject.Inject
 
 class WorkloadDetailInfoFragment : Fragment() {
 
-    private val adapter = TimeTableRecycleViewAdapter()
+    private val adapter = TimeTableRecycleViewAdapter(true)
     private var _binding: ExamsLayoutBinding? = null
     private val binding get() = _binding!!
 
@@ -41,6 +43,7 @@ class WorkloadDetailInfoFragment : Fragment() {
         component.inject(this)
 
         vm = ViewModelProvider(this, viewModelFactory)[WorkloadDetailInfoViewModel::class.java]
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,7 +69,11 @@ class WorkloadDetailInfoFragment : Fragment() {
         _binding = ExamsLayoutBinding.inflate(inflater, container, false)
         val bundle = this.arguments
         val morphName = bundle?.getString(WorkloadFragment.MORPH_KEY) ?: "default_morph"
-        Log.e("morph", morphName)
+        val department = bundle?.getString(WorkloadFragment.DEPARTMENT_KEY) ?: WorkloadFragment.ERROR_ITEM
+        val month = bundle?.getString(WorkloadFragment.MONTH_KEY) ?: ""
+        val mainParam = bundle?.getString(WorkloadFragment.MAIN_PARAM_KEY) ?: ""
+        vm.getData(month, department, mainParam)
+        binding.viewName.text = department.getFullName() + " - " + DateManager.getMonthNominativeСaseByString(month)
         binding.cardView.transitionName = morphName
         return binding.root
     }
@@ -74,6 +81,9 @@ class WorkloadDetailInfoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeVM()
+
+        binding.recyclerViewOnCastomDateFragment.adapter = adapter
+        binding.recyclerViewOnCastomDateFragment.layoutManager = LinearLayoutManager(context)
 
         binding.exitButton.setOnClickListener {
             findNavController().popBackStack()

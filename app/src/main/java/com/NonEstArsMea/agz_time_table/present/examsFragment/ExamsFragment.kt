@@ -76,7 +76,6 @@ class ExamsFragment : Fragment() {
         recycleView.layoutManager = LinearLayoutManager(context)
 
         vm.timeTableChanged.observe(viewLifecycleOwner) {
-            Log.e("adapter", it.toString())
             adapter.submitList(it)
         }
 

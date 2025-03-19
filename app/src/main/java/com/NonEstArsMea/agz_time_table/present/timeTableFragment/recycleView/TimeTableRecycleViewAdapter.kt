@@ -3,6 +3,7 @@ package com.NonEstArsMea.agz_time_table.present.timeTableFragment.recycleView
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,18 +51,23 @@ class TimeTableRecycleViewAdapter(val withDate: Boolean = false) :
                     setAnimation(holder.add_info)
                 }
             }
-
             is TimeTableDateLessonViewHolder -> {
                 holder.bind(getItem(position), holder.view.context)
                 holder.view.setOnClickListener {
                     setAnimation(holder.add_info)
                 }
             }
-
             is BreakCellViewHolder -> holder.bind(getItem(position))
         }
+    }
 
+    override fun onCurrentListChanged(
+        previousList: MutableList<CellClass>,
+        currentList: MutableList<CellClass>
+    ) {
+        super.onCurrentListChanged(previousList, currentList)
 
+        Log.e("new2", currentList.toString())
     }
 
     override fun getItemViewType(position: Int): Int {

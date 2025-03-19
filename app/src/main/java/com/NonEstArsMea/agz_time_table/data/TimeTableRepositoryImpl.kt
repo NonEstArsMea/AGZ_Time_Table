@@ -1,7 +1,6 @@
 package com.NonEstArsMea.agz_time_table.data
 
 import android.content.res.Resources
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.NonEstArsMea.agz_time_table.R
@@ -13,8 +12,6 @@ import com.NonEstArsMea.agz_time_table.domain.mainUseCase.Storage.StorageReposit
 import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.TimeTableRepository
 import com.NonEstArsMea.agz_time_table.util.DateManager
 import com.NonEstArsMea.agz_time_table.util.Methods
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -157,7 +154,7 @@ class TimeTableRepositoryImpl @Inject constructor(
             val restResponse = Common.retrofitService.getTeachersParamsList()
             if (restResponse.isSuccessful) {
                 restResponse.body()?.forEach {
-                    if(it.trim().isNotEmpty())
+                    if (it.trim().isNotEmpty())
                         list.add(MainParam(it, false))
                 }
             }
@@ -181,12 +178,12 @@ class TimeTableRepositoryImpl @Inject constructor(
 
     }
 
-    override suspend fun getTeacherWorkload(name: String): Map<String, Map<String, Map<String, Int>>>{
+    override suspend fun getTeacherWorkload(name: String): Map<String, Map<String, Map<String, Int>>> {
         return try {
             val restResponse = Common.retrofitService.getTeacherWorkload(name)
             if (restResponse.isSuccessful)
                 restResponse.body() ?: mapOf() else mapOf()
-        }catch (e: Exception) {
+        } catch (e: Exception) {
             mapOf()
         }
     }
@@ -264,13 +261,19 @@ class TimeTableRepositoryImpl @Inject constructor(
         return listOfFavoriteMainParam.value ?: ArrayList()
     }
 
-    override suspend fun getListOfDetailedWorkload(month: String, department: String): List<CellClass> {
+    override suspend fun getListOfDetailedWorkload(
+        month: String,
+        department: String,
+        year: String,
+        mainParam: String
+    ): Map<String, List<CellClass>> {
         return try {
-            val restResponse = Common.retrofitService.getDetailedWorkload(month, department)
+            val restResponse =
+                Common.retrofitService.getDetailedWorkload(month, department, year, mainParam)
             if (restResponse.isSuccessful)
-                restResponse.body() ?: listOf() else listOf()
+                restResponse.body() ?: mapOf() else mapOf()
         } catch (e: Exception) {
-            listOf()
+            mapOf()
         }
     }
 

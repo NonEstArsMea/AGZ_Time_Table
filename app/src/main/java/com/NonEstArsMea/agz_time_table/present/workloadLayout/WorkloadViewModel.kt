@@ -36,11 +36,12 @@ class WorkloadViewModel @Inject constructor(
         if(name != StorageRepositoryImpl.ERROR_VALUE) getData(name)
     }
 
-    fun getData(name: String) {
+    fun getData(newName: String) {
+        name = newName
         viewModelScope.launch {
-            val teacherWorkload = repository.getTeacherWorkload(name)
+            val teacherWorkload = repository.getTeacherWorkload(newName)
             val prepData = prepareData(teacherWorkload)
-            _state.postValue(DataIsLoad(prepData, name))
+            _state.postValue(DataIsLoad(prepData, newName))
         }
     }
 
@@ -65,5 +66,9 @@ class WorkloadViewModel @Inject constructor(
             }
         }
         return list
+    }
+
+    fun getName():String {
+        return name
     }
 }

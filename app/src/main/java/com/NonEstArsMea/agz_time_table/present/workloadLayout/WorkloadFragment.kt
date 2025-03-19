@@ -42,6 +42,9 @@ class WorkloadFragment : Fragment() {
 
         val bundle = Bundle().apply {
             putString(MORPH_KEY, "morph_$position")
+            putString(DEPARTMENT_KEY, department)
+            putString(MONTH_KEY, month)
+            putString(MAIN_PARAM_KEY, vm.getName())
         }
         findNavController().navigate(
             R.id.action_workloadFragment_to_workloadDetailInfoFragment,
@@ -168,7 +171,10 @@ class WorkloadFragment : Fragment() {
         private const val WORKLOAD_MORPH_KEY = "morph_shared"
         private const val WORKLOAD_DETAIL_MORPH_KEY = "morph_"
         const val REQUEST_KEY = "RK"
-        const val MORPH_KEY = "RK"
+        const val MORPH_KEY = "MK"
+        const val MONTH_KEY = "MONTHK"
+        const val MAIN_PARAM_KEY = "MPK"
+        const val DEPARTMENT_KEY = "DEPARTMENT_KEY"
         const val SELECTED_ITEM = "SI"
         const val ERROR_ITEM = "Не выбрано"
     }
