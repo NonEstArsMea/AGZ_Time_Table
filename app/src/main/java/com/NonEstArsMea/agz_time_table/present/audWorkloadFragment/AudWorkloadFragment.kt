@@ -10,7 +10,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
+import androidx.core.widget.TextViewCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.NonEstArsMea.agz_time_table.R
@@ -27,13 +29,13 @@ class AudWorkloadFragment : Fragment() {
     private var _binding: AudWorkloadLayoutBinding? = null
     private val binding get() = _binding!!
 
-    lateinit var vm: AudWorkloadViewModel
-
     @Inject
     lateinit var viewModelFactory: MainViewModelFactory
 
+    val vm: AudWorkloadViewModel by viewModels { viewModelFactory }
+
     private val component by lazy {
-        (requireActivity().application as TimeTableApplication).component
+        (requireContext().applicationContext as TimeTableApplication).component
     }
 
     private var educationalBuildings: List<TextView> = listOf()
@@ -43,14 +45,8 @@ class AudWorkloadFragment : Fragment() {
         super.onAttach(context)
         component.inject(this)
 
-        vm = ViewModelProvider(this, viewModelFactory)[AudWorkloadViewModel::class.java]
+        //vm = ViewModelProvider(this, viewModelFactory)[AudWorkloadViewModel::class.java]
 
-        val callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                findNavController().popBackStack()
-            }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,16 +69,21 @@ class AudWorkloadFragment : Fragment() {
         return binding.root
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        updateList()
         observeVM()
-    }
 
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                findNavController().popBackStack()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+    }
 
     override fun onResume() {
         super.onResume()
-        updateList()
-
         updateStyles(0)
         listOf(
             binding.educationalBuilding1,
@@ -124,10 +125,10 @@ class AudWorkloadFragment : Fragment() {
     private fun updateStyles(position: Int) {
         educationalBuildings.forEachIndexed { index, textView ->
             if (index == position) {
-                textView.setTextAppearance(R.style.MainTextViewStyle_DayNowWeekNumber)
+                TextViewCompat.setTextAppearance(textView, R.style.MainTextViewStyle_DayNowWeekNumber)
                 textView.background = ContextCompat.getDrawable(requireContext(), R.drawable.break_cell_background)
             } else {
-                textView.setTextAppearance(R.style.MainTextViewStyle_WeekNumber)
+                TextViewCompat.setTextAppearance(textView, R.style.MainTextViewStyle_WeekNumber)
                 textView.background = ContextCompat.getDrawable(requireContext(), R.drawable.main_surface)
             }
         }

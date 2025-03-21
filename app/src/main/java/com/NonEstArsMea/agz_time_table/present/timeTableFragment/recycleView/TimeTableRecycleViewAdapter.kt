@@ -84,7 +84,6 @@ class TimeTableRecycleViewAdapter(val withDate: Boolean = false) :
 
             // Начальная высота = 0
             targetView.layoutParams.height = 0
-            targetView.visibility = View.VISIBLE
 
             // Анимация расширения
             val expandAnimator = ValueAnimator.ofInt(0, targetHeight).apply {
@@ -95,6 +94,16 @@ class TimeTableRecycleViewAdapter(val withDate: Boolean = false) :
                 }
             }
             expandAnimator.start()
+
+            val rotate = ValueAnimator.ofInt(0, targetHeight).apply {
+                duration = 400
+                addUpdateListener { animation ->
+                    targetView.layoutParams.height = animation.animatedValue as Int
+                    targetView.requestLayout()
+                }
+            }
+            rotate
+
         } else {
             // Анимация схлопывания
             val initialHeight = targetView.height

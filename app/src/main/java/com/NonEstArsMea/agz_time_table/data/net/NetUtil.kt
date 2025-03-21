@@ -8,10 +8,12 @@ import com.NonEstArsMea.agz_time_table.domain.mainUseCase.NetUtil
 import javax.inject.Inject
 
 
-class NetUtilImpl @Inject constructor(): NetUtil {
+class NetUtilImpl @Inject constructor(
+    val context: Context
+): NetUtil {
 
     private var netConnection : MutableLiveData<Boolean> = MutableLiveData(false)
-    override fun checkNetConn(context: Context) {
+    override fun checkNetConn() {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 

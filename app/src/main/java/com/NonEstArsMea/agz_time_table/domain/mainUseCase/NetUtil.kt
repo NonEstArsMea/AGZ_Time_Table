@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 
 interface NetUtil {
 
-    fun checkNetConn(context: Context)
+    fun checkNetConn()
 
     fun isNetConnection() : Boolean
 

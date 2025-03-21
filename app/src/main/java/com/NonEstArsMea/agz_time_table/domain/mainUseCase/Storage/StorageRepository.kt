@@ -20,6 +20,8 @@ interface StorageRepository {
         list: List<List<CellClass>>
     )
 
+    fun setMainParamInStorage(mainParam: MainParam?)
+
     fun setCafIdInStorage(id: String)
 
     fun getCafIdInStorage(): String

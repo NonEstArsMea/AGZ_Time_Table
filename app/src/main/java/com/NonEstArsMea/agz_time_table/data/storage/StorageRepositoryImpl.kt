@@ -52,14 +52,24 @@ class StorageRepositoryImpl @Inject constructor(
         sharedPreferences.edit().apply {
             if (favMainParamList != null)
                 putString(LIST_OF_FAVORITE_MAIN_PARAMS, gson.toJson(favMainParamList))
-            if (mainParam != null)
-                putString(MAIN_PARAM_KEY, gson.toJson(mainParam))
+
+            setMainParamInStorage(mainParam)
+
             if (theme != null) {
                 putInt(THEME, theme)
             }
             putString(LIST_KEY, gson.toJson(list))
 
         }.apply()
+
+    }
+
+    override fun setMainParamInStorage(mainParam: MainParam?) {
+        if (mainParam != null) {
+            sharedPreferences.edit().apply {
+                putString(MAIN_PARAM_KEY, gson.toJson(mainParam))
+            }.apply()
+        }
 
     }
 
@@ -99,7 +109,7 @@ class StorageRepositoryImpl @Inject constructor(
         private const val CAF_ID = "CI"
         private const val THEME = "T"
         private const val SYSTEM_THEME = 1
-        const val ERROR_VALUE =  "Выберите преподавателя"
+        const val ERROR_VALUE = "Выберите преподавателя"
 
         private val gson: Gson = Gson()
     }
