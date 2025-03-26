@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/Widget.Material3.CardView.Outlined"
@@ -140,51 +139,52 @@
                         app:layout_constraintLeft_toRightOf="@id/classroom" />
 
 
-                    <LinearLayout
-                        android:id="@+id/additional_information"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margine_all"
-                        android:orientation="vertical"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/classroom">
-
-
-                        <TextView
-                            android:id="@+id/add_group"
-                            style="@style/MainTextViewStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="left"
-                            android:text="   3333333   3333333 \n 123"
-                            android:visibility="visible" />
 
                         <LinearLayout
+                            android:id="@+id/additional_information"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:visibility="gone">
+                            android:layout_marginTop="@dimen/margine_all"
+                            android:orientation="vertical"
 
-                            <View
-                                android:id="@+id/add_department_icon"
-                                android:layout_width="16dp"
-                                android:layout_height="16dp"
-                                android:layout_marginEnd="@dimen/margine_all"
-                                android:background="@drawable/department"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/classroom">
 
-                                app:layout_constraintLeft_toLeftOf="@id/subject"
-                                app:layout_constraintTop_toTopOf="@id/teacher" />
 
                             <TextView
-                                android:id="@+id/add_department"
+                                android:id="@+id/add_group"
                                 style="@style/MainTextViewStyle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="33333333333333"
+                                android:gravity="left"
+                                android:text="   3333333   3333333 \n 123"
                                 android:visibility="visible" />
 
-                        </LinearLayout>
-                    </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:visibility="gone">
 
+                                <View
+                                    android:id="@+id/add_department_icon"
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    android:layout_marginEnd="@dimen/margine_all"
+                                    android:background="@drawable/department"
+
+                                    app:layout_constraintLeft_toLeftOf="@id/subject"
+                                    app:layout_constraintTop_toTopOf="@id/teacher" />
+
+                                <TextView
+                                    android:id="@+id/add_department"
+                                    style="@style/MainTextViewStyle"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="33333333333333"
+                                    android:visibility="visible" />
+
+                            </LinearLayout>
+                        </LinearLayout>
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -231,31 +231,31 @@
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.circularreveal.cardview.CircularRevealCardView
-        android:layout_gravity="right"
         android:id="@+id/lesson_number"
         style="@style/Widget.Material3.CardView.Elevated"
-        app:cardElevation="@dimen/margine_all"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="5dp"
+        android:layout_gravity="right"
         android:layout_marginTop="5dp"
-
+        android:layout_marginRight="5dp"
         android:gravity="center"
+
         android:paddingLeft="1dp"
         android:paddingTop="4dp"
         android:paddingBottom="4dp"
+        app:cardElevation="@dimen/margine_all"
+        app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/lesson_date_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:textSize="14dp"
             android:padding="@dimen/margine_all"
             android:text="25 февраля"
+            android:textSize="14dp"
             android:textStyle="bold" />
     </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
 

@@ -13,6 +13,7 @@
         <item name="subtitleTextColor">@color/white</item>
         <item name="backgroundColor">@color/white</item>
         <item name="cardBackgroundColor">#F7F2FA</item>
+        <item name="colorOnContainer">@color/red_themes</item>
         <item name="colorOnSurface">@color/red_themes</item>
 
 

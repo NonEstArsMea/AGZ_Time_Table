@@ -11,4 +11,5 @@ interface NetUtil {
     fun isNetConnection() : Boolean
 
     fun getNetLiveData() : MutableLiveData<Boolean>
+    fun setNetConnection(isConnection: Boolean)
 }

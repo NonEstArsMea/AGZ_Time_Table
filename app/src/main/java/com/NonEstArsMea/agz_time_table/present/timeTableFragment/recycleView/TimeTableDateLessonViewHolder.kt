@@ -2,6 +2,7 @@ package com.NonEstArsMea.agz_time_table.present.timeTableFragment.recycleView
 
 import android.content.Context
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView

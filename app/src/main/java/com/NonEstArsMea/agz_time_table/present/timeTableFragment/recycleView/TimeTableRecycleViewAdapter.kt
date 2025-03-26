@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -75,48 +76,39 @@ class TimeTableRecycleViewAdapter(val withDate: Boolean = false) :
     }
 
     private fun setAnimation(view: LinearLayout) {
-        val targetView = view
 
-        if (targetView.visibility == View.GONE) {
+        if (view.visibility == View.GONE ) {
             // Измеряем высоту контента
-            targetView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
-            val targetHeight = targetView.measuredHeight
+            view.visibility = View.VISIBLE
+            view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+            val targetHeight = view.measuredHeight
 
             // Начальная высота = 0
-            targetView.layoutParams.height = 0
+            view.layoutParams.height = 0
 
             // Анимация расширения
             val expandAnimator = ValueAnimator.ofInt(0, targetHeight).apply {
                 duration = 400
                 addUpdateListener { animation ->
-                    targetView.layoutParams.height = animation.animatedValue as Int
-                    targetView.requestLayout()
+                    view.layoutParams.height = animation.animatedValue as Int
+                    view.requestLayout()
                 }
             }
             expandAnimator.start()
 
-            val rotate = ValueAnimator.ofInt(0, targetHeight).apply {
-                duration = 400
-                addUpdateListener { animation ->
-                    targetView.layoutParams.height = animation.animatedValue as Int
-                    targetView.requestLayout()
-                }
-            }
-            rotate
-
         } else {
             // Анимация схлопывания
-            val initialHeight = targetView.height
+            val initialHeight = view.height
 
             val collapseAnimator = ValueAnimator.ofInt(initialHeight, 0).apply {
                 duration = 300
                 addUpdateListener { animation ->
-                    targetView.layoutParams.height = animation.animatedValue as Int
-                    targetView.requestLayout()
+                    view.layoutParams.height = animation.animatedValue as Int
+                    view.requestLayout()
                 }
                 addListener(object : AnimatorListenerAdapter() {
                     override fun onAnimationEnd(animation: Animator) {
-                        targetView.visibility = View.GONE
+                        view.visibility = View.GONE
                     }
                 })
             }

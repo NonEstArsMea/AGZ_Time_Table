@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity(), ExamsFragment.OnStartAndFinishListener
 
         // Обработка клика по кнопке в layout ошибки сети
         binding.errorNetLayout.errorNetLayoutButton.setOnClickListener {
-            setClickable()
+            mainViewModel.checkClickable()
         }
 
         // Наблюдение за выбранным элементом в нижнем меню и его обновление
@@ -91,7 +91,10 @@ class MainActivity : AppCompatActivity(), ExamsFragment.OnStartAndFinishListener
             menu.getItem(it).isChecked = true
         }
 
-        setClickable() // Установка видимости элементов в зависимости от состояния
+        mainViewModel.isConnected.observe(this){
+            setClickable(it)
+        }
+
 
         // Обработка выбора элементов в нижнем меню
         binding.bottomInfo.setOnItemSelectedListener {
@@ -128,12 +131,12 @@ class MainActivity : AppCompatActivity(), ExamsFragment.OnStartAndFinishListener
     /**
      * Устанавливает видимость элементов в зависимости от состояния сети.
      */
-    fun setClickable() {
-        val visible = mainViewModel.checkClickable()
+    fun setClickable(clickable: Boolean) {
+
         binding.bottomInfo.menu.forEachIndexed { index, item ->
-            item.isVisible = visible
+            item.isVisible = clickable
         }
-        binding.errorNetLayout.root.isVisible = !visible
+        binding.errorNetLayout.root.isVisible = !clickable
     }
 
     /**
@@ -150,10 +153,13 @@ class MainActivity : AppCompatActivity(), ExamsFragment.OnStartAndFinishListener
         binding.bottomInfo.isGone = false
     }
 
+    override fun onPause() {
+        super.onPause()
+        mainViewModel.setDataInStorage() // Сохранение данных при паузе
+    }
 
     override fun onDestroy() {
         super.onDestroy()
-        mainViewModel.setDataInStorage() // Сохранение данных при паузе
         _binding = null // Очистка привязки для предотвращения утечек памяти
     }
 

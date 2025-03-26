@@ -80,6 +80,7 @@ class TimeTableRepositoryImpl @Inject constructor(
                 }
             }
         } catch (e: Exception) {
+            netUtil.setNetConnection(false)
             return emptyList()
         }
 
@@ -103,6 +104,7 @@ class TimeTableRepositoryImpl @Inject constructor(
                 return emptyList()
             }
         } else {
+            netUtil.setNetConnection(false)
             return repository.getTimeTableFromStorage()
         }
         return repository.getTimeTableFromStorage()
@@ -141,6 +143,7 @@ class TimeTableRepositoryImpl @Inject constructor(
                 }
             }
         } catch (e: Exception) {
+            netUtil.setNetConnection(false)
             list = arrayListOf()
         }
 
@@ -159,6 +162,7 @@ class TimeTableRepositoryImpl @Inject constructor(
                 }
             }
         } catch (e: Exception) {
+            netUtil.setNetConnection(false)
             list = arrayListOf()
         }
 
@@ -173,6 +177,7 @@ class TimeTableRepositoryImpl @Inject constructor(
             if (restResponse.isSuccessful)
                 restResponse.body() ?: listOf() else listOf()
         } catch (e: Exception) {
+            netUtil.setNetConnection(false)
             listOf()
         }
 
@@ -184,6 +189,7 @@ class TimeTableRepositoryImpl @Inject constructor(
             if (restResponse.isSuccessful)
                 restResponse.body() ?: mapOf() else mapOf()
         } catch (e: Exception) {
+            netUtil.setNetConnection(false)
             mapOf()
         }
     }
@@ -194,6 +200,7 @@ class TimeTableRepositoryImpl @Inject constructor(
             if (restResponse.isSuccessful)
                 restResponse.body() ?: mapOf() else mapOf()
         } catch (e: Exception) {
+            netUtil.setNetConnection(false)
             mapOf()
         }
     }
@@ -273,6 +280,7 @@ class TimeTableRepositoryImpl @Inject constructor(
             if (restResponse.isSuccessful)
                 restResponse.body() ?: mapOf() else mapOf()
         } catch (e: Exception) {
+            netUtil.setNetConnection(false)
             mapOf()
         }
     }

@@ -132,70 +132,74 @@
                     app:layout_constraintLeft_toRightOf="@id/classroom" />
 
 
-                <LinearLayout
-                    android:id="@+id/additional_information"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margine_all"
-                    android:orientation="vertical"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/classroom">
 
                     <LinearLayout
+                        android:id="@+id/additional_information"
                         android:layout_width="wrap_content"
-                        android:layout_height="17dp">
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margine_all"
+                        android:orientation="vertical"
 
-                        <View
-                            android:id="@+id/date_icon"
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:layout_gravity="center"
-                            android:layout_marginEnd="@dimen/margine_all"
-                            android:background="@drawable/date" />
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/classroom">
+
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="17dp">
+
+                            <View
+                                android:id="@+id/date_icon"
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:layout_gravity="center"
+                                android:layout_marginEnd="@dimen/margine_all"
+                                android:background="@drawable/date" />
+
+                            <TextView
+                                android:id="@+id/add_date"
+                                style="@style/MainTextViewStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="22222222222222"
+                                android:visibility="visible" />
+                        </LinearLayout>
 
                         <TextView
-                            android:id="@+id/add_date"
+                            android:id="@+id/add_group"
                             style="@style/MainTextViewStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="22222222222222"
+                            android:gravity="left"
+                            android:text="   3333333   3333333 \n 123"
                             android:visibility="visible" />
-                    </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/add_group"
-                        style="@style/MainTextViewStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="left"
-                        android:text="   3333333   3333333 \n 123"
-                        android:visibility="visible" />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone">
-
-                        <View
-                            android:id="@+id/add_department_icon"
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:layout_marginEnd="@dimen/margine_all"
-                            android:background="@drawable/department"
-
-                            app:layout_constraintLeft_toLeftOf="@id/subject"
-                            app:layout_constraintTop_toTopOf="@id/teacher" />
-
-                        <TextView
-                            android:id="@+id/add_department"
-                            style="@style/MainTextViewStyle"
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="33333333333333"
-                            android:visibility="visible" />
+                            android:visibility="gone">
 
+                            <View
+                                android:id="@+id/add_department_icon"
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:layout_marginEnd="@dimen/margine_all"
+                                android:background="@drawable/department"
+
+                                app:layout_constraintLeft_toLeftOf="@id/subject"
+                                app:layout_constraintTop_toTopOf="@id/teacher" />
+
+                            <TextView
+                                android:id="@+id/add_department"
+                                style="@style/MainTextViewStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="33333333333333"
+                                android:visibility="visible" />
+
+                        </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
+
 
 
                 <com.google.android.material.circularreveal.cardview.CircularRevealCardView

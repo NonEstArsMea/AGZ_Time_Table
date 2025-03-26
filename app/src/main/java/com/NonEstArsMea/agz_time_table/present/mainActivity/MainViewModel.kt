@@ -39,6 +39,10 @@ class MainViewModel @Inject constructor(
     val selectedItem: LiveData<Int>
         get() = _selectedItem
 
+    private val _isConnected: MutableLiveData<Boolean> = net.getNetLiveData()
+    val isConnected: LiveData<Boolean>
+        get() = _isConnected
+
     init {
         // Проверка состояния сети при инициализации ViewModel
         net.checkNetConn()
@@ -77,9 +81,8 @@ class MainViewModel @Inject constructor(
     /**
      * Проверяет, доступно ли сетевое соединение.
      */
-    fun checkClickable(): Boolean {
-        net.checkNetConn() // Проверка сети
-        return net.isNetConnection() // Возвращает состояние сети
+    fun checkClickable(){
+        return net.checkNetConn()
     }
 
     /**

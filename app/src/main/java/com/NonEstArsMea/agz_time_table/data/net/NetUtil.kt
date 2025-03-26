@@ -39,4 +39,8 @@ class NetUtilImpl @Inject constructor(
         return netConnection
     }
 
+    override fun setNetConnection(isConnection: Boolean){
+        netConnection.postValue(isConnection)
+    }
+
 }
