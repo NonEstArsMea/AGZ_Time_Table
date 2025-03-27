@@ -115,7 +115,7 @@ class ViewPagerFragment : Fragment() {
 
 
         observeViewModel(viewPagerAdapter)
-        updateData(NOW_WEEK)
+        vm.startLoadTimeTable()
 
         return binding.root
     }
@@ -125,9 +125,15 @@ class ViewPagerFragment : Fragment() {
         vm.state.observe(viewLifecycleOwner) {
             when (it) {
                 is LoadData -> {
+                    viewPagerAdapter.setData(emptyList())
                 }
 
                 is TimeTableIsLoad -> {
+                    viewPagerAdapter.setData(it.list)
+                    viewPager.setCurrentItem(it.day, false)
+                    setButtonNumbers()
+                }
+                is StorageLoad -> {
                     viewPagerAdapter.setData(it.list)
                     viewPager.setCurrentItem(it.day, false)
                     setButtonNumbers()

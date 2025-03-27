@@ -79,6 +79,7 @@ class TimeTableRepositoryImpl @Inject constructor(
                     emptyList()
                 }
             }
+            netUtil.setNetConnection(false)
         } catch (e: Exception) {
             netUtil.setNetConnection(false)
             return emptyList()

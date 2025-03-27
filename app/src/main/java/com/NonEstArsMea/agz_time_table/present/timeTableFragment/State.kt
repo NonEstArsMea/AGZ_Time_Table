@@ -13,3 +13,5 @@ data object LoadData: State()
 */
 
 class TimeTableIsLoad(val list: List<List<CellClass>>, val day: Int) : State()
+
+class StorageLoad(val list: List<List<CellClass>>, val day: Int) : State()

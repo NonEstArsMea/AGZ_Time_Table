@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -70,8 +71,23 @@ class TimeTableFragment : Fragment() {
             vm.getNewTimeTable(0)
         }
 
+
         binding.changeViewMod.setOnClickListener {
             updateViewMode()
+        }
+
+        vm.state.observe(viewLifecycleOwner){ state ->
+            when(state){
+                is LoadData -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+                is TimeTableIsLoad -> {
+                    binding.progressBar.visibility = View.INVISIBLE
+                }
+                is StorageLoad-> {
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+            }
         }
 
         vm.checkMainParam()

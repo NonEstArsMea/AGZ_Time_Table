@@ -66,9 +66,15 @@ class TableFragment : Fragment() {
             when (it) {
                 is LoadData -> {
                     binding.tabView.setTimeTable()
+
                 }
 
                 is TimeTableIsLoad -> {
+                    val dateList = vm.getDateList()
+                    binding.tabView.setTimeTable(it.list, dateList)
+                    binding.weekDateText.text = vm.getWeekDateText()
+                }
+                is StorageLoad-> {
                     val dateList = vm.getDateList()
                     binding.tabView.setTimeTable(it.list, dateList)
                     binding.weekDateText.text = vm.getWeekDateText()

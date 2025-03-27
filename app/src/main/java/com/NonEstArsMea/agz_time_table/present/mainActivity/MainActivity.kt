@@ -96,6 +96,7 @@ class MainActivity : AppCompatActivity(), ExamsFragment.OnStartAndFinishListener
         }
 
 
+
         // Обработка выбора элементов в нижнем меню
         binding.bottomInfo.setOnItemSelectedListener {
             when (it.itemId) {

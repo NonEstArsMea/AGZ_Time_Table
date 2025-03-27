@@ -88,6 +88,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/view_pager_and_table_container"
         android:layout_width="match_parent"
@@ -97,6 +98,21 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/top_card" />
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progress_bar"
+        android:backgroundTint="@color/gray"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:trackCornerRadius="@dimen/margine_all"
+        app:trackThickness="10dp"
+        android:indeterminate="true"
+
+        app:layout_constraintLeft_toLeftOf="@id/top_card"
+        app:layout_constraintTop_toTopOf="@id/view_pager_and_table_container"
+        app:layout_constraintRight_toRightOf="@id/top_card"/>
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,7 +2,6 @@ package com.NonEstArsMea.agz_time_table.present.timeTableFragment
 
 import android.annotation.SuppressLint
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellClass
 import com.NonEstArsMea.agz_time_table.domain.dataClass.MainParam
 import com.NonEstArsMea.agz_time_table.domain.mainUseCase.NetUtil
+import com.NonEstArsMea.agz_time_table.domain.mainUseCase.Storage.StorageRepository
 import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.GetMainParamUseCase
 import com.NonEstArsMea.agz_time_table.domain.timeTableUseCase.TimeTableRepository
 import com.NonEstArsMea.agz_time_table.util.BottomMenuItemStateManager
@@ -22,6 +22,7 @@ import javax.inject.Inject
 class TimeTableViewModel @Inject constructor(
     private val getMainParamUseCase: GetMainParamUseCase,
     private val timeTableRepositoryImpl: TimeTableRepository,
+    private val storageRepository: StorageRepository,
     private val application: Application,
     private val net: NetUtil
 ) : ViewModel() {
@@ -54,22 +55,31 @@ class TimeTableViewModel @Inject constructor(
 
     private var nowWeek = 0
 
+    private var storageJob: Job = Job()
+
 
     init {
         _state.value = LoadData
+    }
 
-
+    fun startLoadTimeTable() {
+        storageJob = viewModelScope.launch {
+            list = storageRepository.getTimeTableFromStorage()
+            _state.value = StorageLoad(list, dayOfWeek)
+        }
+        loadTimeTable()
     }
 
     @SuppressLint("SuspiciousIndentation")
     fun getNewTimeTable(newTime: Int? = null) {
-        if (newTime == 0){
+        _state.value = LoadData
+        if (newTime == 0) {
             nowWeek = newTime
         }
         if (newTime != null) {
-            if (newTime == 0){
+            if (newTime == 0) {
                 nowWeek = newTime
-            }else{
+            } else {
                 nowWeek += newTime
             }
             if (nowWeek == NOW_WEEK) {
@@ -86,9 +96,14 @@ class TimeTableViewModel @Inject constructor(
 
         _month.value = getMonth()
 
+        loadTimeTable()
+    }
+
+    fun loadTimeTable() {
         job = viewModelScope.launch(Dispatchers.Default) {
             list = timeTableRepositoryImpl.getWeekTimeTable()
             launch(Dispatchers.Main) {
+                storageJob.cancel()
                 _state.value = TimeTableIsLoad(list, dayOfWeek)
             }
         }
