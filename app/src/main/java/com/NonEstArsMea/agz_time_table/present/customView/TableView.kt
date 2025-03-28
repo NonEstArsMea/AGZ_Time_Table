@@ -12,9 +12,12 @@ import android.graphics.drawable.Drawable
 import android.text.StaticLayout
 import android.text.TextPaint
 import android.util.AttributeSet
+import android.util.Log
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
+import android.view.VelocityTracker
 import android.view.View
+import android.widget.OverScroller
 import androidx.core.graphics.drawable.toDrawable
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.domain.dataClass.CellClass
@@ -322,9 +325,16 @@ class NewView @JvmOverloads constructor(
         })
 
 
+    private val scroller = OverScroller(context)
+    private var velocityTracker = VelocityTracker.obtain()
     private fun processMove(event: MotionEvent): Boolean {
         return when (event.action) {
             MotionEvent.ACTION_DOWN -> {
+                velocityTracker?.recycle() // Освобождаем старый трекер
+                velocityTracker = VelocityTracker.obtain() // Новый трекер
+                velocityTracker?.addMovement(event)
+
+                if (!scroller.isFinished) scroller.abortAnimation()
                 lastPoint.set(event.x, event.y)
                 lastPointerId = event.getPointerId(0)
                 true
@@ -332,12 +342,15 @@ class NewView @JvmOverloads constructor(
 
             MotionEvent.ACTION_MOVE -> {
 
+                velocityTracker?.addMovement(event)
+
                 // Если размер контента меньше размера View - сдвиг недоступен
                 if (width < contentWidth * transformations.scaleFactor) {
                     val pointerId = event.getPointerId(0)
                     // Чтобы избежать скачков - сдвигаем, только если поинтер(палец) тот же, что и раньше
                     if (lastPointerId == pointerId) {
                         transformations.addTranslation(event.x - lastPoint.x, event.y - lastPoint.y)
+
                     }
 
                     // Запоминаем поинтер и последнюю точку в любом случае
@@ -350,7 +363,47 @@ class NewView @JvmOverloads constructor(
                 }
             }
 
+            MotionEvent.ACTION_UP -> {
+                velocityTracker?.addMovement(event)
+                velocityTracker?.computeCurrentVelocity(1000, 5000f )
+
+                val velocityX = velocityTracker.xVelocity
+                val velocityY = velocityTracker.yVelocity
+                Log.e("cust2", velocityX.toString() + " " + velocityY.toString())
+                startFling(velocityX.toInt(), velocityY.toInt())
+
+                velocityTracker?.recycle() // Освобождаем ресурсы
+                velocityTracker = null
+                true
+            }
+
             else -> false
+        }
+    }
+
+    private fun startFling(velocityX: Int, velocityY: Int) {
+         scroller.fling(
+            transformations.translationX.toInt(),
+            transformations.translationY.toInt(),
+            velocityX , velocityY ,
+             (-contentWidth * transformations.scaleFactor).toInt(),
+             0,
+            -(contentHeight* transformations.scaleFactor).toInt(),
+             0
+
+        )
+        postInvalidateOnAnimation()
+    }
+
+    override fun computeScroll() {
+        if (scroller.computeScrollOffset()) {
+            Log.e("cust_scroll", scroller.currX.toString() + " " + scroller.currY.toString())
+            Log.e("cust_scroll", transformations.translationX.toString() + " " + transformations.translationY.toString())
+            val dx = (scroller.currX - transformations.translationX).toFloat()
+            val dy = (scroller.currY - transformations.translationY).toFloat()
+
+            transformations.addTranslation(dx, dy)
+            postInvalidateOnAnimation()
         }
     }
 
