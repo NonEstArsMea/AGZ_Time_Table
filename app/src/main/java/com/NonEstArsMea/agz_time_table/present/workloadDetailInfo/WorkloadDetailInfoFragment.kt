@@ -3,6 +3,7 @@ package com.NonEstArsMea.agz_time_table.present.workloadDetailInfo
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.transition.Transition
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.transition.Transition.TransitionListener
 import com.NonEstArsMea.agz_time_table.R
 import com.NonEstArsMea.agz_time_table.databinding.ExamsLayoutBinding
 import com.NonEstArsMea.agz_time_table.present.TimeTableApplication
@@ -75,12 +77,13 @@ class WorkloadDetailInfoFragment : Fragment() {
         vm.getData(month, department, mainParam)
         binding.viewName.text = department.getFullName() + " - " + DateManager.getMonthNominativeСaseByString(month)
         binding.cardView.transitionName = morphName
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        observeVM()
+
 
         binding.recyclerViewOnCastomDateFragment.adapter = adapter
         binding.recyclerViewOnCastomDateFragment.layoutManager = LinearLayoutManager(context)

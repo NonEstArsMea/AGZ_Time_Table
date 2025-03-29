@@ -12,7 +12,6 @@ import android.graphics.drawable.Drawable
 import android.text.StaticLayout
 import android.text.TextPaint
 import android.util.AttributeSet
-import android.util.Log
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.VelocityTracker
@@ -365,11 +364,10 @@ class NewView @JvmOverloads constructor(
 
             MotionEvent.ACTION_UP -> {
                 velocityTracker?.addMovement(event)
-                velocityTracker?.computeCurrentVelocity(1000, 5000f )
+                velocityTracker?.computeCurrentVelocity(1000, 5000f)
 
                 val velocityX = velocityTracker.xVelocity
                 val velocityY = velocityTracker.yVelocity
-                Log.e("cust2", velocityX.toString() + " " + velocityY.toString())
                 startFling(velocityX.toInt(), velocityY.toInt())
 
                 velocityTracker?.recycle() // Освобождаем ресурсы
@@ -382,14 +380,14 @@ class NewView @JvmOverloads constructor(
     }
 
     private fun startFling(velocityX: Int, velocityY: Int) {
-         scroller.fling(
+        scroller.fling(
             transformations.translationX.toInt(),
             transformations.translationY.toInt(),
-            velocityX , velocityY ,
-             (-contentWidth * transformations.scaleFactor).toInt(),
-             0,
-            -(contentHeight* transformations.scaleFactor).toInt(),
-             0
+            velocityX, velocityY,
+            (-contentWidth * transformations.scaleFactor).toInt(),
+            0,
+            -(contentHeight * transformations.scaleFactor).toInt(),
+            0
 
         )
         postInvalidateOnAnimation()
@@ -397,8 +395,6 @@ class NewView @JvmOverloads constructor(
 
     override fun computeScroll() {
         if (scroller.computeScrollOffset()) {
-            Log.e("cust_scroll", scroller.currX.toString() + " " + scroller.currY.toString())
-            Log.e("cust_scroll", transformations.translationX.toString() + " " + transformations.translationY.toString())
             val dx = (scroller.currX - transformations.translationX).toFloat()
             val dy = (scroller.currY - transformations.translationY).toFloat()
 
@@ -473,7 +469,7 @@ class NewView @JvmOverloads constructor(
         // Создание прямоуголька и задание радиуса и размера боковой линии
         private var rect = RectF()
         private var rectRadius = 10f * transformations.scaleFactor
-        private var verticalLineSize = 10f * transformations.scaleFactor
+        private var verticalLineSize = 10f
         private val rectStrokeWidth = 2f
 
 
@@ -640,7 +636,7 @@ class NewView @JvmOverloads constructor(
             with(path2) {
                 reset()
                 addRect(
-                    rect.left + verticalLineSize,
+                    rect.left + verticalLineSize * transformations.scaleFactor,
                     rect.top,
                     rect.right,
                     rect.bottom, Path.Direction.CW
@@ -654,7 +650,7 @@ class NewView @JvmOverloads constructor(
 
             canvas.save()
             canvas.translate(
-                rect.left + verticalLineSize + paddingX + rectStrokeWidth,
+                rect.left + (verticalLineSize + paddingX + rectStrokeWidth)  * transformations.scaleFactor,
                 rect.top + (rect.bottom - rect.top - (nameStaticLayout!!.height + infoStaticLayout!!.height) * transformations.scaleFactor) / 2
             )
             canvas.scale(transformations.scaleFactor, transformations.scaleFactor)
@@ -663,7 +659,7 @@ class NewView @JvmOverloads constructor(
 
             canvas.save()
             canvas.translate(
-                rect.left + verticalLineSize + paddingX + rectStrokeWidth,
+                rect.left + (verticalLineSize + paddingX + rectStrokeWidth)  * transformations.scaleFactor,
                 rect.top + (rect.bottom - rect.top - (infoStaticLayout!!.height - nameStaticLayout!!.height) * transformations.scaleFactor) / 2
             )
             canvas.scale(transformations.scaleFactor, transformations.scaleFactor)
